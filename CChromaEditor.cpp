@@ -407,4 +407,11 @@ void CMainViewDlg::OnBnClickedButton1()
 void CMainViewDlg::OnBnClickedButtonBrushColor()
 {
 	// TODO: Add your control notification handler code here
+
+	// Get the selected color from the CColorDialog. 
+	CColorDialog dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		COLORREF color = dlg.GetColor();
+	}
 }
