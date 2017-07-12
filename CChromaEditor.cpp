@@ -7,6 +7,8 @@
 #include "afxdialogex.h"
 #include "CChromaEditor.h"
 #include "MainFrm.h"
+#include "ColorButton.h"
+#include <vector>
 
 #include "CChromaEditorDoc.h"
 #include "CChromaEditorView.h"
@@ -121,6 +123,8 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
+	std::vector<CColorButton*> _mButtons;
+
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -151,6 +155,7 @@ public:
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonDelete();
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButtonBrushColor();
 };
 
 CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
@@ -159,20 +164,25 @@ CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 
 BOOL CMainViewDlg::OnInitDialog()
 {
-	const int size = 13;
+	const int width = 15;
+	const int height = 30;
 	int y = 238;
+	int id = 1000;
 	for (int j = 0; j < 6; ++j)
 	{
 		int x = 25;
 		for (int i = 0; i < 22; ++i)
 		{
-			int id = i;
-			CButton* button = new CButton();
-			button->Create(_T(""), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | DT_CENTER, CRect(x, y, x + size, y + size), this, id);
-			x += size + 2;
+			++id;
+			CColorButton* button = new CColorButton(RGB(0, 0, 0), RGB(255, 0, 0));
+			const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
+				BS_OWNERDRAW | BS_MULTILINE;
+			button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
+			_mButtons.push_back(button);
+			x += width + 2;
 		}
 
-		y += size + 2;
+		y += height + 2;
 	}
 
 	return TRUE;
@@ -209,6 +219,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CMainViewDlg::OnBnClickedButtonNext)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CMainViewDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMainViewDlg::OnBnClickedButtonDelete)
+	ON_BN_CLICKED(IDC_BUTTON_BRUSH_COLOR, &CMainViewDlg::OnBnClickedButtonBrushColor)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
@@ -388,6 +399,12 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 
 
 void CMainViewDlg::OnBnClickedButton1()
+{
+	// TODO: Add your control notification handler code here
+}
+
+
+void CMainViewDlg::OnBnClickedButtonBrushColor()
 {
 	// TODO: Add your control notification handler code here
 }

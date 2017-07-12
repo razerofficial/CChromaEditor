@@ -189,6 +189,7 @@
     <ClInclude Include="CChromaEditor.h" />
     <ClInclude Include="CChromaEditorDoc.h" />
     <ClInclude Include="CChromaEditorView.h" />
+    <ClInclude Include="ColorButton.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="CChromaEditor.cpp" />
     <ClCompile Include="CChromaEditorDoc.cpp" />
     <ClCompile Include="CChromaEditorView.cpp" />
+    <ClCompile Include="ColorButton.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
