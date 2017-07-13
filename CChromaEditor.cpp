@@ -8,7 +8,6 @@
 #include "CChromaEditor.h"
 #include "MainFrm.h"
 #include "ColorButton.h"
-#include <vector>
 
 #include "CChromaEditorDoc.h"
 #include "CChromaEditorView.h"
@@ -17,6 +16,7 @@
 #define new DEBUG_NEW
 #endif
 
+using namespace std;
 
 // CCChromaEditorApp
 
@@ -38,6 +38,15 @@ CCChromaEditorApp::CCChromaEditorApp()
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
+}
+
+void CCChromaEditorApp::OnBnClickedButtonColor(UINT nID)
+{
+	int index = nID - 2000;
+	vector<CColorButton*> buttons = theApp.GetButtons();
+	CColorButton* button = buttons[index];
+	button->SetColor(theApp.GetColor(), theApp.GetColor());
+	button->Invalidate();
 }
 
 // The one and only CCChromaEditorApp object
@@ -123,8 +132,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	std::vector<CColorButton*> _mButtons;
-
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -156,6 +163,7 @@ public:
 	afx_msg void OnBnClickedButtonDelete();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButtonBrushColor();
+	afx_msg void OnBnClickedButtonColor();
 };
 
 CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
@@ -167,18 +175,18 @@ BOOL CMainViewDlg::OnInitDialog()
 	const int width = 15;
 	const int height = 30;
 	int y = 238;
-	int id = 1000;
+	int id = 2000;
 	for (int j = 0; j < 6; ++j)
 	{
 		int x = 25;
 		for (int i = 0; i < 22; ++i)
 		{
-			++id;
 			CColorButton* button = new CColorButton(RGB(0, 0, 0), RGB(255, 0, 0));
 			const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
 				BS_OWNERDRAW | BS_MULTILINE;
 			button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
-			_mButtons.push_back(button);
+			++id;
+			theApp.GetButtons().push_back(button);
 			x += width + 2;
 		}
 
@@ -186,6 +194,21 @@ BOOL CMainViewDlg::OnInitDialog()
 	}
 
 	return TRUE;
+}
+
+vector<CColorButton*>& CCChromaEditorApp::GetButtons()
+{
+	return _mButtons;
+}
+
+COLORREF CCChromaEditorApp::GetColor()
+{
+	return _mColor;
+}
+
+void CCChromaEditorApp::SetColor(COLORREF color)
+{
+	_mColor = color;
 }
 
 void CMainViewDlg::DoDataExchange(CDataExchange* pDX)
@@ -220,6 +243,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CMainViewDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMainViewDlg::OnBnClickedButtonDelete)
 	ON_BN_CLICKED(IDC_BUTTON_BRUSH_COLOR, &CMainViewDlg::OnBnClickedButtonBrushColor)
+	ON_COMMAND_RANGE(2000, 2256, theApp.OnBnClickedButtonColor)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
@@ -409,9 +433,9 @@ void CMainViewDlg::OnBnClickedButtonBrushColor()
 	// TODO: Add your control notification handler code here
 
 	// Get the selected color from the CColorDialog. 
-	CColorDialog dlg;
+	CColorDialog dlg(theApp.GetColor());
 	if (dlg.DoModal() == IDOK)
 	{
-		COLORREF color = dlg.GetColor();
+		theApp.SetColor(dlg.GetColor());
 	}
 }
