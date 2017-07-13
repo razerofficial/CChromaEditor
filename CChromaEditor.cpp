@@ -16,6 +16,10 @@
 #define new DEBUG_NEW
 #endif
 
+#define ID_DYNAMIC_BUTTON_MIN 2000
+#define ID_DYNAMIC_COLOR_MIN 2200
+#define ID_DYNAMIC_BUTTON_MAX 2256
+
 using namespace std;
 
 // CCChromaEditorApp
@@ -42,11 +46,40 @@ CCChromaEditorApp::CCChromaEditorApp()
 
 void CCChromaEditorApp::OnBnClickedButtonColor(UINT nID)
 {
-	int index = nID - 2000;
-	vector<CColorButton*> buttons = theApp.GetButtons();
-	CColorButton* button = buttons[index];
-	button->SetColor(theApp.GetColor(), theApp.GetColor());
-	button->Invalidate();
+	if (nID >= ID_DYNAMIC_BUTTON_MIN)
+	{
+		if (nID < ID_DYNAMIC_COLOR_MIN)
+		{
+			int index = nID - ID_DYNAMIC_BUTTON_MIN;
+			vector<CColorButton*> buttons = theApp.GetGridButtons();
+			CColorButton* button = buttons[index];
+			COLORREF color = theApp.GetColor();
+			button->SetColor(color, color);
+			button->Invalidate();
+		}
+		else
+		{
+			int index = nID - ID_DYNAMIC_COLOR_MIN;
+			if (index == 0)
+			{
+				// Get the selected color from the CColorDialog. 
+				CColorDialog dlg(theApp.GetColor());
+				if (dlg.DoModal() == IDOK)
+				{
+					theApp.SetColor(dlg.GetColor());
+				}
+			}
+			else
+			{
+				vector<CColorButton*> buttons = theApp.GetColorButtons();
+				CColorButton* button = buttons[index];
+				COLORREF color = button->GetBackgroundColor();
+				theApp.SetColor(color);
+				theApp.GetColorButtons()[0]->SetColor(color, color);
+				theApp.GetColorButtons()[0]->Invalidate();
+			}
+		}
+	}
 }
 
 // The one and only CCChromaEditorApp object
@@ -162,7 +195,6 @@ public:
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonDelete();
 	afx_msg void OnBnClickedButton1();
-	afx_msg void OnBnClickedButtonBrushColor();
 	afx_msg void OnBnClickedButtonColor();
 };
 
@@ -172,10 +204,11 @@ CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 
 BOOL CMainViewDlg::OnInitDialog()
 {
-	const int width = 15;
-	const int height = 30;
+	// Create grid
+	int width = 15;
+	int height = 30;
 	int y = 238;
-	int id = 2000;
+	int id = ID_DYNAMIC_BUTTON_MIN;
 	for (int j = 0; j < 6; ++j)
 	{
 		int x = 25;
@@ -186,19 +219,70 @@ BOOL CMainViewDlg::OnInitDialog()
 				BS_OWNERDRAW | BS_MULTILINE;
 			button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
 			++id;
-			theApp.GetButtons().push_back(button);
+			theApp.GetGridButtons().push_back(button);
 			x += width + 2;
 		}
 
 		y += height + 2;
 	}
 
+	//create color picker
+	id = ID_DYNAMIC_COLOR_MIN;
+	y = 510;
+	int x = 85;
+	width = 50;
+	height = 50;
+	if (true)
+	{
+		COLORREF black = RGB(0, 0, 0);
+		CColorButton* button = new CColorButton(black, black);
+		const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
+			BS_OWNERDRAW | BS_MULTILINE;
+		button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
+		++id;
+		theApp.GetColorButtons().push_back(button);
+		x += width + 2;
+	}
+
+	// create palette
+	const float full = 255;
+	const float half = 127;
+	const float quater = 63;
+	int colors[] =
+	{
+		RGB(full, 0, 0), RGB(half, 0, 0),
+		RGB(full, half, 0), RGB(half, quater, 0),
+		RGB(full, full, 0), RGB(half, half, 0),
+		RGB(0, full, 0), RGB(0, half, 0),
+		RGB(0, 0, full), RGB(0, 0, half),
+		RGB(0, full, full), RGB(0, half, half),
+		RGB(full, 0, full), RGB(half, 0, half),
+		RGB(full, full, full), RGB(half, half, half), RGB(0,0,0)
+	};
+	width = 15;
+	height = 30;
+	for (int i = 0; i < size(colors); ++i)
+	{
+		CColorButton* button = new CColorButton(colors[i], colors[i]);
+		const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
+			BS_OWNERDRAW | BS_MULTILINE;
+		button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
+		++id;
+		theApp.GetColorButtons().push_back(button);
+		x += width + 2;
+	}
+
 	return TRUE;
 }
 
-vector<CColorButton*>& CCChromaEditorApp::GetButtons()
+vector<CColorButton*>& CCChromaEditorApp::GetGridButtons()
 {
-	return _mButtons;
+	return _mGridButtons;
+}
+
+vector<CColorButton*>& CCChromaEditorApp::GetColorButtons()
+{
+	return _mColorButtons;
 }
 
 COLORREF CCChromaEditorApp::GetColor()
@@ -242,8 +326,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CMainViewDlg::OnBnClickedButtonNext)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CMainViewDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMainViewDlg::OnBnClickedButtonDelete)
-	ON_BN_CLICKED(IDC_BUTTON_BRUSH_COLOR, &CMainViewDlg::OnBnClickedButtonBrushColor)
-	ON_COMMAND_RANGE(2000, 2256, theApp.OnBnClickedButtonColor)
+	ON_COMMAND_RANGE(ID_DYNAMIC_BUTTON_MIN, ID_DYNAMIC_BUTTON_MAX, theApp.OnBnClickedButtonColor)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
@@ -425,17 +508,4 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 void CMainViewDlg::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
-}
-
-
-void CMainViewDlg::OnBnClickedButtonBrushColor()
-{
-	// TODO: Add your control notification handler code here
-
-	// Get the selected color from the CColorDialog. 
-	CColorDialog dlg(theApp.GetColor());
-	if (dlg.DoModal() == IDOK)
-	{
-		theApp.SetColor(dlg.GetColor());
-	}
 }

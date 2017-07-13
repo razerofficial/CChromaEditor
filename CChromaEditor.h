@@ -28,7 +28,8 @@ public:
 public:
 	virtual BOOL InitInstance();
 
-	std::vector<CColorButton*>& GetButtons();
+	std::vector<CColorButton*>& GetGridButtons();
+	std::vector<CColorButton*>& GetColorButtons();
 
 	COLORREF GetColor();
 	void SetColor(COLORREF color);
@@ -38,7 +39,8 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	std::vector<CColorButton*> _mButtons;
+	std::vector<CColorButton*> _mGridButtons;
+	std::vector<CColorButton*> _mColorButtons;
 	COLORREF _mColor;
 };
 

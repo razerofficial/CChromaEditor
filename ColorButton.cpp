@@ -337,6 +337,11 @@ void CColorButton::SetColor(COLORREF text, COLORREF bkgnd)
 		Invalidate();
 }
 
+COLORREF CColorButton::GetBackgroundColor()
+{
+	return m_BkgndColor;
+}
+
 void CColorButton::SetColor(COLORREF text, COLORREF bkgnd, COLORREF disabled)
 {
 	m_TextColor				= text;

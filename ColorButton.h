@@ -66,6 +66,7 @@ public:
 	void SetColor(COLORREF text, COLORREF bkgnd, COLORREF disabled);
 	void SetColor(COLORREF text, COLORREF bkgnd, COLORREF disabled, COLORREF light, COLORREF highlight, COLORREF shadow, COLORREF darkShadow);
 	void SetColorToWindowsDefault();
+	COLORREF GetBackgroundColor();
 	
 private:
 	void DrawFrame(CDC *pDC, CRect rc, int state);
