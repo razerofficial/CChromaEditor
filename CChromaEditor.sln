@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CChromaEditor", "CChromaEdi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CChromaEditorLibrary", "CChromaEditorLibrary\CChromaEditorLibrary.vcxproj", "{48DACD44-7EF3-45C8-B744-8D82390BAC93}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CConsoleEditor", "CConsoleEditor\CConsoleEditor.vcxproj", "{5F081398-5620-4B7E-B045-D5AB6091B72B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release|x64.Build.0 = Release|x64
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release|x86.ActiveCfg = Release|Win32
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release|x86.Build.0 = Release|Win32
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug|x64.ActiveCfg = Debug|x64
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug|x64.Build.0 = Debug|x64
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug|x86.ActiveCfg = Debug|Win32
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug|x86.Build.0 = Debug|Win32
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x64.ActiveCfg = Release|x64
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x64.Build.0 = Release|x64
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x86.ActiveCfg = Release|Win32
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
