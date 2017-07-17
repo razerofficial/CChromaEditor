@@ -10,6 +10,7 @@
 #include "resource.h"		// main symbols
 #include "afxwinappex.h"
 #include "afxdialogex.h"
+#include <vector>
 
 
 // CCChromaEditorLibraryApp
@@ -27,6 +28,8 @@ public:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+class CColorButton;
 
 // CMainViewDlg dialog used for App MainView
 
@@ -48,4 +51,45 @@ protected:
 														// Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButtonImportImage();
+	afx_msg void OnCbnSelchangeComboType();
+	afx_msg void OnBnClickedButtonImportAnimation();
+	afx_msg void OnEnChangeOverrideTime2();
+	afx_msg void OnBnClickedButtonImportOverrideTime();
+	afx_msg void OnCbnSelchangeComboDevices();
+	afx_msg void OnBnClickedButtonSetDevice();
+	afx_msg void OnBnClickedButtonClear();
+	afx_msg void OnBnClickedButtonFill();
+	afx_msg void OnBnClickedButtonRandom();
+	afx_msg void OnBnClickedButtonCopy();
+	afx_msg void OnBnClickedButtonPaste();
+	afx_msg void OnBnClickedButtonPreview();
+	afx_msg void OnBnClickedButtonPlay();
+	afx_msg void OnBnClickedButtonStop();
+	afx_msg void OnBnClickedButtonLoad();
+	afx_msg void OnBnClickedButtonUnload();
+	afx_msg void OnCbnSelchangeComboKeys();
+	afx_msg void OnBnClickedButtonSetKey();
+	afx_msg void OnCbnSelchangeComboLeds();
+	afx_msg void OnBnClickedButtonSetLed();
+	afx_msg void OnEnChangeOverrideTime();
+	afx_msg void OnBnClickedButtonPrevious();
+	afx_msg void OnBnClickedButtonNext();
+	afx_msg void OnBnClickedButtonAdd();
+	afx_msg void OnBnClickedButtonDelete();
+	afx_msg void OnBnClickedButtonColor();
+
+	void OnBnClickedButtonColor(UINT nID);
+
+private:
+	std::vector<CColorButton*>& GetGridButtons();
+	std::vector<CColorButton*>& GetColorButtons();
+
+	COLORREF GetColor();
+	void SetColor(COLORREF color);
+
+	std::vector<CColorButton*> _mGridButtons;
+	std::vector<CColorButton*> _mColorButtons;
+	COLORREF _mColor;
 };

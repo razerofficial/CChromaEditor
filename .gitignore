@@ -1,3 +1,5 @@
 .vs/
 Debug/
 CChromaEditor.vcxproj.user
+CChromaEditor.VC.db
+ipch/
