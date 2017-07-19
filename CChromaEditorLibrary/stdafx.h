@@ -44,5 +44,7 @@
 
 extern "C"
 {
-	EXPORT_API void PluginOpenEditorDialog(char* path);
+	EXPORT_API double PluginIsDialogOpen();
+
+	EXPORT_API double PluginOpenEditorDialog(char* path);
 }
