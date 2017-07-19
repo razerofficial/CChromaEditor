@@ -75,6 +75,9 @@ CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 
 BOOL CMainViewDlg::OnInitDialog()
 {
+	COLORREF black = RGB(0, 0, 0);
+	COLORREF red = RGB(255, 0, 0);
+
 	// Create grid
 	int width = 15;
 	int height = 30;
@@ -85,7 +88,7 @@ BOOL CMainViewDlg::OnInitDialog()
 		int x = 25;
 		for (int i = 0; i < 22; ++i)
 		{
-			CColorButton* button = new CColorButton(RGB(0, 0, 0), RGB(255, 0, 0));
+			CColorButton* button = new CColorButton(black, black);
 			const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
 				BS_OWNERDRAW | BS_MULTILINE;
 			button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
@@ -105,8 +108,8 @@ BOOL CMainViewDlg::OnInitDialog()
 	height = 50;
 	if (true)
 	{
-		COLORREF black = RGB(0, 0, 0);
-		CColorButton* button = new CColorButton(black, black);
+		SetColor(red);
+		CColorButton* button = new CColorButton(red, red);
 		const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
 			BS_OWNERDRAW | BS_MULTILINE;
 		button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
