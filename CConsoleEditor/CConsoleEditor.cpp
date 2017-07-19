@@ -6,7 +6,8 @@
 #include "stdafx.h"
 #include <Windows.h>
 
-typedef void(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
+typedef double(*PLUGIN_IS_DIALOG_OPEN)();
+typedef double(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
 
 int main()
 {
@@ -14,6 +15,13 @@ int main()
 	if (library == NULL)
 	{
 		printf("Failed to load Chroma Editor Library!\r\n");
+		return -1;
+	}
+
+	PLUGIN_IS_DIALOG_OPEN methodIsDialogOpen = (PLUGIN_IS_DIALOG_OPEN)GetProcAddress(library, "PluginIsDialogOpen");
+	if (methodIsDialogOpen == nullptr)
+	{
+		printf("Failed to find method PluginIsDialogOpen!\r\n");
 		return -1;
 	}
 
@@ -25,6 +33,11 @@ int main()
 	}
 
 	methodOpenDialog("Some path");
+
+	while (methodIsDialogOpen())
+	{
+		Sleep(0);
+	}
 
 	printf("CConsoleEditor exited.\r\n");
 

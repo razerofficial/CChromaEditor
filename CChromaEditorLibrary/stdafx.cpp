@@ -56,11 +56,6 @@ extern "C"
 		thread newThread(ThreadOpenEditorDialog);
 		newThread.detach();
 
-		while (_gDialogIsOpen)
-		{
-			Sleep(0);
-		}
-
 		return 0;
 	}
 }
