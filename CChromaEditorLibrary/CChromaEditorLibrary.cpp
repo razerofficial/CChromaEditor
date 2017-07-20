@@ -121,12 +121,13 @@ void CMainViewDlg::RefreshDevice()
 
 void CMainViewDlg::RefreshGrid()
 {
-	char buffer[20] = { 0 };
+	// update grid label
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
 			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
+			char buffer[20] = { 0 };
 			sprintf_s(buffer, "1 x %d", maxLeds);
 			GetControlGridSize()->SetWindowTextW(CString(buffer));
 		}
@@ -135,8 +136,73 @@ void CMainViewDlg::RefreshGrid()
 		{
 			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
 			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
+			char buffer[20] = { 0 };
 			sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
 			GetControlGridSize()->SetWindowTextW(CString(buffer));
+		}
+		break;
+	}
+
+	// clear old grid
+	vector<CColorButton*>& buttons = GetGridButtons();
+	for (int i = 0; i < buttons.size(); ++i)
+	{
+		CColorButton* button = buttons[i];
+		if (button)
+		{
+			button->DestroyWindow();
+			delete(button);
+		}
+	}
+	buttons.clear();
+
+	COLORREF black = RGB(0, 0, 0);
+
+	// update grid label
+	int width = 15;
+	int height = 30;
+	int y = 280;
+	int id = ID_DYNAMIC_BUTTON_MIN;
+	switch (_mDeviceType)
+	{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
+			int x = 25;
+			for (int i = 0; i < maxLeds; ++i)
+			{
+				CColorButton* button = new CColorButton(black, black);
+				const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
+					BS_OWNERDRAW | BS_MULTILINE;
+				button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
+				++id;
+				buttons.push_back(button);
+				x += width + 2;
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
+			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
+
+			// create grid buttons
+			for (int j = 0; j < maxRow; ++j)
+			{
+				int x = 25;
+				for (int i = 0; i < maxColumn; ++i)
+				{
+					CColorButton* button = new CColorButton(black, black);
+					const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
+						BS_OWNERDRAW | BS_MULTILINE;
+					button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
+					++id;
+					buttons.push_back(button);
+					x += width + 2;
+				}
+
+				y += height + 2;
+			}
 		}
 		break;
 	}
@@ -151,7 +217,7 @@ BOOL CMainViewDlg::OnInitDialog()
 	// Setup defaults
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 	_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink);
-	_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard);
+	_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Mouse);
 
 	// Set default type
 	GetControlDeviceType()->SetCurSel(_mDeviceType);
@@ -165,34 +231,12 @@ BOOL CMainViewDlg::OnInitDialog()
 	COLORREF black = RGB(0, 0, 0);
 	COLORREF red = RGB(255, 0, 0);
 
-	// Create grid
-	int width = 15;
-	int height = 30;
-	int y = 280;
-	int id = ID_DYNAMIC_BUTTON_MIN;
-	for (int j = 0; j < 6; ++j)
-	{
-		int x = 25;
-		for (int i = 0; i < 22; ++i)
-		{
-			CColorButton* button = new CColorButton(black, black);
-			const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |
-				BS_OWNERDRAW | BS_MULTILINE;
-			button->Create(_T(""), flags, CRect(x, y, x + width, y + height), this, id);
-			++id;
-			GetGridButtons().push_back(button);
-			x += width + 2;
-		}
-
-		y += height + 2;
-	}
-
 	//create color picker
-	id = ID_DYNAMIC_COLOR_MIN;
-	y = 550;
+	int id = ID_DYNAMIC_COLOR_MIN;
+	int y = 635;
 	int x = 85;
-	width = 50;
-	height = 50;
+	int width = 50;
+	int height = 50;
 	if (true)
 	{
 		SetColor(red);
@@ -300,11 +344,14 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 		if (nID < ID_DYNAMIC_COLOR_MIN)
 		{
 			int index = nID - ID_DYNAMIC_BUTTON_MIN;
-			vector<CColorButton*> buttons = GetGridButtons();
-			CColorButton* button = buttons[index];
-			COLORREF color = GetColor();
-			button->SetColor(color, color);
-			button->Invalidate();
+			vector<CColorButton*>& buttons = GetGridButtons();
+			if (index < buttons.size())
+			{
+				CColorButton* button = buttons[index];
+				COLORREF color = GetColor();
+				button->SetColor(color, color);
+				button->Invalidate();
+			}
 		}
 		else
 		{
