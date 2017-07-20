@@ -23,20 +23,20 @@ typedef RZRESULT(*CHROMA_SDK_QUERY_DEVICE)(RZDEVICEID DeviceId, ChromaSDK::DEVIC
 
 enum EChromaSDKDeviceTypeEnum
 {
-	DE_1D,
+	DE_1D = 0,
 	DE_2D,
 };
 
 enum EChromaSDKDevice1DEnum
 {
-	DE_ChromaLink,
+	DE_ChromaLink = 0,
 	DE_Headset,
 	DE_Mousepad,
 };
 
 enum EChromaSDKDevice2DEnum
 {
-	DE_Keyboard,
+	DE_Keyboard = 0,
 	DE_Keypad,
 	DE_Mouse,
 };

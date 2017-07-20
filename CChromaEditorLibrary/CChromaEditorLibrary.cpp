@@ -13,6 +13,15 @@
 #define ID_DYNAMIC_COLOR_MIN 2200
 #define ID_DYNAMIC_BUTTON_MAX 2256
 
+#define DEVICE_TYPE_1D "1D"
+#define DEVICE_TYPE_2D "2D"
+#define DEVICE_CHROMA_LINK "ChromaLink"
+#define DEVICE_HEADSET "Headset"
+#define DEVICE_KEYBOARD "Keyboard"
+#define DEVICE_KEYPAD "Keypad"
+#define DEVICE_MOUSE "Mouse"
+#define DEVICE_MOUSEPAD "Mousepad"
+
 using namespace std;
 
 //
@@ -73,13 +82,46 @@ CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 {
 }
 
+CComboBox* CMainViewDlg::GetControlDeviceType()
+{
+	return (CComboBox*)GetDlgItem(IDC_COMBO_TYPE);
+}
+
+CComboBox* CMainViewDlg::GetControlDevice()
+{
+	return (CComboBox*)GetDlgItem(IDC_COMBO_DEVICE);
+}
+
+void CMainViewDlg::RefreshDevice()
+{
+	GetControlDevice()->ResetContent();
+	switch ((EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel())
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		//1D
+		GetControlDevice()->AddString(_T(DEVICE_CHROMA_LINK));
+		GetControlDevice()->AddString(_T(DEVICE_HEADSET));
+		GetControlDevice()->AddString(_T(DEVICE_MOUSEPAD));
+		GetControlDevice()->SetCurSel(EChromaSDKDevice1DEnum::DE_ChromaLink);
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		//2D
+		GetControlDevice()->Clear();
+		GetControlDevice()->AddString(_T(DEVICE_KEYBOARD));
+		GetControlDevice()->AddString(_T(DEVICE_KEYPAD));
+		GetControlDevice()->AddString(_T(DEVICE_MOUSE));
+		GetControlDevice()->SetCurSel(EChromaSDKDevice2DEnum::DE_Keyboard);
+	}	
+}
+
 BOOL CMainViewDlg::OnInitDialog()
 {
 	// setup dialog
-	CComboBox* comboType = (CComboBox*)GetDlgItem(IDC_COMBO_TYPE);
-	comboType->AddString(_T("1D"));
-	comboType->AddString(_T("2D"));
-	comboType->SetCurSel(0);
+	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_1D));
+	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_2D));
+	GetControlDeviceType()->SetCurSel(EChromaSDKDeviceTypeEnum::DE_1D);
+
+	RefreshDevice();
 
 	// Setup defaults
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
@@ -194,6 +236,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CMainViewDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMainViewDlg::OnBnClickedButtonDelete)
 	ON_COMMAND_RANGE(ID_DYNAMIC_BUTTON_MIN, ID_DYNAMIC_BUTTON_MAX, &CMainViewDlg::OnBnClickedButtonColor)
+	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE_TYPE, &CMainViewDlg::OnBnClickedButtonSetDeviceType)
 END_MESSAGE_MAP()
 
 vector<CColorButton*>& CMainViewDlg::GetGridButtons()
@@ -266,6 +309,12 @@ void CMainViewDlg::OnBnClickedButtonImportImage()
 void CMainViewDlg::OnCbnSelchangeComboType()
 {
 	//1d or 2d
+}
+
+void CMainViewDlg::OnBnClickedButtonSetDeviceType()
+{
+	// TODO: Add your control notification handler code here
+	RefreshDevice();
 }
 
 

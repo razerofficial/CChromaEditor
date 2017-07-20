@@ -187,6 +187,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CChromaEditorLibrary.cpp" />
+    <ClCompile Include="ChromaSDKEditorAnimation1D.cpp" />
+    <ClCompile Include="ChromaSDKEditorAnimation2D.cpp" />
     <ClCompile Include="ChromaSDKPlugin.cpp" />
     <ClCompile Include="ColorButton.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -198,6 +200,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CChromaEditorLibrary.h" />
+    <ClInclude Include="ChromaSDKEditorAnimation1D.h" />
+    <ClInclude Include="ChromaSDKEditorAnimation2D.h" />
     <ClInclude Include="ChromaSDKPlugin.h" />
     <ClInclude Include="ChromaSDKPluginTypes.h" />
     <ClInclude Include="ColorButton.h" />

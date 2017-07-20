@@ -30,6 +30,12 @@
     <ClCompile Include="ChromaSDKPlugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChromaSDKEditorAnimation2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChromaSDKEditorAnimation1D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CChromaEditorLibrary.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChromaSDKPluginTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChromaSDKEditorAnimation2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChromaSDKEditorAnimation1D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

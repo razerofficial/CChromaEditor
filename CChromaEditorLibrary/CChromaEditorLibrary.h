@@ -11,6 +11,8 @@
 #include "afxwinappex.h"
 #include "afxdialogex.h"
 #include "ChromaSDKPlugin.h"
+#include "ChromaSDKEditorAnimation1D.h"
+#include "ChromaSDKEditorAnimation2D.h"
 #include <vector>
 
 
@@ -80,10 +82,16 @@ public:
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonDelete();
 	afx_msg void OnBnClickedButtonColor();
+	afx_msg void OnBnClickedButtonSetDeviceType();
 
 	void OnBnClickedButtonColor(UINT nID);
 
 private:
+
+	CComboBox* GetControlDeviceType();
+	CComboBox* GetControlDevice();
+
+	void RefreshDevice();
 
 	std::vector<CColorButton*>& GetGridButtons();
 	std::vector<CColorButton*>& GetColorButtons();
@@ -100,4 +108,9 @@ private:
 	std::vector<CColorButton*> _mGridButtons;
 	std::vector<CColorButton*> _mColorButtons;
 	COLORREF _mColor;
+
+	// editors
+	ChromaSDKEditorAnimation1D _mEdit1D;
+	ChromaSDKEditorAnimation2D _mEdit2D;
+
 };
