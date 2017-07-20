@@ -304,11 +304,11 @@ void CMainViewDlg::OnBnClickedButtonClear()
 
 	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D)
 	{
-		FChromaSDKEffectResult result = _mPlugin.ChromaSDKCreateEffectNone2D(_mDevice2D);
+		FChromaSDKEffectResult result = _mPlugin.CreateEffectNone2D(_mDevice2D);
 		if (result.Result == 0)
 		{
-			_mPlugin.ChromaSDKSetEffect(result.EffectId);
-			_mPlugin.ChromaSDKDeleteEffect(result.EffectId);
+			_mPlugin.SetEffect(result.EffectId);
+			_mPlugin.DeleteEffect(result.EffectId);
 		}
 	}
 }

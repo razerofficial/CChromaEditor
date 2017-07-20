@@ -7,6 +7,8 @@
 #define CHROMASDKDLL        _T("RzChromaSDK.dll")
 #endif
 
+using namespace std;
+
 bool ChromaSDKPlugin::ValidateGetProcAddress(bool condition, const char* methodName)
 {
 	if (condition)
@@ -121,7 +123,9 @@ RZRESULT ChromaSDKPlugin::ChromaSDKInit()
 		return -1;
 	}
 
-	return _mMethodInit();
+	int result = _mMethodInit();
+	fprintf(stdout, "ChromaSDKPlugin Init Result=%d\r\n", result);
+	return result;
 }
 
 RZRESULT ChromaSDKPlugin::ChromaSDKUnInit()
@@ -132,7 +136,9 @@ RZRESULT ChromaSDKPlugin::ChromaSDKUnInit()
 		return -1;
 	}
 
-	return _mMethodUnInit();
+	int result = _mMethodUnInit();
+	fprintf(stdout, "ChromaSDKPlugin UnInit Result=%d\r\n", result);
+	return result;
 }
 
 RZRESULT ChromaSDKPlugin::ChromaSDKCreateEffect(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId)
@@ -234,13 +240,13 @@ RZRESULT ChromaSDKPlugin::ChromaSDKDeleteEffect(RZEFFECTID effectId)
 	return _mMethodDeleteEffect(effectId);
 }
 
-FChromaSDKEffectResult ChromaSDKPlugin::ChromaSDKCreateEffectNone1D(const EChromaSDKDevice1DEnum& device)
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevice1DEnum& device)
 {
-	fprintf(stdout, "ChromaSDKPlugin::ChromaSDKCreateEffectNone1D Invoke.\r\n");
+	fprintf(stdout, "ChromaSDKPlugin::CreateEffectNone1D Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
-	int result = 0;
+	RZRESULT result = 0;
 	RZEFFECTID effectId = RZEFFECTID();
 	switch (device)
 	{
@@ -254,18 +260,20 @@ FChromaSDKEffectResult ChromaSDKPlugin::ChromaSDKCreateEffectNone1D(const EChrom
 		result = ChromaSDKCreateMousepadEffect(ChromaSDK::Mousepad::CHROMA_NONE, NULL, &effectId);
 		break;
 	default:
-		fprintf(stderr, "ChromaSDKPlugin::ChromaSDKCreateEffectNone1D Unsupported device used!\r\n");
+		fprintf(stderr, "ChromaSDKPlugin::CreateEffectNone1D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
+	fprintf(stdout, "ChromaSDKPlugin::CreateEffectNone1D Result=%d.\r\n", data.Result);
+
 	return data;
 }
 
-FChromaSDKEffectResult ChromaSDKPlugin::ChromaSDKCreateEffectNone2D(const EChromaSDKDevice2DEnum& device)
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevice2DEnum& device)
 {
-	fprintf(stdout, "ChromaSDKPlugin::ChromaSDKCreateEffectNone2D Invoke.\r\n");
+	fprintf(stdout, "ChromaSDKPlugin::CreateEffectNone2D Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -283,7 +291,48 @@ FChromaSDKEffectResult ChromaSDKPlugin::ChromaSDKCreateEffectNone2D(const EChrom
 		result = ChromaSDKCreateMouseEffect(ChromaSDK::Mouse::CHROMA_NONE, NULL, &effectId);
 		break;
 	default:
-		fprintf(stderr, "ChromaSDKPlugin::ChromaSDKCreateEffectNone2D Unsupported device used!\r\n");
+		fprintf(stderr, "ChromaSDKPlugin::CreateEffectNone2D Unsupported device used!\r\n");
+		break;
+	}
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	fprintf(stdout, "ChromaSDKPlugin::CreateEffectNone2D Result=%d.\r\n", data.Result);
+
+	return data;
+}
+
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic1D(const EChromaSDKDevice1DEnum& device, COLORREF color)
+{
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	RZRESULT result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	switch (device)
+	{
+	case EChromaSDKDevice1DEnum::DE_ChromaLink:
+	{
+		ChromaSDK::ChromaLink::STATIC_EFFECT_TYPE pParam = {};
+		pParam.Color = color;
+		result = ChromaSDKCreateChromaLinkEffect(ChromaSDK::ChromaLink::CHROMA_STATIC, &pParam, &effectId);
+	}
+	break;
+	case EChromaSDKDevice1DEnum::DE_Headset:
+	{
+		ChromaSDK::Headset::STATIC_EFFECT_TYPE pParam = {};
+		pParam.Color = color;
+		result = ChromaSDKCreateHeadsetEffect(ChromaSDK::Headset::CHROMA_STATIC, &pParam, &effectId);
+	}
+	break;
+	case EChromaSDKDevice1DEnum::DE_Mousepad:
+	{
+		ChromaSDK::Mousepad::STATIC_EFFECT_TYPE pParam = {};
+		pParam.Color = color;
+		result = ChromaSDKCreateMousepadEffect(ChromaSDK::Mousepad::CHROMA_STATIC, &pParam, &effectId);
+	}
+	break;
+	default:
+		fprintf(stderr, "ChromaSDKPlugin::CreateEffectStatic1D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -292,14 +341,232 @@ FChromaSDKEffectResult ChromaSDKPlugin::ChromaSDKCreateEffectNone2D(const EChrom
 	return data;
 }
 
-int ChromaSDKPlugin::ChromaSDKSetEffect(const FChromaSDKGuid& effectId)
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic2D(const EChromaSDKDevice2DEnum& device, COLORREF color)
 {
-	fprintf(stdout, "ChromaSDKPlugin::ChromaSDKSetEffect Invoke.\r\n");
-	return ChromaSDKSetEffect(effectId.Data);
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	RZRESULT result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	switch (device)
+	{
+	case EChromaSDKDevice2DEnum::DE_Keyboard:
+	{
+		ChromaSDK::Keyboard::STATIC_EFFECT_TYPE pParam = {};
+		pParam.Color = color;
+		result = ChromaSDKCreateKeyboardEffect(ChromaSDK::Keyboard::CHROMA_STATIC, &pParam, &effectId);
+	}
+	break;
+	case EChromaSDKDevice2DEnum::DE_Keypad:
+	{
+		ChromaSDK::Keypad::STATIC_EFFECT_TYPE pParam = {};
+		pParam.Color = color;
+		result = ChromaSDKCreateKeypadEffect(ChromaSDK::Keypad::CHROMA_STATIC, &pParam, &effectId);
+	}
+	break;
+	case EChromaSDKDevice2DEnum::DE_Mouse:
+	{
+		ChromaSDK::Mouse::STATIC_EFFECT_TYPE pParam = {};
+		pParam.Color = color;
+		pParam.LEDId = ChromaSDK::Mouse::RZLED_ALL;
+		result = ChromaSDKCreateMouseEffect(ChromaSDK::Mouse::CHROMA_STATIC, &pParam, &effectId);
+	}
+	break;
+	default:
+		fprintf(stderr, "ChromaSDKPlugin::CreateEffectStatic2D Unsupported device used!\r\n");
+		break;
+	}
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	return data;
 }
 
-int ChromaSDKPlugin::ChromaSDKDeleteEffect(const FChromaSDKGuid& effectId)
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDevice1DEnum& device, const vector<COLORREF>& colors)
 {
-	fprintf(stdout, "ChromaSDKPlugin::ChromaSDKDeleteEffect Invoke.\r\n");
-	return ChromaSDKDeleteEffect(effectId.Data);
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	RZRESULT result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	int maxLeds = 0;
+	switch (device)
+	{
+	case EChromaSDKDevice1DEnum::DE_ChromaLink:
+	{
+		maxLeds = ChromaSDK::ChromaLink::MAX_LEDS;
+		if (maxLeds != colors.size())
+		{
+			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+				maxLeds,
+				colors.size());
+			break;
+		}
+		ChromaSDK::ChromaLink::CUSTOM_EFFECT_TYPE pParam = {};
+		for (int i = 0; i < maxLeds; i++)
+		{
+			pParam.Color[i] = colors[i];
+		}
+		result = ChromaSDKCreateChromaLinkEffect(ChromaSDK::ChromaLink::CHROMA_CUSTOM, &pParam, &effectId);
+	}
+	break;
+	case EChromaSDKDevice1DEnum::DE_Headset:
+	{
+		maxLeds = ChromaSDK::Headset::MAX_LEDS;
+		if (maxLeds != colors.size())
+		{
+			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+				maxLeds,
+				colors.size());
+			break;
+		}
+		ChromaSDK::Headset::CUSTOM_EFFECT_TYPE pParam = {};
+		for (int i = 0; i < maxLeds; i++)
+		{
+			pParam.Color[i] = colors[i];
+		}
+		result = ChromaSDKCreateHeadsetEffect(ChromaSDK::Headset::CHROMA_CUSTOM, &pParam, &effectId);
+	}
+	break;
+	case EChromaSDKDevice1DEnum::DE_Mousepad:
+	{
+		maxLeds = ChromaSDK::Mousepad::MAX_LEDS;
+		if (maxLeds != colors.size())
+		{
+			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+				maxLeds,
+				colors.size());
+			break;
+		}
+		ChromaSDK::Mousepad::CUSTOM_EFFECT_TYPE pParam = {};
+		for (int i = 0; i < maxLeds; i++)
+		{
+			pParam.Color[i] = colors[i];
+		}
+		result = ChromaSDKCreateMousepadEffect(ChromaSDK::Mousepad::CHROMA_CUSTOM, &pParam, &effectId);
+	}
+	break;
+	default:
+		fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom1D Unsupported device used!\r\n");
+		break;
+	}
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	return data;
+}
+
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const vector<FChromaSDKColors>& colors)
+{
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	RZRESULT result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	int maxRow = 0;
+	int maxColumn = 0;
+	switch (device)
+	{
+	case EChromaSDKDevice2DEnum::DE_Keyboard:
+	{
+		maxRow = ChromaSDK::Keyboard::MAX_ROW;
+		maxColumn = ChromaSDK::Keyboard::MAX_COLUMN;
+		if (maxRow != colors.size() ||
+			(colors.size() > 0 &&
+				maxColumn != colors[0].Colors.size()))
+		{
+			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+				maxRow,
+				colors.size(),
+				maxColumn,
+				colors.size() > 0 ? colors[0].Colors.size() : 0);
+			break;
+		}
+		ChromaSDK::Keyboard::CUSTOM_EFFECT_TYPE pParam = {};
+		for (int i = 0; i < maxRow; i++)
+		{
+			const FChromaSDKColors& row = colors[i];
+			for (int j = 0; j < maxColumn; j++)
+			{
+				pParam.Color[i][j] = row.Colors[j];
+			}
+		}
+		result = ChromaSDKCreateKeyboardEffect(ChromaSDK::Keyboard::CHROMA_CUSTOM, &pParam, &effectId);
+	}
+	break;
+	case EChromaSDKDevice2DEnum::DE_Keypad:
+	{
+		maxRow = ChromaSDK::Keypad::MAX_ROW;
+		maxColumn = ChromaSDK::Keypad::MAX_COLUMN;
+		if (maxRow != colors.size() ||
+			(colors.size() > 0 &&
+				maxColumn != colors[0].Colors.size()))
+		{
+			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+				maxRow,
+				colors.size(),
+				maxColumn,
+				colors.size() > 0 ? colors[0].Colors.size() : 0);
+			break;
+		}
+		ChromaSDK::Keypad::CUSTOM_EFFECT_TYPE pParam = {};
+		for (int i = 0; i < maxRow; i++)
+		{
+			const FChromaSDKColors& row = colors[i];
+			for (int j = 0; j < maxColumn; j++)
+			{
+				pParam.Color[i][j] = row.Colors[j];
+			}
+		}
+		result = ChromaSDKCreateKeypadEffect(ChromaSDK::Keypad::CHROMA_CUSTOM, &pParam, &effectId);
+	}
+	break;
+	case EChromaSDKDevice2DEnum::DE_Mouse:
+	{
+		maxRow = ChromaSDK::Mouse::MAX_ROW;
+		maxColumn = ChromaSDK::Mouse::MAX_COLUMN;
+		if (maxRow != colors.size() ||
+			(colors.size() > 0 &&
+				maxColumn != colors[0].Colors.size()))
+		{
+			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+				maxRow,
+				colors.size(),
+				maxColumn,
+				colors.size() > 0 ? colors[0].Colors.size() : 0);
+			break;
+		}
+		ChromaSDK::Mouse::CUSTOM_EFFECT_TYPE2 pParam = {};
+		for (int i = 0; i < maxRow; i++)
+		{
+			const FChromaSDKColors& row = colors[i];
+			for (int j = 0; j < maxColumn; j++)
+			{
+				pParam.Color[i][j] = row.Colors[j];
+			}
+		}
+		result = ChromaSDKCreateMouseEffect(ChromaSDK::Mouse::CHROMA_CUSTOM2, &pParam, &effectId);
+	}
+	break;
+	default:
+		fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom2D Unsupported device used!\r\n");
+		break;
+	}
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	return data;
+}
+
+RZRESULT ChromaSDKPlugin::SetEffect(const FChromaSDKGuid& effectId)
+{
+	fprintf(stdout, "ChromaSDKPlugin::SetEffect Invoke.\r\n");
+	RZRESULT result = ChromaSDKSetEffect(effectId.Data);
+	fprintf(stdout, "ChromaSDKPlugin::SetEffect Result=%d.\r\n", result);
+	return result;
+}
+
+RZRESULT ChromaSDKPlugin::DeleteEffect(const FChromaSDKGuid& effectId)
+{
+	fprintf(stdout, "ChromaSDKPlugin::DeleteEffect Invoke.\r\n");
+	RZRESULT result = ChromaSDKDeleteEffect(effectId.Data);
+	fprintf(stdout, "ChromaSDKPlugin::DeleteEffect Result=%d.\r\n", result);
+	return result;
 }

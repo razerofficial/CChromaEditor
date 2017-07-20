@@ -217,7 +217,7 @@ struct FChromaSDKGuid
 
 struct FChromaSDKEffectResult
 {
-	int Result;
+	RZRESULT Result;
 
 	FChromaSDKGuid EffectId;
 

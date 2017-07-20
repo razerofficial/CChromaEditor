@@ -32,14 +32,14 @@ public:
 	const std::vector<FChromaSDKColors>& SetKeyboardKeyColor(const EChromaSDKKeyboardKey& key, COLORREF color, std::vector<FChromaSDKColors>& colors);
 	const std::vector<FChromaSDKColors>& SetMouseLedColor(const EChromaSDKMouseLed& led, COLORREF color, std::vector<FChromaSDKColors>& colors);
 	bool IsInitialized();
-	FChromaSDKEffectResult ChromaSDKCreateEffectNone1D(const EChromaSDKDevice1DEnum& device);
-	FChromaSDKEffectResult ChromaSDKCreateEffectNone2D(const EChromaSDKDevice2DEnum& device);
-	FChromaSDKEffectResult ChromaSDKCreateEffectStatic1D(const EChromaSDKDevice1DEnum& device, COLORREF color);
-	FChromaSDKEffectResult ChromaSDKCreateEffectStatic2D(const EChromaSDKDevice2DEnum& device, COLORREF color);
-	FChromaSDKEffectResult ChromaSDKCreateEffectCustom1D(const EChromaSDKDevice1DEnum& device, const std::vector<COLORREF>& colors);
-	FChromaSDKEffectResult ChromaSDKCreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const std::vector<FChromaSDKColors>& colors);
-	int ChromaSDKSetEffect(const FChromaSDKGuid& effectId);
-	int ChromaSDKDeleteEffect(const FChromaSDKGuid& effectId);
+	FChromaSDKEffectResult CreateEffectNone1D(const EChromaSDKDevice1DEnum& device);
+	FChromaSDKEffectResult CreateEffectNone2D(const EChromaSDKDevice2DEnum& device);
+	FChromaSDKEffectResult CreateEffectStatic1D(const EChromaSDKDevice1DEnum& device, COLORREF color);
+	FChromaSDKEffectResult CreateEffectStatic2D(const EChromaSDKDevice2DEnum& device, COLORREF color);
+	FChromaSDKEffectResult CreateEffectCustom1D(const EChromaSDKDevice1DEnum& device, const std::vector<COLORREF>& colors);
+	FChromaSDKEffectResult CreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const std::vector<FChromaSDKColors>& colors);
+	RZRESULT SetEffect(const FChromaSDKGuid& effectId);
+	RZRESULT DeleteEffect(const FChromaSDKGuid& effectId);
 private:
 	bool ValidateGetProcAddress(bool condition, const char* methodName);
 
