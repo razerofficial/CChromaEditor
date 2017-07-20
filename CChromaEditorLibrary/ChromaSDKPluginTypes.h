@@ -232,20 +232,17 @@ struct FChromaSDKEffectResult
 struct FChromaSDKColors
 {
 	std::vector<COLORREF> Colors;
-
-	//Constructor
-	FChromaSDKColors()
-	{
-	}
 };
 
 struct FChromaSDKColorFrame1D
 {
 	std::vector<COLORREF> Colors;
 
-	//Constructor
+	float Duration;
+
 	FChromaSDKColorFrame1D()
 	{
+		Duration = 0.0f;
 	}
 };
 
@@ -253,8 +250,10 @@ struct FChromaSDKColorFrame2D
 {
 	std::vector<FChromaSDKColors> Colors;
 
-	//Constructor
+	float Duration;
+
 	FChromaSDKColorFrame2D()
 	{
+		Duration = 0.0f;
 	}
 };

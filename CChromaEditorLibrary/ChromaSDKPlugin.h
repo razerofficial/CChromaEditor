@@ -11,6 +11,8 @@ namespace ChromaSDK
 		ChromaSDKPlugin();
 		~ChromaSDKPlugin();
 
+		static ChromaSDKPlugin* GetInstance();
+
 		// SDK Methods
 		RZRESULT ChromaSDKInit();
 		RZRESULT ChromaSDKUnInit();
@@ -44,6 +46,8 @@ namespace ChromaSDK
 		RZRESULT DeleteEffect(const FChromaSDKGuid& effectId);
 	private:
 		bool ValidateGetProcAddress(bool condition, const char* methodName);
+
+		static ChromaSDKPlugin* _sInstance;
 
 		HMODULE _mLibraryChroma = nullptr;
 

@@ -220,7 +220,7 @@ BOOL CMainViewDlg::OnInitDialog()
 	// Setup defaults
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 	_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink);
-	_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Mouse);
+	_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard);
 
 	// Set default type
 	GetControlDeviceType()->SetCurSel(_mDeviceType);
