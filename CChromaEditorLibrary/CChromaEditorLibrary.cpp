@@ -106,14 +106,14 @@ void CMainViewDlg::RefreshDevice()
 		GetControlDevice()->AddString(_T(DEVICE_CHROMA_LINK));
 		GetControlDevice()->AddString(_T(DEVICE_HEADSET));
 		GetControlDevice()->AddString(_T(DEVICE_MOUSEPAD));
-		GetControlDevice()->SetCurSel(_mDevice1D);
+		GetControlDevice()->SetCurSel(_mEdit1D.GetDevice());
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		GetControlDevice()->ResetContent();
 		GetControlDevice()->AddString(_T(DEVICE_KEYBOARD));
 		GetControlDevice()->AddString(_T(DEVICE_KEYPAD));
 		GetControlDevice()->AddString(_T(DEVICE_MOUSE));
-		GetControlDevice()->SetCurSel(_mDevice2D);
+		GetControlDevice()->SetCurSel(_mEdit2D.GetDevice());
 	}
 }
 
@@ -124,15 +124,15 @@ void CMainViewDlg::RefreshGrid()
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int maxLeds = _mPlugin.GetMaxLeds(_mDevice1D);
+			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
 			sprintf_s(buffer, "1 x %d", maxLeds);
 			GetControlGridSize()->SetWindowTextW(CString(buffer));
 		}
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int maxRow = _mPlugin.GetMaxRow(_mDevice2D);
-			int maxColumn = _mPlugin.GetMaxColumn(_mDevice2D);
+			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
+			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
 			sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
 			GetControlGridSize()->SetWindowTextW(CString(buffer));
 		}
@@ -148,8 +148,8 @@ BOOL CMainViewDlg::OnInitDialog()
 
 	// Setup defaults
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
-	_mDevice1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
-	_mDevice2D = EChromaSDKDevice2DEnum::DE_Keyboard;
+	_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink);
+	_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard);
 
 	// Set default type
 	GetControlDeviceType()->SetCurSel(_mDeviceType);
@@ -349,10 +349,10 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
-		_mDevice1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
+		_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink);
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
-		_mDevice2D = EChromaSDKDevice2DEnum::DE_Keyboard;
+		_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard);
 	}
 
 	// Display enums
@@ -397,10 +397,10 @@ void CMainViewDlg::OnBnClickedButtonSetDevice()
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
-		_mDevice1D = (EChromaSDKDevice1DEnum)GetControlDevice()->GetCurSel();
+		_mEdit1D.SetDevice((EChromaSDKDevice1DEnum)GetControlDevice()->GetCurSel());
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
-		_mDevice2D = (EChromaSDKDevice2DEnum)GetControlDevice()->GetCurSel();
+		_mEdit2D.SetDevice((EChromaSDKDevice2DEnum)GetControlDevice()->GetCurSel());
 		break;
 	}
 
@@ -414,7 +414,7 @@ void CMainViewDlg::OnBnClickedButtonClear()
 
 	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D)
 	{
-		FChromaSDKEffectResult result = _mPlugin.CreateEffectNone2D(_mDevice2D);
+		FChromaSDKEffectResult result = _mPlugin.CreateEffectNone2D(_mEdit2D.GetDevice());
 		if (result.Result == 0)
 		{
 			_mPlugin.SetEffect(result.EffectId);
