@@ -186,9 +186,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation1D.cpp" />
+    <ClCompile Include="Animation2D.cpp" />
     <ClCompile Include="CChromaEditorLibrary.cpp" />
-    <ClCompile Include="ChromaSDKEditorAnimation1D.cpp" />
-    <ClCompile Include="ChromaSDKEditorAnimation2D.cpp" />
+    <ClCompile Include="EditorAnimation1D.cpp" />
+    <ClCompile Include="EditorAnimation2D.cpp" />
     <ClCompile Include="ChromaSDKPlugin.cpp" />
     <ClCompile Include="ColorButton.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -199,9 +201,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation1D.h" />
+    <ClInclude Include="Animation2D.h" />
     <ClInclude Include="CChromaEditorLibrary.h" />
-    <ClInclude Include="ChromaSDKEditorAnimation1D.h" />
-    <ClInclude Include="ChromaSDKEditorAnimation2D.h" />
+    <ClInclude Include="EditorAnimation1D.h" />
+    <ClInclude Include="EditorAnimation2D.h" />
     <ClInclude Include="ChromaSDKPlugin.h" />
     <ClInclude Include="ChromaSDKPluginTypes.h" />
     <ClInclude Include="ColorButton.h" />

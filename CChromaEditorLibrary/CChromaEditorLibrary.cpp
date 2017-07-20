@@ -99,6 +99,8 @@ CStatic* CMainViewDlg::GetControlGridSize()
 
 void CMainViewDlg::RefreshDevice()
 {
+	GetControlDeviceType()->SetCurSel(_mDeviceType);
+
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -404,6 +406,10 @@ void CMainViewDlg::OnBnClickedButtonSetDevice()
 		break;
 	}
 
+	// Display enums
+	RefreshDevice();
+
+	// Display grid
 	RefreshGrid();
 }
 

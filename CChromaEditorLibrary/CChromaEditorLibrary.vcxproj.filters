@@ -30,10 +30,16 @@
     <ClCompile Include="ChromaSDKPlugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChromaSDKEditorAnimation2D.cpp">
+    <ClCompile Include="EditorAnimation1D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChromaSDKEditorAnimation1D.cpp">
+    <ClCompile Include="EditorAnimation2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation1D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,10 +74,16 @@
     <ClInclude Include="ChromaSDKPluginTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChromaSDKEditorAnimation2D.h">
+    <ClInclude Include="EditorAnimation1D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChromaSDKEditorAnimation1D.h">
+    <ClInclude Include="EditorAnimation2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation1D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

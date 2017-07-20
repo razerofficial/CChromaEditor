@@ -11,9 +11,11 @@
 #include "afxwinappex.h"
 #include "afxdialogex.h"
 #include "ChromaSDKPlugin.h"
-#include "ChromaSDKEditorAnimation1D.h"
-#include "ChromaSDKEditorAnimation2D.h"
+#include "EditorAnimation1D.h"
+#include "EditorAnimation2D.h"
 #include <vector>
+
+using namespace ChromaSDK;
 
 
 // CCChromaEditorLibraryApp
@@ -110,7 +112,7 @@ private:
 	COLORREF _mColor;
 
 	// editors
-	ChromaSDKEditorAnimation1D _mEdit1D;
-	ChromaSDKEditorAnimation2D _mEdit2D;
+	ChromaSDK::EditorAnimation1D _mEdit1D;
+	ChromaSDK::EditorAnimation2D _mEdit2D;
 
 };
