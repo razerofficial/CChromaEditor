@@ -8,7 +8,7 @@ EChromaSDKDevice2DEnum EditorAnimation2D::GetDevice()
 	return _mAnimation.GetDevice();
 }
 
-void EditorAnimation2D::SetDevice(EChromaSDKDevice2DEnum device)
+bool EditorAnimation2D::SetDevice(EChromaSDKDevice2DEnum device)
 {
-	_mAnimation.SetDevice(device);
+	return _mAnimation.SetDevice(device);
 }

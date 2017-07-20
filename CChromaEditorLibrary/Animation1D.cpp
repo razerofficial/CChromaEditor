@@ -8,7 +8,15 @@ EChromaSDKDevice1DEnum Animation1D::GetDevice()
 	return _mDevice;
 }
 
-void Animation1D::SetDevice(EChromaSDKDevice1DEnum device)
+bool Animation1D::SetDevice(EChromaSDKDevice1DEnum device)
 {
-	_mDevice = device;
+	if (_mDevice != device)
+	{
+		_mDevice = device;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

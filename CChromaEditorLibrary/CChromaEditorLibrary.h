@@ -97,6 +97,8 @@ private:
 	void RefreshDevice();
 	void RefreshGrid();
 
+	void RecreateGrid();
+
 	std::vector<CColorButton*>& GetGridButtons();
 	std::vector<CColorButton*>& GetColorButtons();
 

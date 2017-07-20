@@ -8,7 +8,7 @@ namespace ChromaSDK
 	{
 	public:
 		EChromaSDKDevice1DEnum GetDevice();
-		void SetDevice(EChromaSDKDevice1DEnum device);
+		bool SetDevice(EChromaSDKDevice1DEnum device);
 	private:
 		Animation1D _mAnimation;
 	};

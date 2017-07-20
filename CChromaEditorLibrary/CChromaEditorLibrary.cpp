@@ -119,30 +119,8 @@ void CMainViewDlg::RefreshDevice()
 	}
 }
 
-void CMainViewDlg::RefreshGrid()
+void CMainViewDlg::RecreateGrid()
 {
-	// update grid label
-	switch (_mDeviceType)
-	{
-	case EChromaSDKDeviceTypeEnum::DE_1D:
-		{
-			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
-			char buffer[20] = { 0 };
-			sprintf_s(buffer, "1 x %d", maxLeds);
-			GetControlGridSize()->SetWindowTextW(CString(buffer));
-		}
-		break;
-	case EChromaSDKDeviceTypeEnum::DE_2D:
-		{
-			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
-			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
-			char buffer[20] = { 0 };
-			sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
-			GetControlGridSize()->SetWindowTextW(CString(buffer));
-		}
-		break;
-	}
-
 	// clear old grid
 	vector<CColorButton*>& buttons = GetGridButtons();
 	for (int i = 0; i < buttons.size(); ++i)
@@ -208,6 +186,31 @@ void CMainViewDlg::RefreshGrid()
 	}
 }
 
+void CMainViewDlg::RefreshGrid()
+{
+	// update grid label
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
+			char buffer[20] = { 0 };
+			sprintf_s(buffer, "1 x %d", maxLeds);
+			GetControlGridSize()->SetWindowTextW(CString(buffer));
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
+			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
+			char buffer[20] = { 0 };
+			sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
+			GetControlGridSize()->SetWindowTextW(CString(buffer));
+		}
+		break;
+	}
+}
+
 BOOL CMainViewDlg::OnInitDialog()
 {
 	// setup dialog
@@ -221,6 +224,9 @@ BOOL CMainViewDlg::OnInitDialog()
 
 	// Set default type
 	GetControlDeviceType()->SetCurSel(_mDeviceType);
+
+	// Create the grid buttons
+	RecreateGrid();
 
 	// Display enums
 	RefreshDevice();
@@ -394,21 +400,38 @@ void CMainViewDlg::OnCbnSelchangeComboType()
 
 void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 {
-	_mDeviceType = (EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel();
+	bool changed = false;
+	if (_mDeviceType != (EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel())
+	{
+		_mDeviceType = (EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel();
+		changed = true;
+	}
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
-		_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink);
+		if (_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink))
+		{
+			changed = true;
+		}
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
-		_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard);
+		if (_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard))
+		{
+			changed = true;
+		}
 	}
 
-	// Display enums
-	RefreshDevice();
-	
-	// Display grid
-	RefreshGrid();
+	if (changed)
+	{
+		// Create the grid buttons
+		RecreateGrid();
+
+		// Display enums
+		RefreshDevice();
+
+		// Display grid
+		RefreshGrid();
+	}
 }
 
 
@@ -443,21 +466,28 @@ void CMainViewDlg::OnCbnSelchangeComboDevices()
 
 void CMainViewDlg::OnBnClickedButtonSetDevice()
 {
+	bool changed = false;
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
-		_mEdit1D.SetDevice((EChromaSDKDevice1DEnum)GetControlDevice()->GetCurSel());
+		changed = _mEdit1D.SetDevice((EChromaSDKDevice1DEnum)GetControlDevice()->GetCurSel());
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
-		_mEdit2D.SetDevice((EChromaSDKDevice2DEnum)GetControlDevice()->GetCurSel());
+		changed = _mEdit2D.SetDevice((EChromaSDKDevice2DEnum)GetControlDevice()->GetCurSel());
 		break;
 	}
 
-	// Display enums
-	RefreshDevice();
+	if (changed)
+	{
+		// Create the grid buttons
+		RecreateGrid();
 
-	// Display grid
-	RefreshGrid();
+		// Display enums
+		RefreshDevice();
+
+		// Display grid
+		RefreshGrid();
+	}
 }
 
 
