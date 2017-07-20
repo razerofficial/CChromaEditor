@@ -113,7 +113,7 @@ ChromaSDKPlugin::~ChromaSDKPlugin()
 	ChromaSDKUnInit();
 }
 
-int ChromaSDKPlugin::ChromaSDKInit()
+RZRESULT ChromaSDKPlugin::ChromaSDKInit()
 {
 	if (_mMethodInit == nullptr)
 	{
@@ -124,7 +124,7 @@ int ChromaSDKPlugin::ChromaSDKInit()
 	return _mMethodInit();
 }
 
-int ChromaSDKPlugin::ChromaSDKUnInit()
+RZRESULT ChromaSDKPlugin::ChromaSDKUnInit()
 {
 	if (_mMethodUnInit == nullptr)
 	{

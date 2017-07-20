@@ -199,6 +199,7 @@
   <ItemGroup>
     <ClInclude Include="CChromaEditorLibrary.h" />
     <ClInclude Include="ChromaSDKPlugin.h" />
+    <ClInclude Include="ChromaSDKPluginTypes.h" />
     <ClInclude Include="ColorButton.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RzChromaSDKDefines.h" />

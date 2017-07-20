@@ -1,24 +1,6 @@
 #pragma once
 
-#include <Windows.h>
-#include "RzChromaSDKDefines.h"
-#include "RzChromaSDKTypes.h"
-#include "RzErrors.h"
-
-typedef RZRESULT(*CHROMA_SDK_INIT)(void);
-typedef RZRESULT(*CHROMA_SDK_UNINIT)(void);
-typedef RZRESULT(*CHROMA_SDK_CREATE_EFFECT)(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
-typedef RZRESULT(*CHROMA_SDK_CREATE_CHROMA_LINK_EFFECT)(ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
-typedef RZRESULT(*CHROMA_SDK_CREATE_KEYBOARD_EFFECT)(ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
-typedef RZRESULT(*CHROMA_SDK_CREATE_KEYPAD_EFFECT)(ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
-typedef RZRESULT(*CHROMA_SDK_CREATE_HEADSET_EFFECT)(ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
-typedef RZRESULT(*CHROMA_SDK_CREATE_MOUSE_EFFECT)(ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
-typedef RZRESULT(*CHROMA_SDK_CREATE_MOUSEPAD_EFFECT)(ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
-typedef RZRESULT(*CHROMA_SDK_SET_EFFECT)(RZEFFECTID EffectId);
-typedef RZRESULT(*CHROMA_SDK_DELETE_EFFECT)(RZEFFECTID EffectId);
-typedef RZRESULT(*CHROMA_SDK_REGISTER_EVENT_NOTIFICATION)(HWND hWnd);
-typedef RZRESULT(*CHROMA_SDK_UNREGISTER_EVENT_NOTIFICATION)(void);
-typedef RZRESULT(*CHROMA_SDK_QUERY_DEVICE)(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo);
+#include "ChromaSDKPluginTypes.h"
 
 class ChromaSDKPlugin
 {
@@ -27,8 +9,8 @@ public:
 	~ChromaSDKPlugin();
 
 	// SDK Methods
-	int ChromaSDKInit();
-	int ChromaSDKUnInit();
+	RZRESULT ChromaSDKInit();
+	RZRESULT ChromaSDKUnInit();
 	RZRESULT ChromaSDKCreateEffect(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 	RZRESULT ChromaSDKCreateChromaLinkEffect(ChromaSDK::ChromaLink::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 	RZRESULT ChromaSDKCreateHeadsetEffect(ChromaSDK::Headset::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
@@ -38,6 +20,26 @@ public:
 	RZRESULT ChromaSDKCreateMousepadEffect(ChromaSDK::Mousepad::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 	RZRESULT ChromaSDKSetEffect(RZEFFECTID effectId);
 	RZRESULT ChromaSDKDeleteEffect(RZEFFECTID effectId);
+
+	// Library Methods
+	int GetMaxLeds(const EChromaSDKDevice1DEnum& device);
+	int GetMaxRow(const EChromaSDKDevice2DEnum& device);
+	int GetMaxColumn(const EChromaSDKDevice2DEnum& device);
+	std::vector<COLORREF> CreateColors1D(const EChromaSDKDevice1DEnum& device);
+	std::vector<FChromaSDKColors> CreateColors2D(const EChromaSDKDevice2DEnum& device);
+	std::vector<COLORREF> CreateRandomColors1D(const EChromaSDKDevice1DEnum& device);
+	std::vector<FChromaSDKColors> CreateRandomColors2D(const EChromaSDKDevice2DEnum& device);
+	const std::vector<FChromaSDKColors>& SetKeyboardKeyColor(const EChromaSDKKeyboardKey& key, COLORREF color, std::vector<FChromaSDKColors>& colors);
+	const std::vector<FChromaSDKColors>& SetMouseLedColor(const EChromaSDKMouseLed& led, COLORREF color, std::vector<FChromaSDKColors>& colors);
+	bool IsInitialized();
+	FChromaSDKEffectResult ChromaSDKCreateEffectNone1D(const EChromaSDKDevice1DEnum& device);
+	FChromaSDKEffectResult ChromaSDKCreateEffectNone2D(const EChromaSDKDevice2DEnum& device);
+	FChromaSDKEffectResult ChromaSDKCreateEffectStatic1D(const EChromaSDKDevice1DEnum& device, COLORREF color);
+	FChromaSDKEffectResult ChromaSDKCreateEffectStatic2D(const EChromaSDKDevice2DEnum& device, COLORREF color);
+	FChromaSDKEffectResult ChromaSDKCreateEffectCustom1D(const EChromaSDKDevice1DEnum& device, const std::vector<COLORREF>& colors);
+	FChromaSDKEffectResult ChromaSDKCreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const std::vector<FChromaSDKColors>& colors);
+	int ChromaSDKSetEffect(const FChromaSDKGuid& effectId);
+	int ChromaSDKDeleteEffect(const FChromaSDKGuid& effectId);
 private:
 	bool ValidateGetProcAddress(bool condition, const char* methodName);
 
