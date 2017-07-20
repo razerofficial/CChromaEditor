@@ -233,3 +233,67 @@ RZRESULT ChromaSDKPlugin::ChromaSDKDeleteEffect(RZEFFECTID effectId)
 
 	return _mMethodDeleteEffect(effectId);
 }
+
+FChromaSDKEffectResult ChromaSDKPlugin::ChromaSDKCreateEffectNone1D(const EChromaSDKDevice1DEnum& device)
+{
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	int result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	switch (device)
+	{
+	case EChromaSDKDevice1DEnum::DE_ChromaLink:
+		result = ChromaSDKCreateChromaLinkEffect(ChromaSDK::ChromaLink::CHROMA_NONE, NULL, &effectId);
+		break;
+	case EChromaSDKDevice1DEnum::DE_Headset:
+		result = ChromaSDKCreateHeadsetEffect(ChromaSDK::Headset::CHROMA_NONE, NULL, &effectId);
+		break;
+	case EChromaSDKDevice1DEnum::DE_Mousepad:
+		result = ChromaSDKCreateMousepadEffect(ChromaSDK::Mousepad::CHROMA_NONE, NULL, &effectId);
+		break;
+	default:
+		fprintf(stderr, "ChromaSDKPlugin::ChromaSDKCreateEffectNone1D Unsupported device used!\r\n");
+		break;
+	}
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	return data;
+}
+
+FChromaSDKEffectResult ChromaSDKPlugin::ChromaSDKCreateEffectNone2D(const EChromaSDKDevice2DEnum& device)
+{
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	int result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	switch (device)
+	{
+	case EChromaSDKDevice2DEnum::DE_Keyboard:
+		result = ChromaSDKCreateKeyboardEffect(ChromaSDK::Keyboard::CHROMA_NONE, NULL, &effectId);
+		break;
+	case EChromaSDKDevice2DEnum::DE_Keypad:
+		result = ChromaSDKCreateKeypadEffect(ChromaSDK::Keypad::CHROMA_NONE, NULL, &effectId);
+		break;
+	case EChromaSDKDevice2DEnum::DE_Mouse:
+		result = ChromaSDKCreateMouseEffect(ChromaSDK::Mouse::CHROMA_NONE, NULL, &effectId);
+		break;
+	default:
+		fprintf(stderr, "ChromaSDKPlugin::ChromaSDKCreateEffectNone2D Unsupported device used!\r\n");
+		break;
+	}
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	return data;
+}
+
+int ChromaSDKPlugin::ChromaSDKSetEffect(const FChromaSDKGuid& effectId)
+{
+	return ChromaSDKSetEffect(effectId.Data);
+}
+
+int ChromaSDKPlugin::ChromaSDKDeleteEffect(const FChromaSDKGuid& effectId)
+{
+	return ChromaSDKDeleteEffect(effectId.Data);
+}

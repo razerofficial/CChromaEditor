@@ -75,6 +75,11 @@ CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 
 BOOL CMainViewDlg::OnInitDialog()
 {
+	// Setup defaults
+	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
+	_mDevice1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
+	_mDevice2D = EChromaSDKDevice2DEnum::DE_Keyboard;
+
 	COLORREF black = RGB(0, 0, 0);
 	COLORREF red = RGB(255, 0, 0);
 
@@ -296,6 +301,16 @@ void CMainViewDlg::OnBnClickedButtonSetDevice()
 void CMainViewDlg::OnBnClickedButtonClear()
 {
 	// TODO: Add your control notification handler code here
+
+	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D)
+	{
+		FChromaSDKEffectResult result = _mPlugin.ChromaSDKCreateEffectNone2D(_mDevice2D);
+		if (result.Result == 0)
+		{
+			_mPlugin.ChromaSDKSetEffect(result.EffectId);
+			_mPlugin.ChromaSDKDeleteEffect(result.EffectId);
+		}
+	}
 }
 
 

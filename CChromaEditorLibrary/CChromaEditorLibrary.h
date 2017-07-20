@@ -93,6 +93,10 @@ private:
 
 	ChromaSDKPlugin _mPlugin;
 
+	EChromaSDKDeviceTypeEnum _mDeviceType;
+	EChromaSDKDevice1DEnum _mDevice1D;
+	EChromaSDKDevice2DEnum _mDevice2D;
+
 	std::vector<CColorButton*> _mGridButtons;
 	std::vector<CColorButton*> _mColorButtons;
 	COLORREF _mColor;
