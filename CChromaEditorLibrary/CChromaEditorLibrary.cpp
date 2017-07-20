@@ -135,7 +135,7 @@ BOOL CMainViewDlg::OnInitDialog()
 	};
 	width = 15;
 	height = 30;
-	for (int i = 0; i < size(colors); ++i)
+	for (unsigned int i = 0; i < size(colors); ++i)
 	{
 		CColorButton* button = new CColorButton(colors[i], colors[i]);
 		const int flags = WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON |

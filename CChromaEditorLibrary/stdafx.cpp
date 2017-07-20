@@ -16,7 +16,7 @@ void ThreadOpenEditorDialog()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	// normal function body here
 
-	printf_s("CChromaEditorLibrary::ThreadOpenEditorDialog %s\r\n", _gPath);
+	fprintf(stdout, "CChromaEditorLibrary::ThreadOpenEditorDialog %s\r\n", _gPath);
 
 	// dialog instance
 	CMainViewDlg mainViewDlg;
@@ -44,7 +44,7 @@ extern "C"
 
 	EXPORT_API double PluginOpenEditorDialog(char* path)
 	{
-		printf("CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
+		fprintf(stdout, "CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
 
 		if (_gDialogIsOpen)
 		{

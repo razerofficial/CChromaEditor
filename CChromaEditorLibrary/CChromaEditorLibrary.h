@@ -10,6 +10,7 @@
 #include "resource.h"		// main symbols
 #include "afxwinappex.h"
 #include "afxdialogex.h"
+#include "ChromaSDKPlugin.h"
 #include <vector>
 
 
@@ -83,11 +84,14 @@ public:
 	void OnBnClickedButtonColor(UINT nID);
 
 private:
+
 	std::vector<CColorButton*>& GetGridButtons();
 	std::vector<CColorButton*>& GetColorButtons();
 
 	COLORREF GetColor();
 	void SetColor(COLORREF color);
+
+	ChromaSDKPlugin _mPlugin;
 
 	std::vector<CColorButton*> _mGridButtons;
 	std::vector<CColorButton*> _mColorButtons;
