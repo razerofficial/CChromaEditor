@@ -75,6 +75,12 @@ CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 
 BOOL CMainViewDlg::OnInitDialog()
 {
+	// setup dialog
+	CComboBox* comboType = (CComboBox*)GetDlgItem(IDC_COMBO_TYPE);
+	comboType->AddString(_T("1D"));
+	comboType->AddString(_T("2D"));
+	comboType->SetCurSel(0);
+
 	// Setup defaults
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 	_mDevice1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
