@@ -3,6 +3,7 @@
 #include "ChromaSDKPlugin.h"
 
 using namespace ChromaSDK;
+using namespace std;
 
 Animation2D::Animation2D()
 {
@@ -34,4 +35,9 @@ bool Animation2D::SetDevice(EChromaSDKDevice2DEnum device)
 	{
 		return false;
 	}
+}
+
+vector<FChromaSDKColorFrame2D>& Animation2D::GetFrames()
+{
+	return _mFrames;
 }

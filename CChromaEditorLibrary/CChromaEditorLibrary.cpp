@@ -97,6 +97,11 @@ CStatic* CMainViewDlg::GetControlGridSize()
 	return (CStatic*)GetDlgItem(IDC_STATIC_GRID_SIZE);
 }
 
+CStatic* CMainViewDlg::GetControlFrames()
+{
+	return (CStatic*)GetDlgItem(IDC_STATIC_FRAMES);
+}
+
 void CMainViewDlg::RefreshDevice()
 {
 	GetControlDeviceType()->SetCurSel(_mDeviceType);
@@ -189,26 +194,47 @@ void CMainViewDlg::RecreateGrid()
 void CMainViewDlg::RefreshGrid()
 {
 	// update grid label
+	char buffer[20] = { 0 };
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
 			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
-			char buffer[20] = { 0 };
 			sprintf_s(buffer, "1 x %d", maxLeds);
-			GetControlGridSize()->SetWindowTextW(CString(buffer));
 		}
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
 			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
 			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
-			char buffer[20] = { 0 };
 			sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
-			GetControlGridSize()->SetWindowTextW(CString(buffer));
 		}
 		break;
 	}
+	GetControlGridSize()->SetWindowText(CString(buffer));
+}
+
+void CMainViewDlg::RefreshFrames()
+{
+	//update frames label
+	char buffer[48] = { 0 };
+	int currentFrame = 0;
+	int frameCount = 0;
+
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		currentFrame = _mEdit1D.GetCurrentFrame() + 1;
+		frameCount = _mEdit1D.GetFrames().size();
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		currentFrame = _mEdit2D.GetCurrentFrame() + 1;
+		frameCount = _mEdit2D.GetFrames().size();
+		break;
+	}
+
+	sprintf_s(buffer, "%d of %d", currentFrame, frameCount);
+	GetControlFrames()->SetWindowText(CString(buffer));
 }
 
 BOOL CMainViewDlg::OnInitDialog()
@@ -233,6 +259,9 @@ BOOL CMainViewDlg::OnInitDialog()
 
 	// Display grid
 	RefreshGrid();
+
+	// DIsplay frames
+	RefreshFrames();
 
 	COLORREF black = RGB(0, 0, 0);
 	COLORREF red = RGB(255, 0, 0);

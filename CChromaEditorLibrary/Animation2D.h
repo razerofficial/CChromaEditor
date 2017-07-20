@@ -11,6 +11,7 @@ namespace ChromaSDK
 		void Reset();
 		EChromaSDKDevice2DEnum GetDevice();
 		bool SetDevice(EChromaSDKDevice2DEnum device);
+		std::vector<FChromaSDKColorFrame2D>& GetFrames();
 	private:
 		EChromaSDKDevice2DEnum _mDevice;
 		std::vector<FChromaSDKColorFrame2D> _mFrames;
