@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ChromaSDKPluginTypes.h"
+#include <map>
 
 class ChromaSDKPlugin
 {
@@ -57,4 +58,8 @@ private:
 	CHROMA_SDK_SET_EFFECT _mMethodSetEffect = NULL;
 	CHROMA_SDK_DELETE_EFFECT _mMethodDeleteEffect = NULL;
 	CHROMA_SDK_QUERY_DEVICE _mMethodQueryDevice = NULL;
+
+	//handle enum mapping
+	std::map<EChromaSDKKeyboardKey, int> _mKeyboardEnumMap;
+	std::map<EChromaSDKMouseLed, ChromaSDK::Mouse::RZLED2> _mMouseEnumMap;
 };
