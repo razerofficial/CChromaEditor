@@ -92,26 +92,52 @@ CComboBox* CMainViewDlg::GetControlDevice()
 	return (CComboBox*)GetDlgItem(IDC_COMBO_DEVICE);
 }
 
+CStatic* CMainViewDlg::GetControlGridSize()
+{
+	return (CStatic*)GetDlgItem(IDC_STATIC_GRID_SIZE);
+}
+
 void CMainViewDlg::RefreshDevice()
 {
-	GetControlDevice()->ResetContent();
-	switch ((EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel())
+	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
-		//1D
+		GetControlDevice()->ResetContent();
 		GetControlDevice()->AddString(_T(DEVICE_CHROMA_LINK));
 		GetControlDevice()->AddString(_T(DEVICE_HEADSET));
 		GetControlDevice()->AddString(_T(DEVICE_MOUSEPAD));
-		GetControlDevice()->SetCurSel(EChromaSDKDevice1DEnum::DE_ChromaLink);
+		GetControlDevice()->SetCurSel(_mDevice1D);
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
-		//2D
-		GetControlDevice()->Clear();
+		GetControlDevice()->ResetContent();
 		GetControlDevice()->AddString(_T(DEVICE_KEYBOARD));
 		GetControlDevice()->AddString(_T(DEVICE_KEYPAD));
 		GetControlDevice()->AddString(_T(DEVICE_MOUSE));
-		GetControlDevice()->SetCurSel(EChromaSDKDevice2DEnum::DE_Keyboard);
-	}	
+		GetControlDevice()->SetCurSel(_mDevice2D);
+	}
+}
+
+void CMainViewDlg::RefreshGrid()
+{
+	char buffer[20] = { 0 };
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int maxLeds = _mPlugin.GetMaxLeds(_mDevice1D);
+			sprintf_s(buffer, "1 x %d", maxLeds);
+			GetControlGridSize()->SetWindowTextW(CString(buffer));
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int maxRow = _mPlugin.GetMaxRow(_mDevice2D);
+			int maxColumn = _mPlugin.GetMaxColumn(_mDevice2D);
+			sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
+			GetControlGridSize()->SetWindowTextW(CString(buffer));
+		}
+		break;
+	}
 }
 
 BOOL CMainViewDlg::OnInitDialog()
@@ -119,14 +145,20 @@ BOOL CMainViewDlg::OnInitDialog()
 	// setup dialog
 	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_1D));
 	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_2D));
-	GetControlDeviceType()->SetCurSel(EChromaSDKDeviceTypeEnum::DE_1D);
-
-	RefreshDevice();
 
 	// Setup defaults
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 	_mDevice1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
 	_mDevice2D = EChromaSDKDevice2DEnum::DE_Keyboard;
+
+	// Set default type
+	GetControlDeviceType()->SetCurSel(_mDeviceType);
+
+	// Display enums
+	RefreshDevice();
+
+	// Display grid
+	RefreshGrid();
 
 	COLORREF black = RGB(0, 0, 0);
 	COLORREF red = RGB(255, 0, 0);
@@ -313,8 +345,21 @@ void CMainViewDlg::OnCbnSelchangeComboType()
 
 void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 {
-	// TODO: Add your control notification handler code here
+	_mDeviceType = (EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel();
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		_mDevice1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		_mDevice2D = EChromaSDKDevice2DEnum::DE_Keyboard;
+	}
+
+	// Display enums
 	RefreshDevice();
+	
+	// Display grid
+	RefreshGrid();
 }
 
 
@@ -349,7 +394,17 @@ void CMainViewDlg::OnCbnSelchangeComboDevices()
 
 void CMainViewDlg::OnBnClickedButtonSetDevice()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		_mDevice1D = (EChromaSDKDevice1DEnum)GetControlDevice()->GetCurSel();
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		_mDevice2D = (EChromaSDKDevice2DEnum)GetControlDevice()->GetCurSel();
+		break;
+	}
+
+	RefreshGrid();
 }
 
 

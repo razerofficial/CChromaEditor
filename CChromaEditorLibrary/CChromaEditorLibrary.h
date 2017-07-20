@@ -90,8 +90,10 @@ private:
 
 	CComboBox* GetControlDeviceType();
 	CComboBox* GetControlDevice();
+	CStatic* GetControlGridSize();
 
 	void RefreshDevice();
+	void RefreshGrid();
 
 	std::vector<CColorButton*>& GetGridButtons();
 	std::vector<CColorButton*>& GetColorButtons();
