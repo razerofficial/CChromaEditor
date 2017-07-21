@@ -52,3 +52,13 @@ FChromaSDKColorFrame1D& EditorAnimation1D::GetCopy()
 {
 	return _mFrameCopy;
 }
+
+void EditorAnimation1D::OverrideTime(float time)
+{
+	vector<FChromaSDKColorFrame1D>& frames = GetFrames();
+	for (int i = 0; i < frames.size(); ++i)
+	{
+		FChromaSDKColorFrame1D& frame = frames[i];
+		frame.Duration = time;
+	}
+}

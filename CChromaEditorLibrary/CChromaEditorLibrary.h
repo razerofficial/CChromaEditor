@@ -90,11 +90,15 @@ public:
 
 private:
 
+	CEdit* GetControlOverrideTime();
 	CComboBox* GetControlDeviceType();
 	CComboBox* GetControlDevice();
 	CStatic* GetControlGridSize();
 	CStatic* GetControlFrames();
 	CEdit* GetControlDuration();
+
+	void UpdateOverrideTime(float time);
+	float GetOverrideTime();
 
 	void RefreshDevice();
 	void RecreateGrid();
@@ -110,6 +114,8 @@ private:
 
 	ChromaSDKPlugin _mPlugin;
 
+	float _mOverrideTime;
+
 	EChromaSDKDeviceTypeEnum _mDeviceType;
 
 	std::vector<CColorButton*> _mGridButtons;
@@ -120,4 +126,6 @@ private:
 	ChromaSDK::EditorAnimation1D _mEdit1D;
 	ChromaSDK::EditorAnimation2D _mEdit2D;
 
+public:
+	afx_msg void OnEnChangeTextOverrideTime();
 };

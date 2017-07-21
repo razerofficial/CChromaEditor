@@ -13,6 +13,7 @@
 #define ID_DYNAMIC_COLOR_MIN 2200
 #define ID_DYNAMIC_BUTTON_MAX 2256
 
+#define DEFAULT_OVERRIDE_TIME 0.1f
 #define DEVICE_TYPE_1D "1D"
 #define DEVICE_TYPE_2D "2D"
 #define DEVICE_CHROMA_LINK "ChromaLink"
@@ -82,6 +83,11 @@ CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 {
 }
 
+CEdit* CMainViewDlg::GetControlOverrideTime()
+{
+	return (CEdit*)GetDlgItem(IDC_TEXT_OVERRIDE_TIME);
+}
+
 CComboBox* CMainViewDlg::GetControlDeviceType()
 {
 	return (CComboBox*)GetDlgItem(IDC_COMBO_TYPE);
@@ -105,6 +111,27 @@ CStatic* CMainViewDlg::GetControlFrames()
 CEdit* CMainViewDlg::GetControlDuration()
 {
 	return (CEdit*)GetDlgItem(IDC_EDIT_DURATION);
+}
+
+void CMainViewDlg::UpdateOverrideTime(float time)
+{
+	char buffer[10] = { 0 };
+	sprintf_s(buffer, "%f", time);
+	GetControlOverrideTime()->SetWindowText(CString(buffer));
+	GetControlOverrideTime()->Invalidate();
+}
+
+float CMainViewDlg::GetOverrideTime()
+{
+	CString text;
+	GetControlOverrideTime()->GetWindowText(text);
+	float time = _ttof(text);
+	if (time <= 0.0f)
+	{
+		UpdateOverrideTime(DEFAULT_OVERRIDE_TIME);
+		return DEFAULT_OVERRIDE_TIME;
+	}
+	return time;
 }
 
 void CMainViewDlg::RefreshDevice()
@@ -358,6 +385,7 @@ void CMainViewDlg::RefreshFrames()
 BOOL CMainViewDlg::OnInitDialog()
 {
 	// setup dialog
+	UpdateOverrideTime(DEFAULT_OVERRIDE_TIME);
 	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_1D));
 	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_2D));
 
@@ -443,7 +471,6 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_IMAGE, &CMainViewDlg::OnBnClickedButtonImportImage)
 	ON_CBN_SELCHANGE(IDC_COMBO_TYPE, &CMainViewDlg::OnCbnSelchangeComboType)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_ANIMATION, &CMainViewDlg::OnBnClickedButtonImportAnimation)
-	ON_EN_CHANGE(IDC_OVERRIDE_TIME2, &CMainViewDlg::OnEnChangeOverrideTime2)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_OVERRIDE_TIME, &CMainViewDlg::OnBnClickedButtonImportOverrideTime)
 	ON_CBN_SELCHANGE(IDC_COMBO_DEVICES, &CMainViewDlg::OnCbnSelchangeComboDevices)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE, &CMainViewDlg::OnBnClickedButtonSetDevice)
@@ -639,20 +666,21 @@ void CMainViewDlg::OnBnClickedButtonImportAnimation()
 }
 
 
-void CMainViewDlg::OnEnChangeOverrideTime2()
-{
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialogEx::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
-}
-
-
 void CMainViewDlg::OnBnClickedButtonImportOverrideTime()
 {
-	// TODO: Add your control notification handler code here
+	float time = GetOverrideTime();
+	_mOverrideTime = time;
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		_mEdit1D.OverrideTime(time);
+		RefreshFrames();
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		_mEdit2D.OverrideTime(time);
+		RefreshFrames();
+		break;
+	}
 }
 
 

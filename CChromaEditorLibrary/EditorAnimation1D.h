@@ -14,6 +14,7 @@ namespace ChromaSDK
 		std::vector<FChromaSDKColorFrame1D>& GetFrames();
 		void SetCopy(FChromaSDKColorFrame1D& copy);
 		FChromaSDKColorFrame1D& GetCopy();
+		void OverrideTime(float time);
 	private:
 		void Reset();
 		Animation1D _mAnimation;

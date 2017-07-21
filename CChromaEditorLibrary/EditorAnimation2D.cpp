@@ -52,3 +52,13 @@ FChromaSDKColorFrame2D& EditorAnimation2D::GetCopy()
 {
 	return _mFrameCopy;
 }
+
+void EditorAnimation2D::OverrideTime(float time)
+{
+	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
+	for (int i = 0; i < frames.size(); ++i)
+	{
+		FChromaSDKColorFrame2D& frame = frames[i];
+		frame.Duration = time;
+	}
+}
