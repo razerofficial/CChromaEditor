@@ -554,20 +554,23 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 		_mDeviceType = (EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel();
 		changed = true;
 	}
-	switch (_mDeviceType)
+	if (changed)
 	{
-	case EChromaSDKDeviceTypeEnum::DE_1D:
-		if (_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink))
+		switch (_mDeviceType)
 		{
-			changed = true;
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			if (_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink))
+			{
+				changed = true;
+			}
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			if (_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard))
+			{
+				changed = true;
+			}
+			break;
 		}
-		break;
-	case EChromaSDKDeviceTypeEnum::DE_2D:
-		if (_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard))
-		{
-			changed = true;
-		}
-		break;
 	}
 
 	if (changed)
@@ -686,7 +689,58 @@ void CMainViewDlg::OnBnClickedButtonClear()
 
 void CMainViewDlg::OnBnClickedButtonFill()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+			int maxLeds = _mPlugin.GetMaxLeds(device);
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[currentFrame];
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					frame.Colors[i] = _mColor;
+				}
+				RefreshGrid();
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+			int maxRow = _mPlugin.GetMaxRow(device);
+			int maxColumn = _mPlugin.GetMaxColumn(device);
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[currentFrame];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						row.Colors[j] = _mColor;
+					}
+				}
+				RefreshGrid();
+			}
+		}
+		break;
+	}
 }
 
 
