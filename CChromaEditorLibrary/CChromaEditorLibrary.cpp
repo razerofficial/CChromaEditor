@@ -102,6 +102,11 @@ CStatic* CMainViewDlg::GetControlFrames()
 	return (CStatic*)GetDlgItem(IDC_STATIC_FRAMES);
 }
 
+CEdit* CMainViewDlg::GetControlDuration()
+{
+	return (CEdit*)GetDlgItem(IDC_EDIT_DURATION);
+}
+
 void CMainViewDlg::RefreshDevice()
 {
 	GetControlDeviceType()->SetCurSel(_mDeviceType);
@@ -289,7 +294,7 @@ void CMainViewDlg::RefreshGrid()
 void CMainViewDlg::RefreshFrames()
 {
 	//update frames label
-	char buffer[48] = { 0 };
+	char bufferFrameInfo[48] = { 0 };
 	int currentFrame = 0;
 	int frameCount = 0;
 
@@ -305,8 +310,49 @@ void CMainViewDlg::RefreshFrames()
 		break;
 	}
 
-	sprintf_s(buffer, "%d of %d", currentFrame, frameCount);
-	GetControlFrames()->SetWindowText(CString(buffer));
+	sprintf_s(bufferFrameInfo, "%d of %d", currentFrame, frameCount);
+	GetControlFrames()->SetWindowText(CString(bufferFrameInfo));
+
+	//update the frame duration
+	char bufferDuration[16] = { 0 };
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[currentFrame];
+				sprintf_s(bufferDuration, "%f", frame.Duration);
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[currentFrame];
+				sprintf_s(bufferDuration, "%f", frame.Duration);
+			}
+		}
+		break;
+	}
+	GetControlDuration()->SetWindowText(CString(bufferDuration));
 }
 
 BOOL CMainViewDlg::OnInitDialog()
@@ -848,6 +894,7 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 			{
 				frames[currentFrame] = _mEdit1D.GetCopy();
 				RefreshGrid();
+				RefreshFrames();
 			}
 		}
 		break;
@@ -865,6 +912,7 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 			{
 				frames[currentFrame] = _mEdit2D.GetCopy();
 				RefreshGrid();
+				RefreshFrames();
 			}
 		}
 		break;

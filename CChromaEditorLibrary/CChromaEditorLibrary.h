@@ -94,6 +94,7 @@ private:
 	CComboBox* GetControlDevice();
 	CStatic* GetControlGridSize();
 	CStatic* GetControlFrames();
+	CEdit* GetControlDuration();
 
 	void RefreshDevice();
 	void RecreateGrid();
