@@ -100,6 +100,9 @@ private:
 	void UpdateOverrideTime(float time);
 	float GetOverrideTime();
 
+	void UpdateDuration(float time);
+	float GetDuration();
+
 	void RefreshDevice();
 	void RecreateGrid();
 	void RefreshGrid();
@@ -128,4 +131,5 @@ private:
 
 public:
 	afx_msg void OnEnChangeTextOverrideTime();
+	afx_msg void OnBnClickedButtonSetDuration();
 };

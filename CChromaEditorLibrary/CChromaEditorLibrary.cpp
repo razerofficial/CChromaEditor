@@ -14,6 +14,7 @@
 #define ID_DYNAMIC_BUTTON_MAX 2256
 
 #define DEFAULT_OVERRIDE_TIME 0.1f
+#define DEFAULT_DURATION 1.0f
 #define DEVICE_TYPE_1D "1D"
 #define DEVICE_TYPE_2D "2D"
 #define DEVICE_CHROMA_LINK "ChromaLink"
@@ -130,6 +131,27 @@ float CMainViewDlg::GetOverrideTime()
 	{
 		UpdateOverrideTime(DEFAULT_OVERRIDE_TIME);
 		return DEFAULT_OVERRIDE_TIME;
+	}
+	return time;
+}
+
+void CMainViewDlg::UpdateDuration(float time)
+{
+	char buffer[10] = { 0 };
+	sprintf_s(buffer, "%f", time);
+	GetControlDuration()->SetWindowText(CString(buffer));
+	GetControlDuration()->Invalidate();
+}
+
+float CMainViewDlg::GetDuration()
+{
+	CString text;
+	GetControlDuration()->GetWindowText(text);
+	float time = _ttof(text);
+	if (time <= 0.0f)
+	{
+		UpdateDuration(DEFAULT_DURATION);
+		return DEFAULT_DURATION;
 	}
 	return time;
 }
@@ -495,6 +517,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMainViewDlg::OnBnClickedButtonDelete)
 	ON_COMMAND_RANGE(ID_DYNAMIC_BUTTON_MIN, ID_DYNAMIC_BUTTON_MAX, &CMainViewDlg::OnBnClickedButtonColor)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE_TYPE, &CMainViewDlg::OnBnClickedButtonSetDeviceType)
+	ON_BN_CLICKED(IDC_BUTTON_SET_DURATION, &CMainViewDlg::OnBnClickedButtonSetDuration)
 END_MESSAGE_MAP()
 
 vector<CColorButton*>& CMainViewDlg::GetGridButtons()
@@ -1269,6 +1292,48 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 			}
 			RefreshGrid();
 			RefreshFrames();
+		}
+		break;
+	}
+}
+
+
+void CMainViewDlg::OnBnClickedButtonSetDuration()
+{
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= _mEdit1D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}			
+			if (currentFrame < _mEdit1D.GetFrameCount())
+			{
+				vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+				FChromaSDKColorFrame1D& frame = frames[currentFrame];
+				frame.Duration = GetDuration();
+				RefreshFrames();
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= _mEdit2D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}			
+			if (currentFrame < _mEdit2D.GetFrameCount())
+			{
+				vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+				FChromaSDKColorFrame2D& frame = frames[currentFrame];
+				frame.Duration = GetDuration();
+				RefreshFrames();
+			}
 		}
 		break;
 	}
