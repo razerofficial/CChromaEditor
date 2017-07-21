@@ -121,6 +121,7 @@ void CMainViewDlg::RefreshDevice()
 		GetControlDevice()->AddString(_T(DEVICE_KEYPAD));
 		GetControlDevice()->AddString(_T(DEVICE_MOUSE));
 		GetControlDevice()->SetCurSel(_mEdit2D.GetDevice());
+		break;
 	}
 }
 
@@ -212,6 +213,77 @@ void CMainViewDlg::RefreshGrid()
 		break;
 	}
 	GetControlGridSize()->SetWindowText(CString(buffer));
+
+
+	// update buttons
+	vector<CColorButton*>& buttons = GetGridButtons();
+
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
+			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[currentFrame];
+				int id = 0;
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					CColorButton* button = buttons[id];
+					if (button)
+					{
+						COLORREF color = frame.Colors[i];
+						button->SetColor(color, color);
+						button->Invalidate();
+					}
+					++id;
+				}
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
+			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
+			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[currentFrame];
+				int id = 0;
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						CColorButton* button = buttons[id];
+						if (button)
+						{
+							COLORREF color = row.Colors[j];
+							button->SetColor(color, color);
+							button->Invalidate();
+						}
+						++id;
+					}
+				}
+			}
+		}
+		break;
+	}
 }
 
 void CMainViewDlg::RefreshFrames()
@@ -386,6 +458,53 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 				COLORREF color = GetColor();
 				button->SetColor(color, color);
 				button->Invalidate();
+
+				switch (_mDeviceType)
+				{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+					{
+						EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+						int maxLeds = _mPlugin.GetMaxLeds(device);
+						vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+						int currentFrame = _mEdit1D.GetCurrentFrame();
+						if (currentFrame < 0 ||
+							currentFrame >= frames.size())
+						{
+							currentFrame = 0;
+						}
+						if (currentFrame < frames.size())
+						{
+							FChromaSDKColorFrame1D& frame = frames[currentFrame];
+							int i = index;
+							frame.Colors[i] = color;
+							RefreshGrid();
+						}
+					}
+					break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+					{
+						EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+						int maxRow = _mPlugin.GetMaxRow(device);
+						int maxColumn = _mPlugin.GetMaxColumn(device);
+						vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+						int currentFrame = _mEdit2D.GetCurrentFrame();
+						if (currentFrame < 0 ||
+							currentFrame >= frames.size())
+						{
+							currentFrame = 0;
+						}
+						if (currentFrame < frames.size())
+						{
+							FChromaSDKColorFrame2D& frame = frames[currentFrame];
+							int i = index / maxColumn;
+							FChromaSDKColors& row = frame.Colors[i];
+							int j = index - i * maxColumn;
+							row.Colors[j] = color;
+							RefreshGrid();
+						}
+					}
+					break;
+				}
 			}
 		}
 		else
@@ -448,6 +567,7 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 		{
 			changed = true;
 		}
+		break;
 	}
 
 	if (changed)
@@ -522,16 +642,44 @@ void CMainViewDlg::OnBnClickedButtonSetDevice()
 
 void CMainViewDlg::OnBnClickedButtonClear()
 {
-	// TODO: Add your control notification handler code here
-
-	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D)
+	switch (_mDeviceType)
 	{
-		FChromaSDKEffectResult result = _mPlugin.CreateEffectNone2D(_mEdit2D.GetDevice());
-		if (result.Result == 0)
+	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			_mPlugin.SetEffect(result.EffectId);
-			_mPlugin.DeleteEffect(result.EffectId);
+			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[currentFrame];
+				frame.Colors = _mPlugin.CreateColors1D(device);
+				RefreshGrid();
+			}
 		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[currentFrame];
+				frame.Colors = _mPlugin.CreateColors2D(device);
+				RefreshGrid();
+			}
+		}
+		break;
 	}
 }
 
@@ -544,7 +692,45 @@ void CMainViewDlg::OnBnClickedButtonFill()
 
 void CMainViewDlg::OnBnClickedButtonRandom()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[currentFrame];
+				frame.Colors = _mPlugin.CreateRandomColors1D(device);
+				RefreshGrid();
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[currentFrame];
+				frame.Colors = _mPlugin.CreateRandomColors2D(device);
+				RefreshGrid();
+			}
+		}
+		break;
+	}
 }
 
 
@@ -562,7 +748,53 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 
 void CMainViewDlg::OnBnClickedButtonPreview()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[currentFrame];
+				FChromaSDKEffectResult result = _mPlugin.CreateEffectCustom1D(device, frame.Colors);
+				if (result.Result == 0)
+				{
+					_mPlugin.SetEffect(result.EffectId);
+					_mPlugin.DeleteEffect(result.EffectId);
+				}
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[currentFrame];
+				FChromaSDKEffectResult result = _mPlugin.CreateEffectCustom2D(device, frame.Colors);
+				if (result.Result == 0)
+				{
+					_mPlugin.SetEffect(result.EffectId);
+					_mPlugin.DeleteEffect(result.EffectId);
+				}
+			}
+		}
+		break;
+	}
 }
 
 

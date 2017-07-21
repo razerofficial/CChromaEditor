@@ -478,9 +478,9 @@ vector<COLORREF> ChromaSDKPlugin::CreateRandomColors1D(const EChromaSDKDevice1DE
 	int elements = GetMaxLeds(device);
 	for (int i = 0; i < elements; ++i)
 	{
-		float red = rand() % 256 / 255.0f;
-		float green = rand() % 256 / 255.0f;
-		float blue = rand() % 256 / 255.0f;
+		int red = rand() % 256;
+		int green = rand() % 256;
+		int blue = rand() % 256;
 		COLORREF color = RGB(red, green, blue);
 		colors.push_back(color);
 	}
@@ -497,9 +497,9 @@ vector<FChromaSDKColors> ChromaSDKPlugin::CreateRandomColors2D(const EChromaSDKD
 		FChromaSDKColors row = FChromaSDKColors();
 		for (int j = 0; j < maxColumns; ++j)
 		{
-			float red = rand() % 256 / 255.0f;
-			float green = rand() % 256 / 255.0f;
-			float blue = rand() % 256 / 255.0f;
+			int red = rand() % 256;
+			int green = rand() % 256;
+			int blue = rand() % 256;
 			COLORREF color = RGB(red, green, blue);
 			row.Colors.push_back(color);
 		}
