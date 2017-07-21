@@ -1076,6 +1076,8 @@ void CMainViewDlg::OnBnClickedButtonPrevious()
 				--currentFrame;
 			}
 			_mEdit1D.SetCurrentFrame(currentFrame);
+			RefreshGrid();
+			RefreshFrames();
 		}
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
@@ -1091,6 +1093,8 @@ void CMainViewDlg::OnBnClickedButtonPrevious()
 				--currentFrame;
 			}
 			_mEdit2D.SetCurrentFrame(currentFrame);			
+			RefreshGrid();
+			RefreshFrames();
 		}
 		break;
 	}
@@ -1099,17 +1103,173 @@ void CMainViewDlg::OnBnClickedButtonPrevious()
 
 void CMainViewDlg::OnBnClickedButtonNext()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= _mEdit1D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}
+			if ((currentFrame + 1) < _mEdit1D.GetFrameCount())
+			{
+				++currentFrame;
+			}
+			_mEdit1D.SetCurrentFrame(currentFrame);
+			RefreshGrid();
+			RefreshFrames();
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= _mEdit2D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}
+			if ((currentFrame + 1) < _mEdit2D.GetFrameCount())
+			{
+				++currentFrame;
+			}
+			_mEdit2D.SetCurrentFrame(currentFrame);			
+			RefreshGrid();
+			RefreshFrames();
+		}
+		break;
+	}
 }
 
 
 void CMainViewDlg::OnBnClickedButtonAdd()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= _mEdit1D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}
+			
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+			frame.Colors = _mPlugin.CreateColors1D(_mEdit1D.GetDevice());
+
+			if (currentFrame == _mEdit1D.GetFrameCount())
+			{
+				frames.push_back(frame);
+				currentFrame = _mEdit1D.GetFrameCount() - 1;
+			}
+			else
+			{
+				auto it = frames.begin();
+				++currentFrame;
+				frames.insert(it+currentFrame, frame);
+			}
+			_mEdit1D.SetCurrentFrame(currentFrame);
+			RefreshGrid();
+			RefreshFrames();
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= _mEdit2D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}
+			
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+			frame.Colors = _mPlugin.CreateColors2D(_mEdit2D.GetDevice());
+
+			if (currentFrame == _mEdit2D.GetFrameCount())
+			{
+				frames.push_back(frame);
+				currentFrame = _mEdit2D.GetFrameCount() - 1;
+			}
+			else
+			{
+				auto it = frames.begin();
+				++currentFrame;
+				frames.insert(it+currentFrame, frame);
+			}
+			_mEdit2D.SetCurrentFrame(currentFrame);
+			RefreshGrid();
+			RefreshFrames();
+		}
+		break;
+	}
 }
 
 
 void CMainViewDlg::OnBnClickedButtonDelete()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= _mEdit1D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}			
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			if (frames.size() == 1)
+			{
+				FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+				frame.Colors = _mPlugin.CreateColors1D(_mEdit1D.GetDevice());
+				frames[0] = frame;
+			}
+			else if (frames.size() > 0)
+			{
+				auto it = frames.begin();
+				frames.erase(it+currentFrame);
+				if (currentFrame == frames.size())
+				{
+					currentFrame = frames.size() - 1;
+					_mEdit1D.SetCurrentFrame(currentFrame);
+				}
+			}
+			RefreshGrid();
+			RefreshFrames();
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= _mEdit2D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}			
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			if (frames.size() == 1)
+			{
+				FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+				frame.Colors = _mPlugin.CreateColors2D(_mEdit2D.GetDevice());
+				frames[0] = frame;
+			}
+			else if (frames.size() > 0)
+			{
+				auto it = frames.begin();
+				frames.erase(it+currentFrame);
+				if (currentFrame == frames.size())
+				{
+					currentFrame = frames.size() - 1;
+					_mEdit2D.SetCurrentFrame(currentFrame);
+				}
+			}
+			RefreshGrid();
+			RefreshFrames();
+		}
+		break;
+	}
 }
