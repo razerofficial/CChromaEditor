@@ -104,6 +104,36 @@ CStatic* CMainViewDlg::GetControlGridSize()
 	return (CStatic*)GetDlgItem(IDC_STATIC_GRID_SIZE);
 }
 
+CStatic* CMainViewDlg::GetControlSetKeyLabel()
+{
+	return (CStatic*)GetDlgItem(IDC_STATIC_SELECT_KEY);
+}
+
+CComboBox* CMainViewDlg::GetControlSetKeyCombo()
+{
+	return (CComboBox*)GetDlgItem(IDC_COMBO_KEYS);
+}
+
+CButton* CMainViewDlg::GetControlSetKeyButton()
+{
+	return (CButton*)GetDlgItem(IDC_BUTTON_SET_KEY);
+}
+
+CStatic* CMainViewDlg::GetControlSetLEDLabel()
+{
+	return (CStatic*)GetDlgItem(IDC_STATIC_SELECT_LED);
+}
+
+CComboBox* CMainViewDlg::GetControlSetLEDCombo()
+{
+	return (CComboBox*)GetDlgItem(IDC_COMBO_LEDS);
+}
+
+CButton* CMainViewDlg::GetControlSetLEDButton()
+{
+	return (CButton*)GetDlgItem(IDC_BUTTON_SET_LED);
+}
+
 CStatic* CMainViewDlg::GetControlFrames()
 {
 	return (CStatic*)GetDlgItem(IDC_STATIC_FRAMES);
@@ -177,6 +207,16 @@ void CMainViewDlg::RefreshDevice()
 		GetControlDevice()->SetCurSel(_mEdit2D.GetDevice());
 		break;
 	}
+
+	int show = _mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D && _mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Keyboard;
+	GetControlSetKeyLabel()->ShowWindow(show);
+	GetControlSetKeyCombo()->ShowWindow(show);
+	GetControlSetKeyButton()->ShowWindow(show);
+
+	show = _mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D && _mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Mouse;
+	GetControlSetLEDLabel()->ShowWindow(show);
+	GetControlSetLEDCombo()->ShowWindow(show);
+	GetControlSetLEDButton()->ShowWindow(show);
 }
 
 void CMainViewDlg::RecreateGrid()

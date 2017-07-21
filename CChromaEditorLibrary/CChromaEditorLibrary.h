@@ -94,6 +94,12 @@ private:
 	CComboBox* GetControlDeviceType();
 	CComboBox* GetControlDevice();
 	CStatic* GetControlGridSize();
+	CStatic* GetControlSetKeyLabel();
+	CComboBox* GetControlSetKeyCombo();
+	CButton* GetControlSetKeyButton();
+	CStatic* GetControlSetLEDLabel();
+	CComboBox* GetControlSetLEDCombo();
+	CButton* GetControlSetLEDButton();
 	CStatic* GetControlFrames();
 	CEdit* GetControlDuration();
 
