@@ -189,6 +189,7 @@
     <ClCompile Include="Animation1D.cpp" />
     <ClCompile Include="Animation2D.cpp" />
     <ClCompile Include="CChromaEditorLibrary.cpp" />
+    <ClCompile Include="ChromaSDKPluginTypes.cpp" />
     <ClCompile Include="EditorAnimation1D.cpp" />
     <ClCompile Include="EditorAnimation2D.cpp" />
     <ClCompile Include="ChromaSDKPlugin.cpp" />

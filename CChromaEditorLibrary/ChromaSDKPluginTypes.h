@@ -240,10 +240,7 @@ struct FChromaSDKColorFrame1D
 
 	float Duration;
 
-	FChromaSDKColorFrame1D()
-	{
-		Duration = 0.0f;
-	}
+	FChromaSDKColorFrame1D();
 };
 
 struct FChromaSDKColorFrame2D
@@ -252,8 +249,5 @@ struct FChromaSDKColorFrame2D
 
 	float Duration;
 
-	FChromaSDKColorFrame2D()
-	{
-		Duration = 0.0f;
-	}
+	FChromaSDKColorFrame2D();
 };

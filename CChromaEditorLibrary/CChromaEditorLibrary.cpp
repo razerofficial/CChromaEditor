@@ -790,13 +790,85 @@ void CMainViewDlg::OnBnClickedButtonRandom()
 
 void CMainViewDlg::OnBnClickedButtonCopy()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[currentFrame];
+				_mEdit1D.SetCopy(frame);
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[currentFrame];
+				_mEdit2D.SetCopy(frame);
+			}
+		}
+		break;
+	}
 }
 
 
 void CMainViewDlg::OnBnClickedButtonPaste()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
+			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				frames[currentFrame] = _mEdit1D.GetCopy();
+				RefreshGrid();
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
+			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 0 ||
+				currentFrame >= frames.size())
+			{
+				currentFrame = 0;
+			}
+			if (currentFrame < frames.size())
+			{
+				frames[currentFrame] = _mEdit2D.GetCopy();
+				RefreshGrid();
+			}
+		}
+		break;
+	}
 }
 
 

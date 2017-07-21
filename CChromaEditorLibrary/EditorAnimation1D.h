@@ -7,12 +7,17 @@ namespace ChromaSDK
 	class EditorAnimation1D
 	{
 	public:
+		EditorAnimation1D();
 		EChromaSDKDevice1DEnum GetDevice();
 		bool SetDevice(EChromaSDKDevice1DEnum device);
 		int GetCurrentFrame();
 		std::vector<FChromaSDKColorFrame1D>& GetFrames();
+		void SetCopy(FChromaSDKColorFrame1D& copy);
+		FChromaSDKColorFrame1D& GetCopy();
 	private:
+		void Reset();
 		Animation1D _mAnimation;
 		int _mCurrentFrame;
+		FChromaSDKColorFrame1D _mFrameCopy;
 	};
 }

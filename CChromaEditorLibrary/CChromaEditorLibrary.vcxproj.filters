@@ -42,6 +42,9 @@
     <ClCompile Include="Animation2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChromaSDKPluginTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CChromaEditorLibrary.h">
