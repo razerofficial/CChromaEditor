@@ -1061,7 +1061,39 @@ void CMainViewDlg::OnEnChangeOverrideTime()
 
 void CMainViewDlg::OnBnClickedButtonPrevious()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			int currentFrame = _mEdit1D.GetCurrentFrame();
+			if (currentFrame < 1 ||
+				currentFrame >= _mEdit1D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}
+			else
+			{
+				--currentFrame;
+			}
+			_mEdit1D.SetCurrentFrame(currentFrame);
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			int currentFrame = _mEdit2D.GetCurrentFrame();
+			if (currentFrame < 1 ||
+				currentFrame >= _mEdit2D.GetFrameCount())
+			{
+				currentFrame = 0;
+			}
+			else
+			{
+				--currentFrame;
+			}
+			_mEdit2D.SetCurrentFrame(currentFrame);			
+		}
+		break;
+	}
 }
 
 

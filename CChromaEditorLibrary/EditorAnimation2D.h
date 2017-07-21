@@ -1,16 +1,17 @@
 #pragma once
 
 #include "Animation2D.h"
+#include "EditorAnimationBase.h"
 
 namespace ChromaSDK
 {
-	class EditorAnimation2D
+	class EditorAnimation2D : public EditorAnimationBase
 	{
 	public:
 		EditorAnimation2D();
+		AnimationBase* GetAnimation();
 		EChromaSDKDevice2DEnum GetDevice();
 		bool SetDevice(EChromaSDKDevice2DEnum device);
-		int GetCurrentFrame();
 		std::vector<FChromaSDKColorFrame2D>& GetFrames();
 		void SetCopy(FChromaSDKColorFrame2D& copy);
 		FChromaSDKColorFrame2D& GetCopy();
@@ -18,7 +19,6 @@ namespace ChromaSDK
 	private:
 		void Reset();
 		Animation2D _mAnimation;
-		int _mCurrentFrame;
 		FChromaSDKColorFrame2D _mFrameCopy;
 	};
 }

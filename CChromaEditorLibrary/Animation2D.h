@@ -1,10 +1,11 @@
 #pragma once
 
 #include "ChromaSDKPluginTypes.h"
+#include "AnimationBase.h"
 
 namespace ChromaSDK
 {
-	class Animation2D
+	class Animation2D : public AnimationBase
 	{
 	public:
 		Animation2D();
@@ -12,6 +13,8 @@ namespace ChromaSDK
 		EChromaSDKDevice2DEnum GetDevice();
 		bool SetDevice(EChromaSDKDevice2DEnum device);
 		std::vector<FChromaSDKColorFrame2D>& GetFrames();
+		int GetFrameCount();
+		void Update();
 	private:
 		EChromaSDKDevice2DEnum _mDevice;
 		std::vector<FChromaSDKColorFrame2D> _mFrames;

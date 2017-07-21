@@ -41,3 +41,13 @@ vector<FChromaSDKColorFrame1D>& Animation1D::GetFrames()
 {
 	return _mFrames;
 }
+
+int Animation1D::GetFrameCount()
+{
+	return _mFrames.size();
+}
+
+void Animation1D::Update()
+{
+
+}

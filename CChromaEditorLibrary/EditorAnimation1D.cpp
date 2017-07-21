@@ -10,6 +10,11 @@ EditorAnimation1D::EditorAnimation1D()
 	Reset();
 }
 
+AnimationBase* EditorAnimation1D::GetAnimation()
+{
+	return &_mAnimation;
+}
+
 EChromaSDKDevice1DEnum EditorAnimation1D::GetDevice()
 {
 	return _mAnimation.GetDevice();
@@ -25,11 +30,6 @@ bool EditorAnimation1D::SetDevice(EChromaSDKDevice1DEnum device)
 	{
 		return false;
 	}
-}
-
-int EditorAnimation1D::GetCurrentFrame()
-{
-	return _mCurrentFrame;
 }
 
 vector<FChromaSDKColorFrame1D>& EditorAnimation1D::GetFrames()

@@ -41,3 +41,13 @@ vector<FChromaSDKColorFrame2D>& Animation2D::GetFrames()
 {
 	return _mFrames;
 }
+
+int Animation2D::GetFrameCount()
+{
+	return _mFrames.size();
+}
+
+void Animation2D::Update()
+{
+
+}
