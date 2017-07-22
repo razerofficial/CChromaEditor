@@ -492,7 +492,7 @@ BOOL CMainViewDlg::OnInitDialog()
 
 	//create color picker
 	int id = ID_DYNAMIC_COLOR_MIN;
-	int y = 635;
+	int y = 600;
 	int x = 85;
 	int width = 50;
 	int height = 50;
