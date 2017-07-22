@@ -44,6 +44,10 @@ namespace ChromaSDK
 		FChromaSDKEffectResult CreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const std::vector<FChromaSDKColors>& colors);
 		RZRESULT SetEffect(const FChromaSDKGuid& effectId);
 		RZRESULT DeleteEffect(const FChromaSDKGuid& effectId);
+
+		// editor methods
+		const char* GetKeyboardChar(EChromaSDKKeyboardKey key);
+		const char* GetMouseChar(EChromaSDKMouseLed led);
 	private:
 		bool ValidateGetProcAddress(bool condition, const char* methodName);
 
@@ -66,6 +70,8 @@ namespace ChromaSDK
 
 		//handle enum mapping
 		std::map<EChromaSDKKeyboardKey, int> _mKeyboardEnumMap;
+		std::map<EChromaSDKKeyboardKey, const char*> _mKeyboardCharMap;
 		std::map<EChromaSDKMouseLed, Mouse::RZLED2> _mMouseEnumMap;
+		std::map<EChromaSDKMouseLed, const char*> _mMouseCharMap;
 	};
 }

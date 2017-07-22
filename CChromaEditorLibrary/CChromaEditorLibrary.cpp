@@ -456,6 +456,22 @@ BOOL CMainViewDlg::OnInitDialog()
 	_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink);
 	_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard);
 
+	// setup keyboard chars
+	for (int key = EChromaSDKKeyboardKey::KK_ESC; key < EChromaSDKKeyboardKey::KK_INVALID; ++key)
+	{
+		const char* strKey = _mPlugin.GetKeyboardChar((EChromaSDKKeyboardKey)key);
+		GetControlSetKeyCombo()->AddString(CString(strKey));
+	}
+	GetControlSetKeyCombo()->SetCurSel(0);
+
+	// setup mouse chars
+	for (int led = EChromaSDKMouseLed::ML_SCROLLWHEEL; led <= EChromaSDKMouseLed::ML_RIGHT_SIDE7; ++led)
+	{
+		const char* strLed = _mPlugin.GetMouseChar((EChromaSDKMouseLed)led);
+		GetControlSetLEDCombo()->AddString(CString(strLed));
+	}
+	GetControlSetLEDCombo()->SetCurSel(0);
+
 	// Set default type
 	GetControlDeviceType()->SetCurSel(_mDeviceType);
 
