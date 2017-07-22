@@ -35,7 +35,7 @@ namespace ChromaSDK
 		std::vector<COLORREF> CreateRandomColors1D(const EChromaSDKDevice1DEnum& device);
 		std::vector<FChromaSDKColors> CreateRandomColors2D(const EChromaSDKDevice2DEnum& device);
 		const std::vector<FChromaSDKColors>& SetKeyboardKeyColor(const EChromaSDKKeyboardKey& key, COLORREF color, std::vector<FChromaSDKColors>& colors);
-		const std::vector<FChromaSDKColors>& SetMouseLedColor(const EChromaSDKMouseLed& led, COLORREF color, std::vector<FChromaSDKColors>& colors);
+		const std::vector<FChromaSDKColors>& SetMouseLEDColor(const EChromaSDKMouseLED& led, COLORREF color, std::vector<FChromaSDKColors>& colors);
 		FChromaSDKEffectResult CreateEffectNone1D(const EChromaSDKDevice1DEnum& device);
 		FChromaSDKEffectResult CreateEffectNone2D(const EChromaSDKDevice2DEnum& device);
 		FChromaSDKEffectResult CreateEffectStatic1D(const EChromaSDKDevice1DEnum& device, COLORREF color);
@@ -47,7 +47,7 @@ namespace ChromaSDK
 
 		// editor methods
 		const char* GetKeyboardChar(EChromaSDKKeyboardKey key);
-		const char* GetMouseChar(EChromaSDKMouseLed led);
+		const char* GetMouseChar(EChromaSDKMouseLED led);
 	private:
 		bool ValidateGetProcAddress(bool condition, const char* methodName);
 
@@ -71,7 +71,7 @@ namespace ChromaSDK
 		//handle enum mapping
 		std::map<EChromaSDKKeyboardKey, int> _mKeyboardEnumMap;
 		std::map<EChromaSDKKeyboardKey, const char*> _mKeyboardCharMap;
-		std::map<EChromaSDKMouseLed, Mouse::RZLED2> _mMouseEnumMap;
-		std::map<EChromaSDKMouseLed, const char*> _mMouseCharMap;
+		std::map<EChromaSDKMouseLED, Mouse::RZLED2> _mMouseEnumMap;
+		std::map<EChromaSDKMouseLED, const char*> _mMouseCharMap;
 	};
 }

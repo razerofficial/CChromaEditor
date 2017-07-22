@@ -465,9 +465,9 @@ BOOL CMainViewDlg::OnInitDialog()
 	GetControlSetKeyCombo()->SetCurSel(0);
 
 	// setup mouse chars
-	for (int led = EChromaSDKMouseLed::ML_SCROLLWHEEL; led <= EChromaSDKMouseLed::ML_RIGHT_SIDE7; ++led)
+	for (int led = EChromaSDKMouseLED::ML_SCROLLWHEEL; led <= EChromaSDKMouseLED::ML_RIGHT_SIDE7; ++led)
 	{
-		const char* strLed = _mPlugin.GetMouseChar((EChromaSDKMouseLed)led);
+		const char* strLed = _mPlugin.GetMouseChar((EChromaSDKMouseLED)led);
 		GetControlSetLEDCombo()->AddString(CString(strLed));
 	}
 	GetControlSetLEDCombo()->SetCurSel(0);
@@ -1111,7 +1111,26 @@ void CMainViewDlg::OnCbnSelchangeComboKeys()
 
 void CMainViewDlg::OnBnClickedButtonSetKey()
 {
-	// TODO: Add your control notification handler code here
+	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D &&
+		_mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Keyboard)
+	{
+		vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+		int currentFrame = _mEdit2D.GetCurrentFrame();
+		if (currentFrame < 0 ||
+			currentFrame >= frames.size())
+		{
+			currentFrame = 0;
+		}
+		if (currentFrame < frames.size())
+		{
+			int id = GetControlSetKeyCombo()->GetCurSel();
+			EChromaSDKKeyboardKey key = (EChromaSDKKeyboardKey)id;
+			FChromaSDKColorFrame2D& frame = frames[currentFrame];
+			std::vector<FChromaSDKColors>& colors = frame.Colors;
+			_mPlugin.SetKeyboardKeyColor(key, _mColor, colors);
+			RefreshGrid();
+		}
+	}
 }
 
 
@@ -1123,7 +1142,26 @@ void CMainViewDlg::OnCbnSelchangeComboLeds()
 
 void CMainViewDlg::OnBnClickedButtonSetLed()
 {
-	// TODO: Add your control notification handler code here
+	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D &&
+		_mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Mouse)
+	{
+		vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+		int currentFrame = _mEdit2D.GetCurrentFrame();
+		if (currentFrame < 0 ||
+			currentFrame >= frames.size())
+		{
+			currentFrame = 0;
+		}
+		if (currentFrame < frames.size())
+		{
+			int id = GetControlSetLEDCombo()->GetCurSel();
+			EChromaSDKMouseLED led = (EChromaSDKMouseLED)id;
+			FChromaSDKColorFrame2D& frame = frames[currentFrame];
+			std::vector<FChromaSDKColors>& colors = frame.Colors;
+			_mPlugin.SetMouseLEDColor(led, _mColor, colors);
+			RefreshGrid();
+		}
+	}
 }
 
 

@@ -170,7 +170,7 @@ enum EChromaSDKKeyboardKey
 	KK_INVALID,
 };
 
-enum EChromaSDKMouseLed
+enum EChromaSDKMouseLED
 {
 	ML_SCROLLWHEEL,
 	ML_LOGO,

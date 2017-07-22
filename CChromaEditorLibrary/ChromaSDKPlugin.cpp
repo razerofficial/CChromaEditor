@@ -368,52 +368,52 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_INVALID] = "Invalid keys.";
 
 	// mouse mapping
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_SCROLLWHEEL] = Mouse::RZLED2::RZLED2_SCROLLWHEEL;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_LOGO] = Mouse::RZLED2::RZLED2_LOGO;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_BACKLIGHT] = Mouse::RZLED2::RZLED2_BACKLIGHT;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_LEFT_SIDE1] = Mouse::RZLED2::RZLED2_LEFT_SIDE1;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_LEFT_SIDE2] = Mouse::RZLED2::RZLED2_LEFT_SIDE2;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_LEFT_SIDE3] = Mouse::RZLED2::RZLED2_LEFT_SIDE3;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_LEFT_SIDE4] = Mouse::RZLED2::RZLED2_LEFT_SIDE4;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_LEFT_SIDE5] = Mouse::RZLED2::RZLED2_LEFT_SIDE5;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_LEFT_SIDE6] = Mouse::RZLED2::RZLED2_LEFT_SIDE6;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_LEFT_SIDE7] = Mouse::RZLED2::RZLED2_LEFT_SIDE7;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_BOTTOM1] = Mouse::RZLED2::RZLED2_BOTTOM1;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_BOTTOM2] = Mouse::RZLED2::RZLED2_BOTTOM2;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_BOTTOM3] = Mouse::RZLED2::RZLED2_BOTTOM3;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_BOTTOM4] = Mouse::RZLED2::RZLED2_BOTTOM4;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_BOTTOM5] = Mouse::RZLED2::RZLED2_BOTTOM5;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_RIGHT_SIDE1] = Mouse::RZLED2::RZLED2_RIGHT_SIDE1;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_RIGHT_SIDE2] = Mouse::RZLED2::RZLED2_RIGHT_SIDE2;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_RIGHT_SIDE3] = Mouse::RZLED2::RZLED2_RIGHT_SIDE3;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_RIGHT_SIDE4] = Mouse::RZLED2::RZLED2_RIGHT_SIDE4;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_RIGHT_SIDE5] = Mouse::RZLED2::RZLED2_RIGHT_SIDE5;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_RIGHT_SIDE6] = Mouse::RZLED2::RZLED2_RIGHT_SIDE6;
-	_mMouseEnumMap[EChromaSDKMouseLed::ML_RIGHT_SIDE7] = Mouse::RZLED2::RZLED2_RIGHT_SIDE7;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_SCROLLWHEEL] = Mouse::RZLED2::RZLED2_SCROLLWHEEL;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_LOGO] = Mouse::RZLED2::RZLED2_LOGO;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_BACKLIGHT] = Mouse::RZLED2::RZLED2_BACKLIGHT;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_LEFT_SIDE1] = Mouse::RZLED2::RZLED2_LEFT_SIDE1;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_LEFT_SIDE2] = Mouse::RZLED2::RZLED2_LEFT_SIDE2;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_LEFT_SIDE3] = Mouse::RZLED2::RZLED2_LEFT_SIDE3;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_LEFT_SIDE4] = Mouse::RZLED2::RZLED2_LEFT_SIDE4;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_LEFT_SIDE5] = Mouse::RZLED2::RZLED2_LEFT_SIDE5;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_LEFT_SIDE6] = Mouse::RZLED2::RZLED2_LEFT_SIDE6;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_LEFT_SIDE7] = Mouse::RZLED2::RZLED2_LEFT_SIDE7;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_BOTTOM1] = Mouse::RZLED2::RZLED2_BOTTOM1;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_BOTTOM2] = Mouse::RZLED2::RZLED2_BOTTOM2;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_BOTTOM3] = Mouse::RZLED2::RZLED2_BOTTOM3;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_BOTTOM4] = Mouse::RZLED2::RZLED2_BOTTOM4;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_BOTTOM5] = Mouse::RZLED2::RZLED2_BOTTOM5;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_RIGHT_SIDE1] = Mouse::RZLED2::RZLED2_RIGHT_SIDE1;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_RIGHT_SIDE2] = Mouse::RZLED2::RZLED2_RIGHT_SIDE2;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_RIGHT_SIDE3] = Mouse::RZLED2::RZLED2_RIGHT_SIDE3;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_RIGHT_SIDE4] = Mouse::RZLED2::RZLED2_RIGHT_SIDE4;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_RIGHT_SIDE5] = Mouse::RZLED2::RZLED2_RIGHT_SIDE5;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_RIGHT_SIDE6] = Mouse::RZLED2::RZLED2_RIGHT_SIDE6;
+	_mMouseEnumMap[EChromaSDKMouseLED::ML_RIGHT_SIDE7] = Mouse::RZLED2::RZLED2_RIGHT_SIDE7;
 
 	// mouse char mapping
-	_mMouseCharMap[EChromaSDKMouseLed::ML_SCROLLWHEEL] = "Scroll Wheel LED";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_LOGO] = "Logo LED";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_BACKLIGHT] = "Backlight LED";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_LEFT_SIDE1] = "Left LED 1";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_LEFT_SIDE2] = "Left LED 2";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_LEFT_SIDE3] = "Left LED 3";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_LEFT_SIDE4] = "Left LED 4";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_LEFT_SIDE5] = "Left LED 5";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_LEFT_SIDE6] = "Left LED 6";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_LEFT_SIDE7] = "Left LED 7";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_BOTTOM1] = "Bottom LED 1";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_BOTTOM2] = "Bottom LED 2";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_BOTTOM3] = "Bottom LED 3";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_BOTTOM4] = "Bottom LED 4";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_BOTTOM5] = "Bottom LED 5";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_RIGHT_SIDE1] = "Right LED 1";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_RIGHT_SIDE2] = "Right LED 2";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_RIGHT_SIDE3] = "Right LED 3";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_RIGHT_SIDE4] = "Right LED 4";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_RIGHT_SIDE5] = "Right LED 5";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_RIGHT_SIDE6] = "Right LED 6";
-	_mMouseCharMap[EChromaSDKMouseLed::ML_RIGHT_SIDE7] = "Right LED 7";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_SCROLLWHEEL] = "Scroll Wheel LED";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LOGO] = "Logo LED";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BACKLIGHT] = "Backlight LED";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE1] = "Left LED 1";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE2] = "Left LED 2";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE3] = "Left LED 3";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE4] = "Left LED 4";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE5] = "Left LED 5";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE6] = "Left LED 6";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE7] = "Left LED 7";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM1] = "Bottom LED 1";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM2] = "Bottom LED 2";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM3] = "Bottom LED 3";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM4] = "Bottom LED 4";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM5] = "Bottom LED 5";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE1] = "Right LED 1";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE2] = "Right LED 2";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE3] = "Right LED 3";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE4] = "Right LED 4";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE5] = "Right LED 5";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE6] = "Right LED 6";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE7] = "Right LED 7";
 }
 
 ChromaSDKPlugin::~ChromaSDKPlugin()
@@ -683,7 +683,7 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetKeyboardKeyColor(const EChro
 	return colors;
 }
 
-const vector<FChromaSDKColors>& ChromaSDKPlugin::SetMouseLedColor(const EChromaSDKMouseLed& led, COLORREF color, vector<FChromaSDKColors>& colors)
+const vector<FChromaSDKColors>& ChromaSDKPlugin::SetMouseLEDColor(const EChromaSDKMouseLED& led, COLORREF color, vector<FChromaSDKColors>& colors)
 {
 	int maxRow = Mouse::MAX_ROW;
 	int maxColumn = Mouse::MAX_COLUMN;
@@ -1040,7 +1040,7 @@ const char* ChromaSDKPlugin::GetKeyboardChar(EChromaSDKKeyboardKey key)
 	return _mKeyboardCharMap[key];
 }
 
-const char* ChromaSDKPlugin::GetMouseChar(EChromaSDKMouseLed led)
+const char* ChromaSDKPlugin::GetMouseChar(EChromaSDKMouseLED led)
 {
 	return _mMouseCharMap[led];
 }
