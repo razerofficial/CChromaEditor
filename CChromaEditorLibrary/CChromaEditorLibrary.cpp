@@ -10,6 +10,7 @@
 #endif
 
 #define TEMP_FILE "temp.chroma"
+#define ANIMATION_VERSION 1
 #define ID_DYNAMIC_BUTTON_MIN 2000
 #define ID_DYNAMIC_COLOR_MIN 2200
 #define ID_DYNAMIC_BUTTON_MAX 2256
@@ -108,11 +109,27 @@ void CMainViewDlg::LoadFile()
 		long expectedRead = 1;
 		long expectedSize = sizeof(byte);
 
+		//version
+		int version = 0;
+		expectedSize = sizeof(int);
+		read = fread(&version, expectedSize, 1, stream);
+		if (read != expectedRead)
+		{
+			fprintf(stderr, "Failed to read version!\r\n");
+			return;
+		}
+		if (version != ANIMATION_VERSION)
+		{
+			fprintf(stderr, "Unexpected Version!\r\n");
+			return;
+		}
+
 		//device
 		byte device = 0;
 
 		// device type
 		byte deviceType = 0;
+		expectedSize = sizeof(byte);
 		read = fread(&deviceType, expectedSize, 1, stream);
 		if (read == expectedRead)
 		{
@@ -276,13 +293,25 @@ void CMainViewDlg::SaveFile()
 	if (0 == fopen_s(&stream, _mPath.c_str(), "wb") &&
 		stream)
 	{
-		long expectedSize = sizeof(byte);
+		long write = 0;
+		long expectedWrite = 1;
+		long expectedSize = 0;
+
+		int version = ANIMATION_VERSION;
+		expectedSize = sizeof(int);
+		write = fwrite(&version, expectedSize, 1, stream);
+		if (expectedWrite != write)
+		{
+			fprintf(stderr, "Failed to write version!\r\n");
+			return;
+		}
 
 		//device
 		byte device = 0;
 
 		//device type
 		byte deviceType = (byte)_mDeviceType;
+		expectedSize = sizeof(byte);
 		fwrite(&deviceType, expectedSize, 1, stream);
 
 		//device
@@ -1045,6 +1074,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 			}
 		}
 	}
+	SaveFile();
 }
 
 void CMainViewDlg::OnBnClickedButtonImportImage()
@@ -1123,6 +1153,7 @@ void CMainViewDlg::OnBnClickedButtonImportOverrideTime()
 		RefreshFrames();
 		break;
 	}
+	SaveFile();
 }
 
 
