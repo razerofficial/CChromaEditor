@@ -7,6 +7,8 @@ using namespace std;
 
 Animation2D::Animation2D()
 {
+	//default device
+	_mDevice = EChromaSDKDevice2DEnum::DE_Keyboard;
 	Reset();
 }
 

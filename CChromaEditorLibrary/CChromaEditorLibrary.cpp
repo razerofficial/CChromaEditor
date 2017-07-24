@@ -9,6 +9,7 @@
 #define new DEBUG_NEW
 #endif
 
+#define TEMP_FILE "temp.chroma"
 #define ID_DYNAMIC_BUTTON_MIN 2000
 #define ID_DYNAMIC_COLOR_MIN 2200
 #define ID_DYNAMIC_BUTTON_MAX 2256
@@ -82,6 +83,91 @@ BOOL CCChromaEditorLibraryApp::InitInstance()
 
 CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 {
+	_mPath = "";
+}
+
+void CMainViewDlg::OpenOrCreateAnimation(const std::string& path)
+{
+	_mPath = path;
+}
+
+void CMainViewDlg::LoadFile()
+{
+	if (_mPath.empty())
+	{
+		fprintf(stderr, "LoadFile: Path cannot be empty! Using `%s` instead.", TEMP_FILE);
+		_mPath = TEMP_FILE;
+	}
+
+	fprintf(stdout, "LoadFile: %s\r\n", _mPath.c_str());
+	FILE* stream;
+	if (0 == fopen_s(&stream, _mPath.c_str(), "rb") &&
+		stream)
+	{
+		long expectedSize = sizeof(byte);
+
+		//device
+		byte device = 0;
+
+		// device type
+		byte deviceType = 0;
+		if (expectedSize == fread(&deviceType, expectedSize, 1, stream))
+		{
+			_mDeviceType = (EChromaSDKDeviceTypeEnum)deviceType;
+
+			//device
+			switch (_mDeviceType)
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				if (expectedSize == fread(&device, expectedSize, 1, stream))
+				{
+					_mEdit1D.SetDevice((EChromaSDKDevice1DEnum)device);
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				if (expectedSize == fread(&device, expectedSize, 1, stream))
+				{
+					_mEdit2D.SetDevice((EChromaSDKDevice2DEnum)device);
+				}
+				break;
+			}
+		}
+
+		std::fclose(stream);
+	}
+}
+
+void CMainViewDlg::SaveFile()
+{
+	FILE* stream;
+	if (0 == fopen_s(&stream, _mPath.c_str(), "wb") &&
+		stream)
+	{
+		long expectedSize = sizeof(byte);
+
+		//device
+		byte device = 0;
+
+		//device type
+		byte deviceType = (byte)_mDeviceType;
+		fwrite(&deviceType, expectedSize, 1, stream);
+
+		//device
+		switch (_mDeviceType)
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			device = _mEdit1D.GetDevice();
+			fwrite(&device, expectedSize, 1, stream);
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			device = _mEdit2D.GetDevice();
+			fwrite(&device, expectedSize, 1, stream);
+			break;
+		}
+
+		fflush(stream);
+		std::fclose(stream);
+	}
 }
 
 CEdit* CMainViewDlg::GetControlOverrideTime()
@@ -446,15 +532,15 @@ void CMainViewDlg::RefreshFrames()
 
 BOOL CMainViewDlg::OnInitDialog()
 {
+	// Setup default
+	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
+
+	LoadFile();
+
 	// setup dialog
 	UpdateOverrideTime(DEFAULT_OVERRIDE_TIME);
 	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_1D));
 	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_2D));
-
-	// Setup defaults
-	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
-	_mEdit1D.SetDevice(EChromaSDKDevice1DEnum::DE_ChromaLink);
-	_mEdit2D.SetDevice(EChromaSDKDevice2DEnum::DE_Keyboard);
 
 	// setup keyboard chars
 	for (int key = EChromaSDKKeyboardKey::KK_ESC; key < EChromaSDKKeyboardKey::KK_INVALID; ++key)
@@ -796,6 +882,9 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 
 	if (changed)
 	{
+		// Save the file
+		SaveFile();
+
 		// Create the grid buttons
 		RecreateGrid();
 
@@ -853,6 +942,9 @@ void CMainViewDlg::OnBnClickedButtonSetDevice()
 
 	if (changed)
 	{
+		// Save the file
+		SaveFile();
+
 		// Create the grid buttons
 		RecreateGrid();
 

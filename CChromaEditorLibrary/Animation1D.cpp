@@ -7,6 +7,8 @@ using namespace std;
 
 Animation1D::Animation1D()
 {
+	// default devie
+	_mDevice = EChromaSDKDevice1DEnum::DE_ChromaLink;
 	Reset();
 }
 

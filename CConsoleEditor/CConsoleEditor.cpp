@@ -32,7 +32,7 @@ int main()
 		return -1;
 	}
 
-	methodOpenDialog("Some path");
+	methodOpenDialog("KeyboardEffect.chroma");
 
 	while (methodIsDialogOpen())
 	{

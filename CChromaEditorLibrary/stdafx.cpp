@@ -9,17 +9,19 @@
 using namespace std;
 
 bool _gDialogIsOpen = false;
-char _gPath[256] = {0};
+string _gPath = "";
 
 void ThreadOpenEditorDialog()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	// normal function body here
 
-	fprintf(stdout, "CChromaEditorLibrary::ThreadOpenEditorDialog %s\r\n", _gPath);
+	//fprintf(stdout, "CChromaEditorLibrary::ThreadOpenEditorDialog %s\r\n", _gPath.c_str());
 
 	// dialog instance
 	CMainViewDlg mainViewDlg;
+
+	mainViewDlg.OpenOrCreateAnimation(_gPath);
 
 	// keep dialog focused
 	mainViewDlg.DoModal();
@@ -44,7 +46,7 @@ extern "C"
 
 	EXPORT_API double PluginOpenEditorDialog(char* path)
 	{
-		fprintf(stdout, "CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
+		//fprintf(stdout, "CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
 
 		if (_gDialogIsOpen)
 		{
@@ -52,7 +54,7 @@ extern "C"
 		}
 
 		_gDialogIsOpen = true;
-		sprintf_s(_gPath, "%s", path);
+		_gPath = path;
 		thread newThread(ThreadOpenEditorDialog);
 		newThread.detach();
 

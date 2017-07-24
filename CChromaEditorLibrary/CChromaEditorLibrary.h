@@ -43,6 +43,10 @@ class CMainViewDlg : public CDialogEx
 public:
 	CMainViewDlg();
 
+	void OpenOrCreateAnimation(const std::string& path);
+	void LoadFile();
+	void SaveFile();
+
 	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MAIN_VIEW };
@@ -93,6 +97,8 @@ public:
 	void OnBnClickedButtonColor(UINT nID);
 
 private:
+
+	std::string _mPath;
 
 	CEdit* GetControlOverrideTime();
 	CComboBox* GetControlDeviceType();
