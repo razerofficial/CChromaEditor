@@ -115,14 +115,18 @@ void CMainViewDlg::LoadFile()
 		read = fread(&version, expectedSize, 1, stream);
 		if (read != expectedRead)
 		{
-			fprintf(stderr, "Failed to read version!\r\n");
+			fprintf(stderr, "LoadFile: Failed to read version!\r\n");
+			std::fclose(stream);
 			return;
 		}
 		if (version != ANIMATION_VERSION)
 		{
-			fprintf(stderr, "Unexpected Version!\r\n");
+			fprintf(stderr, "LoadFile: Unexpected Version!\r\n");
+			std::fclose(stream);
 			return;
 		}
+
+		fprintf(stdout, "LoadFile: Version: %d\r\n", version);
 
 		//device
 		byte device = 0;
@@ -152,8 +156,9 @@ void CMainViewDlg::LoadFile()
 					read = fread(&frameCount, expectedSize, 1, stream);
 					if (read != expectedRead)
 					{
-						fprintf(stderr, "Error detected reading frame count!\r\n");
+						fprintf(stderr, "LoadFile: Error detected reading frame count!\r\n");
 						_mEdit1D.Reset();
+						std::fclose(stream);
 						return;
 					}
 					else
@@ -170,8 +175,9 @@ void CMainViewDlg::LoadFile()
 							read = fread(&frame.Duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
-								fprintf(stderr, "Error detected reading duration!\r\n");
+								fprintf(stderr, "LoadFile: Error detected reading duration!\r\n");
 								_mEdit1D.Reset();
+								std::fclose(stream);
 								return;
 							}
 							else
@@ -184,8 +190,9 @@ void CMainViewDlg::LoadFile()
 									read = fread(&color, expectedSize, 1, stream);
 									if (read != expectedRead)
 									{
-										fprintf(stderr, "Error detected reading color!\r\n");
+										fprintf(stderr, "LoadFile: Error detected reading color!\r\n");
 										_mEdit1D.Reset();
+										std::fclose(stream);
 										return;
 									}
 									else
@@ -220,8 +227,9 @@ void CMainViewDlg::LoadFile()
 					read = fread(&frameCount, expectedSize, 1, stream);
 					if (read != expectedRead)
 					{
-						fprintf(stderr, "Error detected reading frame count!\r\n");
+						fprintf(stderr, "LoadFile: Error detected reading frame count!\r\n");
 						_mEdit2D.Reset();
+						std::fclose(stream);
 						return;
 					}
 					else
@@ -239,8 +247,9 @@ void CMainViewDlg::LoadFile()
 							read = fread(&frame.Duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
-								fprintf(stderr, "Error detected reading duration!\r\n");
+								fprintf(stderr, "LoadFile: Error detected reading duration!\r\n");
 								_mEdit2D.Reset();
+								std::fclose(stream);
 								return;
 							}
 							else
@@ -256,8 +265,9 @@ void CMainViewDlg::LoadFile()
 										read = fread(&color, expectedSize, 1, stream);
 										if (read != expectedRead)
 										{
-											fprintf(stderr, "Error detected reading color!\r\n");
+											fprintf(stderr, "LoadFile: Error detected reading color!\r\n");
 											_mEdit2D.Reset();
+											std::fclose(stream);
 											return;
 										}
 										else
@@ -290,7 +300,13 @@ void CMainViewDlg::LoadFile()
 void CMainViewDlg::SaveFile()
 {
 	FILE* stream;
-	if (0 == fopen_s(&stream, _mPath.c_str(), "wb") &&
+	int result = fopen_s(&stream, _mPath.c_str(), "wb");
+	if (result == 13)
+	{
+		fprintf(stderr, "SaveFile: Permission denied!\r\n");
+		return;
+	}
+	else if (0 == result &&
 		stream)
 	{
 		long write = 0;
@@ -302,7 +318,8 @@ void CMainViewDlg::SaveFile()
 		write = fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
-			fprintf(stderr, "Failed to write version!\r\n");
+			fprintf(stderr, "SaveFile: Failed to write version!\r\n");
+			std::fclose(stream);
 			return;
 		}
 
