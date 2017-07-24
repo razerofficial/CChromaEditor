@@ -9,7 +9,7 @@
 typedef double(*PLUGIN_IS_DIALOG_OPEN)();
 typedef double(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
 
-int main()
+int main(int argc, char *argv[])
 {
 	HMODULE library = LoadLibrary(CHROMA_EDITOR_DLL);
 	if (library == NULL)
@@ -32,7 +32,14 @@ int main()
 		return -1;
 	}
 
-	methodOpenDialog("KeyboardEffect.chroma");
+	if (argc <= 1)
+	{
+		methodOpenDialog("KeyboardEffect.chroma");
+	}
+	else
+	{
+		methodOpenDialog(argv[1]);
+	}
 
 	while (methodIsDialogOpen())
 	{
