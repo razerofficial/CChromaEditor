@@ -50,6 +50,8 @@ public:
 
 	virtual BOOL OnInitDialog();
 
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
@@ -85,6 +87,8 @@ public:
 	afx_msg void OnBnClickedButtonDelete();
 	afx_msg void OnBnClickedButtonColor();
 	afx_msg void OnBnClickedButtonSetDeviceType();
+	afx_msg void OnEnChangeTextOverrideTime();
+	afx_msg void OnBnClickedButtonSetDuration();
 
 	void OnBnClickedButtonColor(UINT nID);
 
@@ -135,7 +139,6 @@ private:
 	ChromaSDK::EditorAnimation1D _mEdit1D;
 	ChromaSDK::EditorAnimation2D _mEdit2D;
 
-public:
-	afx_msg void OnEnChangeTextOverrideTime();
-	afx_msg void OnBnClickedButtonSetDuration();
+	// keyboard input
+	bool _mControlModifier;
 };

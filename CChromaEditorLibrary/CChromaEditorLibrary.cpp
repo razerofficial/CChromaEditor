@@ -539,6 +539,75 @@ BOOL CMainViewDlg::OnInitDialog()
 	return TRUE;
 }
 
+BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// check focus first
+	bool textFieldHasFocus = false;
+	CWnd* control = GetFocus();
+	if (control)
+	{
+		switch (control->GetDlgCtrlID())
+		{
+		case IDC_TEXT_OVERRIDE_TIME:
+		case IDC_EDIT_DURATION:
+			textFieldHasFocus = true;
+			break;
+		}
+	}
+
+	if (!textFieldHasFocus)
+	{
+		if (pMsg->message == WM_KEYDOWN)
+		{
+			switch (pMsg->wParam)
+			{
+			case VK_CONTROL:
+				_mControlModifier = true;
+				break;
+			}
+		}
+		else if (pMsg->message == WM_KEYUP)
+		{
+			switch (pMsg->wParam)
+			{
+			case VK_OEM_MINUS:
+				OnBnClickedButtonDelete();
+				return true;
+			case VK_OEM_PLUS:
+				OnBnClickedButtonAdd();
+				return true;
+			case VK_LEFT:
+				OnBnClickedButtonPrevious();
+				return true;
+			case VK_RIGHT:
+				OnBnClickedButtonNext();
+				return true;
+			case VK_CONTROL:
+				_mControlModifier = false;
+				break;
+			case 'C':
+				if (_mControlModifier)
+				{
+					OnBnClickedButtonCopy();
+					return true;
+				}
+				break;
+			case 'V':
+				if (_mControlModifier)
+				{
+					OnBnClickedButtonPaste();
+					return true;
+				}
+				break;
+			default:
+				fprintf(stdout, "Pressed: %d\r\n", pMsg->wParam);
+				break;
+			}
+		}
+	}
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
 void CMainViewDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
