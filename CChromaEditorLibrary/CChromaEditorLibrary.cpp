@@ -95,7 +95,7 @@ void CMainViewDlg::LoadFile()
 {
 	if (_mPath.empty())
 	{
-		fprintf(stderr, "LoadFile: Path cannot be empty! Using `%s` instead.", TEMP_FILE);
+		fprintf(stderr, "LoadFile: Path cannot be empty! Using `%s` instead.\r\n", TEMP_FILE);
 		_mPath = TEMP_FILE;
 	}
 
@@ -104,6 +104,8 @@ void CMainViewDlg::LoadFile()
 	if (0 == fopen_s(&stream, _mPath.c_str(), "rb") &&
 		stream)
 	{
+		long read = 0;
+		long expectedRead = 1;
 		long expectedSize = sizeof(byte);
 
 		//device
@@ -111,7 +113,8 @@ void CMainViewDlg::LoadFile()
 
 		// device type
 		byte deviceType = 0;
-		if (expectedSize == fread(&deviceType, expectedSize, 1, stream))
+		read = fread(&deviceType, expectedSize, 1, stream);
+		if (read == expectedRead)
 		{
 			_mDeviceType = (EChromaSDKDeviceTypeEnum)deviceType;
 
@@ -119,15 +122,145 @@ void CMainViewDlg::LoadFile()
 			switch (_mDeviceType)
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
-				if (expectedSize == fread(&device, expectedSize, 1, stream))
+				read = fread(&device, expectedSize, 1, stream);
+				if (read == expectedRead)
 				{
 					_mEdit1D.SetDevice((EChromaSDKDevice1DEnum)device);
+					_mEdit1D.Reset();
+
+					//frame count
+					int frameCount;
+
+					expectedSize = sizeof(int);
+					read = fread(&frameCount, expectedSize, 1, stream);
+					if (read != expectedRead)
+					{
+						fprintf(stderr, "Error detected reading frame count!\r\n");
+						_mEdit1D.Reset();
+						return;
+					}
+					else
+					{
+						vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+						for (int index = 0; index < frameCount; ++index)
+						{
+							FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+							int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
+
+							//duration
+							frame.Duration = 0.0f;
+							expectedSize = sizeof(float);
+							read = fread(&frame.Duration, expectedSize, 1, stream);
+							if (read != expectedRead)
+							{
+								fprintf(stderr, "Error detected reading duration!\r\n");
+								_mEdit1D.Reset();
+								return;
+							}
+							else
+							{
+								// colors
+								expectedSize = sizeof(int);
+								for (int i = 0; i < maxLeds; ++i)
+								{
+									int color = 0;
+									read = fread(&color, expectedSize, 1, stream);
+									if (read != expectedRead)
+									{
+										fprintf(stderr, "Error detected reading color!\r\n");
+										_mEdit1D.Reset();
+										return;
+									}
+									else
+									{
+										frame.Colors.push_back((COLORREF)color);
+									}
+								}
+								if (index == 0)
+								{
+									frames[0] = frame;
+								}
+								else
+								{
+									frames.push_back(frame);
+								}
+							}
+						}
+					}
 				}
 				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
-				if (expectedSize == fread(&device, expectedSize, 1, stream))
+				read = fread(&device, expectedSize, 1, stream);
+				if (read == expectedRead)
 				{
 					_mEdit2D.SetDevice((EChromaSDKDevice2DEnum)device);
+					_mEdit2D.Reset();
+
+					//frame count
+					int frameCount;
+
+					expectedSize = sizeof(int);
+					read = fread(&frameCount, expectedSize, 1, stream);
+					if (read != expectedRead)
+					{
+						fprintf(stderr, "Error detected reading frame count!\r\n");
+						_mEdit2D.Reset();
+						return;
+					}
+					else
+					{
+						vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+						for (int index = 0; index < frameCount; ++index)
+						{
+							FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+							int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
+							int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
+
+							//duration
+							frame.Duration = 0.0f;
+							expectedSize = sizeof(float);
+							read = fread(&frame.Duration, expectedSize, 1, stream);
+							if (read != expectedRead)
+							{
+								fprintf(stderr, "Error detected reading duration!\r\n");
+								_mEdit2D.Reset();
+								return;
+							}
+							else
+							{
+								// colors
+								expectedSize = sizeof(int);
+								for (int i = 0; i < maxRow; ++i)
+								{
+									FChromaSDKColors row = FChromaSDKColors();
+									for (int j = 0; j < maxColumn; ++j)
+									{
+										int color = 0;
+										read = fread(&color, expectedSize, 1, stream);
+										if (read != expectedRead)
+										{
+											fprintf(stderr, "Error detected reading color!\r\n");
+											_mEdit2D.Reset();
+											return;
+										}
+										else
+										{
+											row.Colors.push_back((COLORREF)color);
+										}
+									}
+									frame.Colors.push_back(row);
+								}
+								if (index == 0)
+								{
+									frames[0] = frame;
+								}
+								else
+								{
+									frames.push_back(frame);
+								}
+							}
+						}
+					}
 				}
 				break;
 			}
@@ -163,6 +296,80 @@ void CMainViewDlg::SaveFile()
 			device = _mEdit2D.GetDevice();
 			fwrite(&device, expectedSize, 1, stream);
 			break;
+		}
+
+		//frame count
+		int frameCount = 0;
+		switch (_mDeviceType)
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			frameCount = _mEdit1D.GetFrameCount();
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			frameCount = _mEdit2D.GetFrameCount();
+			break;
+		}
+		expectedSize = sizeof(int);
+		fwrite(&frameCount, expectedSize, 1, stream);
+
+		//frames
+		float duration = 0.0f;
+		COLORREF color = RGB(0, 0, 0);
+		for (int index = 0; index < frameCount; ++index)
+		{
+			//duration
+			switch (_mDeviceType)
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				duration = _mEdit1D.GetDuration(index);
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				duration = _mEdit2D.GetDuration(index);
+				break;
+			}
+			expectedSize = sizeof(float);
+			fwrite(&duration, expectedSize, 1, stream);
+
+			//colors
+			switch (_mDeviceType)
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
+					if (index < frames.size())
+					{
+						FChromaSDKColorFrame1D& frame = frames[index];
+						for (int i = 0; i < frame.Colors.size(); ++i)
+						{
+							//color
+							int color = (int)frame.Colors[i];
+							expectedSize = sizeof(int);
+							fwrite(&color, expectedSize, 1, stream);
+						}
+					}
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
+					if (index < frames.size())
+					{
+						FChromaSDKColorFrame2D& frame = frames[index];
+						for (int i = 0; i < frame.Colors.size(); ++i)
+						{
+							FChromaSDKColors& row = frame.Colors[i];
+							for (int j = 0; j < row.Colors.size(); ++j)
+							{
+								//color
+								int color = row.Colors[j];
+								expectedSize = sizeof(int);
+								fwrite(&color, expectedSize, 1, stream);
+							}
+						}
+					}
+				}
+				break;
+			}
 		}
 
 		fflush(stream);
@@ -717,9 +924,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_STOP, &CMainViewDlg::OnBnClickedButtonStop)
 	ON_BN_CLICKED(IDC_BUTTON_LOAD, &CMainViewDlg::OnBnClickedButtonLoad)
 	ON_BN_CLICKED(IDC_BUTTON_UNLOAD, &CMainViewDlg::OnBnClickedButtonUnload)
-	ON_CBN_SELCHANGE(IDC_COMBO_KEYS, &CMainViewDlg::OnCbnSelchangeComboKeys)
 	ON_BN_CLICKED(IDC_BUTTON_SET_KEY, &CMainViewDlg::OnBnClickedButtonSetKey)
-	ON_CBN_SELCHANGE(IDC_COMBO_LEDS, &CMainViewDlg::OnCbnSelchangeComboLeds)
 	ON_BN_CLICKED(IDC_BUTTON_SET_LED, &CMainViewDlg::OnBnClickedButtonSetLed)
 	ON_EN_CHANGE(IDC_OVERRIDE_TIME, &CMainViewDlg::OnEnChangeOverrideTime)
 	ON_BN_CLICKED(IDC_BUTTON_PREVIOUS, &CMainViewDlg::OnBnClickedButtonPrevious)
@@ -998,6 +1203,7 @@ void CMainViewDlg::OnBnClickedButtonClear()
 		}
 		break;
 	}
+	SaveFile();
 }
 
 
@@ -1055,6 +1261,7 @@ void CMainViewDlg::OnBnClickedButtonFill()
 		}
 		break;
 	}
+	SaveFile();
 }
 
 
@@ -1099,6 +1306,7 @@ void CMainViewDlg::OnBnClickedButtonRandom()
 		}
 		break;
 	}
+	SaveFile();
 }
 
 
@@ -1185,6 +1393,7 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 		}
 		break;
 	}
+	SaveFile();
 }
 
 
@@ -1264,12 +1473,6 @@ void CMainViewDlg::OnBnClickedButtonUnload()
 }
 
 
-void CMainViewDlg::OnCbnSelchangeComboKeys()
-{
-	// TODO: Add your control notification handler code here
-}
-
-
 void CMainViewDlg::OnBnClickedButtonSetKey()
 {
 	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D &&
@@ -1293,13 +1496,6 @@ void CMainViewDlg::OnBnClickedButtonSetKey()
 		}
 	}
 }
-
-
-void CMainViewDlg::OnCbnSelchangeComboLeds()
-{
-	// TODO: Add your control notification handler code here
-}
-
 
 void CMainViewDlg::OnBnClickedButtonSetLed()
 {
@@ -1484,6 +1680,7 @@ void CMainViewDlg::OnBnClickedButtonAdd()
 		}
 		break;
 	}
+	SaveFile();
 }
 
 
@@ -1550,6 +1747,7 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 		}
 		break;
 	}
+	SaveFile();
 }
 
 
@@ -1592,4 +1790,5 @@ void CMainViewDlg::OnBnClickedButtonSetDuration()
 		}
 		break;
 	}
+	SaveFile();
 }

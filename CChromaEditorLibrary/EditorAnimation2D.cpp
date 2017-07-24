@@ -41,6 +41,7 @@ void EditorAnimation2D::Reset()
 {
 	EChromaSDKDevice2DEnum device = GetDevice();
 	_mFrameCopy.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(device);
+	_mAnimation.Reset();
 }
 
 void EditorAnimation2D::SetCopy(FChromaSDKColorFrame2D& copy)
@@ -61,4 +62,15 @@ void EditorAnimation2D::OverrideTime(float time)
 		FChromaSDKColorFrame2D& frame = frames[i];
 		frame.Duration = time;
 	}
+}
+
+float EditorAnimation2D::GetDuration(int index)
+{
+	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
+	if (index < frames.size())
+	{
+		FChromaSDKColorFrame2D& frame = frames[index];
+		return frame.Duration;
+	}
+	return 0.0f;
 }

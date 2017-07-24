@@ -9,4 +9,5 @@ public:
 	int GetCurrentFrame();
 	void SetCurrentFrame(int index);
 	int GetFrameCount();
+	virtual float GetDuration(int index) = 0;
 };

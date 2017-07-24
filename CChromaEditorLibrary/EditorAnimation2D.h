@@ -16,8 +16,9 @@ namespace ChromaSDK
 		void SetCopy(FChromaSDKColorFrame2D& copy);
 		FChromaSDKColorFrame2D& GetCopy();
 		void OverrideTime(float time);
-	private:
+		float GetDuration(int index);
 		void Reset();
+	private:
 		Animation2D _mAnimation;
 		FChromaSDKColorFrame2D _mFrameCopy;
 	};
