@@ -15,6 +15,7 @@ namespace ChromaSDK
 		std::vector<FChromaSDKColorFrame1D>& GetFrames();
 		int GetFrameCount();
 		void Play();
+		void Stop();
 		void Update();
 	private:
 		EChromaSDKDevice1DEnum _mDevice;

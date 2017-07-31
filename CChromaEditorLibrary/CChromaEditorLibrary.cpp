@@ -1496,24 +1496,34 @@ void CMainViewDlg::OnBnClickedButtonPreview()
 	}
 }
 
-
-void CMainViewDlg::OnBnClickedButtonPlay()
+AnimationBase* CMainViewDlg::GetAnimation()
 {
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
-		_mEdit1D.GetAnimation()->Play();
-		break;
+		return _mEdit1D.GetAnimation();
 	case EChromaSDKDeviceTypeEnum::DE_2D:
-		_mEdit2D.GetAnimation()->Play();
-		break;
+		return _mEdit2D.GetAnimation();
+	default:
+		return nullptr;
+	}
+}
+
+void CMainViewDlg::OnBnClickedButtonPlay()
+{
+	if (GetAnimation() != nullptr)
+	{
+		GetAnimation()->Play();
 	}
 }
 
 
 void CMainViewDlg::OnBnClickedButtonStop()
 {
-	// TODO: Add your control notification handler code here
+	if (GetAnimation() != nullptr)
+	{
+		GetAnimation()->Stop();
+	}
 }
 
 

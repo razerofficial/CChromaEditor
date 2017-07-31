@@ -98,6 +98,8 @@ public:
 
 private:
 
+	AnimationBase* GetAnimation();
+
 	std::string _mPath;
 
 	CEdit* GetControlOverrideTime();

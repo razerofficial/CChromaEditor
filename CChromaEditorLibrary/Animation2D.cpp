@@ -58,6 +58,14 @@ void Animation2D::Play()
 	}
 }
 
+void Animation2D::Stop()
+{
+	if (ChromaThread::Instance())
+	{
+		ChromaThread::Instance()->RemoveAnimation(this);
+	}
+}
+
 void Animation2D::Update()
 {
 	fprintf(stdout, "Animation2D::Update()\r\n");
