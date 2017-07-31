@@ -4,12 +4,20 @@
 
 #include "stdafx.h"
 #include "CChromaEditorLibrary.h"
+#include "ChromaThread.h"
 #include <thread>
 
+using namespace ChromaSDK;
 using namespace std;
 
+ChromaThread _gChromaThread;
 bool _gDialogIsOpen = false;
 string _gPath = "";
+
+void SetupChromaThread()
+{
+	_gChromaThread.Start();
+}
 
 void ThreadOpenEditorDialog()
 {
@@ -34,6 +42,9 @@ extern "C"
 {
 	EXPORT_API double PluginIsDialogOpen()
 	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
 		if (_gDialogIsOpen)
 		{
 			return 1;
@@ -46,6 +57,9 @@ extern "C"
 
 	EXPORT_API double PluginOpenEditorDialog(char* path)
 	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
 		//fprintf(stdout, "CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
 
 		if (_gDialogIsOpen)
