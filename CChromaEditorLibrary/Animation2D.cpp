@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Animation2D.h"
 #include "ChromaSDKPlugin.h"
+#include "ChromaThread.h"
 
 using namespace ChromaSDK;
 using namespace std;
@@ -49,7 +50,15 @@ int Animation2D::GetFrameCount()
 	return _mFrames.size();
 }
 
+void Animation2D::Play()
+{
+	if (ChromaThread::Instance())
+	{
+		ChromaThread::Instance()->AddAnimation(this);
+	}
+}
+
 void Animation2D::Update()
 {
-
+	fprintf(stdout, "Animation2D::Update()\r\n");
 }

@@ -10,13 +10,12 @@
 using namespace ChromaSDK;
 using namespace std;
 
-ChromaThread _gChromaThread;
 bool _gDialogIsOpen = false;
 string _gPath = "";
 
 void SetupChromaThread()
 {
-	_gChromaThread.Start();
+	ChromaThread::Instance()->Start();
 }
 
 void ThreadOpenEditorDialog()

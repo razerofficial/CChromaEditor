@@ -9,8 +9,11 @@ namespace ChromaSDK
 		int GetCurrentFrame();
 		void SetCurrentFrame(int index);
 		virtual int GetFrameCount() = 0;
+		virtual void Play() = 0;
+		bool IsPlaying();
 		virtual void Update() = 0;
 	protected:
 		int _mCurrentFrame;
+		bool _mPlaying;
 	};
 }

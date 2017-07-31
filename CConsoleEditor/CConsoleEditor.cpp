@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
 
 	if (argc <= 1)
 	{
-		methodOpenDialog("KeyboardEffect.chroma");
+		//methodOpenDialog("KeyboardEffect.chroma");
+		methodOpenDialog("C:\\Public\\UnityChromaSwagger\\Assets\\ChromaSDK\\Examples\\Animations\\KeyboardParticleAnimation.chroma");
 	}
 	else
 	{

@@ -1499,7 +1499,15 @@ void CMainViewDlg::OnBnClickedButtonPreview()
 
 void CMainViewDlg::OnBnClickedButtonPlay()
 {
-	// TODO: Add your control notification handler code here
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		_mEdit1D.GetAnimation()->Play();
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		_mEdit2D.GetAnimation()->Play();
+		break;
+	}
 }
 
 

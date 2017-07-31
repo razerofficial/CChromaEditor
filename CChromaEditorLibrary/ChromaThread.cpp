@@ -4,9 +4,16 @@
 using namespace ChromaSDK;
 using namespace std;
 
+ChromaThread ChromaThread::_sInstance = ChromaThread();
+
 ChromaThread::ChromaThread()
 {
 	_mThread = nullptr;
+}
+
+ChromaThread* ChromaThread::Instance()
+{
+	return &_sInstance;
 }
 
 void ChromaThread::ChromaWorker()
