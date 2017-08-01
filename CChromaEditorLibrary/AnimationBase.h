@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ChromaSDKPluginTypes.h"
+
 namespace ChromaSDK
 {
 	class AnimationBase
@@ -11,10 +13,15 @@ namespace ChromaSDK
 		virtual int GetFrameCount() = 0;
 		virtual void Play() = 0;
 		bool IsPlaying();
+		virtual void Load() = 0;
+		virtual void Unload() = 0;
 		virtual void Stop() = 0;
-		virtual void Update() = 0;
+		virtual void Update(float deltaTime) = 0;
 	protected:
 		int _mCurrentFrame;
-		bool _mPlaying;
+		bool _mIsLoaded;
+		bool _mIsPlaying;
+		float _mTime;
+		std::vector<FChromaSDKEffectResult> _mEffects;
 	};
 }

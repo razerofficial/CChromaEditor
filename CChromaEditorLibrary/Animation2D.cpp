@@ -19,6 +19,11 @@ void Animation2D::Reset()
 	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mDevice);
 	_mFrames.push_back(frame);
+
+	_mIsPlaying = false;
+	_mIsLoaded = false;
+	_mTime = 0.0f;
+	_mCurrentFrame = 0;
 }
 
 EChromaSDKDevice2DEnum Animation2D::GetDevice()
@@ -50,8 +55,78 @@ int Animation2D::GetFrameCount()
 	return _mFrames.size();
 }
 
+float Animation2D::GetDuration(int index)
+{
+	if (index < _mFrames.size())
+	{
+		FChromaSDKColorFrame2D& frame = _mFrames[index];
+		return frame.Duration;
+	}
+	return 0.0f;
+}
+
+void Animation2D::Load()
+{
+	if (_mIsLoaded)
+	{
+		return;
+	}
+
+	for (int i = 0; i < _mFrames.size(); ++i)
+	{
+		FChromaSDKColorFrame2D& frame = _mFrames[i];
+		FChromaSDKEffectResult effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors);
+		if (effect.Result != 0)
+		{
+			fprintf(stderr, "Load: Failed to create effect!\r\n");
+		}
+		_mEffects.push_back(effect);
+	}
+
+	_mIsLoaded = true;
+}
+
+void Animation2D::Unload()
+{
+	if (!_mIsLoaded)
+	{
+		return;
+	}
+
+	for (int i = 0; i < _mEffects.size(); ++i)
+	{
+		FChromaSDKEffectResult& effect = _mEffects[i];
+		int result = ChromaSDKPlugin::GetInstance()->DeleteEffect(effect.EffectId);
+		if (result != 0)
+		{
+			fprintf(stderr, "Unload: Failed to delete effect!\r\n");
+		}
+	}
+	_mEffects.clear();
+	_mIsLoaded = false;
+}
+
 void Animation2D::Play()
 {
+	if (!_mIsLoaded)
+	{
+		Load();
+	}
+
+	_mTime = 0.0f;
+	_mIsPlaying = true;
+	_mCurrentFrame = 0;
+
+	if (_mCurrentFrame < _mEffects.size())
+	{
+		FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
+		int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
+		if (result != 0)
+		{
+			fprintf(stderr, "Play: Failed to set effect!\r\n");
+		}
+	}
+
 	if (ChromaThread::Instance())
 	{
 		ChromaThread::Instance()->AddAnimation(this);
@@ -66,7 +141,36 @@ void Animation2D::Stop()
 	}
 }
 
-void Animation2D::Update()
+void Animation2D::Update(float deltaTime)
 {
-	fprintf(stdout, "Animation2D::Update()\r\n");
+	//fprintf(stdout, "Animation2D::Update()\r\n");
+
+	if (!_mIsPlaying)
+	{
+		return;
+	}
+
+	_mTime += deltaTime;
+	float nextTime = GetDuration(_mCurrentFrame);
+	if (nextTime < _mTime)
+	{
+		_mTime = 0.0f;
+		++_mCurrentFrame;
+		if (_mCurrentFrame < _mEffects.size())
+		{
+			FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
+			int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
+			if (result != 0)
+			{
+				fprintf(stderr, "Update: Failed to set effect!\r\n");
+			}
+		}
+		else
+		{
+			//fprintf(stdout, "Update: Animation Complete.\r\n");
+			_mIsPlaying = false;
+			_mTime = 0.0f;
+			_mCurrentFrame = 0;
+		}
+	}
 }

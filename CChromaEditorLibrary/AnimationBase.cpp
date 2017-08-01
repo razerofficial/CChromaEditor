@@ -6,7 +6,8 @@ using namespace ChromaSDK;
 AnimationBase::AnimationBase()
 {
 	_mCurrentFrame = 0;
-	_mPlaying = false;
+	_mIsPlaying = false;
+	_mTime = 0.0f;
 }
 
 int AnimationBase::GetCurrentFrame()
@@ -26,5 +27,5 @@ void AnimationBase::SetCurrentFrame(int index)
 
 bool AnimationBase::IsPlaying()
 {
-	return _mPlaying;
+	return _mIsPlaying;
 }

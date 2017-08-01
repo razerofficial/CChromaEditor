@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "ChromaThread.h"
+#include <chrono>
 
 using namespace ChromaSDK;
 using namespace std;
+using namespace std::chrono;
 
 ChromaThread ChromaThread::_sInstance = ChromaThread();
 
@@ -18,8 +20,20 @@ ChromaThread* ChromaThread::Instance()
 
 void ChromaThread::ChromaWorker()
 {
+	// get current time
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	high_resolution_clock::time_point timerLast = high_resolution_clock::now();
+
 	while (true)
 	{
+		// get current time
+		timer = high_resolution_clock::now();
+
+		// get time in seconds
+		duration<double, std::milli> time_span = timer - timerLast;
+		float deltaTime = time_span.count() / 1000.0f;
+		timerLast = timer;
+
 		while (_mAnimationsToRemove.size() > 0)
 		{
 			AnimationBase* animation = _mAnimationsToRemove[0];
@@ -40,13 +54,16 @@ void ChromaThread::ChromaWorker()
 			AnimationBase* animation = _mAnimations[i];
 			if (animation != nullptr)
 			{
-				animation->Update();
+				animation->Update(deltaTime);
 			}
 		}
 
-		//this_thread::yield();
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		fprintf(stdout, "ChromaThread: Sleeping...\r\n");
+		//std::this_thread::sleep_for(std::chrono::seconds(1));
+		//fprintf(stdout, "ChromaThread: Sleeping...\r\n");
+
+		//std::this_thread::sleep_for(std::chrono::microseconds(1));
+
+		this_thread::yield();
 	}
 }
 

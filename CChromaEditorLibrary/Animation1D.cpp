@@ -50,6 +50,16 @@ int Animation1D::GetFrameCount()
 	return _mFrames.size();
 }
 
+void Animation1D::Load()
+{
+
+}
+
+void Animation1D::Unload()
+{
+
+}
+
 void Animation1D::Play()
 {
 	if (ChromaThread::Instance())
@@ -66,7 +76,7 @@ void Animation1D::Stop()
 	}
 }
 
-void Animation1D::Update()
+void Animation1D::Update(float deltaTime)
 {
 	fprintf(stdout, "Animation1D::Update()\r\n");
 }

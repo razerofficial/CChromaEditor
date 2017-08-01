@@ -1529,13 +1529,19 @@ void CMainViewDlg::OnBnClickedButtonStop()
 
 void CMainViewDlg::OnBnClickedButtonLoad()
 {
-	// TODO: Add your control notification handler code here
+	if (GetAnimation() != nullptr)
+	{
+		GetAnimation()->Load();
+	}
 }
 
 
 void CMainViewDlg::OnBnClickedButtonUnload()
 {
-	// TODO: Add your control notification handler code here
+	if (GetAnimation() != nullptr)
+	{
+		GetAnimation()->Unload();
+	}
 }
 
 
