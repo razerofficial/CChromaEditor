@@ -79,6 +79,9 @@ extern "C"
 
 	EXPORT_API double PluginOpenAnimation(char* path)
 	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
 		//return animation id
 		AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
 		int id = _gAnimationId;
@@ -89,6 +92,9 @@ extern "C"
 
 	EXPORT_API double PluginLoadAnimation(double animationId)
 	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
 		int id = (int)animationId;
 		if (_gAnimations.find(id) != _gAnimations.end())
 		{
@@ -100,6 +106,9 @@ extern "C"
 
 	EXPORT_API double PluginUnloadAnimation(double animationId)
 	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
 		int id = (int)animationId;
 		if (_gAnimations.find(id) != _gAnimations.end())
 		{
@@ -111,6 +120,9 @@ extern "C"
 
 	EXPORT_API double PluginPlayAnimation(double animationId)
 	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
 		int id = (int)animationId;
 		if (_gAnimations.find(id) != _gAnimations.end())
 		{
@@ -122,6 +134,9 @@ extern "C"
 
 	EXPORT_API double PluginStopAnimation(double animationId)
 	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
 		int id = (int)animationId;
 		if (_gAnimations.find(id) != _gAnimations.end())
 		{
@@ -133,6 +148,9 @@ extern "C"
 
 	EXPORT_API double PluginCloseAnimation(double animationId)
 	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
 		int id = (int)animationId;
 		if (_gAnimations.find(id) != _gAnimations.end())
 		{
