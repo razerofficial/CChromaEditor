@@ -89,7 +89,7 @@ void Animation1D::Load()
 			}
 			_mEffects.push_back(effect);
 		}
-		catch (std::exception)
+		catch (exception)
 		{
 			fprintf(stderr, "Load: Exception in create effect!\r\n");
 			FChromaSDKEffectResult result = FChromaSDKEffectResult();
@@ -119,7 +119,7 @@ void Animation1D::Unload()
 				fprintf(stderr, "Unload: Failed to delete effect!\r\n");
 			}
 		}
-		catch (std::exception)
+		catch (exception)
 		{
 			fprintf(stderr, "Unload: Exception in delete effect!\r\n");
 		}
@@ -150,7 +150,7 @@ void Animation1D::Play()
 				fprintf(stderr, "Play: Failed to set effect!\r\n");
 			}
 		}
-		catch (std::exception)
+		catch (exception)
 		{
 			fprintf(stderr, "Play: Exception in set effect!\r\n");
 		}
@@ -194,7 +194,7 @@ void Animation1D::Update(float deltaTime)
 					fprintf(stderr, "Update: Failed to set effect!\r\n");
 				}
 			}
-			catch (std::exception)
+			catch (exception)
 			{
 				fprintf(stderr, "Update: Exception in set effect!\r\n");
 			}

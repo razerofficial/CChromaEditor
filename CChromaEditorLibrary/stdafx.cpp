@@ -79,85 +79,133 @@ extern "C"
 
 	EXPORT_API double PluginOpenAnimation(char* path)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
+		try
+		{
+			// Chroma thread plays animations
+			SetupChromaThread();
 
-		//return animation id
-		AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
-		int id = _gAnimationId;
-		_gAnimations[id] = animation;
-		++_gAnimationId;
-		return id;
+			//return animation id
+			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
+			int id = _gAnimationId;
+			_gAnimations[id] = animation;
+			++_gAnimationId;
+			return id;
+		}
+		catch (exception)
+		{
+			fprintf(stderr, "PluginOpenAnimation: Exception path=%s\r\n", path);
+			return -1;
+		}
 	}
 
 	EXPORT_API double PluginLoadAnimation(double animationId)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		int id = (int)animationId;
-		if (_gAnimations.find(id) != _gAnimations.end())
+		try
 		{
-			_gAnimations[id]->Load();
-			return id;
+			// Chroma thread plays animations
+			SetupChromaThread();
+
+			int id = (int)animationId;
+			if (_gAnimations.find(id) != _gAnimations.end())
+			{
+				_gAnimations[id]->Load();
+				return id;
+			}
+			return 0;
 		}
-		return 0;
+		catch (exception)
+		{
+			fprintf(stderr, "PluginLoadAnimation: Exception animationId=%d\r\n", (int)animationId);
+			return -1;
+		}
 	}
 
 	EXPORT_API double PluginUnloadAnimation(double animationId)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		int id = (int)animationId;
-		if (_gAnimations.find(id) != _gAnimations.end())
+		try
 		{
-			_gAnimations[id]->Unload();
-			return id;
+			// Chroma thread plays animations
+			SetupChromaThread();
+
+			int id = (int)animationId;
+			if (_gAnimations.find(id) != _gAnimations.end())
+			{
+				_gAnimations[id]->Unload();
+				return id;
+			}
+			return 0;
 		}
-		return 0;
+		catch (exception)
+		{
+			fprintf(stderr, "PluginUnloadAnimation: Exception animationId=%d\r\n", (int)animationId);
+			return -1;
+		}
 	}
 
 	EXPORT_API double PluginPlayAnimation(double animationId)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		int id = (int)animationId;
-		if (_gAnimations.find(id) != _gAnimations.end())
+		try
 		{
-			_gAnimations[id]->Play();
-			return id;
+			// Chroma thread plays animations
+			SetupChromaThread();
+
+			int id = (int)animationId;
+			if (_gAnimations.find(id) != _gAnimations.end())
+			{
+				_gAnimations[id]->Play();
+				return id;
+			}
+			return 0;
 		}
-		return 0;
+		catch (exception)
+		{
+			fprintf(stderr, "PluginPlayAnimation: Exception animationId=%d\r\n", (int)animationId);
+			return -1;
+		}
 	}
 
 	EXPORT_API double PluginStopAnimation(double animationId)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		int id = (int)animationId;
-		if (_gAnimations.find(id) != _gAnimations.end())
+		try
 		{
-			_gAnimations[id]->Stop();
-			return id;
+			// Chroma thread plays animations
+			SetupChromaThread();
+
+			int id = (int)animationId;
+			if (_gAnimations.find(id) != _gAnimations.end())
+			{
+				_gAnimations[id]->Stop();
+				return id;
+			}
+			return 0;
 		}
-		return 0;
+		catch (exception)
+		{
+			fprintf(stderr, "PluginStopAnimation: Exception animationId=%d\r\n", (int)animationId);
+			return -1;
+		}
 	}
 
 	EXPORT_API double PluginCloseAnimation(double animationId)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		int id = (int)animationId;
-		if (_gAnimations.find(id) != _gAnimations.end())
+		try
 		{
-			delete _gAnimations[id];
-			_gAnimations.erase(animationId);
-			return id;
+			// Chroma thread plays animations
+			SetupChromaThread();
+
+			int id = (int)animationId;
+			if (_gAnimations.find(id) != _gAnimations.end())
+			{
+				delete _gAnimations[id];
+				_gAnimations.erase(animationId);
+				return id;
+			}
+			return 0;
 		}
-		return 0;
+		catch (exception)
+		{
+			fprintf(stderr, "PluginCloseAnimation: Exception animationId=%d\r\n", (int)animationId);
+			return -1;
+		}
 	}
 }
