@@ -55,7 +55,7 @@ namespace ChromaSDK
 
 		bool ValidateGetProcAddress(bool condition, const char* methodName);
 
-		static ChromaSDKPlugin _sInstance;
+		static ChromaSDKPlugin* _sInstance;
 
 		HMODULE _mLibraryChroma = nullptr;
 

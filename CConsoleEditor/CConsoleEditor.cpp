@@ -18,12 +18,15 @@ using namespace std::chrono;
 
 int main(int argc, char *argv[])
 {
+	fprintf(stderr, "App launched!\r\n");
 	HMODULE library = LoadLibrary(CHROMA_EDITOR_DLL);
 	if (library == NULL)
 	{
 		fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
 		return -1;
 	}
+
+	fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
 
 	PLUGIN_IS_DIALOG_OPEN methodIsDialogOpen = (PLUGIN_IS_DIALOG_OPEN)GetProcAddress(library, "PluginIsDialogOpen");
 	if (methodIsDialogOpen == nullptr)
@@ -52,6 +55,8 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Failed to find method PluginPlayAnimation!\r\n");
 		return -1;
 	}
+
+	fprintf(stderr, "Found DLL methods!\r\n");
 
 	if (argc <= 1)
 	{
