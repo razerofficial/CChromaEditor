@@ -14,7 +14,7 @@
 using namespace ChromaSDK;
 using namespace std;
 
-ChromaSDKPlugin* ChromaSDKPlugin::_sInstance = nullptr;
+ChromaSDKPlugin ChromaSDKPlugin::_sInstance = ChromaSDKPlugin();
 
 bool ChromaSDKPlugin::ValidateGetProcAddress(bool condition, const char* methodName)
 {
@@ -31,7 +31,6 @@ bool ChromaSDKPlugin::ValidateGetProcAddress(bool condition, const char* methodN
 
 ChromaSDKPlugin::ChromaSDKPlugin()
 {
-	_sInstance = this;
 	_mLibraryChroma = LoadLibrary(CHROMASDKDLL);
 	if (_mLibraryChroma == NULL)
 	{
@@ -427,7 +426,7 @@ ChromaSDKPlugin::~ChromaSDKPlugin()
 
 ChromaSDKPlugin* ChromaSDKPlugin::GetInstance()
 {
-	return _sInstance;
+	return &_sInstance;
 }
 
 RZRESULT ChromaSDKPlugin::ChromaSDKInit()

@@ -414,7 +414,7 @@ void CMainViewDlg::RecreateGrid()
 	{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
+			int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(_mEdit1D.GetDevice());
 			int x = 25;
 			for (int i = 0; i < maxLeds; ++i)
 			{
@@ -430,8 +430,8 @@ void CMainViewDlg::RecreateGrid()
 		break;
 		case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
-			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
+			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(_mEdit2D.GetDevice());
+			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(_mEdit2D.GetDevice());
 
 			// create grid buttons
 			for (int j = 0; j < maxRow; ++j)
@@ -463,14 +463,14 @@ void CMainViewDlg::RefreshGrid()
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
+			int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(_mEdit1D.GetDevice());
 			sprintf_s(buffer, "1 x %d", maxLeds);
 		}
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
-			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
+			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(_mEdit2D.GetDevice());
+			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(_mEdit2D.GetDevice());
 			sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
 		}
 		break;
@@ -485,7 +485,7 @@ void CMainViewDlg::RefreshGrid()
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
+			int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(_mEdit1D.GetDevice());
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
 			int currentFrame = _mEdit1D.GetCurrentFrame();
@@ -514,8 +514,8 @@ void CMainViewDlg::RefreshGrid()
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
-			int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
+			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(_mEdit2D.GetDevice());
+			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(_mEdit2D.GetDevice());
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
 			int currentFrame = _mEdit2D.GetCurrentFrame();
@@ -628,7 +628,7 @@ BOOL CMainViewDlg::OnInitDialog()
 	// setup keyboard chars
 	for (int key = EChromaSDKKeyboardKey::KK_ESC; key < EChromaSDKKeyboardKey::KK_INVALID; ++key)
 	{
-		const char* strKey = _mPlugin.GetKeyboardChar((EChromaSDKKeyboardKey)key);
+		const char* strKey = ChromaSDKPlugin::GetInstance()->GetKeyboardChar((EChromaSDKKeyboardKey)key);
 		GetControlSetKeyCombo()->AddString(CString(strKey));
 	}
 	GetControlSetKeyCombo()->SetCurSel(0);
@@ -636,7 +636,7 @@ BOOL CMainViewDlg::OnInitDialog()
 	// setup mouse chars
 	for (int led = EChromaSDKMouseLED::ML_SCROLLWHEEL; led <= EChromaSDKMouseLED::ML_RIGHT_SIDE7; ++led)
 	{
-		const char* strLed = _mPlugin.GetMouseChar((EChromaSDKMouseLED)led);
+		const char* strLed = ChromaSDKPlugin::GetInstance()->GetMouseChar((EChromaSDKMouseLED)led);
 		GetControlSetLEDCombo()->AddString(CString(strLed));
 	}
 	GetControlSetLEDCombo()->SetCurSel(0);
@@ -852,7 +852,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 				case EChromaSDKDeviceTypeEnum::DE_1D:
 					{
 						EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
-						int maxLeds = _mPlugin.GetMaxLeds(device);
+						int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(device);
 						vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
 						int currentFrame = _mEdit1D.GetCurrentFrame();
 						if (currentFrame < 0 ||
@@ -872,8 +872,8 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 				case EChromaSDKDeviceTypeEnum::DE_2D:
 					{
 						EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
-						int maxRow = _mPlugin.GetMaxRow(device);
-						int maxColumn = _mPlugin.GetMaxColumn(device);
+						int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(device);
+						int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(device);
 						vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
 						int currentFrame = _mEdit2D.GetCurrentFrame();
 						if (currentFrame < 0 ||
@@ -1057,7 +1057,7 @@ void CMainViewDlg::OnBnClickedButtonClear()
 			if (currentFrame < frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[currentFrame];
-				frame.Colors = _mPlugin.CreateColors1D(device);
+				frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(device);
 				RefreshGrid();
 			}
 		}
@@ -1075,7 +1075,7 @@ void CMainViewDlg::OnBnClickedButtonClear()
 			if (currentFrame < frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[currentFrame];
-				frame.Colors = _mPlugin.CreateColors2D(device);
+				frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(device);
 				RefreshGrid();
 			}
 		}
@@ -1092,7 +1092,7 @@ void CMainViewDlg::OnBnClickedButtonFill()
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
-			int maxLeds = _mPlugin.GetMaxLeds(device);
+			int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(device);
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
 			int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
@@ -1114,8 +1114,8 @@ void CMainViewDlg::OnBnClickedButtonFill()
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
-			int maxRow = _mPlugin.GetMaxRow(device);
-			int maxColumn = _mPlugin.GetMaxColumn(device);
+			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(device);
+			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(device);
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
 			int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
@@ -1160,7 +1160,7 @@ void CMainViewDlg::OnBnClickedButtonRandom()
 			if (currentFrame < frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[currentFrame];
-				frame.Colors = _mPlugin.CreateRandomColors1D(device);
+				frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors1D(device);
 				RefreshGrid();
 			}
 		}
@@ -1178,7 +1178,7 @@ void CMainViewDlg::OnBnClickedButtonRandom()
 			if (currentFrame < frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[currentFrame];
-				frame.Colors = _mPlugin.CreateRandomColors2D(device);
+				frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors2D(device);
 				RefreshGrid();
 			}
 		}
@@ -1292,11 +1292,11 @@ void CMainViewDlg::OnBnClickedButtonPreview()
 			if (currentFrame < frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[currentFrame];
-				FChromaSDKEffectResult result = _mPlugin.CreateEffectCustom1D(device, frame.Colors);
+				FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom1D(device, frame.Colors);
 				if (result.Result == 0)
 				{
-					_mPlugin.SetEffect(result.EffectId);
-					_mPlugin.DeleteEffect(result.EffectId);
+					ChromaSDKPlugin::GetInstance()->SetEffect(result.EffectId);
+					ChromaSDKPlugin::GetInstance()->DeleteEffect(result.EffectId);
 				}
 			}
 		}
@@ -1314,11 +1314,11 @@ void CMainViewDlg::OnBnClickedButtonPreview()
 			if (currentFrame < frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[currentFrame];
-				FChromaSDKEffectResult result = _mPlugin.CreateEffectCustom2D(device, frame.Colors);
+				FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(device, frame.Colors);
 				if (result.Result == 0)
 				{
-					_mPlugin.SetEffect(result.EffectId);
-					_mPlugin.DeleteEffect(result.EffectId);
+					ChromaSDKPlugin::GetInstance()->SetEffect(result.EffectId);
+					ChromaSDKPlugin::GetInstance()->DeleteEffect(result.EffectId);
 				}
 			}
 		}
@@ -1393,7 +1393,7 @@ void CMainViewDlg::OnBnClickedButtonSetKey()
 			EChromaSDKKeyboardKey key = (EChromaSDKKeyboardKey)id;
 			FChromaSDKColorFrame2D& frame = frames[currentFrame];
 			std::vector<FChromaSDKColors>& colors = frame.Colors;
-			_mPlugin.SetKeyboardKeyColor(key, _mColor, colors);
+			ChromaSDKPlugin::GetInstance()->SetKeyboardKeyColor(key, _mColor, colors);
 			RefreshGrid();
 		}
 	}
@@ -1417,7 +1417,7 @@ void CMainViewDlg::OnBnClickedButtonSetLed()
 			EChromaSDKMouseLED led = (EChromaSDKMouseLED)id;
 			FChromaSDKColorFrame2D& frame = frames[currentFrame];
 			std::vector<FChromaSDKColors>& colors = frame.Colors;
-			_mPlugin.SetMouseLEDColor(led, _mColor, colors);
+			ChromaSDKPlugin::GetInstance()->SetMouseLEDColor(led, _mColor, colors);
 			RefreshGrid();
 		}
 	}
@@ -1534,7 +1534,7 @@ void CMainViewDlg::OnBnClickedButtonAdd()
 			
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
 			FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
-			frame.Colors = _mPlugin.CreateColors1D(_mEdit1D.GetDevice());
+			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(_mEdit1D.GetDevice());
 
 			if (currentFrame == _mEdit1D.GetFrameCount())
 			{
@@ -1563,7 +1563,7 @@ void CMainViewDlg::OnBnClickedButtonAdd()
 			
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
 			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
-			frame.Colors = _mPlugin.CreateColors2D(_mEdit2D.GetDevice());
+			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mEdit2D.GetDevice());
 
 			if (currentFrame == _mEdit2D.GetFrameCount())
 			{
@@ -1602,7 +1602,7 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 			if (frames.size() == 1)
 			{
 				FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
-				frame.Colors = _mPlugin.CreateColors1D(_mEdit1D.GetDevice());
+				frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(_mEdit1D.GetDevice());
 				frames[0] = frame;
 			}
 			else if (frames.size() > 0)
@@ -1631,7 +1631,7 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 			if (frames.size() == 1)
 			{
 				FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
-				frame.Colors = _mPlugin.CreateColors2D(_mEdit2D.GetDevice());
+				frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mEdit2D.GetDevice());
 				frames[0] = frame;
 			}
 			else if (frames.size() > 0)

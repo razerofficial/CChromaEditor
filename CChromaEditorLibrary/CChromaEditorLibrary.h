@@ -133,8 +133,6 @@ private:
 	COLORREF GetColor();
 	void SetColor(COLORREF color);
 
-	ChromaSDKPlugin _mPlugin;
-
 	float _mOverrideTime;
 
 	EChromaSDKDeviceTypeEnum _mDeviceType;
