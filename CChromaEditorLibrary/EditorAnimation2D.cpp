@@ -15,6 +15,11 @@ AnimationBase* EditorAnimation2D::GetAnimation()
 	return &_mAnimation;
 }
 
+void EditorAnimation2D::SetAnimation(Animation2D& animation)
+{
+	_mAnimation = animation;
+}
+
 EChromaSDKDevice2DEnum EditorAnimation2D::GetDevice()
 {
 	return _mAnimation.GetDevice();
@@ -41,7 +46,6 @@ void EditorAnimation2D::Reset()
 {
 	EChromaSDKDevice2DEnum device = GetDevice();
 	_mFrameCopy.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(device);
-	_mAnimation.Reset();
 }
 
 void EditorAnimation2D::SetCopy(FChromaSDKColorFrame2D& copy)

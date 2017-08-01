@@ -10,6 +10,7 @@ namespace ChromaSDK
 	public:
 		Animation2D();
 		void Reset();
+		EChromaSDKDeviceTypeEnum GetDeviceType();
 		EChromaSDKDevice2DEnum GetDevice();
 		bool SetDevice(EChromaSDKDevice2DEnum device);
 		std::vector<FChromaSDKColorFrame2D>& GetFrames();

@@ -15,6 +15,11 @@ AnimationBase* EditorAnimation1D::GetAnimation()
 	return &_mAnimation;
 }
 
+void EditorAnimation1D::SetAnimation(Animation1D& animation)
+{
+	_mAnimation = animation;
+}
+
 EChromaSDKDevice1DEnum EditorAnimation1D::GetDevice()
 {
 	return _mAnimation.GetDevice();
@@ -41,7 +46,6 @@ void EditorAnimation1D::Reset()
 {
 	EChromaSDKDevice1DEnum device = GetDevice();
 	_mFrameCopy.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(device);
-	_mAnimation.Reset();
 }
 
 void EditorAnimation1D::SetCopy(FChromaSDKColorFrame1D& copy)

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "CChromaEditorLibrary.h"
 #include "ChromaThread.h"
+#include <map>
 #include <thread>
 
 using namespace ChromaSDK;
@@ -12,6 +13,8 @@ using namespace std;
 
 bool _gDialogIsOpen = false;
 string _gPath = "";
+int _gAnimationId = 0;
+map<int, AnimationBase*> _gAnimations;
 
 void SetupChromaThread()
 {
@@ -71,6 +74,72 @@ extern "C"
 		thread newThread(ThreadOpenEditorDialog);
 		newThread.detach();
 
+		return 0;
+	}
+
+	EXPORT_API double PluginOpenAnimation(char* path)
+	{
+		//return animation id
+		AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
+		int id = _gAnimationId;
+		_gAnimations[id] = animation;
+		++_gAnimationId;
+		return id;
+	}
+
+	EXPORT_API double PluginLoadAnimation(double animationId)
+	{
+		int id = (int)animationId;
+		if (_gAnimations.find(id) != _gAnimations.end())
+		{
+			_gAnimations[id]->Load();
+			return id;
+		}
+		return 0;
+	}
+
+	EXPORT_API double PluginUnloadAnimation(double animationId)
+	{
+		int id = (int)animationId;
+		if (_gAnimations.find(id) != _gAnimations.end())
+		{
+			_gAnimations[id]->Unload();
+			return id;
+		}
+		return 0;
+	}
+
+	EXPORT_API double PluginPlayAnimation(double animationId)
+	{
+		int id = (int)animationId;
+		if (_gAnimations.find(id) != _gAnimations.end())
+		{
+			_gAnimations[id]->Play();
+			return id;
+		}
+		return 0;
+	}
+
+	EXPORT_API double PluginStopAnimation(double animationId)
+	{
+		int id = (int)animationId;
+		if (_gAnimations.find(id) != _gAnimations.end())
+		{
+			_gAnimations[id]->Stop();
+			return id;
+		}
+		return 0;
+	}
+
+	EXPORT_API double PluginCloseAnimation(double animationId)
+	{
+		int id = (int)animationId;
+		if (_gAnimations.find(id) != _gAnimations.end())
+		{
+			delete _gAnimations[id];
+			_gAnimations.erase(animationId);
+			return id;
+		}
 		return 0;
 	}
 }

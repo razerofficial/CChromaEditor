@@ -8,6 +8,7 @@ namespace ChromaSDK
 	{
 	public:
 		AnimationBase();
+		virtual EChromaSDKDeviceTypeEnum GetDeviceType() = 0;
 		int GetCurrentFrame();
 		void SetCurrentFrame(int index);
 		virtual int GetFrameCount() = 0;

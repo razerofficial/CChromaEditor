@@ -10,6 +10,7 @@ namespace ChromaSDK
 	public:
 		EditorAnimation1D();
 		AnimationBase* GetAnimation();
+		void SetAnimation(Animation1D& animation);
 		EChromaSDKDevice1DEnum GetDevice();
 		bool SetDevice(EChromaSDKDevice1DEnum device);
 		std::vector<FChromaSDKColorFrame1D>& GetFrames();

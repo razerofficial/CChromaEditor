@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AnimationBase.h"
 #include "ChromaSDKPluginTypes.h"
 #include <map>
 
@@ -48,6 +49,8 @@ namespace ChromaSDK
 		// editor methods
 		const char* GetKeyboardChar(EChromaSDKKeyboardKey key);
 		const char* GetMouseChar(EChromaSDKMouseLED led);
+
+		AnimationBase* OpenAnimation(const std::string& path);
 	private:
 		bool ValidateGetProcAddress(bool condition, const char* methodName);
 

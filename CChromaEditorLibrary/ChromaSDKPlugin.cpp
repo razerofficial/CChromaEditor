@@ -1,4 +1,6 @@
 ﻿#include "stdafx.h"
+#include "Animation1D.h"
+#include "Animation2D.h"
 #include "ChromaSDKPlugin.h"
 
 #ifdef _WIN64
@@ -6,6 +8,8 @@
 #else
 #define CHROMASDKDLL        _T("RzChromaSDK.dll")
 #endif
+
+#define ANIMATION_VERSION 1
 
 using namespace ChromaSDK;
 using namespace std;
@@ -1049,4 +1053,219 @@ const char* ChromaSDKPlugin::GetKeyboardChar(EChromaSDKKeyboardKey key)
 const char* ChromaSDKPlugin::GetMouseChar(EChromaSDKMouseLED led)
 {
 	return _mMouseCharMap[led];
+}
+
+AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
+{
+	AnimationBase* animation = nullptr;
+
+	fprintf(stdout, "OpenAnimation: %s\r\n", path.c_str());
+	FILE* stream;
+	if (0 == fopen_s(&stream, path.c_str(), "rb") &&
+		stream)
+	{
+		long read = 0;
+		long expectedRead = 1;
+		long expectedSize = sizeof(byte);
+
+		//version
+		int version = 0;
+		expectedSize = sizeof(int);
+		read = fread(&version, expectedSize, 1, stream);
+		if (read != expectedRead)
+		{
+			fprintf(stderr, "OpenAnimation: Failed to read version!\r\n");
+			std::fclose(stream);
+			return nullptr;
+		}
+		if (version != ANIMATION_VERSION)
+		{
+			fprintf(stderr, "OpenAnimation: Unexpected Version!\r\n");
+			std::fclose(stream);
+			return nullptr;
+		}
+
+		fprintf(stdout, "OpenAnimation: Version: %d\r\n", version);
+
+		//device
+		byte device = 0;
+
+		// device type
+		byte deviceType = 0;
+		expectedSize = sizeof(byte);
+		read = fread(&deviceType, expectedSize, 1, stream);
+		if (read == expectedRead)
+		{
+			//device
+			switch ((EChromaSDKDeviceTypeEnum)deviceType)
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				break;
+			default:
+				fprintf(stderr, "OpenAnimation: Unexpected DeviceType!\r\n");
+				std::fclose(stream);
+				return nullptr;
+			}
+
+			switch (deviceType)
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				read = fread(&device, expectedSize, 1, stream);
+				if (read == expectedRead)
+				{
+					Animation1D* animation1D = new Animation1D();
+					animation = animation1D;
+
+					// device
+					animation1D->SetDevice((EChromaSDKDevice1DEnum)device);
+
+					//frame count
+					int frameCount;
+
+					expectedSize = sizeof(int);
+					read = fread(&frameCount, expectedSize, 1, stream);
+					if (read != expectedRead)
+					{
+						fprintf(stderr, "OpenAnimation: Error detected reading frame count!\r\n");
+						std::fclose(stream);
+						delete animation1D;
+						return nullptr;
+					}
+					else
+					{
+						vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+						for (int index = 0; index < frameCount; ++index)
+						{
+							FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+							int maxLeds = GetMaxLeds((EChromaSDKDevice1DEnum)device);
+
+							//duration
+							frame.Duration = 0.0f;
+							expectedSize = sizeof(float);
+							read = fread(&frame.Duration, expectedSize, 1, stream);
+							if (read != expectedRead)
+							{
+								fprintf(stderr, "OpenAnimation: Error detected reading duration!\r\n");
+								std::fclose(stream);
+								delete animation1D;
+								return nullptr;
+							}
+							else
+							{
+								// colors
+								expectedSize = sizeof(int);
+								for (int i = 0; i < maxLeds; ++i)
+								{
+									int color = 0;
+									read = fread(&color, expectedSize, 1, stream);
+									if (read != expectedRead)
+									{
+										fprintf(stderr, "OpenAnimation: Error detected reading color!\r\n");
+										std::fclose(stream);
+										delete animation1D;
+										return nullptr;
+									}
+									else
+									{
+										frame.Colors.push_back((COLORREF)color);
+									}
+								}
+								if (index == 0)
+								{
+									frames[0] = frame;
+								}
+								else
+								{
+									frames.push_back(frame);
+								}
+							}
+						}
+					}
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				read = fread(&device, expectedSize, 1, stream);
+				if (read == expectedRead)
+				{
+					Animation2D* animation2D = new Animation2D();
+					animation = animation2D;
+
+					//frame count
+					int frameCount;
+
+					expectedSize = sizeof(int);
+					read = fread(&frameCount, expectedSize, 1, stream);
+					if (read != expectedRead)
+					{
+						fprintf(stderr, "OpenAnimation: Error detected reading frame count!\r\n");
+						std::fclose(stream);
+						delete animation2D;
+						return nullptr;
+					}
+					else
+					{
+						vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+						for (int index = 0; index < frameCount; ++index)
+						{
+							FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+							int maxRow = GetMaxRow((EChromaSDKDevice2DEnum)device);
+							int maxColumn = GetMaxColumn((EChromaSDKDevice2DEnum)device);
+
+							//duration
+							frame.Duration = 0.0f;
+							expectedSize = sizeof(float);
+							read = fread(&frame.Duration, expectedSize, 1, stream);
+							if (read != expectedRead)
+							{
+								fprintf(stderr, "OpenAnimation: Error detected reading duration!\r\n");
+								std::fclose(stream);
+								delete animation2D;
+								return nullptr;
+							}
+							else
+							{
+								// colors
+								expectedSize = sizeof(int);
+								for (int i = 0; i < maxRow; ++i)
+								{
+									FChromaSDKColors row = FChromaSDKColors();
+									for (int j = 0; j < maxColumn; ++j)
+									{
+										int color = 0;
+										read = fread(&color, expectedSize, 1, stream);
+										if (read != expectedRead)
+										{
+											fprintf(stderr, "OpenAnimation: Error detected reading color!\r\n");
+											std::fclose(stream);
+											delete animation2D;
+											return nullptr;
+										}
+										else
+										{
+											row.Colors.push_back((COLORREF)color);
+										}
+									}
+									frame.Colors.push_back(row);
+								}
+								if (index == 0)
+								{
+									frames[0] = frame;
+								}
+								else
+								{
+									frames.push_back(frame);
+								}
+							}
+						}
+					}
+				}
+				break;
+			}
+		}
+
+		std::fclose(stream);
+	}
+
+	return animation;
 }

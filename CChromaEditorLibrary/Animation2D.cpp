@@ -26,6 +26,11 @@ void Animation2D::Reset()
 	_mCurrentFrame = 0;
 }
 
+EChromaSDKDeviceTypeEnum Animation2D::GetDeviceType()
+{
+	return EChromaSDKDeviceTypeEnum::DE_2D;
+}
+
 EChromaSDKDevice2DEnum Animation2D::GetDevice()
 {
 	return _mDevice;
@@ -75,12 +80,22 @@ void Animation2D::Load()
 	for (int i = 0; i < _mFrames.size(); ++i)
 	{
 		FChromaSDKColorFrame2D& frame = _mFrames[i];
-		FChromaSDKEffectResult effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors);
-		if (effect.Result != 0)
+		try
 		{
-			fprintf(stderr, "Load: Failed to create effect!\r\n");
+			FChromaSDKEffectResult effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors);
+			if (effect.Result != 0)
+			{
+				fprintf(stderr, "Load: Failed to create effect!\r\n");
+			}
+			_mEffects.push_back(effect);
 		}
-		_mEffects.push_back(effect);
+		catch (std::exception)
+		{
+			fprintf(stderr, "Load: Exception in create effect!\r\n");
+			FChromaSDKEffectResult result = FChromaSDKEffectResult();
+			result.Result = -1;
+			_mEffects.push_back(result);
+		}
 	}
 
 	_mIsLoaded = true;
@@ -96,10 +111,17 @@ void Animation2D::Unload()
 	for (int i = 0; i < _mEffects.size(); ++i)
 	{
 		FChromaSDKEffectResult& effect = _mEffects[i];
-		int result = ChromaSDKPlugin::GetInstance()->DeleteEffect(effect.EffectId);
-		if (result != 0)
+		try
 		{
-			fprintf(stderr, "Unload: Failed to delete effect!\r\n");
+			int result = ChromaSDKPlugin::GetInstance()->DeleteEffect(effect.EffectId);
+			if (result != 0)
+			{
+				fprintf(stderr, "Unload: Failed to delete effect!\r\n");
+			}
+		}
+		catch (std::exception)
+		{
+			fprintf(stderr, "Unload: Exception in delete effect!\r\n");
 		}
 	}
 	_mEffects.clear();
@@ -120,10 +142,17 @@ void Animation2D::Play()
 	if (_mCurrentFrame < _mEffects.size())
 	{
 		FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
-		int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
-		if (result != 0)
+		try
 		{
-			fprintf(stderr, "Play: Failed to set effect!\r\n");
+			int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
+			if (result != 0)
+			{
+				fprintf(stderr, "Play: Failed to set effect!\r\n");
+			}
+		}
+		catch (std::exception)
+		{
+			fprintf(stderr, "Play: Exception in set effect!\r\n");
 		}
 	}
 
@@ -157,10 +186,17 @@ void Animation2D::Update(float deltaTime)
 		if (_mCurrentFrame < _mEffects.size())
 		{
 			FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
-			int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
-			if (result != 0)
+			try
 			{
-				fprintf(stderr, "Update: Failed to set effect!\r\n");
+				int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
+				if (result != 0)
+				{
+					fprintf(stderr, "Update: Failed to set effect!\r\n");
+				}
+			}
+			catch (std::exception)
+			{
+				fprintf(stderr, "Update: Exception in set effect!\r\n");
 			}
 		}
 		else

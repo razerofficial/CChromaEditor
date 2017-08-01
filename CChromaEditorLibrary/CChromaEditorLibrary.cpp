@@ -100,200 +100,30 @@ void CMainViewDlg::LoadFile()
 		_mPath = TEMP_FILE;
 	}
 
-	fprintf(stdout, "LoadFile: %s\r\n", _mPath.c_str());
-	FILE* stream;
-	if (0 == fopen_s(&stream, _mPath.c_str(), "rb") &&
-		stream)
+	AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(_mPath);
+	if (animation)
 	{
-		long read = 0;
-		long expectedRead = 1;
-		long expectedSize = sizeof(byte);
-
-		//version
-		int version = 0;
-		expectedSize = sizeof(int);
-		read = fread(&version, expectedSize, 1, stream);
-		if (read != expectedRead)
+		Animation1D* animation1D;
+		Animation2D* animation2D;
+		switch (animation->GetDeviceType())
 		{
-			fprintf(stderr, "LoadFile: Failed to read version!\r\n");
-			std::fclose(stream);
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			_mDeviceType = animation->GetDeviceType();
+			animation1D = dynamic_cast<Animation1D*>(animation);
+			_mEdit1D.SetAnimation(*animation1D);
+			_mEdit1D.Reset();
+			delete animation;
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			_mDeviceType = animation->GetDeviceType();
+			animation2D = dynamic_cast<Animation2D*>(animation);
+			_mEdit2D.SetAnimation(*animation2D);
+			delete animation;
+			break;
+		default:
+			fprintf(stderr, "LoadFile: Unexpected animation type!");
 			return;
 		}
-		if (version != ANIMATION_VERSION)
-		{
-			fprintf(stderr, "LoadFile: Unexpected Version!\r\n");
-			std::fclose(stream);
-			return;
-		}
-
-		fprintf(stdout, "LoadFile: Version: %d\r\n", version);
-
-		//device
-		byte device = 0;
-
-		// device type
-		byte deviceType = 0;
-		expectedSize = sizeof(byte);
-		read = fread(&deviceType, expectedSize, 1, stream);
-		if (read == expectedRead)
-		{
-			_mDeviceType = (EChromaSDKDeviceTypeEnum)deviceType;
-
-			//device
-			switch (_mDeviceType)
-			{
-			case EChromaSDKDeviceTypeEnum::DE_1D:
-				read = fread(&device, expectedSize, 1, stream);
-				if (read == expectedRead)
-				{
-					_mEdit1D.SetDevice((EChromaSDKDevice1DEnum)device);
-					_mEdit1D.Reset();
-
-					//frame count
-					int frameCount;
-
-					expectedSize = sizeof(int);
-					read = fread(&frameCount, expectedSize, 1, stream);
-					if (read != expectedRead)
-					{
-						fprintf(stderr, "LoadFile: Error detected reading frame count!\r\n");
-						_mEdit1D.Reset();
-						std::fclose(stream);
-						return;
-					}
-					else
-					{
-						vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-						for (int index = 0; index < frameCount; ++index)
-						{
-							FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
-							int maxLeds = _mPlugin.GetMaxLeds(_mEdit1D.GetDevice());
-
-							//duration
-							frame.Duration = 0.0f;
-							expectedSize = sizeof(float);
-							read = fread(&frame.Duration, expectedSize, 1, stream);
-							if (read != expectedRead)
-							{
-								fprintf(stderr, "LoadFile: Error detected reading duration!\r\n");
-								_mEdit1D.Reset();
-								std::fclose(stream);
-								return;
-							}
-							else
-							{
-								// colors
-								expectedSize = sizeof(int);
-								for (int i = 0; i < maxLeds; ++i)
-								{
-									int color = 0;
-									read = fread(&color, expectedSize, 1, stream);
-									if (read != expectedRead)
-									{
-										fprintf(stderr, "LoadFile: Error detected reading color!\r\n");
-										_mEdit1D.Reset();
-										std::fclose(stream);
-										return;
-									}
-									else
-									{
-										frame.Colors.push_back((COLORREF)color);
-									}
-								}
-								if (index == 0)
-								{
-									frames[0] = frame;
-								}
-								else
-								{
-									frames.push_back(frame);
-								}
-							}
-						}
-					}
-				}
-				break;
-			case EChromaSDKDeviceTypeEnum::DE_2D:
-				read = fread(&device, expectedSize, 1, stream);
-				if (read == expectedRead)
-				{
-					_mEdit2D.SetDevice((EChromaSDKDevice2DEnum)device);
-					_mEdit2D.Reset();
-
-					//frame count
-					int frameCount;
-
-					expectedSize = sizeof(int);
-					read = fread(&frameCount, expectedSize, 1, stream);
-					if (read != expectedRead)
-					{
-						fprintf(stderr, "LoadFile: Error detected reading frame count!\r\n");
-						_mEdit2D.Reset();
-						std::fclose(stream);
-						return;
-					}
-					else
-					{
-						vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-						for (int index = 0; index < frameCount; ++index)
-						{
-							FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
-							int maxRow = _mPlugin.GetMaxRow(_mEdit2D.GetDevice());
-							int maxColumn = _mPlugin.GetMaxColumn(_mEdit2D.GetDevice());
-
-							//duration
-							frame.Duration = 0.0f;
-							expectedSize = sizeof(float);
-							read = fread(&frame.Duration, expectedSize, 1, stream);
-							if (read != expectedRead)
-							{
-								fprintf(stderr, "LoadFile: Error detected reading duration!\r\n");
-								_mEdit2D.Reset();
-								std::fclose(stream);
-								return;
-							}
-							else
-							{
-								// colors
-								expectedSize = sizeof(int);
-								for (int i = 0; i < maxRow; ++i)
-								{
-									FChromaSDKColors row = FChromaSDKColors();
-									for (int j = 0; j < maxColumn; ++j)
-									{
-										int color = 0;
-										read = fread(&color, expectedSize, 1, stream);
-										if (read != expectedRead)
-										{
-											fprintf(stderr, "LoadFile: Error detected reading color!\r\n");
-											_mEdit2D.Reset();
-											std::fclose(stream);
-											return;
-										}
-										else
-										{
-											row.Colors.push_back((COLORREF)color);
-										}
-									}
-									frame.Colors.push_back(row);
-								}
-								if (index == 0)
-								{
-									frames[0] = frame;
-								}
-								else
-								{
-									frames.push_back(frame);
-								}
-							}
-						}
-					}
-				}
-				break;
-			}
-		}
-
-		std::fclose(stream);
 	}
 }
 
