@@ -143,8 +143,6 @@ void Animation2D::Stop()
 
 void Animation2D::Update(float deltaTime)
 {
-	//fprintf(stdout, "Animation2D::Update()\r\n");
-
 	if (!_mIsPlaying)
 	{
 		return;

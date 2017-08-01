@@ -1021,17 +1021,23 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 
 RZRESULT ChromaSDKPlugin::SetEffect(const FChromaSDKGuid& effectId)
 {
-	fprintf(stdout, "ChromaSDKPlugin::SetEffect Invoke.\r\n");
+	//fprintf(stdout, "ChromaSDKPlugin::SetEffect Invoke.\r\n");
 	RZRESULT result = ChromaSDKSetEffect(effectId.Data);
-	fprintf(stdout, "ChromaSDKPlugin::SetEffect Result=%d.\r\n", result);
+	if (result != 0)
+	{
+		fprintf(stderr, "ChromaSDKPlugin::SetEffect Result=%d.\r\n", result);
+	}
 	return result;
 }
 
 RZRESULT ChromaSDKPlugin::DeleteEffect(const FChromaSDKGuid& effectId)
 {
-	fprintf(stdout, "ChromaSDKPlugin::DeleteEffect Invoke.\r\n");
+	//fprintf(stdout, "ChromaSDKPlugin::DeleteEffect Invoke.\r\n");
 	RZRESULT result = ChromaSDKDeleteEffect(effectId.Data);
-	fprintf(stdout, "ChromaSDKPlugin::DeleteEffect Result=%d.\r\n", result);
+	if (result != 0)
+	{
+		fprintf(stderr, "ChromaSDKPlugin::DeleteEffect Result=%d.\r\n", result);
+	}
 	return result;
 }
 
