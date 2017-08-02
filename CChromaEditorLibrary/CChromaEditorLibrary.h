@@ -42,6 +42,7 @@ class CMainViewDlg : public CDialogEx
 {
 public:
 	CMainViewDlg();
+	~CMainViewDlg();
 
 	void OpenOrCreateAnimation(const std::string& path);
 	void LoadFile();

@@ -87,6 +87,12 @@ CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 	_mPath = "";
 }
 
+CMainViewDlg::~CMainViewDlg()
+{
+	_mEdit1D.GetAnimation()->Stop();
+	_mEdit2D.GetAnimation()->Stop();
+}
+
 void CMainViewDlg::OpenOrCreateAnimation(const std::string& path)
 {
 	_mPath = path;
