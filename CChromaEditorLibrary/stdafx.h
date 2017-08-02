@@ -44,7 +44,29 @@
 
 extern "C"
 {
-	EXPORT_API double PluginIsDialogOpen();
+	//GameMaker: Only has double and char* types
 
-	EXPORT_API double PluginOpenEditorDialog(char* path);
+	EXPORT_API bool PluginIsDialogOpen();
+	EXPORT_API double PluginIsDialogOpenD();
+
+	EXPORT_API int PluginOpenEditorDialog(char* path);
+	EXPORT_API double PluginOpenEditorDialogD(char* path);
+
+	EXPORT_API int PluginOpenAnimation(char* path);
+	EXPORT_API double PluginOpenAnimationD(char* path);
+
+	EXPORT_API int PluginLoadAnimation(int animationId);
+	EXPORT_API double PluginLoadAnimationD(double animationId);
+
+	EXPORT_API int PluginUnloadAnimation(int animationId);
+	EXPORT_API double PluginUnloadAnimationD(double animationId);
+
+	EXPORT_API int PluginPlayAnimation(int animationId);
+	EXPORT_API double PluginPlayAnimationD(double animationId);
+
+	EXPORT_API int PluginStopAnimation(int animationId);
+	EXPORT_API double PluginStopAnimationD(double animationId);
+
+	EXPORT_API int PluginCloseAnimation(int animationId);
+	EXPORT_API double PluginCloseAnimationD(double animationId);
 }

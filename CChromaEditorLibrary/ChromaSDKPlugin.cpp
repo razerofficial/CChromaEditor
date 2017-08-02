@@ -1194,6 +1194,9 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					Animation2D* animation2D = new Animation2D();
 					animation = animation2D;
 
+					//device
+					animation2D->SetDevice((EChromaSDKDevice2DEnum)device);
+
 					//frame count
 					int frameCount;
 

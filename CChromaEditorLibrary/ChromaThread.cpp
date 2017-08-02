@@ -6,7 +6,7 @@ using namespace ChromaSDK;
 using namespace std;
 using namespace std::chrono;
 
-ChromaThread ChromaThread::_sInstance = ChromaThread();
+ChromaThread* ChromaThread::_sInstance = new ChromaThread();
 
 ChromaThread::ChromaThread()
 {
@@ -15,7 +15,7 @@ ChromaThread::ChromaThread()
 
 ChromaThread* ChromaThread::Instance()
 {
-	return &_sInstance;
+	return _sInstance;
 }
 
 void ChromaThread::ChromaWorker()
@@ -34,19 +34,7 @@ void ChromaThread::ChromaWorker()
 		float deltaTime = time_span.count() / 1000.0f;
 		timerLast = timer;
 
-		while (_mAnimationsToRemove.size() > 0)
-		{
-			AnimationBase* animation = _mAnimationsToRemove[0];
-			_mAnimationsToRemove.erase(_mAnimationsToRemove.begin());
-			if (animation != nullptr)
-			{
-				auto it = std::find(_mAnimations.begin(), _mAnimations.end(), animation);
-				if (it != _mAnimations.end())
-				{
-					_mAnimations.erase(it);
-				}
-			}
-		}
+		std::lock_guard<std::mutex> guard(_mMutex);
 
 		// update animations
 		for (int i = 0; i < _mAnimations.size(); ++i)
@@ -79,6 +67,7 @@ void ChromaThread::Start()
 
 void ChromaThread::AddAnimation(AnimationBase* animation)
 {
+	std::lock_guard<std::mutex> guard(_mMutex);
 	// Add animation if it's not found
 	if (std::find(_mAnimations.begin(), _mAnimations.end(), animation) == _mAnimations.end())
 	{
@@ -89,6 +78,13 @@ void ChromaThread::AddAnimation(AnimationBase* animation)
 
 void ChromaThread::RemoveAnimation(AnimationBase* animation)
 {
-	//queue for Chroma thread to remove
-	_mAnimationsToRemove.push_back(animation);
+	std::lock_guard<std::mutex> guard(_mMutex);
+	if (animation != nullptr)
+	{
+		auto it = std::find(_mAnimations.begin(), _mAnimations.end(), animation);
+		if (it != _mAnimations.end())
+		{
+			_mAnimations.erase(it);
+		}
+	}
 }

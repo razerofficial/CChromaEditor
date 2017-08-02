@@ -16,9 +16,13 @@ typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
 using namespace std;
 using namespace std::chrono;
 
-int main(int argc, char *argv[])
+PLUGIN_IS_DIALOG_OPEN _gMethodIsDialogOpen = nullptr;
+PLUGIN_OPEN_EDITOR_DIALOG _gMethodOpenDialog = nullptr;
+PLUGIN_OPEN_ANIMATION _gMethodOpenAnimation = nullptr;
+PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
+
+int Init()
 {
-	fprintf(stderr, "App launched!\r\n");
 	HMODULE library = LoadLibrary(CHROMA_EDITOR_DLL);
 	if (library == NULL)
 	{
@@ -28,60 +32,78 @@ int main(int argc, char *argv[])
 
 	fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
 
-	PLUGIN_IS_DIALOG_OPEN methodIsDialogOpen = (PLUGIN_IS_DIALOG_OPEN)GetProcAddress(library, "PluginIsDialogOpen");
-	if (methodIsDialogOpen == nullptr)
+	_gMethodIsDialogOpen = (PLUGIN_IS_DIALOG_OPEN)GetProcAddress(library, "PluginIsDialogOpenD");
+	if (_gMethodIsDialogOpen == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginIsDialogOpen!\r\n");
 		return -1;
 	}
 
-	PLUGIN_OPEN_EDITOR_DIALOG methodOpenDialog = (PLUGIN_OPEN_EDITOR_DIALOG)GetProcAddress(library, "PluginOpenEditorDialog");
-	if (methodOpenDialog == nullptr)
+	_gMethodOpenDialog = (PLUGIN_OPEN_EDITOR_DIALOG)GetProcAddress(library, "PluginOpenEditorDialogD");
+	if (_gMethodOpenDialog == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginOpenEditorDialog!\r\n");
 		return -1;
 	}
 
-	PLUGIN_OPEN_ANIMATION methodOpenAnimation = (PLUGIN_OPEN_ANIMATION)GetProcAddress(library, "PluginOpenAnimation");
-	if (methodOpenAnimation == nullptr)
+	_gMethodOpenAnimation = (PLUGIN_OPEN_ANIMATION)GetProcAddress(library, "PluginOpenAnimationD");
+	if (_gMethodOpenAnimation == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginOpenAnimation!\r\n");
 		return -1;
 	}
 
-	PLUGIN_PLAY_ANIMATION methodPlayAnimation = (PLUGIN_PLAY_ANIMATION)GetProcAddress(library, "PluginPlayAnimation");
-	if (methodPlayAnimation == nullptr)
+	_gMethodPlayAnimation = (PLUGIN_PLAY_ANIMATION)GetProcAddress(library, "PluginPlayAnimationD");
+	if (_gMethodPlayAnimation == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginPlayAnimation!\r\n");
 		return -1;
 	}
 
 	fprintf(stderr, "Found DLL methods!\r\n");
+	return 0;
+}
+
+int OpenAndPlay(const char* path)
+{
+	int animationId = _gMethodOpenAnimation(path);
+	_gMethodPlayAnimation(animationId);
+	return animationId;
+}
+
+int main(int argc, char *argv[])
+{
+	fprintf(stderr, "App launched!\r\n");
+	if (Init() != 0)
+	{
+		return -1;
+	}	
 
 	if (argc <= 1)
 	{
-		if (true) // test editor
+		if (false) // test editor
 		{
-			//methodOpenDialog("KeyboardEffect.chroma");
-			//methodOpenDialog("C:\\Public\\UnityChromaSwagger\\Assets\\ChromaSDK\\Examples\\Animations\\RandomChromaLinkEffect.chroma"); 
-			methodOpenDialog("C:\\Public\\UnityChromaSwagger\\Assets\\ChromaSDK\\Examples\\Animations\\KeyboardParticleAnimation2.chroma");
+			_gMethodOpenDialog("RandomChromaLinkEffect.chroma");
 		}
 
-		if (false) // test api
+		if (true) // test api
 		{
-			int animationId = methodOpenAnimation("KeyboardEffect.chroma");
-			//int animationId = methodOpenAnimation("C:\\Public\\UnityChromaSwagger\\Assets\\ChromaSDK\\Examples\\Animations\\KeyboardParticleAnimation2.chroma");
-			methodPlayAnimation(animationId);
+			int keyboardCoolFireAnimation = OpenAndPlay("KeyboardParticleAnimation2.chroma");
+			int randomChromaLinkEffect = OpenAndPlay("RandomChromaLinkEffect.chroma");
+			int randomHeadsetEffect = OpenAndPlay("RandomHeadsetEffect.chroma");
+			int randomKeypadEffect = OpenAndPlay("RandomKeypadEffect.chroma");
+			int randomMouseEffect = OpenAndPlay("RandomMouseEffect.chroma");
+			int randomMousepadEffect = OpenAndPlay("RandomMousepadEffect.chroma");
 
-			this_thread::sleep_for(chrono::seconds(1));
+			this_thread::sleep_for(chrono::seconds(2));
 		}
 	}
 	else
 	{
-		methodOpenDialog(argv[1]);
+		_gMethodOpenDialog(argv[1]);
 	}
 
-	while (methodIsDialogOpen())
+	while (_gMethodIsDialogOpen())
 	{
 		Sleep(0);
 	}

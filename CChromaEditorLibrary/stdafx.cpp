@@ -42,12 +42,17 @@ void ThreadOpenEditorDialog()
 
 extern "C"
 {
-	EXPORT_API double PluginIsDialogOpen()
+	EXPORT_API bool PluginIsDialogOpen()
 	{
 		// Chroma thread plays animations
 		SetupChromaThread();
 
-		if (_gDialogIsOpen)
+		return _gDialogIsOpen;
+	}
+
+	EXPORT_API double PluginIsDialogOpenD()
+	{
+		if (PluginIsDialogOpen())
 		{
 			return 1;
 		}
@@ -57,7 +62,7 @@ extern "C"
 		}
 	}
 
-	EXPORT_API double PluginOpenEditorDialog(char* path)
+	EXPORT_API int PluginOpenEditorDialog(char* path)
 	{
 		// Chroma thread plays animations
 		SetupChromaThread();
@@ -77,7 +82,12 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API double PluginOpenAnimation(char* path)
+	EXPORT_API double PluginOpenEditorDialogD(char* path)
+	{
+		return PluginOpenEditorDialog(path);
+	}
+
+	EXPORT_API int PluginOpenAnimation(char* path)
 	{
 		try
 		{
@@ -98,7 +108,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API double PluginLoadAnimation(double animationId)
+	EXPORT_API double PluginOpenAnimationD(char* path)
+	{
+		return PluginOpenAnimation(path);
+	}
+
+	EXPORT_API int PluginLoadAnimation(int animationId)
 	{
 		try
 		{
@@ -120,7 +135,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API double PluginUnloadAnimation(double animationId)
+	EXPORT_API double PluginLoadAnimationD(double animationId)
+	{
+		return PluginLoadAnimation(animationId);
+	}
+
+	EXPORT_API int PluginUnloadAnimation(int animationId)
 	{
 		try
 		{
@@ -142,7 +162,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API double PluginPlayAnimation(double animationId)
+	EXPORT_API double PluginUnloadAnimationD(double animationId)
+	{
+		return PluginUnloadAnimation(animationId);
+	}
+
+	EXPORT_API int PluginPlayAnimation(int animationId)
 	{
 		try
 		{
@@ -164,7 +189,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API double PluginStopAnimation(double animationId)
+	EXPORT_API double PluginPlayAnimationD(double animationId)
+	{
+		return PluginPlayAnimation(animationId);
+	}
+
+	EXPORT_API int PluginStopAnimation(int animationId)
 	{
 		try
 		{
@@ -186,7 +216,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API double PluginCloseAnimation(double animationId)
+	EXPORT_API double PluginStopAnimationD(double animationId)
+	{
+		return PluginStopAnimation(animationId);
+	}
+
+	EXPORT_API int PluginCloseAnimation(int animationId)
 	{
 		try
 		{
@@ -207,5 +242,10 @@ extern "C"
 			fprintf(stderr, "PluginCloseAnimation: Exception animationId=%d\r\n", (int)animationId);
 			return -1;
 		}
+	}
+
+	EXPORT_API double PluginCloseAnimationD(double animationId)
+	{
+		return PluginCloseAnimation(animationId);
 	}
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AnimationBase.h"
+#include <mutex>
 #include <thread>
 #include <vector>
 
@@ -16,9 +17,9 @@ namespace ChromaSDK
 	private:
 		ChromaThread();
 		void ChromaWorker();
-		static ChromaThread _sInstance;
+		static ChromaThread* _sInstance;
 		std::vector<AnimationBase*> _mAnimations;
-		std::vector<AnimationBase*> _mAnimationsToRemove;
 		std::thread* _mThread;
+		std::mutex _mMutex;
 	};
 }

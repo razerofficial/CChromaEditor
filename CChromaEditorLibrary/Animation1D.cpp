@@ -136,25 +136,8 @@ void Animation1D::Play()
 	}
 
 	_mTime = 0.0f;
+	_mCurrentFrame = -1;
 	_mIsPlaying = true;
-	_mCurrentFrame = 0;
-
-	if (_mCurrentFrame < _mEffects.size())
-	{
-		FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
-		try
-		{
-			int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
-			if (result != 0)
-			{
-				fprintf(stderr, "Play: Failed to set effect!\r\n");
-			}
-		}
-		catch (exception)
-		{
-			fprintf(stderr, "Play: Exception in set effect!\r\n");
-		}
-	}
 
 	if (ChromaThread::Instance())
 	{
@@ -177,12 +160,9 @@ void Animation1D::Update(float deltaTime)
 		return;
 	}
 
-	_mTime += deltaTime;
-	float nextTime = GetDuration(_mCurrentFrame);
-	if (nextTime < _mTime)
+	if (_mCurrentFrame == -1)
 	{
-		_mTime = 0.0f;
-		++_mCurrentFrame;
+		_mCurrentFrame = 0;
 		if (_mCurrentFrame < _mEffects.size())
 		{
 			FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
@@ -191,20 +171,46 @@ void Animation1D::Update(float deltaTime)
 				int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
 				if (result != 0)
 				{
-					fprintf(stderr, "Update: Failed to set effect!\r\n");
+					fprintf(stderr, "Play: Failed to set effect!\r\n");
 				}
 			}
 			catch (exception)
 			{
-				fprintf(stderr, "Update: Exception in set effect!\r\n");
+				fprintf(stderr, "Play: Exception in set effect!\r\n");
 			}
 		}
-		else
+	}
+	else
+	{
+		_mTime += deltaTime;
+		float nextTime = GetDuration(_mCurrentFrame);
+		if (nextTime < _mTime)
 		{
-			//fprintf(stdout, "Update: Animation Complete.\r\n");
-			_mIsPlaying = false;
 			_mTime = 0.0f;
-			_mCurrentFrame = 0;
+			++_mCurrentFrame;
+			if (_mCurrentFrame < _mEffects.size())
+			{
+				FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
+				try
+				{
+					int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
+					if (result != 0)
+					{
+						fprintf(stderr, "Update: Failed to set effect!\r\n");
+					}
+				}
+				catch (exception)
+				{
+					fprintf(stderr, "Update: Exception in set effect!\r\n");
+				}
+			}
+			else
+			{
+				//fprintf(stdout, "Update: Animation Complete.\r\n");
+				_mIsPlaying = false;
+				_mTime = 0.0f;
+				_mCurrentFrame = 0;
+			}
 		}
 	}
 }
