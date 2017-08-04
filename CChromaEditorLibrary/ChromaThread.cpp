@@ -11,6 +11,7 @@ ChromaThread* ChromaThread::_sInstance = new ChromaThread();
 ChromaThread::ChromaThread()
 {
 	_mThread = nullptr;
+	_mWaitForExit = true;
 }
 
 ChromaThread* ChromaThread::Instance()
@@ -24,7 +25,9 @@ void ChromaThread::ChromaWorker()
 	high_resolution_clock::time_point timer = high_resolution_clock::now();
 	high_resolution_clock::time_point timerLast = high_resolution_clock::now();
 
-	while (true)
+	_mWaitForExit = true;
+
+	while (_mWaitForExit)
 	{
 		// get current time
 		timer = high_resolution_clock::now();
@@ -63,6 +66,11 @@ void ChromaThread::Start()
 	}
 	_mThread = new thread(&ChromaThread::ChromaWorker, this);
 	_mThread->detach();
+}
+
+void ChromaThread::Stop()
+{
+	_mWaitForExit = false;
 }
 
 void ChromaThread::AddAnimation(AnimationBase* animation)

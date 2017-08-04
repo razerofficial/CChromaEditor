@@ -72,4 +72,7 @@ extern "C"
 
 	EXPORT_API int PluginCloseAnimation(int animationId);
 	EXPORT_API double PluginCloseAnimationD(double animationId);
+
+	EXPORT_API int PluginUninit();
+	EXPORT_API double PluginUninitD();
 }

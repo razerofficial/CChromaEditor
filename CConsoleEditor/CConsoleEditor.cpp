@@ -12,6 +12,7 @@ typedef double(*PLUGIN_IS_DIALOG_OPEN)();
 typedef double(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
 typedef double(*PLUGIN_OPEN_ANIMATION)(const char* path);
 typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
+typedef void(*PLUGIN_UNINIT)();
 
 using namespace std;
 using namespace std::chrono;
@@ -20,6 +21,7 @@ PLUGIN_IS_DIALOG_OPEN _gMethodIsDialogOpen = nullptr;
 PLUGIN_OPEN_EDITOR_DIALOG _gMethodOpenDialog = nullptr;
 PLUGIN_OPEN_ANIMATION _gMethodOpenAnimation = nullptr;
 PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
+PLUGIN_UNINIT _gMethodUninit = nullptr;
 
 int Init()
 {
@@ -60,13 +62,20 @@ int Init()
 		return -1;
 	}
 
+	_gMethodUninit = (PLUGIN_UNINIT)GetProcAddress(library, "PluginUninit");
+	if (_gMethodUninit == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginUninit!\r\n");
+		return -1;
+	}
+
 	fprintf(stderr, "Found DLL methods!\r\n");
 	return 0;
 }
 
 int OpenAndPlay(const char* path)
 {
-	int animationId = _gMethodOpenAnimation(path);
+	int animationId = (int)_gMethodOpenAnimation(path);
 	_gMethodPlayAnimation(animationId);
 	return animationId;
 }
@@ -108,6 +117,7 @@ int main(int argc, char *argv[])
 		Sleep(0);
 	}
 
+	_gMethodUninit();
 	fprintf(stdout, "CConsoleEditor exited.\r\n");
 
     return 0;

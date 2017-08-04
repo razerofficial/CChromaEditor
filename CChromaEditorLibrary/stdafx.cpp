@@ -21,6 +21,11 @@ void SetupChromaThread()
 	ChromaThread::Instance()->Start();
 }
 
+void StopChromaThread()
+{
+	ChromaThread::Instance()->Stop();
+}
+
 void ThreadOpenEditorDialog()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -332,5 +337,23 @@ extern "C"
 	EXPORT_API double PluginCloseAnimationD(double animationId)
 	{
 		return (double)PluginCloseAnimation((int)animationId);
+	}
+
+	EXPORT_API int PluginUninit()
+	{
+		// Chroma thread plays animations
+		StopChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			return -1;
+		}
+
+		return ChromaSDKPlugin::GetInstance()->ChromaSDKUnInit();
+	}
+
+	EXPORT_API double PluginUninitD()
+	{
+		return (double)PluginUninit();
 	}
 }

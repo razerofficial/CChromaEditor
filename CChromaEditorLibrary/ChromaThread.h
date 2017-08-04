@@ -12,6 +12,7 @@ namespace ChromaSDK
 	public:
 		static ChromaThread* Instance();
 		void Start();
+		void Stop();
 		void AddAnimation(AnimationBase* animation);
 		void RemoveAnimation(AnimationBase* animation);
 	private:
@@ -21,5 +22,6 @@ namespace ChromaSDK
 		std::vector<AnimationBase*> _mAnimations;
 		std::thread* _mThread;
 		std::mutex _mMutex;
+		bool _mWaitForExit;
 	};
 }
