@@ -181,7 +181,7 @@ void CMainViewDlg::SaveFile()
 		}
 
 		//frame count
-		int frameCount = 0;
+		unsigned int frameCount = 0;
 		switch (_mDeviceType)
 		{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -191,13 +191,13 @@ void CMainViewDlg::SaveFile()
 			frameCount = _mEdit2D.GetFrameCount();
 			break;
 		}
-		expectedSize = sizeof(int);
+		expectedSize = sizeof(unsigned int);
 		fwrite(&frameCount, expectedSize, 1, stream);
 
 		//frames
 		float duration = 0.0f;
 		COLORREF color = RGB(0, 0, 0);
-		for (int index = 0; index < frameCount; ++index)
+		for (unsigned int index = 0; index < frameCount; ++index)
 		{
 			//duration
 			switch (_mDeviceType)
@@ -221,7 +221,7 @@ void CMainViewDlg::SaveFile()
 					if (index < frames.size())
 					{
 						FChromaSDKColorFrame1D& frame = frames[index];
-						for (int i = 0; i < frame.Colors.size(); ++i)
+						for (unsigned int i = 0; i < frame.Colors.size(); ++i)
 						{
 							//color
 							int color = (int)frame.Colors[i];
@@ -237,10 +237,10 @@ void CMainViewDlg::SaveFile()
 					if (index < frames.size())
 					{
 						FChromaSDKColorFrame2D& frame = frames[index];
-						for (int i = 0; i < frame.Colors.size(); ++i)
+						for (unsigned int i = 0; i < frame.Colors.size(); ++i)
 						{
 							FChromaSDKColors& row = frame.Colors[i];
-							for (int j = 0; j < row.Colors.size(); ++j)
+							for (unsigned int j = 0; j < row.Colors.size(); ++j)
 							{
 								//color
 								int color = row.Colors[j];
@@ -331,7 +331,7 @@ float CMainViewDlg::GetOverrideTime()
 {
 	CString text;
 	GetControlOverrideTime()->GetWindowText(text);
-	float time = _ttof(text);
+	float time = (float)_ttof(text);
 	if (time <= 0.0f)
 	{
 		UpdateOverrideTime(DEFAULT_OVERRIDE_TIME);
@@ -352,7 +352,7 @@ float CMainViewDlg::GetDuration()
 {
 	CString text;
 	GetControlDuration()->GetWindowText(text);
-	float time = _ttof(text);
+	float time = (float)_ttof(text);
 	if (time <= 0.0f)
 	{
 		UpdateDuration(DEFAULT_DURATION);
@@ -398,7 +398,7 @@ void CMainViewDlg::RecreateGrid()
 {
 	// clear old grid
 	vector<CColorButton*>& buttons = GetGridButtons();
-	for (int i = 0; i < buttons.size(); ++i)
+	for (unsigned int i = 0; i < buttons.size(); ++i)
 	{
 		CColorButton* button = buttons[i];
 		if (button)
@@ -494,7 +494,7 @@ void CMainViewDlg::RefreshGrid()
 			int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(_mEdit1D.GetDevice());
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -524,7 +524,7 @@ void CMainViewDlg::RefreshGrid()
 			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(_mEdit2D.GetDevice());
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -585,7 +585,7 @@ void CMainViewDlg::RefreshFrames()
 		{
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -602,7 +602,7 @@ void CMainViewDlg::RefreshFrames()
 		{
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -808,7 +808,6 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_UNLOAD, &CMainViewDlg::OnBnClickedButtonUnload)
 	ON_BN_CLICKED(IDC_BUTTON_SET_KEY, &CMainViewDlg::OnBnClickedButtonSetKey)
 	ON_BN_CLICKED(IDC_BUTTON_SET_LED, &CMainViewDlg::OnBnClickedButtonSetLed)
-	ON_EN_CHANGE(IDC_OVERRIDE_TIME, &CMainViewDlg::OnEnChangeOverrideTime)
 	ON_BN_CLICKED(IDC_BUTTON_PREVIOUS, &CMainViewDlg::OnBnClickedButtonPrevious)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CMainViewDlg::OnBnClickedButtonNext)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CMainViewDlg::OnBnClickedButtonAdd)
@@ -844,7 +843,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 	{
 		if (nID < ID_DYNAMIC_COLOR_MIN)
 		{
-			int index = nID - ID_DYNAMIC_BUTTON_MIN;
+			unsigned int index = nID - ID_DYNAMIC_BUTTON_MIN;
 			vector<CColorButton*>& buttons = GetGridButtons();
 			if (index < buttons.size())
 			{
@@ -860,7 +859,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 						EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 						int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(device);
 						vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-						int currentFrame = _mEdit1D.GetCurrentFrame();
+						unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 						if (currentFrame < 0 ||
 							currentFrame >= frames.size())
 						{
@@ -881,7 +880,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 						int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(device);
 						int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(device);
 						vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-						int currentFrame = _mEdit2D.GetCurrentFrame();
+						unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 						if (currentFrame < 0 ||
 							currentFrame >= frames.size())
 						{
@@ -1054,7 +1053,7 @@ void CMainViewDlg::OnBnClickedButtonClear()
 		{
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1072,7 +1071,7 @@ void CMainViewDlg::OnBnClickedButtonClear()
 		{
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1100,7 +1099,7 @@ void CMainViewDlg::OnBnClickedButtonFill()
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(device);
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1123,7 +1122,7 @@ void CMainViewDlg::OnBnClickedButtonFill()
 			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(device);
 			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(device);
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1157,7 +1156,7 @@ void CMainViewDlg::OnBnClickedButtonRandom()
 		{
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1175,7 +1174,7 @@ void CMainViewDlg::OnBnClickedButtonRandom()
 		{
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1202,7 +1201,7 @@ void CMainViewDlg::OnBnClickedButtonCopy()
 		{
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1219,7 +1218,7 @@ void CMainViewDlg::OnBnClickedButtonCopy()
 		{
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1244,7 +1243,7 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 		{
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1262,7 +1261,7 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 		{
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1289,7 +1288,7 @@ void CMainViewDlg::OnBnClickedButtonPreview()
 		{
 			EChromaSDKDevice1DEnum device = _mEdit1D.GetDevice();
 			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1311,7 +1310,7 @@ void CMainViewDlg::OnBnClickedButtonPreview()
 		{
 			EChromaSDKDevice2DEnum device = _mEdit2D.GetDevice();
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= frames.size())
 			{
@@ -1387,7 +1386,7 @@ void CMainViewDlg::OnBnClickedButtonSetKey()
 		_mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Keyboard)
 	{
 		vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-		int currentFrame = _mEdit2D.GetCurrentFrame();
+		unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 		if (currentFrame < 0 ||
 			currentFrame >= frames.size())
 		{
@@ -1411,7 +1410,7 @@ void CMainViewDlg::OnBnClickedButtonSetLed()
 		_mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Mouse)
 	{
 		vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-		int currentFrame = _mEdit2D.GetCurrentFrame();
+		unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 		if (currentFrame < 0 ||
 			currentFrame >= frames.size())
 		{
@@ -1430,24 +1429,13 @@ void CMainViewDlg::OnBnClickedButtonSetLed()
 }
 
 
-void CMainViewDlg::OnEnChangeOverrideTime()
-{
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialogEx::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
-}
-
-
 void CMainViewDlg::OnBnClickedButtonPrevious()
 {
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 1 ||
 				currentFrame >= _mEdit1D.GetFrameCount())
 			{
@@ -1464,7 +1452,7 @@ void CMainViewDlg::OnBnClickedButtonPrevious()
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 1 ||
 				currentFrame >= _mEdit2D.GetFrameCount())
 			{
@@ -1489,7 +1477,7 @@ void CMainViewDlg::OnBnClickedButtonNext()
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= _mEdit1D.GetFrameCount())
 			{
@@ -1506,7 +1494,7 @@ void CMainViewDlg::OnBnClickedButtonNext()
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= _mEdit2D.GetFrameCount())
 			{
@@ -1531,7 +1519,7 @@ void CMainViewDlg::OnBnClickedButtonAdd()
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= _mEdit1D.GetFrameCount())
 			{
@@ -1560,7 +1548,7 @@ void CMainViewDlg::OnBnClickedButtonAdd()
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= _mEdit2D.GetFrameCount())
 			{
@@ -1598,7 +1586,7 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= _mEdit1D.GetFrameCount())
 			{
@@ -1627,7 +1615,7 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= _mEdit2D.GetFrameCount())
 			{
@@ -1665,7 +1653,7 @@ void CMainViewDlg::OnBnClickedButtonSetDuration()
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			int currentFrame = _mEdit1D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit1D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= _mEdit1D.GetFrameCount())
 			{
@@ -1682,7 +1670,7 @@ void CMainViewDlg::OnBnClickedButtonSetDuration()
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			int currentFrame = _mEdit2D.GetCurrentFrame();
+			unsigned int currentFrame = _mEdit2D.GetCurrentFrame();
 			if (currentFrame < 0 ||
 				currentFrame >= _mEdit2D.GetFrameCount())
 			{

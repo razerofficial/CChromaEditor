@@ -46,6 +46,9 @@ extern "C"
 {
 	//GameMaker: Only has double and char* types
 
+	EXPORT_API bool PluginIsInitialized();
+	EXPORT_API double PluginIsInitializedD();
+
 	EXPORT_API bool PluginIsDialogOpen();
 	EXPORT_API double PluginIsDialogOpenD();
 

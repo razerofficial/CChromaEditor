@@ -42,10 +42,35 @@ void ThreadOpenEditorDialog()
 
 extern "C"
 {
+	EXPORT_API bool PluginIsInitialized()
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		return ChromaSDKPlugin::GetInstance()->IsInitialized();
+	}
+
+	EXPORT_API double PluginIsInitializedD()
+	{
+		if (PluginIsInitialized())
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 	EXPORT_API bool PluginIsDialogOpen()
 	{
 		// Chroma thread plays animations
 		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			return false;
+		}
 
 		return _gDialogIsOpen;
 	}
@@ -66,6 +91,11 @@ extern "C"
 	{
 		// Chroma thread plays animations
 		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			return -1;
+		}
 
 		//fprintf(stdout, "CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
 
@@ -94,6 +124,11 @@ extern "C"
 			// Chroma thread plays animations
 			SetupChromaThread();
 
+			if (!PluginIsInitialized())
+			{
+				return -1;
+			}
+
 			//return animation id
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
 			int id = _gAnimationId;
@@ -120,11 +155,21 @@ extern "C"
 			// Chroma thread plays animations
 			SetupChromaThread();
 
-			int id = (int)animationId;
-			if (_gAnimations.find(id) != _gAnimations.end())
+			if (!PluginIsInitialized())
 			{
-				_gAnimations[id]->Load();
-				return id;
+				return -1;
+			}
+
+			if (_gAnimations.size() > 0 &&
+				_gAnimations.find(animationId) != _gAnimations.end())
+			{
+				AnimationBase* animation = _gAnimations[animationId];
+				if (animation == nullptr)
+				{
+					return -1;
+				}
+				animation->Load();
+				return animationId;
 			}
 			return 0;
 		}
@@ -147,11 +192,21 @@ extern "C"
 			// Chroma thread plays animations
 			SetupChromaThread();
 
-			int id = (int)animationId;
-			if (_gAnimations.find(id) != _gAnimations.end())
+			if (!PluginIsInitialized())
 			{
-				_gAnimations[id]->Unload();
-				return id;
+				return -1;
+			}
+
+			if (_gAnimations.size() > 0 &&
+				_gAnimations.find(animationId) != _gAnimations.end())
+			{
+				AnimationBase* animation = _gAnimations[animationId];
+				if (animation == nullptr)
+				{
+					return -1;
+				}
+				animation->Unload();
+				return animationId;
 			}
 			return 0;
 		}
@@ -174,11 +229,21 @@ extern "C"
 			// Chroma thread plays animations
 			SetupChromaThread();
 
-			int id = (int)animationId;
-			if (_gAnimations.find(id) != _gAnimations.end())
+			if (!PluginIsInitialized())
 			{
-				_gAnimations[id]->Play();
-				return id;
+				return -1;
+			}
+
+			if (_gAnimations.size() > 0 &&
+				_gAnimations.find(animationId) != _gAnimations.end())
+			{
+				AnimationBase* animation = _gAnimations[animationId];
+				if (animation == nullptr)
+				{
+					return -1;
+				}
+				animation->Play();
+				return animationId;
 			}
 			return 0;
 		}
@@ -201,11 +266,21 @@ extern "C"
 			// Chroma thread plays animations
 			SetupChromaThread();
 
-			int id = (int)animationId;
-			if (_gAnimations.find(id) != _gAnimations.end())
+			if (!PluginIsInitialized())
 			{
-				_gAnimations[id]->Stop();
-				return id;
+				return -1;
+			}
+
+			if (_gAnimations.size() > 0 &&
+				_gAnimations.find(animationId) != _gAnimations.end())
+			{
+				AnimationBase* animation = _gAnimations[animationId];
+				if (animation == nullptr)
+				{
+					return -1;
+				}
+				animation->Stop();
+				return animationId;
 			}
 			return 0;
 		}
@@ -228,12 +303,22 @@ extern "C"
 			// Chroma thread plays animations
 			SetupChromaThread();
 
-			int id = (int)animationId;
-			if (_gAnimations.find(id) != _gAnimations.end())
+			if (!PluginIsInitialized())
 			{
-				delete _gAnimations[id];
+				return -1;
+			}
+
+			if (_gAnimations.size() > 0 &&
+				_gAnimations.find(animationId) != _gAnimations.end())
+			{
+				AnimationBase* animation = _gAnimations[animationId];
+				if (animation == nullptr)
+				{
+					return -1;
+				}
+				delete _gAnimations[animationId];
 				_gAnimations.erase(animationId);
-				return id;
+				return animationId;
 			}
 			return 0;
 		}

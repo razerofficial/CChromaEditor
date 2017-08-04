@@ -13,6 +13,8 @@ namespace ChromaSDK
 
 		static ChromaSDKPlugin* GetInstance();
 
+		bool IsInitialized();
+
 		// SDK Methods
 		RZRESULT ChromaSDKInit();
 		RZRESULT ChromaSDKUnInit();
@@ -54,6 +56,8 @@ namespace ChromaSDK
 		ChromaSDKPlugin();
 
 		bool ValidateGetProcAddress(bool condition, const char* methodName);
+
+		bool _mInitialized;
 
 		static ChromaSDKPlugin* _sInstance;
 

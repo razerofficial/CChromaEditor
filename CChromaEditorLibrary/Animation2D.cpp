@@ -60,7 +60,7 @@ int Animation2D::GetFrameCount()
 	return _mFrames.size();
 }
 
-float Animation2D::GetDuration(int index)
+float Animation2D::GetDuration(unsigned int index)
 {
 	if (index < _mFrames.size())
 	{
@@ -77,7 +77,7 @@ void Animation2D::Load()
 		return;
 	}
 
-	for (int i = 0; i < _mFrames.size(); ++i)
+	for (unsigned int i = 0; i < _mFrames.size(); ++i)
 	{
 		FChromaSDKColorFrame2D& frame = _mFrames[i];
 		try
@@ -108,7 +108,7 @@ void Animation2D::Unload()
 		return;
 	}
 
-	for (int i = 0; i < _mEffects.size(); ++i)
+	for (unsigned int i = 0; i < _mEffects.size(); ++i)
 	{
 		FChromaSDKEffectResult& effect = _mEffects[i];
 		try

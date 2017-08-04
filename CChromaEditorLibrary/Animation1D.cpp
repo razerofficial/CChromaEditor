@@ -60,7 +60,7 @@ int Animation1D::GetFrameCount()
 	return _mFrames.size();
 }
 
-float Animation1D::GetDuration(int index)
+float Animation1D::GetDuration(unsigned int index)
 {
 	if (index < _mFrames.size())
 	{
@@ -77,7 +77,7 @@ void Animation1D::Load()
 		return;
 	}
 
-	for (int i = 0; i < _mFrames.size(); ++i)
+	for (unsigned int i = 0; i < _mFrames.size(); ++i)
 	{
 		FChromaSDKColorFrame1D& frame = _mFrames[i];
 		try
@@ -108,7 +108,7 @@ void Animation1D::Unload()
 		return;
 	}
 
-	for (int i = 0; i < _mEffects.size(); ++i)
+	for (unsigned int i = 0; i < _mEffects.size(); ++i)
 	{
 		try
 		{

@@ -31,6 +31,8 @@ bool ChromaSDKPlugin::ValidateGetProcAddress(bool condition, const char* methodN
 
 ChromaSDKPlugin::ChromaSDKPlugin()
 {
+	_mInitialized = false;
+
 	_mLibraryChroma = LoadLibrary(CHROMASDKDLL);
 	if (_mLibraryChroma == NULL)
 	{
@@ -417,6 +419,8 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE5] = "Right LED 5";
 	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE6] = "Right LED 6";
 	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE7] = "Right LED 7";
+
+	_mInitialized = true;
 }
 
 ChromaSDKPlugin::~ChromaSDKPlugin()
@@ -431,6 +435,11 @@ ChromaSDKPlugin* ChromaSDKPlugin::GetInstance()
 		_sInstance = new ChromaSDKPlugin();
 	}
 	return _sInstance;
+}
+
+bool ChromaSDKPlugin::IsInitialized()
+{
+	return _mInitialized;
 }
 
 RZRESULT ChromaSDKPlugin::ChromaSDKInit()
