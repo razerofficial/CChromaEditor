@@ -419,8 +419,6 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE5] = "Right LED 5";
 	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE6] = "Right LED 6";
 	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE7] = "Right LED 7";
-
-	_mInitialized = true;
 }
 
 ChromaSDKPlugin::~ChromaSDKPlugin()
@@ -452,6 +450,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKInit()
 
 	int result = _mMethodInit();
 	fprintf(stdout, "ChromaSDKPlugin Init Result=%d\r\n", result);
+	_mInitialized = true;
 	return result;
 }
 
@@ -465,6 +464,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKUnInit()
 
 	int result = _mMethodUnInit();
 	fprintf(stdout, "ChromaSDKPlugin UnInit Result=%d\r\n", result);
+	_mInitialized = false;
 	return result;
 }
 

@@ -328,11 +328,6 @@ extern "C"
 		// Chroma thread plays animations
 		SetupChromaThread();
 
-		if (!PluginIsInitialized())
-		{
-			return -1;
-		}
-
 		return ChromaSDKPlugin::GetInstance()->ChromaSDKInit();
 	}
 
