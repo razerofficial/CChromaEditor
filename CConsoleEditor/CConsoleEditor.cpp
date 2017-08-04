@@ -88,14 +88,14 @@ int main(int argc, char *argv[])
 
 		if (true) // test api
 		{
-			int keyboardCoolFireAnimation = OpenAndPlay("KeyboardParticleAnimation2.chroma");
 			int randomChromaLinkEffect = OpenAndPlay("RandomChromaLinkEffect.chroma");
 			int randomHeadsetEffect = OpenAndPlay("RandomHeadsetEffect.chroma");
+			int randomKeyboardEffect = OpenAndPlay("RandomKeyboardEffect.chroma");
 			int randomKeypadEffect = OpenAndPlay("RandomKeypadEffect.chroma");
 			int randomMouseEffect = OpenAndPlay("RandomMouseEffect.chroma");
 			int randomMousepadEffect = OpenAndPlay("RandomMousepadEffect.chroma");
 
-			this_thread::sleep_for(chrono::seconds(2));
+			this_thread::sleep_for(chrono::seconds(5));
 		}
 	}
 	else

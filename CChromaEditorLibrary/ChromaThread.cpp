@@ -31,13 +31,13 @@ void ChromaThread::ChromaWorker()
 
 		// get time in seconds
 		duration<double, std::milli> time_span = timer - timerLast;
-		float deltaTime = time_span.count() / 1000.0f;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
 		timerLast = timer;
 
 		std::lock_guard<std::mutex> guard(_mMutex);
 
 		// update animations
-		for (int i = 0; i < _mAnimations.size(); ++i)
+		for (unsigned int i = 0; i < _mAnimations.size(); ++i)
 		{
 			AnimationBase* animation = _mAnimations[i];
 			if (animation != nullptr)

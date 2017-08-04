@@ -30,6 +30,7 @@ bool EditorAnimation1D::SetDevice(EChromaSDKDevice1DEnum device)
 	if (_mAnimation.SetDevice(device))
 	{
 		Reset();
+		return true;
 	}
 	else
 	{
@@ -61,14 +62,14 @@ FChromaSDKColorFrame1D& EditorAnimation1D::GetCopy()
 void EditorAnimation1D::OverrideTime(float time)
 {
 	vector<FChromaSDKColorFrame1D>& frames = GetFrames();
-	for (int i = 0; i < frames.size(); ++i)
+	for (unsigned int i = 0; i < frames.size(); ++i)
 	{
 		FChromaSDKColorFrame1D& frame = frames[i];
 		frame.Duration = time;
 	}
 }
 
-float EditorAnimation1D::GetDuration(int index)
+float EditorAnimation1D::GetDuration(unsigned int index)
 {
 	vector<FChromaSDKColorFrame1D>& frames = GetFrames();
 	if (index < frames.size())

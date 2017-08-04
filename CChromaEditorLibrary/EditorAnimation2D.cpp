@@ -30,6 +30,7 @@ bool EditorAnimation2D::SetDevice(EChromaSDKDevice2DEnum device)
 	if (_mAnimation.SetDevice(device))
 	{
 		Reset();
+		return true;
 	}
 	else
 	{
@@ -61,14 +62,14 @@ FChromaSDKColorFrame2D& EditorAnimation2D::GetCopy()
 void EditorAnimation2D::OverrideTime(float time)
 {
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
-	for (int i = 0; i < frames.size(); ++i)
+	for (unsigned int i = 0; i < frames.size(); ++i)
 	{
 		FChromaSDKColorFrame2D& frame = frames[i];
 		frame.Duration = time;
 	}
 }
 
-float EditorAnimation2D::GetDuration(int index)
+float EditorAnimation2D::GetDuration(unsigned int index)
 {
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
 	if (index < frames.size())

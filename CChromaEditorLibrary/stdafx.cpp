@@ -137,7 +137,7 @@ extern "C"
 
 	EXPORT_API double PluginLoadAnimationD(double animationId)
 	{
-		return PluginLoadAnimation(animationId);
+		return (double)PluginLoadAnimation((int)animationId);
 	}
 
 	EXPORT_API int PluginUnloadAnimation(int animationId)
@@ -164,7 +164,7 @@ extern "C"
 
 	EXPORT_API double PluginUnloadAnimationD(double animationId)
 	{
-		return PluginUnloadAnimation(animationId);
+		return (double)PluginUnloadAnimation((int)animationId);
 	}
 
 	EXPORT_API int PluginPlayAnimation(int animationId)
@@ -191,7 +191,7 @@ extern "C"
 
 	EXPORT_API double PluginPlayAnimationD(double animationId)
 	{
-		return PluginPlayAnimation(animationId);
+		return (double)PluginPlayAnimation((int)animationId);
 	}
 
 	EXPORT_API int PluginStopAnimation(int animationId)
@@ -218,7 +218,7 @@ extern "C"
 
 	EXPORT_API double PluginStopAnimationD(double animationId)
 	{
-		return PluginStopAnimation(animationId);
+		return (double)PluginStopAnimation((int)animationId);
 	}
 
 	EXPORT_API int PluginCloseAnimation(int animationId)
@@ -246,6 +246,6 @@ extern "C"
 
 	EXPORT_API double PluginCloseAnimationD(double animationId)
 	{
-		return PluginCloseAnimation(animationId);
+		return (double)PluginCloseAnimation((int)animationId);
 	}
 }
