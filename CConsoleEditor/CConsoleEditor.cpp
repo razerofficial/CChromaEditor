@@ -106,6 +106,9 @@ int main(int argc, char *argv[])
 
 		if (true) // test api
 		{
+			fprintf(stdout, "Init...\r\n");
+			_gMethodInit();
+
 			fprintf(stdout, "Playing effects...\r\n");
 			int randomChromaLinkEffect = OpenAndPlay("RandomChromaLinkEffect.chroma");
 			int randomHeadsetEffect = OpenAndPlay("RandomHeadsetEffect.chroma");
