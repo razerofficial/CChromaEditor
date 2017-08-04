@@ -305,6 +305,7 @@ extern "C"
 				{
 					return -1;
 				}
+				animation->Stop();
 				delete _gAnimations[animationId];
 				_gAnimations.erase(animationId);
 				return animationId;
