@@ -12,6 +12,7 @@ typedef double(*PLUGIN_IS_DIALOG_OPEN)();
 typedef double(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
 typedef double(*PLUGIN_OPEN_ANIMATION)(const char* path);
 typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
+typedef void(*PLUGIN_INIT)();
 typedef void(*PLUGIN_UNINIT)();
 
 using namespace std;
@@ -21,6 +22,7 @@ PLUGIN_IS_DIALOG_OPEN _gMethodIsDialogOpen = nullptr;
 PLUGIN_OPEN_EDITOR_DIALOG _gMethodOpenDialog = nullptr;
 PLUGIN_OPEN_ANIMATION _gMethodOpenAnimation = nullptr;
 PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
+PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
 
 int Init()
@@ -62,6 +64,13 @@ int Init()
 		return -1;
 	}
 
+	_gMethodInit = (PLUGIN_UNINIT)GetProcAddress(library, "PluginInit");
+	if (_gMethodInit == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginInit!\r\n");
+		return -1;
+	}
+
 	_gMethodUninit = (PLUGIN_UNINIT)GetProcAddress(library, "PluginUninit");
 	if (_gMethodUninit == nullptr)
 	{
@@ -97,12 +106,29 @@ int main(int argc, char *argv[])
 
 		if (true) // test api
 		{
+			fprintf(stdout, "Playing effects...\r\n");
 			int randomChromaLinkEffect = OpenAndPlay("RandomChromaLinkEffect.chroma");
 			int randomHeadsetEffect = OpenAndPlay("RandomHeadsetEffect.chroma");
 			int randomKeyboardEffect = OpenAndPlay("RandomKeyboardEffect.chroma");
 			int randomKeypadEffect = OpenAndPlay("RandomKeypadEffect.chroma");
 			int randomMouseEffect = OpenAndPlay("RandomMouseEffect.chroma");
 			int randomMousepadEffect = OpenAndPlay("RandomMousepadEffect.chroma");
+			this_thread::sleep_for(chrono::seconds(2));
+
+			fprintf(stdout, "Simulate exit...\r\n");
+			_gMethodUninit();
+			this_thread::sleep_for(chrono::seconds(3));
+
+			fprintf(stdout, "Reinit...\r\n");
+			_gMethodInit();
+
+			fprintf(stdout, "Playing effects...\r\n");
+			randomChromaLinkEffect = OpenAndPlay("RandomChromaLinkEffect.chroma");
+			randomHeadsetEffect = OpenAndPlay("RandomHeadsetEffect.chroma");
+			randomKeyboardEffect = OpenAndPlay("RandomKeyboardEffect.chroma");
+			randomKeypadEffect = OpenAndPlay("RandomKeypadEffect.chroma");
+			randomMouseEffect = OpenAndPlay("RandomMouseEffect.chroma");
+			randomMousepadEffect = OpenAndPlay("RandomMousepadEffect.chroma");
 
 			this_thread::sleep_for(chrono::seconds(5));
 		}

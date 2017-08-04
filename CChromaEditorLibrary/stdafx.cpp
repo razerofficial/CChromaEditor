@@ -339,6 +339,24 @@ extern "C"
 		return (double)PluginCloseAnimation((int)animationId);
 	}
 
+	EXPORT_API int PluginInit()
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			return -1;
+		}
+
+		return ChromaSDKPlugin::GetInstance()->ChromaSDKInit();
+	}
+
+	EXPORT_API double PluginInitD()
+	{
+		return (double)PluginInit();
+	}
+
 	EXPORT_API int PluginUninit()
 	{
 		// Chroma thread plays animations

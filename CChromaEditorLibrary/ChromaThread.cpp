@@ -56,6 +56,8 @@ void ChromaThread::ChromaWorker()
 
 		this_thread::yield();
 	}
+
+	_mThread = nullptr;
 }
 
 void ChromaThread::Start()
@@ -71,6 +73,9 @@ void ChromaThread::Start()
 void ChromaThread::Stop()
 {
 	_mWaitForExit = false;
+
+	std::lock_guard<std::mutex> guard(_mMutex);
+	_mAnimations.clear();
 }
 
 void ChromaThread::AddAnimation(AnimationBase* animation)
