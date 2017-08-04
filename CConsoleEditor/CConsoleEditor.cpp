@@ -103,7 +103,24 @@ int Init()
 int OpenAndPlay(const char* path)
 {
 	int animationId = (int)_gMethodOpenAnimation(path);
-	return (int)_gMethodPlayAnimation(animationId);
+	fprintf(stdout, "OpenAnimation: %s result=%d\r\n", path, animationId);
+	if (animationId >= 0)
+	{
+		int result = (int)_gMethodPlayAnimation(animationId);
+		fprintf(stdout, "PlayAnimation: %d result=%d\r\n", animationId, result);
+		return result;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int CloseAnimation(int animationId)
+{
+	int result = (int)_gMethodCloseAnimation(animationId);
+	fprintf(stdout, "CloseAnimation: %d result=%d\r\n", animationId, result);
+	return result;
 }
 
 int main(int argc, char *argv[])
@@ -137,7 +154,7 @@ int main(int argc, char *argv[])
 		{
 			for (int i = 0; i < 10; ++i)
 			{
-				if (_gMethodIsInitialized == 0)
+				if (_gMethodIsInitialized() == 0)
 				{
 					fprintf(stdout, "Init...\r\n");
 					_gMethodInit();
