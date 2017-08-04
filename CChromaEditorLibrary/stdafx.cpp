@@ -69,14 +69,6 @@ extern "C"
 
 	EXPORT_API bool PluginIsDialogOpen()
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			return false;
-		}
-
 		return _gDialogIsOpen;
 	}
 
@@ -94,14 +86,6 @@ extern "C"
 
 	EXPORT_API int PluginOpenEditorDialog(char* path)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			return -1;
-		}
-
 		//fprintf(stdout, "CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
 
 		if (_gDialogIsOpen)
