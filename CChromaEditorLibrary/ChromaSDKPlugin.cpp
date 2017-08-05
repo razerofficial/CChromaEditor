@@ -20,11 +20,11 @@ bool ChromaSDKPlugin::ValidateGetProcAddress(bool condition, const char* methodN
 {
 	if (condition)
 	{
-		fprintf(stderr, "ChromaSDKPlugin failed to load %s!\r\n", methodName);
+		LogError("ChromaSDKPlugin failed to load %s!\r\n", methodName);
 	}
 	else
 	{
-		//fprintf(stdout, "ChromaSDKPlugin loaded %s.\r\n", *methodName);
+		//LogDebug("ChromaSDKPlugin loaded %s.\r\n", *methodName);
 	}
 	return condition;
 }
@@ -36,10 +36,10 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	_mLibraryChroma = LoadLibrary(CHROMASDKDLL);
 	if (_mLibraryChroma == NULL)
 	{
-		fprintf(stderr, "ChromaSDKPlugin failed to load!\r\n");
+		LogError("ChromaSDKPlugin failed to load!\r\n");
 		return;
 	}
-	fprintf(stdout, "ChromaSDKPlugin loaded.\r\n");
+	LogDebug("ChromaSDKPlugin loaded.\r\n");
 
 	_mMethodInit = (CHROMA_SDK_INIT)GetProcAddress(_mLibraryChroma, "Init");
 	if (ValidateGetProcAddress(_mMethodInit == nullptr, "Init"))
@@ -111,11 +111,11 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 
 	if (ChromaSDKInit() == 0)
 	{
-		fprintf(stdout, "ChromaSDKPlugin initialized.\r\n");
+		LogDebug("ChromaSDKPlugin initialized.\r\n");
 	}
 	else
 	{
-		fprintf(stderr, "ChromaSDKPlugin failed to initialize!\r\n");
+		LogError("ChromaSDKPlugin failed to initialize!\r\n");
 	}
 
 	// keyboard mapping
@@ -444,12 +444,12 @@ RZRESULT ChromaSDKPlugin::ChromaSDKInit()
 {
 	if (_mMethodInit == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin Init method is not set!\r\n");
+		LogError("ChromaSDKPlugin Init method is not set!\r\n");
 		return -1;
 	}
 
 	int result = _mMethodInit();
-	fprintf(stdout, "ChromaSDKPlugin Init Result=%d\r\n", result);
+	LogDebug("ChromaSDKPlugin Init Result=%d\r\n", result);
 	_mInitialized = true;
 	return result;
 }
@@ -458,12 +458,12 @@ RZRESULT ChromaSDKPlugin::ChromaSDKUnInit()
 {
 	if (_mMethodUnInit == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin UnInit method is not set!\r\n");
+		LogError("ChromaSDKPlugin UnInit method is not set!\r\n");
 		return -1;
 	}
 
 	int result = _mMethodUnInit();
-	fprintf(stdout, "ChromaSDKPlugin UnInit Result=%d\r\n", result);
+	LogDebug("ChromaSDKPlugin UnInit Result=%d\r\n", result);
 	_mInitialized = false;
 	return result;
 }
@@ -472,7 +472,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKCreateEffect(RZDEVICEID deviceId, EFFECT_TYPE
 {
 	if (_mMethodCreateEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin CreateEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin CreateEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -483,7 +483,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKCreateChromaLinkEffect(ChromaLink::EFFECT_TYP
 {
 	if (_mMethodCreateChromaLinkEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin CreateChromaLinkEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin CreateChromaLinkEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -494,7 +494,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKCreateHeadsetEffect(Headset::EFFECT_TYPE effe
 {
 	if (_mMethodCreateHeadsetEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin CreateHeadsetEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin CreateHeadsetEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -505,7 +505,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKCreateKeyboardEffect(Keyboard::EFFECT_TYPE ef
 {
 	if (_mMethodCreateKeyboardEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin CreateKeyboardEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin CreateKeyboardEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -516,7 +516,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKCreateKeypadEffect(Keypad::EFFECT_TYPE effect
 {
 	if (_mMethodCreateKeypadEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin CreateKeypadEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin CreateKeypadEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -527,7 +527,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKCreateMouseEffect(Mouse::EFFECT_TYPE effect, 
 {
 	if (_mMethodCreateMouseEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin CreateMouseEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin CreateMouseEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -538,7 +538,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKCreateMousepadEffect(Mousepad::EFFECT_TYPE ef
 {
 	if (_mMethodCreateMousepadEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin CreateMousepadEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin CreateMousepadEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -549,7 +549,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKSetEffect(RZEFFECTID effectId)
 {
 	if (_mMethodSetEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin SetEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin SetEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -560,7 +560,7 @@ RZRESULT ChromaSDKPlugin::ChromaSDKDeleteEffect(RZEFFECTID effectId)
 {
 	if (_mMethodDeleteEffect == nullptr)
 	{
-		fprintf(stderr, "ChromaSDKPlugin DeleteEffect method is not set!\r\n");
+		LogError("ChromaSDKPlugin DeleteEffect method is not set!\r\n");
 		return -1;
 	}
 
@@ -683,7 +683,7 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetKeyboardKeyColor(const EChro
 		colors.size() == 0 ||
 		maxColumn != colors[0].Colors.size())
 	{
-		fprintf(stderr, "ChromaSDKPlugin::SetKeyboardKeyColor Array size mismatch row: %d==%d column: %d==%d!\r\n",
+		LogError("ChromaSDKPlugin::SetKeyboardKeyColor Array size mismatch row: %d==%d column: %d==%d!\r\n",
 			maxRow,
 			colors.size(),
 			maxColumn,
@@ -707,7 +707,7 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetMouseLEDColor(const EChromaS
 		colors.size() == 0 ||
 		maxColumn != colors[0].Colors.size())
 	{
-		fprintf(stderr, "ChromaSDKPlugin::SetMouseLedColor Array size mismatch row: %d==%d column: %d==%d!\r\n",
+		LogError("ChromaSDKPlugin::SetMouseLedColor Array size mismatch row: %d==%d column: %d==%d!\r\n",
 			maxRow,
 			colors.size(),
 			maxColumn,
@@ -722,7 +722,7 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetMouseLEDColor(const EChromaS
 
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevice1DEnum& device)
 {
-	fprintf(stdout, "ChromaSDKPlugin::CreateEffectNone1D Invoke.\r\n");
+	LogDebug("ChromaSDKPlugin::CreateEffectNone1D Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -740,20 +740,20 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevic
 		result = ChromaSDKCreateMousepadEffect(Mousepad::CHROMA_NONE, NULL, &effectId);
 		break;
 	default:
-		fprintf(stderr, "ChromaSDKPlugin::CreateEffectNone1D Unsupported device used!\r\n");
+		LogError("ChromaSDKPlugin::CreateEffectNone1D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
-	fprintf(stdout, "ChromaSDKPlugin::CreateEffectNone1D Result=%d.\r\n", data.Result);
+	LogDebug("ChromaSDKPlugin::CreateEffectNone1D Result=%d.\r\n", data.Result);
 
 	return data;
 }
 
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevice2DEnum& device)
 {
-	fprintf(stdout, "ChromaSDKPlugin::CreateEffectNone2D Invoke.\r\n");
+	LogDebug("ChromaSDKPlugin::CreateEffectNone2D Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -771,13 +771,13 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevic
 		result = ChromaSDKCreateMouseEffect(Mouse::CHROMA_NONE, NULL, &effectId);
 		break;
 	default:
-		fprintf(stderr, "ChromaSDKPlugin::CreateEffectNone2D Unsupported device used!\r\n");
+		LogError("ChromaSDKPlugin::CreateEffectNone2D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
-	fprintf(stdout, "ChromaSDKPlugin::CreateEffectNone2D Result=%d.\r\n", data.Result);
+	LogDebug("ChromaSDKPlugin::CreateEffectNone2D Result=%d.\r\n", data.Result);
 
 	return data;
 }
@@ -812,7 +812,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic1D(const EChromaSDKDev
 	}
 	break;
 	default:
-		fprintf(stderr, "ChromaSDKPlugin::CreateEffectStatic1D Unsupported device used!\r\n");
+		LogError("ChromaSDKPlugin::CreateEffectStatic1D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -852,7 +852,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic2D(const EChromaSDKDev
 	}
 	break;
 	default:
-		fprintf(stderr, "ChromaSDKPlugin::CreateEffectStatic2D Unsupported device used!\r\n");
+		LogError("ChromaSDKPlugin::CreateEffectStatic2D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -875,7 +875,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		maxLeds = ChromaLink::MAX_LEDS;
 		if (maxLeds != colors.size())
 		{
-			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+			LogError("ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
 				maxLeds,
 				colors.size());
 			break;
@@ -893,7 +893,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		maxLeds = Headset::MAX_LEDS;
 		if (maxLeds != colors.size())
 		{
-			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+			LogError("ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
 				maxLeds,
 				colors.size());
 			break;
@@ -911,7 +911,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		maxLeds = Mousepad::MAX_LEDS;
 		if (maxLeds != colors.size())
 		{
-			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+			LogError("ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
 				maxLeds,
 				colors.size());
 			break;
@@ -925,7 +925,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 	}
 	break;
 	default:
-		fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom1D Unsupported device used!\r\n");
+		LogError("ChromaSDKPlugin::CreateEffectCustom1D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -952,7 +952,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -979,7 +979,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -1006,7 +1006,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -1026,7 +1026,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 	}
 	break;
 	default:
-		fprintf(stderr, "ChromaSDKPlugin::CreateEffectCustom2D Unsupported device used!\r\n");
+		LogError("ChromaSDKPlugin::CreateEffectCustom2D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -1037,22 +1037,22 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 
 RZRESULT ChromaSDKPlugin::SetEffect(const FChromaSDKGuid& effectId)
 {
-	//fprintf(stdout, "ChromaSDKPlugin::SetEffect Invoke.\r\n");
+	//LogDebug("ChromaSDKPlugin::SetEffect Invoke.\r\n");
 	RZRESULT result = ChromaSDKSetEffect(effectId.Data);
 	if (result != 0)
 	{
-		fprintf(stderr, "ChromaSDKPlugin::SetEffect Result=%d.\r\n", result);
+		LogError("ChromaSDKPlugin::SetEffect Result=%d.\r\n", result);
 	}
 	return result;
 }
 
 RZRESULT ChromaSDKPlugin::DeleteEffect(const FChromaSDKGuid& effectId)
 {
-	//fprintf(stdout, "ChromaSDKPlugin::DeleteEffect Invoke.\r\n");
+	//LogDebug("ChromaSDKPlugin::DeleteEffect Invoke.\r\n");
 	RZRESULT result = ChromaSDKDeleteEffect(effectId.Data);
 	if (result != 0)
 	{
-		fprintf(stderr, "ChromaSDKPlugin::DeleteEffect Result=%d.\r\n", result);
+		LogError("ChromaSDKPlugin::DeleteEffect Result=%d.\r\n", result);
 	}
 	return result;
 }
@@ -1071,7 +1071,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 {
 	AnimationBase* animation = nullptr;
 
-	fprintf(stdout, "OpenAnimation: %s\r\n", path.c_str());
+	LogDebug("OpenAnimation: %s\r\n", path.c_str());
 	FILE* stream;
 	if (0 == fopen_s(&stream, path.c_str(), "rb") &&
 		stream)
@@ -1086,18 +1086,18 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 		read = fread(&version, expectedSize, 1, stream);
 		if (read != expectedRead)
 		{
-			fprintf(stderr, "OpenAnimation: Failed to read version!\r\n");
+			LogError("OpenAnimation: Failed to read version!\r\n");
 			std::fclose(stream);
 			return nullptr;
 		}
 		if (version != ANIMATION_VERSION)
 		{
-			fprintf(stderr, "OpenAnimation: Unexpected Version!\r\n");
+			LogError("OpenAnimation: Unexpected Version!\r\n");
 			std::fclose(stream);
 			return nullptr;
 		}
 
-		fprintf(stdout, "OpenAnimation: Version: %d\r\n", version);
+		LogDebug("OpenAnimation: Version: %d\r\n", version);
 
 		//device
 		byte device = 0;
@@ -1115,7 +1115,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 			case EChromaSDKDeviceTypeEnum::DE_2D:
 				break;
 			default:
-				fprintf(stderr, "OpenAnimation: Unexpected DeviceType!\r\n");
+				LogError("OpenAnimation: Unexpected DeviceType!\r\n");
 				std::fclose(stream);
 				return nullptr;
 			}
@@ -1139,7 +1139,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					read = fread(&frameCount, expectedSize, 1, stream);
 					if (read != expectedRead)
 					{
-						fprintf(stderr, "OpenAnimation: Error detected reading frame count!\r\n");
+						LogError("OpenAnimation: Error detected reading frame count!\r\n");
 						std::fclose(stream);
 						delete animation1D;
 						return nullptr;
@@ -1158,7 +1158,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							read = fread(&frame.Duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
-								fprintf(stderr, "OpenAnimation: Error detected reading duration!\r\n");
+								LogError("OpenAnimation: Error detected reading duration!\r\n");
 								std::fclose(stream);
 								delete animation1D;
 								return nullptr;
@@ -1173,7 +1173,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 									read = fread(&color, expectedSize, 1, stream);
 									if (read != expectedRead)
 									{
-										fprintf(stderr, "OpenAnimation: Error detected reading color!\r\n");
+										LogError("OpenAnimation: Error detected reading color!\r\n");
 										std::fclose(stream);
 										delete animation1D;
 										return nullptr;
@@ -1213,7 +1213,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					read = fread(&frameCount, expectedSize, 1, stream);
 					if (read != expectedRead)
 					{
-						fprintf(stderr, "OpenAnimation: Error detected reading frame count!\r\n");
+						LogError("OpenAnimation: Error detected reading frame count!\r\n");
 						std::fclose(stream);
 						delete animation2D;
 						return nullptr;
@@ -1233,7 +1233,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							read = fread(&frame.Duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
-								fprintf(stderr, "OpenAnimation: Error detected reading duration!\r\n");
+								LogError("OpenAnimation: Error detected reading duration!\r\n");
 								std::fclose(stream);
 								delete animation2D;
 								return nullptr;
@@ -1251,7 +1251,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 										read = fread(&color, expectedSize, 1, stream);
 										if (read != expectedRead)
 										{
-											fprintf(stderr, "OpenAnimation: Error detected reading color!\r\n");
+											LogError("OpenAnimation: Error detected reading color!\r\n");
 											std::fclose(stream);
 											delete animation2D;
 											return nullptr;

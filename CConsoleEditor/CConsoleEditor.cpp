@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 
 		if (true) // test api
 		{
-			for (int i = 0; i < 10; ++i)
+			for (int i = 0; i < 25; ++i)
 			{
 				if (_gMethodIsInitialized() == 0)
 				{
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
 				int randomKeypadEffect = OpenAndPlay("RandomKeypadEffect.chroma");
 				int randomMouseEffect = OpenAndPlay("RandomMouseEffect.chroma");
 				int randomMousepadEffect = OpenAndPlay("RandomMousepadEffect.chroma");
-				this_thread::sleep_for(chrono::seconds(2));
+				this_thread::sleep_for(chrono::seconds(1));
 
 				_gMethodCloseAnimation(randomChromaLinkEffect);
 				_gMethodCloseAnimation(randomHeadsetEffect);

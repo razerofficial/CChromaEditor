@@ -11,6 +11,56 @@
 using namespace ChromaSDK;
 using namespace std;
 
+/* Setup log mechanism */
+static DebugLogPtr _gDebugLogPtr;
+void LogDebug(const char* format, ...)
+{
+	if (NULL == _gDebugLogPtr)
+	{
+		va_list args;
+		va_start(args, format);
+		vfprintf_s(stdout, format, args);
+		va_end(args);
+	}
+	else if (NULL == format)
+	{
+		_gDebugLogPtr("");
+	}
+	else
+	{
+		char buffer[1024] = { 0 };
+		va_list args;
+		va_start(args, format);
+		vsprintf_s(buffer, format, args);
+		va_end(args);
+		_gDebugLogPtr(&buffer[0]);
+	}
+}
+void LogError(const char* format, ...)
+{
+	if (NULL == _gDebugLogPtr)
+	{
+		va_list args;
+		va_start(args, format);
+		vfprintf_s(stderr, format, args);
+		va_end(args);
+	}
+	else if (NULL == format)
+	{
+		_gDebugLogPtr("");
+	}
+	else
+	{
+		char buffer[1024] = { 0 };
+		va_list args;
+		va_start(args, format);
+		vsprintf_s(buffer, format, args);
+		va_end(args);
+		_gDebugLogPtr(&buffer[0]);
+	}
+}
+/* End of setup log mechanism */
+
 bool _gDialogIsOpen = false;
 string _gPath = "";
 int _gAnimationId = 0;
@@ -31,7 +81,7 @@ void ThreadOpenEditorDialog()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	// normal function body here
 
-	//fprintf(stdout, "CChromaEditorLibrary::ThreadOpenEditorDialog %s\r\n", _gPath.c_str());
+	//LogError("CChromaEditorLibrary::ThreadOpenEditorDialog %s\r\n", _gPath.c_str());
 
 	// dialog instance
 	CMainViewDlg mainViewDlg;
@@ -47,6 +97,12 @@ void ThreadOpenEditorDialog()
 
 extern "C"
 {
+	EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp)
+	{
+		_gDebugLogPtr = fp;
+		LogDebug("PluginSetLogDelegate:");
+	}
+
 	EXPORT_API bool PluginIsInitialized()
 	{
 		// Chroma thread plays animations
@@ -86,7 +142,7 @@ extern "C"
 
 	EXPORT_API int PluginOpenEditorDialog(char* path)
 	{
-		//fprintf(stdout, "CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
+		//LogError("CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
 
 		if (_gDialogIsOpen)
 		{
@@ -115,19 +171,28 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
+				LogError("PluginOpenAnimation: Plugin is not initialized!");
 				return -1;
 			}
 
 			//return animation id
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
-			int id = _gAnimationId;
-			_gAnimations[id] = animation;
-			++_gAnimationId;
-			return id;
+			if (animation == nullptr)
+			{
+				LogError("PluginOpenAnimation: Animation is null!");
+				return -1;
+			}
+			else
+			{
+				int id = _gAnimationId;
+				_gAnimations[id] = animation;
+				++_gAnimationId;
+				return id;
+			}
 		}
 		catch (exception)
 		{
-			fprintf(stderr, "PluginOpenAnimation: Exception path=%s\r\n", path);
+			LogError("PluginOpenAnimation: Exception path=%s\r\n", path);
 			return -1;
 		}
 	}
@@ -146,15 +211,16 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
+				LogError("PluginLoadAnimation: Plugin is not initialized!");
 				return -1;
 			}
 
-			if (_gAnimations.size() > 0 &&
-				_gAnimations.find(animationId) != _gAnimations.end())
+			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
+					LogError("PluginLoadAnimation: Animation is null!");
 					return -1;
 				}
 				animation->Load();
@@ -164,7 +230,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			fprintf(stderr, "PluginLoadAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError("PluginLoadAnimation: Exception animationId=%d\r\n", (int)animationId);
 			return -1;
 		}
 	}
@@ -183,15 +249,16 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
+				LogError("PluginUnloadAnimation: Plugin is not initialized!");
 				return -1;
 			}
 
-			if (_gAnimations.size() > 0 &&
-				_gAnimations.find(animationId) != _gAnimations.end())
+			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
+					LogError("PluginUnloadAnimation: Animation is null!");
 					return -1;
 				}
 				animation->Unload();
@@ -201,7 +268,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			fprintf(stderr, "PluginUnloadAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError("PluginUnloadAnimation: Exception animationId=%d\r\n", (int)animationId);
 			return -1;
 		}
 	}
@@ -220,15 +287,16 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
+				LogError("PluginPlayAnimation: Plugin is not initialized!");
 				return -1;
 			}
 
-			if (_gAnimations.size() > 0 &&
-				_gAnimations.find(animationId) != _gAnimations.end())
+			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
+					LogError("PluginPlayAnimation: Animation is null!");
 					return -1;
 				}
 				animation->Play();
@@ -238,7 +306,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			fprintf(stderr, "PluginPlayAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError("PluginPlayAnimation: Exception animationId=%d\r\n", (int)animationId);
 			return -1;
 		}
 	}
@@ -257,15 +325,16 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
+				LogError("PluginStopAnimation: Plugin is not initialized!");
 				return -1;
 			}
 
-			if (_gAnimations.size() > 0 &&
-				_gAnimations.find(animationId) != _gAnimations.end())
+			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
+					LogError("PluginStopAnimation: Animation is null!");
 					return -1;
 				}
 				animation->Stop();
@@ -275,7 +344,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			fprintf(stderr, "PluginStopAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError("PluginStopAnimation: Exception animationId=%d\r\n", (int)animationId);
 			return -1;
 		}
 	}
@@ -294,15 +363,16 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
+				LogError("PluginCloseAnimation: Plugin is not initialized!");
 				return -1;
 			}
 
-			if (_gAnimations.size() > 0 &&
-				_gAnimations.find(animationId) != _gAnimations.end())
+			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
+					LogError("PluginCloseAnimation: Animation is null!");
 					return -1;
 				}
 				animation->Stop();
@@ -314,7 +384,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			fprintf(stderr, "PluginCloseAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError("PluginCloseAnimation: Exception animationId=%d\r\n", (int)animationId);
 			return -1;
 		}
 	}
@@ -342,12 +412,17 @@ extern "C"
 		// Chroma thread plays animations
 		StopChromaThread();
 
-		if (!PluginIsInitialized())
+		int result = ChromaSDKPlugin::GetInstance()->ChromaSDKUnInit();
+		if (PluginIsInitialized())
 		{
-			return -1;
+			for (auto iter = _gAnimations.begin(); iter != _gAnimations.end(); ++iter)
+			{
+				PluginCloseAnimation(iter->first);
+			}
 		}
-
-		return ChromaSDKPlugin::GetInstance()->ChromaSDKUnInit();
+		_gAnimations.clear();
+		_gAnimationId = 0;
+		return result;
 	}
 
 	EXPORT_API double PluginUninitD()

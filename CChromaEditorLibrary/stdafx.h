@@ -42,9 +42,17 @@
 #define EXPORT_API // XCode does not need annotating exported functions, so define is empty
 #endif
 
+/* Setup log mechanism */
+typedef void(*DebugLogPtr)(const char *);
+void LogDebug(const char* text, ...);
+void LogError(const char* text, ...);
+/* End of setup log mechanism */
+
 extern "C"
 {
 	//GameMaker: Only has double and char* types
+
+	EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 
 	EXPORT_API bool PluginIsInitialized();
 	EXPORT_API double PluginIsInitializedD();
