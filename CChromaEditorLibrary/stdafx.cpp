@@ -142,10 +142,11 @@ extern "C"
 
 	EXPORT_API int PluginOpenEditorDialog(char* path)
 	{
-		//LogError("CChromaEditorLibrary::PluginOpenEditorDialog %s\r\n", path);
+		LogDebug("PluginOpenEditorDialog %s\r\n", path);
 
 		if (_gDialogIsOpen)
 		{
+			LogError("PluginOpenEditorDialog: Dialog is already open!\r\n");
 			return -1;
 		}
 
@@ -179,7 +180,7 @@ extern "C"
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
 			if (animation == nullptr)
 			{
-				LogError("PluginOpenAnimation: Animation is null!");
+				LogError("PluginOpenAnimation: Animation is null! name=%s", path);
 				return -1;
 			}
 			else
@@ -220,7 +221,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginLoadAnimation: Animation is null!");
+					LogError("PluginLoadAnimation: Animation is null! id=%d", animationId);
 					return -1;
 				}
 				animation->Load();
@@ -258,7 +259,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginUnloadAnimation: Animation is null!");
+					LogError("PluginUnloadAnimation: Animation is null! id=%d", animationId);
 					return -1;
 				}
 				animation->Unload();
@@ -296,7 +297,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginPlayAnimation: Animation is null!");
+					LogError("PluginPlayAnimation: Animation is null! id=%d", animationId);
 					return -1;
 				}
 				animation->Play();
@@ -334,7 +335,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginStopAnimation: Animation is null!");
+					LogError("PluginStopAnimation: Animation is null! id=%d", animationId);
 					return -1;
 				}
 				animation->Stop();
@@ -372,7 +373,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginCloseAnimation: Animation is null!");
+					LogError("PluginCloseAnimation: Animation is null! id=%d", animationId);
 					return -1;
 				}
 				animation->Stop();

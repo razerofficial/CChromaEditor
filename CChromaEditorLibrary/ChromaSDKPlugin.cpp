@@ -1072,9 +1072,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 	AnimationBase* animation = nullptr;
 
 	LogDebug("OpenAnimation: %s\r\n", path.c_str());
-	FILE* stream;
-	if (0 == fopen_s(&stream, path.c_str(), "rb") &&
-		stream)
+	FILE* stream = nullptr;
+	if (0 != fopen_s(&stream, path.c_str(), "rb") ||
+		stream == nullptr)
+	{
+		LogError("OpenAnimation: Failed to open animation! %s\r\n", path.c_str());
+	}
+	else
 	{
 		long read = 0;
 		long expectedRead = 1;
@@ -1106,13 +1110,22 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 		byte deviceType = 0;
 		expectedSize = sizeof(byte);
 		read = fread(&deviceType, expectedSize, 1, stream);
-		if (read == expectedRead)
+		if (read != expectedRead)
+		{
+			LogError("OpenAnimation: Unexpected DeviceType!\r\n");
+			std::fclose(stream);
+			return nullptr;
+		}
+		else
 		{
 			//device
 			switch ((EChromaSDKDeviceTypeEnum)deviceType)
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
+				LogDebug("OpenAnimation: DeviceType: 1D");
+				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
+				LogDebug("OpenAnimation: DeviceType: 2D");
 				break;
 			default:
 				LogError("OpenAnimation: Unexpected DeviceType!\r\n");
@@ -1124,8 +1137,27 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
 				read = fread(&device, expectedSize, 1, stream);
-				if (read == expectedRead)
+				if (read != expectedRead)
 				{
+					LogError("OpenAnimation: Unexpected Device!\r\n");
+					std::fclose(stream);
+					return nullptr;
+				}
+				else
+				{
+					switch ((EChromaSDKDevice1DEnum)device)
+					{
+					case EChromaSDKDevice1DEnum::DE_ChromaLink:
+						LogDebug("OpenAnimation: Device: DE_ChromaLink");
+						break;
+					case EChromaSDKDevice1DEnum::DE_Headset:
+						LogDebug("OpenAnimation: Device: DE_Headset");
+						break;
+					case EChromaSDKDevice1DEnum::DE_Mousepad:
+						LogDebug("OpenAnimation: Device: DE_Mousepad");
+						break;
+					}
+
 					Animation1D* animation1D = new Animation1D();
 					animation = animation1D;
 
@@ -1140,8 +1172,8 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					if (read != expectedRead)
 					{
 						LogError("OpenAnimation: Error detected reading frame count!\r\n");
-						std::fclose(stream);
 						delete animation1D;
+						std::fclose(stream);
 						return nullptr;
 					}
 					else
@@ -1159,8 +1191,8 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							if (read != expectedRead)
 							{
 								LogError("OpenAnimation: Error detected reading duration!\r\n");
-								std::fclose(stream);
 								delete animation1D;
+								std::fclose(stream);
 								return nullptr;
 							}
 							else
@@ -1174,8 +1206,8 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 									if (read != expectedRead)
 									{
 										LogError("OpenAnimation: Error detected reading color!\r\n");
-										std::fclose(stream);
 										delete animation1D;
+										std::fclose(stream);
 										return nullptr;
 									}
 									else
@@ -1198,8 +1230,27 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
 				read = fread(&device, expectedSize, 1, stream);
-				if (read == expectedRead)
+				if (read != expectedRead)
 				{
+					LogError("OpenAnimation: Unexpected Device!\r\n");
+					std::fclose(stream);
+					return nullptr;
+				}
+				else
+				{
+					switch ((EChromaSDKDevice2DEnum)device)
+					{
+					case EChromaSDKDevice2DEnum::DE_Keyboard:
+						LogDebug("OpenAnimation: Device: DE_Keyboard");
+						break;
+					case EChromaSDKDevice2DEnum::DE_Keypad:
+						LogDebug("OpenAnimation: Device: DE_Keypad");
+						break;
+					case EChromaSDKDevice2DEnum::DE_Mouse:
+						LogDebug("OpenAnimation: Device: DE_Mouse");
+						break;
+					}
+
 					Animation2D* animation2D = new Animation2D();
 					animation = animation2D;
 
@@ -1214,8 +1265,8 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					if (read != expectedRead)
 					{
 						LogError("OpenAnimation: Error detected reading frame count!\r\n");
-						std::fclose(stream);
 						delete animation2D;
+						std::fclose(stream);
 						return nullptr;
 					}
 					else
@@ -1234,8 +1285,8 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							if (read != expectedRead)
 							{
 								LogError("OpenAnimation: Error detected reading duration!\r\n");
-								std::fclose(stream);
 								delete animation2D;
+								std::fclose(stream);
 								return nullptr;
 							}
 							else
@@ -1252,8 +1303,8 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 										if (read != expectedRead)
 										{
 											LogError("OpenAnimation: Error detected reading color!\r\n");
-											std::fclose(stream);
 											delete animation2D;
+											std::fclose(stream);
 											return nullptr;
 										}
 										else
@@ -1280,6 +1331,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 		}
 
 		std::fclose(stream);
+		LogDebug("OpenAnimation: Loaded %s\r\n", path.c_str());
 	}
 
 	return animation;
