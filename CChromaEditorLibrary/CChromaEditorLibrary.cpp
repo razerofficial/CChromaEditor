@@ -114,6 +114,7 @@ void CMainViewDlg::LoadFile()
 		switch (animation->GetDeviceType())
 		{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
+			_mEdit1D.SetPath(_mPath);
 			_mDeviceType = animation->GetDeviceType();
 			animation1D = dynamic_cast<Animation1D*>(animation);
 			_mEdit1D.SetAnimation(*animation1D);
@@ -121,6 +122,7 @@ void CMainViewDlg::LoadFile()
 			delete animation;
 			break;
 		case EChromaSDKDeviceTypeEnum::DE_2D:
+			_mEdit2D.SetPath(_mPath);
 			_mDeviceType = animation->GetDeviceType();
 			animation2D = dynamic_cast<Animation2D*>(animation);
 			_mEdit2D.SetAnimation(*animation2D);

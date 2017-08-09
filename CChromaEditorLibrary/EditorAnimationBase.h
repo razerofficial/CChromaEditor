@@ -15,4 +15,7 @@ public:
 	void ReadImage(const std::string& texturePath, bool isAnimation);
 	virtual void CopyPixels(COLORREF* pColor, UINT width, UINT height) = 0;
 	virtual void AddFrame() = 0;
+	void SetPath(const std::string& path);
+private:
+	std::string _mPath;
 };

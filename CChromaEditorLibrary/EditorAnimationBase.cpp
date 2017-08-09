@@ -21,11 +21,16 @@ unsigned int EditorAnimationBase::GetFrameCount()
 
 void EditorAnimationBase::ImportTextureImage()
 {
-	char cCurrentPath[FILENAME_MAX];
-	if (!_getcwd(cCurrentPath, sizeof(cCurrentPath)))
+	// get path from loaded filename
+	CString szDir;
+	size_t lastSlash = _mPath.find_last_of("/\\");
+	if (lastSlash < 0)
 	{
 		return;
 	}
+	string path = _mPath.substr(0, lastSlash);
+	//LogDebug("ImportTextureAnimation path=%s", path.c_str());
+	szDir += path.c_str();
 
 	const int MAX_CFileDialog_FILE_COUNT = 99;
 	const int FILE_LIST_BUFFER_SIZE = ((MAX_CFileDialog_FILE_COUNT * (MAX_PATH + 1)) + 1);
@@ -35,8 +40,6 @@ void EditorAnimationBase::ImportTextureImage()
 	CFileDialog dlgFile(TRUE);
 	OPENFILENAME& ofn = dlgFile.GetOFN();
 	ofn.lpstrFilter = _TEXT("Image Files\0*.bmp;*.jpg;*.png\0");
-	CString szDir;
-	szDir += cCurrentPath;
 	ofn.lpstrInitialDir = szDir;
 	ofn.lpstrFile = p;
 	ofn.nMaxFile = FILE_LIST_BUFFER_SIZE;
@@ -44,7 +47,7 @@ void EditorAnimationBase::ImportTextureImage()
 	if (dlgFile.DoModal() == IDOK)
 	{
 		string texturePath = string(CT2CA(fileName));
-		LogDebug("ImportTextureImage: %s\r\n", texturePath.c_str());
+		//LogDebug("ImportTextureImage: %s\r\n", texturePath.c_str());
 		ReadImage(texturePath, false);
 	}
 	fileName.ReleaseBuffer();
@@ -52,11 +55,16 @@ void EditorAnimationBase::ImportTextureImage()
 
 void EditorAnimationBase::ImportTextureAnimation()
 {
-	char cCurrentPath[FILENAME_MAX];
-	if (!_getcwd(cCurrentPath, sizeof(cCurrentPath)))
+	// get path from loaded filename
+	CString szDir;
+	size_t lastSlash = _mPath.find_last_of("/\\");
+	if (lastSlash < 0)
 	{
 		return;
 	}
+	string path = _mPath.substr(0, lastSlash);
+	//LogDebug("ImportTextureAnimation path=%s", path.c_str());
+	szDir += path.c_str();
 
 	const int MAX_CFileDialog_FILE_COUNT = 99;
 	const int FILE_LIST_BUFFER_SIZE = ((MAX_CFileDialog_FILE_COUNT * (MAX_PATH + 1)) + 1);
@@ -66,8 +74,6 @@ void EditorAnimationBase::ImportTextureAnimation()
 	CFileDialog dlgFile(TRUE);
 	OPENFILENAME& ofn = dlgFile.GetOFN();
 	ofn.lpstrFilter = _TEXT("Image Files\0*.gif\0");
-	CString szDir;
-	szDir += cCurrentPath;
 	ofn.lpstrInitialDir = szDir;
 	ofn.lpstrFile = p;
 	ofn.nMaxFile = FILE_LIST_BUFFER_SIZE;
@@ -75,7 +81,7 @@ void EditorAnimationBase::ImportTextureAnimation()
 	if (dlgFile.DoModal() == IDOK)
 	{
 		string texturePath = string(CT2CA(fileName));
-		LogDebug("ImportTextureAnimation: %s\r\n", texturePath.c_str());
+		//LogDebug("ImportTextureAnimation: %s\r\n", texturePath.c_str());
 		ReadImage(texturePath, true);
 	}
 	fileName.ReleaseBuffer();
@@ -329,4 +335,9 @@ void EditorAnimationBase::ReadImage(const std::string& texturePath, bool isAnima
 	{
 		pFactory->Release();
 	}
+}
+
+void EditorAnimationBase::SetPath(const std::string& path)
+{
+	_mPath = path;
 }
