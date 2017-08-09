@@ -10,4 +10,6 @@ public:
 	void SetCurrentFrame(unsigned int index);
 	unsigned int GetFrameCount();
 	virtual float GetDuration(unsigned int index) = 0;
+	void ImportTextureImage();
+	void ImportTextureAnimation();
 };

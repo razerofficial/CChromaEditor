@@ -794,7 +794,6 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_TYPE, &CMainViewDlg::OnCbnSelchangeComboType)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_ANIMATION, &CMainViewDlg::OnBnClickedButtonImportAnimation)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_OVERRIDE_TIME, &CMainViewDlg::OnBnClickedButtonImportOverrideTime)
-	ON_CBN_SELCHANGE(IDC_COMBO_DEVICES, &CMainViewDlg::OnCbnSelchangeComboDevices)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE, &CMainViewDlg::OnBnClickedButtonSetDevice)
 	ON_BN_CLICKED(IDC_BUTTON_CLEAR, &CMainViewDlg::OnBnClickedButtonClear)
 	ON_BN_CLICKED(IDC_BUTTON_FILL, &CMainViewDlg::OnBnClickedButtonFill)
@@ -931,7 +930,13 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 
 void CMainViewDlg::OnBnClickedButtonImportImage()
 {
-	// TODO: Add your control notification handler code here
+	EditorAnimationBase* editor = GetEditor();
+	if (editor == nullptr)
+	{
+		return;
+	}
+	editor->ImportTextureImage();
+	RefreshGrid();
 }
 
 
@@ -986,7 +991,13 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 
 void CMainViewDlg::OnBnClickedButtonImportAnimation()
 {
-	// TODO: Add your control notification handler code here
+	EditorAnimationBase* editor = GetEditor();
+	if (editor == nullptr)
+	{
+		return;
+	}
+	editor->ImportTextureAnimation();
+	RefreshGrid();
 }
 
 
@@ -1006,12 +1017,6 @@ void CMainViewDlg::OnBnClickedButtonImportOverrideTime()
 		break;
 	}
 	SaveFile();
-}
-
-
-void CMainViewDlg::OnCbnSelchangeComboDevices()
-{
-	// TODO: Add your control notification handler code here
 }
 
 
@@ -1328,6 +1333,19 @@ void CMainViewDlg::OnBnClickedButtonPreview()
 			}
 		}
 		break;
+	}
+}
+
+EditorAnimationBase* CMainViewDlg::GetEditor()
+{
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		return &_mEdit1D;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		return &_mEdit2D;
+	default:
+		return nullptr;
 	}
 }
 

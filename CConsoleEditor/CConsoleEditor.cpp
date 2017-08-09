@@ -133,24 +133,16 @@ int main(int argc, char *argv[])
 
 	if (argc <= 1)
 	{
-		if (false) // test editor
+		if (true) // test editor
 		{
-			for (int i = 0; i < 10; ++i)
+			_gMethodOpenDialog("RandomKeyboardEffect.chroma");
+			while (_gMethodIsDialogOpen())
 			{
-				_gMethodOpenDialog("RandomChromaLinkEffect.chroma");
-				while (_gMethodIsDialogOpen())
-				{
-					Sleep(0);
-				}
-				_gMethodOpenDialog("RandomKeyboardEffect.chroma");
-				while (_gMethodIsDialogOpen())
-				{
-					Sleep(0);
-				}
+				Sleep(0);
 			}
 		}
 
-		if (true) // test api
+		if (false) // test api
 		{
 			for (int i = 0; i < 25; ++i)
 			{

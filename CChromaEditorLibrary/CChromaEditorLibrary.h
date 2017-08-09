@@ -99,6 +99,7 @@ public:
 
 private:
 
+	EditorAnimationBase* GetEditor();
 	AnimationBase* GetAnimation();
 
 	std::string _mPath;
