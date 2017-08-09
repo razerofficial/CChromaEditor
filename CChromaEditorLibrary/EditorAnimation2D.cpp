@@ -79,3 +79,63 @@ float EditorAnimation2D::GetDuration(unsigned int index)
 	}
 	return 0.0f;
 }
+
+void EditorAnimation2D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
+{
+	std::vector<FChromaSDKColors>& colors = _mFrameCopy.Colors;
+	for (int i = 0; i < (int)height; i++)
+	{
+		COLORREF* nextRow = pColor + width;
+		FChromaSDKColors& row = colors[i];
+		for (int j = 0; j < (int)width; j++)
+		{
+			int red = GetBValue(*pColor);
+			int green = GetGValue(*pColor) << 8;
+			int blue = GetRValue(*pColor) << 16;
+
+			int color = red | green | blue;
+			row.Colors[j] = color;
+			pColor++;
+		}
+		pColor = nextRow;
+	}
+
+	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
+	unsigned int currentFrame = GetCurrentFrame();
+	if (currentFrame < 0 ||
+		currentFrame >= frames.size())
+	{
+		currentFrame = 0;
+	}
+	if (currentFrame < frames.size())
+	{
+		frames[currentFrame] = GetCopy();
+	}
+}
+
+void EditorAnimation2D::AddFrame()
+{
+	unsigned int currentFrame = GetCurrentFrame();
+	if (currentFrame < 0 ||
+		currentFrame >= GetFrameCount())
+	{
+		currentFrame = 0;
+	}
+
+	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
+	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(GetDevice());
+
+	if (currentFrame == GetFrameCount())
+	{
+		frames.push_back(frame);
+		currentFrame = GetFrameCount() - 1;
+	}
+	else
+	{
+		auto it = frames.begin();
+		++currentFrame;
+		frames.insert(it + currentFrame, frame);
+	}
+	SetCurrentFrame(currentFrame);
+}

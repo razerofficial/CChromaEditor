@@ -67,9 +67,7 @@ public:
 	afx_msg void OnBnClickedButtonImportImage();
 	afx_msg void OnCbnSelchangeComboType();
 	afx_msg void OnBnClickedButtonImportAnimation();
-	afx_msg void OnEnChangeOverrideTime2();
 	afx_msg void OnBnClickedButtonImportOverrideTime();
-	afx_msg void OnCbnSelchangeComboDevices();
 	afx_msg void OnBnClickedButtonSetDevice();
 	afx_msg void OnBnClickedButtonClear();
 	afx_msg void OnBnClickedButtonFill();
@@ -81,18 +79,14 @@ public:
 	afx_msg void OnBnClickedButtonStop();
 	afx_msg void OnBnClickedButtonLoad();
 	afx_msg void OnBnClickedButtonUnload();
-	afx_msg void OnCbnSelchangeComboKeys();
 	afx_msg void OnBnClickedButtonSetKey();
-	afx_msg void OnCbnSelchangeComboLeds();
 	afx_msg void OnBnClickedButtonSetLed();
-	afx_msg void OnEnChangeOverrideTime();
 	afx_msg void OnBnClickedButtonPrevious();
 	afx_msg void OnBnClickedButtonNext();
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonDelete();
-	afx_msg void OnBnClickedButtonColor();
+	afx_msg void OnBnClickedButtonReset();
 	afx_msg void OnBnClickedButtonSetDeviceType();
-	afx_msg void OnEnChangeTextOverrideTime();
 	afx_msg void OnBnClickedButtonSetDuration();
 
 	void OnBnClickedButtonColor(UINT nID);
