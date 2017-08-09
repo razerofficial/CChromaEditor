@@ -84,12 +84,16 @@ extern "C" EXPORT_API int PluginLoadAnimation(int animationId);
 extern "C" EXPORT_API double PluginLoadAnimationD(double animationId);
 ```
 
+**PluginUnloadAnimation**
+
 Unloads `Chroma` effects to free up resources. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
 extern "C" EXPORT_API int PluginUnloadAnimation(int animationId);
 extern "C" EXPORT_API double PluginUnloadAnimationD(double animationId);
 ```
+
+**PluginPlayAnimation**
 
 Plays the `Chroma` animation. This will load the animation, if not loaded previously. Returns the animation id upon success. Returns -1 upon failure.
 
@@ -98,6 +102,8 @@ extern "C" EXPORT_API int PluginPlayAnimation(int animationId);
 extern "C" EXPORT_API double PluginPlayAnimationD(double animationId);
 ```
 
+**PluginStopAnimation**
+
 Stops animation playback if in progress. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
@@ -105,12 +111,16 @@ extern "C" EXPORT_API int PluginStopAnimation(int animationId);
 extern "C" EXPORT_API double PluginStopAnimationD(double animationId);
 ```
 
+**PluginCloseAnimation**
+
 Closes the `Chroma` animation to free up resources. Returns the animation id upon success. Returns -1 upon failure. This might be used while authoring effects if there was a change necessitating re-opening the animation. The animation id can no longer be used once closed.
 
 ```C++
 extern "C" EXPORT_API int PluginCloseAnimation(int animationId);
 extern "C" EXPORT_API double PluginCloseAnimationD(double animationId);
 ```
+
+**PluginUninit**
 
 Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
 
