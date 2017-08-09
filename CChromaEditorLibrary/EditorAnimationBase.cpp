@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "EditorAnimationBase.h"
 #include "direct.h"
+#include <string>
+
+using namespace std;
 
 int EditorAnimationBase::GetCurrentFrame()
 {
@@ -39,7 +42,11 @@ void EditorAnimationBase::ImportTextureImage()
 	ofn.lpstrFile = p;
 	ofn.nMaxFile = FILE_LIST_BUFFER_SIZE;
 
-	dlgFile.DoModal();
+	if (dlgFile.DoModal() == IDOK)
+	{
+		string strFileName = string(CT2CA(fileName));
+		LogDebug("ImportTextureImage: %s\r\n", strFileName.c_str());
+	}
 	fileName.ReleaseBuffer();
 }
 
@@ -65,6 +72,10 @@ void EditorAnimationBase::ImportTextureAnimation()
 	ofn.lpstrFile = p;
 	ofn.nMaxFile = FILE_LIST_BUFFER_SIZE;
 
-	dlgFile.DoModal();
+	if (dlgFile.DoModal() == IDOK)
+	{
+		string strFileName = string(CT2CA(fileName));
+		LogDebug("ImportTextureAnimation: %s\r\n", strFileName.c_str());
+	}
 	fileName.ReleaseBuffer();
 }
