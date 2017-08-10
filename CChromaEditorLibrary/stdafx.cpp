@@ -142,6 +142,8 @@ extern "C"
 
 	EXPORT_API int PluginOpenEditorDialog(char* path)
 	{
+		PluginIsInitialized();
+
 		LogDebug("PluginOpenEditorDialog %s\r\n", path);
 
 		if (_gDialogIsOpen)
