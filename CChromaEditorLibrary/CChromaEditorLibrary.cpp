@@ -1626,40 +1626,12 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 
 void CMainViewDlg::OnBnClickedButtonReset()
 {
-	switch (_mDeviceType)
+	AnimationBase* animation = GetAnimation();
+	if (animation != nullptr)
 	{
-	case EChromaSDKDeviceTypeEnum::DE_1D:
-		{
-			_mEdit1D.SetCurrentFrame(0);
-			vector<FChromaSDKColorFrame1D>& frames = _mEdit1D.GetFrames();
-			while (frames.size() > 0)
-			{
-				auto it = frames.begin();
-				frames.erase(it);
-			}
-			FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
-			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(_mEdit1D.GetDevice());
-			frames.push_back(frame);
-			RefreshGrid();
-			RefreshFrames();
-		}
-		break;
-	case EChromaSDKDeviceTypeEnum::DE_2D:
-		{
-			_mEdit2D.SetCurrentFrame(0);
-			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
-			while (frames.size() > 0)
-			{
-				auto it = frames.begin();
-				frames.erase(it);
-			}
-			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
-			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mEdit2D.GetDevice());
-			frames.push_back(frame);
-			RefreshGrid();
-			RefreshFrames();
-		}
-		break;
+		animation->ResetFrames();
+		RefreshGrid();
+		RefreshFrames();
 	}
 	SaveFile();
 }

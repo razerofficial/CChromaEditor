@@ -18,6 +18,7 @@ namespace ChromaSDK
 		virtual void Unload() = 0;
 		virtual void Stop() = 0;
 		virtual void Update(float deltaTime) = 0;
+		virtual void ResetFrames() = 0;
 	protected:
 		int _mCurrentFrame;
 		bool _mIsLoaded;

@@ -229,13 +229,12 @@ extern "C"
 				animation->Load();
 				return animationId;
 			}
-			return 0;
 		}
 		catch (exception)
 		{
 			LogError("PluginLoadAnimation: Exception animationId=%d\r\n", (int)animationId);
-			return -1;
 		}
+		return -1;
 	}
 
 	EXPORT_API double PluginLoadAnimationD(double animationId)
@@ -267,13 +266,12 @@ extern "C"
 				animation->Unload();
 				return animationId;
 			}
-			return 0;
 		}
 		catch (exception)
 		{
 			LogError("PluginUnloadAnimation: Exception animationId=%d\r\n", (int)animationId);
-			return -1;
 		}
+		return -1;
 	}
 
 	EXPORT_API double PluginUnloadAnimationD(double animationId)
@@ -305,13 +303,12 @@ extern "C"
 				animation->Play();
 				return animationId;
 			}
-			return 0;
 		}
 		catch (exception)
 		{
 			LogError("PluginPlayAnimation: Exception animationId=%d\r\n", (int)animationId);
-			return -1;
 		}
+		return -1;
 	}
 
 	EXPORT_API double PluginPlayAnimationD(double animationId)
@@ -343,13 +340,12 @@ extern "C"
 				animation->Stop();
 				return animationId;
 			}
-			return 0;
 		}
 		catch (exception)
 		{
 			LogError("PluginStopAnimation: Exception animationId=%d\r\n", (int)animationId);
-			return -1;
 		}
+		return -1;
 	}
 
 	EXPORT_API double PluginStopAnimationD(double animationId)
@@ -383,13 +379,12 @@ extern "C"
 				_gAnimations.erase(animationId);
 				return animationId;
 			}
-			return 0;
 		}
 		catch (exception)
 		{
 			LogError("PluginCloseAnimation: Exception animationId=%d\r\n", (int)animationId);
-			return -1;
 		}
+		return -1;
 	}
 
 	EXPORT_API double PluginCloseAnimationD(double animationId)
@@ -431,5 +426,205 @@ extern "C"
 	EXPORT_API double PluginUninitD()
 	{
 		return (double)PluginUninit();
+	}
+
+	EXPORT_API int PluginCreateAnimation(char* path, int deviceType, int device)
+	{
+		return -1;
+	}
+
+	EXPORT_API int PluginSaveAnimation(int animationId, char* path)
+	{
+		return -1;
+	}
+
+	EXPORT_API int PluginResetAnimation(int animationId)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginResetAnimation: Plugin is not initialized!");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginResetAnimation: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			animation->ResetFrames();
+			return animationId;
+		}
+
+		return -1;
+	}
+
+	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginAddFrame: Plugin is not initialized!");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginAddFrame: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+					int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+					frame.Duration = duration;
+					vector<COLORREF> newColors = ChromaSDKPlugin::GetInstance()->CreateColors1D(animation1D->GetDevice());
+					for (int i = 0; i < maxLeds && i < length; ++i)
+					{
+						newColors[i] = colors[i];
+					}
+					frame.Colors = newColors;
+					frames.push_back(frame);
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+					int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+					frame.Duration = duration;
+					vector<FChromaSDKColors> newColors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
+					int index = 0;
+					for (int i = 0; i < maxRow && index < length; ++i)
+					{
+						std::vector<COLORREF>& row = newColors[i].Colors;
+						for (int j = 0; j < maxColumn && index < length; ++j)
+						{
+							row[j] = colors[i];
+							++index;
+						}
+					}
+					frame.Colors = newColors;
+					frames.push_back(frame);
+				}
+				break;
+			}
+			return animationId;
+		}
+
+		return -1;
+	}
+
+	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginUpdateFrame: Plugin is not initialized!");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginUpdateFrame: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+					int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					if (frameIndex < 0 || frameIndex >= frames.size())
+					{
+						LogError("PluginUpdateFrame: frame index is invalid! %d of %d", frameIndex, frames.size());
+						return -1;
+					}
+					FChromaSDKColorFrame1D frame = frames[frameIndex];
+					frame.Duration = duration;
+					vector<COLORREF> newColors = ChromaSDKPlugin::GetInstance()->CreateColors1D(animation1D->GetDevice());
+					for (int i = 0; i < maxLeds && i < length; ++i)
+					{
+						newColors[i] = colors[i];
+					}
+					frame.Colors = newColors;
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+					int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					if (frameIndex < 0 || frameIndex >= frames.size())
+					{
+						LogError("PluginUpdateFrame: frame index is invalid! %d of %d", frameIndex, frames.size());
+						return -1;
+					}
+					FChromaSDKColorFrame2D frame = frames[frameIndex];
+					frame.Duration = duration;
+					vector<FChromaSDKColors> newColors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
+					int index = 0;
+					for (int i = 0; i < maxRow && index < length; ++i)
+					{
+						std::vector<COLORREF>& row = newColors[i].Colors;
+						for (int j = 0; j < maxColumn && index < length; ++j)
+						{
+							row[j] = colors[i];
+							++index;
+						}
+					}
+					frame.Colors = newColors;
+				}
+				break;
+			}
+			return animationId;
+		}
+
+		return -1;
+	}
+
+	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginAddFrame: Plugin is not initialized!");
+			return -1;
+		}
+
+		return -1;
 	}
 }

@@ -214,3 +214,17 @@ void Animation2D::Update(float deltaTime)
 		}
 	}
 }
+
+void Animation2D::ResetFrames()
+{
+	_mCurrentFrame = 0;
+	while (_mFrames.size() > 0)
+	{
+		auto it = _mFrames.begin();
+		_mFrames.erase(it);
+	}
+	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mDevice);
+	frame.Duration = 1;
+	_mFrames.push_back(frame);
+}
