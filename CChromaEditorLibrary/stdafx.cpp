@@ -621,8 +621,63 @@ extern "C"
 
 		if (!PluginIsInitialized())
 		{
-			LogError("PluginAddFrame: Plugin is not initialized!");
+			LogError("PluginPreviewFrame: Plugin is not initialized!");
 			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginPreviewFrame: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+					int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					if (frameIndex < 0 || frameIndex >= frames.size())
+					{
+						LogError("PluginPreviewFrame: frame index is invalid! %d of %d", frameIndex, frames.size());
+						return -1;
+					}
+					FChromaSDKColorFrame1D frame = frames[frameIndex];
+					vector<COLORREF>& colors = frame.Colors;
+					FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom1D(animation1D->GetDevice(), colors);
+					if (result.Result == 0)
+					{
+						ChromaSDKPlugin::GetInstance()->SetEffect(result.EffectId);
+						ChromaSDKPlugin::GetInstance()->DeleteEffect(result.EffectId);
+					}
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+					int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					if (frameIndex < 0 || frameIndex >= frames.size())
+					{
+						LogError("PluginPreviewFrame: frame index is invalid! %d of %d", frameIndex, frames.size());
+						return -1;
+					}
+					FChromaSDKColorFrame2D frame = frames[frameIndex];
+					vector<FChromaSDKColors>& colors = frame.Colors;
+					FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(animation2D->GetDevice(), colors);
+					if (result.Result == 0)
+					{
+						ChromaSDKPlugin::GetInstance()->SetEffect(result.EffectId);
+						ChromaSDKPlugin::GetInstance()->DeleteEffect(result.EffectId);
+					}
+				}
+				break;
+			}
+			return animationId;
 		}
 
 		return -1;
