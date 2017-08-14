@@ -22,6 +22,7 @@ namespace ChromaSDK
 		void Stop();
 		void Update(float deltaTime);
 		void ResetFrames();
+		int Save(const char* path);
 	private:
 		EChromaSDKDevice2DEnum _mDevice;
 		std::vector<FChromaSDKColorFrame2D> _mFrames;

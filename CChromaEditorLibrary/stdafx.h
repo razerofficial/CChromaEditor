@@ -87,6 +87,7 @@ extern "C"
 	EXPORT_API int PluginCreateAnimation(char* path, int deviceType, int device);
 	EXPORT_API int PluginSaveAnimation(int animationId, char* path);
 	EXPORT_API int PluginResetAnimation(int animationId);
+	EXPORT_API int PluginGetFrameCount(int animationId);
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);

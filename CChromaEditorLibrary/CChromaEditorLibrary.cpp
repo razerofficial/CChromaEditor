@@ -793,7 +793,6 @@ void CMainViewDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_IMAGE, &CMainViewDlg::OnBnClickedButtonImportImage)
-	ON_CBN_SELCHANGE(IDC_COMBO_TYPE, &CMainViewDlg::OnCbnSelchangeComboType)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_ANIMATION, &CMainViewDlg::OnBnClickedButtonImportAnimation)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_OVERRIDE_TIME, &CMainViewDlg::OnBnClickedButtonImportOverrideTime)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE, &CMainViewDlg::OnBnClickedButtonSetDevice)
@@ -929,11 +928,6 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 		}
 	}
 	SaveFile();
-}
-
-void CMainViewDlg::OnCbnSelchangeComboType()
-{
-	//1d or 2d
 }
 
 void CMainViewDlg::OnBnClickedButtonSetDeviceType()

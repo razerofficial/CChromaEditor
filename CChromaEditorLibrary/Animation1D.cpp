@@ -3,6 +3,8 @@
 #include "ChromaSDKPlugin.h"
 #include "ChromaThread.h"
 
+#define ANIMATION_VERSION 1
+
 using namespace ChromaSDK;
 using namespace std;
 
@@ -227,4 +229,77 @@ void Animation1D::ResetFrames()
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(_mDevice);
 	frame.Duration = 1;
 	_mFrames.push_back(frame);
+}
+
+int Animation1D::Save(const char* path)
+{
+	FILE* stream;
+	int result = fopen_s(&stream, path, "wb");
+	if (result == 13)
+	{
+		fprintf(stderr, "Save: Permission denied! %s\r\n", path);
+		return -1;
+	}
+	else if (0 == result &&
+		stream)
+	{
+		long write = 0;
+		long expectedWrite = 1;
+		long expectedSize = 0;
+
+		int version = ANIMATION_VERSION;
+		expectedSize = sizeof(int);
+		write = fwrite(&version, expectedSize, 1, stream);
+		if (expectedWrite != write)
+		{
+			fprintf(stderr, "Save: Failed to write version!\r\n");
+			std::fclose(stream);
+			return -1;
+		}
+
+		//device type
+		byte deviceType = (byte)EChromaSDKDeviceTypeEnum::DE_1D;
+		expectedSize = sizeof(byte);
+		fwrite(&deviceType, expectedSize, 1, stream);
+
+		//device
+		byte device = (byte)_mDevice;
+		fwrite(&device, expectedSize, 1, stream);
+
+		//frame count
+		unsigned int frameCount = GetFrameCount();
+		expectedSize = sizeof(unsigned int);
+		fwrite(&frameCount, expectedSize, 1, stream);
+
+		//frames
+		float duration = 0.0f;
+		COLORREF color = RGB(0, 0, 0);
+		for (unsigned int index = 0; index < frameCount; ++index)
+		{
+			//duration
+			float duration = GetDuration(index);
+			expectedSize = sizeof(float);
+			fwrite(&duration, expectedSize, 1, stream);
+
+			//colors
+			if (index < _mFrames.size())
+			{
+				FChromaSDKColorFrame1D& frame = _mFrames[index];
+				for (unsigned int i = 0; i < frame.Colors.size(); ++i)
+				{
+					//color
+					int color = (int)frame.Colors[i];
+					expectedSize = sizeof(int);
+					fwrite(&color, expectedSize, 1, stream);
+				}
+			}
+		}
+
+		fflush(stream);
+		std::fclose(stream);
+
+		return 0;
+	}
+
+	return -1;
 }

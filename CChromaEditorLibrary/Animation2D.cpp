@@ -3,6 +3,8 @@
 #include "ChromaSDKPlugin.h"
 #include "ChromaThread.h"
 
+#define ANIMATION_VERSION 1
+
 using namespace ChromaSDK;
 using namespace std;
 
@@ -227,4 +229,79 @@ void Animation2D::ResetFrames()
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mDevice);
 	frame.Duration = 1;
 	_mFrames.push_back(frame);
+}
+
+int Animation2D::Save(const char* path)
+{
+	FILE* stream;
+	int result = fopen_s(&stream, path, "wb");
+	if (result == 13)
+	{
+		fprintf(stderr, "Save: Permission denied! %s\r\n", path);
+		return - 1;
+	}
+	else if (0 == result &&
+		stream)
+	{
+		long write = 0;
+		long expectedWrite = 1;
+		long expectedSize = 0;
+
+		int version = ANIMATION_VERSION;
+		expectedSize = sizeof(int);
+		write = fwrite(&version, expectedSize, 1, stream);
+		if (expectedWrite != write)
+		{
+			fprintf(stderr, "Save: Failed to write version!\r\n");
+			std::fclose(stream);
+			return -1;
+		}
+
+		//device type
+		byte deviceType = (byte)EChromaSDKDeviceTypeEnum::DE_2D;
+		expectedSize = sizeof(byte);
+		fwrite(&deviceType, expectedSize, 1, stream);
+
+		//device
+		byte device = (byte)_mDevice;
+
+		//frame count
+		unsigned int frameCount = _mFrames.size();
+		expectedSize = sizeof(unsigned int);
+		fwrite(&frameCount, expectedSize, 1, stream);
+
+		//frames
+		COLORREF color = RGB(0, 0, 0);
+		for (unsigned int index = 0; index < frameCount; ++index)
+		{
+			//duration
+			float duration = GetDuration(index);
+			expectedSize = sizeof(float);
+			fwrite(&duration, expectedSize, 1, stream);
+
+			//colors
+			if (index < _mFrames.size())
+			{
+				FChromaSDKColorFrame2D& frame = _mFrames[index];
+				for (unsigned int i = 0; i < frame.Colors.size(); ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (unsigned int j = 0; j < row.Colors.size(); ++j)
+					{
+						//color
+						int color = row.Colors[j];
+						expectedSize = sizeof(int);
+						fwrite(&color, expectedSize, 1, stream);
+					}
+				}
+			}
+		}
+
+		fflush(stream);
+		std::fclose(stream);
+
+		return 0;
+	}
+
+	return -1;
 }

@@ -430,11 +430,62 @@ extern "C"
 
 	EXPORT_API int PluginCreateAnimation(char* path, int deviceType, int device)
 	{
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D animation1D = Animation1D();
+					animation1D.SetDevice((EChromaSDKDevice1DEnum)device);
+					vector<FChromaSDKColorFrame1D>& frames = animation1D.GetFrames();
+					frames.clear();
+					FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D((EChromaSDKDevice1DEnum)device);
+					frames.push_back(frame);
+					animation1D.Save(path);
+					return PluginOpenAnimation(path);
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D animation2D = Animation2D();
+					animation2D.SetDevice((EChromaSDKDevice2DEnum)device);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D.GetFrames();
+					frames.clear();
+					FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D((EChromaSDKDevice2DEnum)device);
+					frames.push_back(frame);
+					animation2D.Save(path);
+					return PluginOpenAnimation(path);
+				}
+				break;
+		}
 		return -1;
 	}
 
 	EXPORT_API int PluginSaveAnimation(int animationId, char* path)
 	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginSaveAnimation: Plugin is not initialized!");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginSaveAnimation: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			animation->Save(path);
+			return animationId;
+		}
 		return -1;
 	}
 
@@ -461,6 +512,22 @@ extern "C"
 			}
 			animation->ResetFrames();
 			return animationId;
+		}
+
+		return -1;
+	}
+
+	EXPORT_API int PluginGetFrameCount(int animationId)
+	{
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginGetFrameCount: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			return animation->GetFrameCount();
 		}
 
 		return -1;
