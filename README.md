@@ -2,9 +2,23 @@
 
 **Table of Contents**
 
+* [Related](#related)
 * [Frameworks supported](#frameworks-supported)
 * [Assets](#assets)
 * [API](#api)
+
+<a name="related"></a>
+## Related
+
+- [CChromaEditor](https://github.com/RazerOfficial/CChromaEditor) - C++ Native MFC Library for playing and editing Chroma animations
+
+- [GameMakerChromaExtension](https://github.com/RazerOfficial/GameMakerChromaExtension) - GameMaker Extension to control lighting for Razer Chroma
+
+- [UE4ChromaSDK](https://github.com/RazerOfficial/UE4ChromaSDK) - Unreal Engine 4 (UE4) Blueprint library to control lighting for Razer Chroma
+
+- [UnityNativeChromaSDK](https://github.com/RazerOfficial/UnityNativeChromaSDK) - Unity native library for the ChromaSDK
+
+- [UnityChromaSDK](https://github.com/RazerOfficial/UnityChromaSDK) - Unity C# library for the Chroma Rest API
 
 <a name="frameworks-supported"></a>
 ## Frameworks supported
