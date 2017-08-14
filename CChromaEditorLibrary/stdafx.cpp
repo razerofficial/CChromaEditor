@@ -648,7 +648,7 @@ extern "C"
 						std::vector<COLORREF>& row = newColors[i].Colors;
 						for (int j = 0; j < maxColumn && index < length; ++j)
 						{
-							row[j] = colors[i];
+							row[j] = colors[index];
 							++index;
 						}
 					}
@@ -696,7 +696,7 @@ extern "C"
 						LogError("PluginUpdateFrame: frame index is invalid! %d of %d", frameIndex, frames.size());
 						return -1;
 					}
-					FChromaSDKColorFrame1D frame = frames[frameIndex];
+					FChromaSDKColorFrame1D& frame = frames[frameIndex];
 					frame.Duration = duration;
 					vector<COLORREF> newColors = ChromaSDKPlugin::GetInstance()->CreateColors1D(animation1D->GetDevice());
 					for (int i = 0; i < maxLeds && i < length; ++i)
@@ -717,7 +717,7 @@ extern "C"
 						LogError("PluginUpdateFrame: frame index is invalid! %d of %d", frameIndex, frames.size());
 						return -1;
 					}
-					FChromaSDKColorFrame2D frame = frames[frameIndex];
+					FChromaSDKColorFrame2D& frame = frames[frameIndex];
 					frame.Duration = duration;
 					vector<FChromaSDKColors> newColors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
 					int index = 0;
@@ -726,7 +726,7 @@ extern "C"
 						std::vector<COLORREF>& row = newColors[i].Colors;
 						for (int j = 0; j < maxColumn && index < length; ++j)
 						{
-							row[j] = colors[i];
+							row[j] = colors[index];
 							++index;
 						}
 					}
@@ -742,6 +742,8 @@ extern "C"
 
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex)
 	{
+		//LogDebug("PluginPreviewFrame: animationId=%d frameIndex=%d\r\n", animationId, frameIndex);
+
 		PluginStopAnimation(animationId);
 
 		// Chroma thread plays animations
