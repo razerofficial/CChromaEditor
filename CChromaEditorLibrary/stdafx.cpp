@@ -533,6 +533,52 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API int PluginGetDeviceType(int animationId)
+	{
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginGetDeviceType: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			return (int)animation->GetDeviceType();
+		}
+
+		return -1;
+	}
+
+	EXPORT_API int PluginGetDevice(int animationId)
+	{
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginGetDevice: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+					return (int)animation1D->GetDevice();
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					return (int)animation2D->GetDevice();
+				}
+				break;
+			}
+		}
+
+		return -1;
+	}
+
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length)
 	{
 		PluginStopAnimation(animationId);
