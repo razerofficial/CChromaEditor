@@ -1122,10 +1122,10 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 			switch ((EChromaSDKDeviceTypeEnum)deviceType)
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
-				LogDebug("OpenAnimation: DeviceType: 1D");
+				LogDebug("OpenAnimation: DeviceType: 1D\r\n");
 				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
-				LogDebug("OpenAnimation: DeviceType: 2D");
+				LogDebug("OpenAnimation: DeviceType: 2D\r\n");
 				break;
 			default:
 				LogError("OpenAnimation: Unexpected DeviceType!\r\n");
@@ -1148,13 +1148,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					switch ((EChromaSDKDevice1DEnum)device)
 					{
 					case EChromaSDKDevice1DEnum::DE_ChromaLink:
-						LogDebug("OpenAnimation: Device: DE_ChromaLink");
+						LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
 						break;
 					case EChromaSDKDevice1DEnum::DE_Headset:
-						LogDebug("OpenAnimation: Device: DE_Headset");
+						LogDebug("OpenAnimation: Device: DE_Headset\r\n");
 						break;
 					case EChromaSDKDevice1DEnum::DE_Mousepad:
-						LogDebug("OpenAnimation: Device: DE_Mousepad");
+						LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
 						break;
 					}
 
@@ -1241,13 +1241,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					switch ((EChromaSDKDevice2DEnum)device)
 					{
 					case EChromaSDKDevice2DEnum::DE_Keyboard:
-						LogDebug("OpenAnimation: Device: DE_Keyboard");
+						LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
 						break;
 					case EChromaSDKDevice2DEnum::DE_Keypad:
-						LogDebug("OpenAnimation: Device: DE_Keypad");
+						LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
 						break;
 					case EChromaSDKDevice2DEnum::DE_Mouse:
-						LogDebug("OpenAnimation: Device: DE_Mouse");
+						LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
 						break;
 					}
 

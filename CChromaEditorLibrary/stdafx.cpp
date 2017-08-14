@@ -174,7 +174,7 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
-				LogError("PluginOpenAnimation: Plugin is not initialized!");
+				LogError("PluginOpenAnimation: Plugin is not initialized!\r\n");
 				return -1;
 			}
 
@@ -182,7 +182,7 @@ extern "C"
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
 			if (animation == nullptr)
 			{
-				LogError("PluginOpenAnimation: Animation is null! name=%s", path);
+				LogError("PluginOpenAnimation: Animation is null! name=%s\r\n", path);
 				return -1;
 			}
 			else
@@ -214,7 +214,7 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
-				LogError("PluginLoadAnimation: Plugin is not initialized!");
+				LogError("PluginLoadAnimation: Plugin is not initialized!\r\n");
 				return -1;
 			}
 
@@ -251,7 +251,7 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
-				LogError("PluginUnloadAnimation: Plugin is not initialized!");
+				LogError("PluginUnloadAnimation: Plugin is not initialized!\r\n");
 				return -1;
 			}
 
@@ -288,7 +288,7 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
-				LogError("PluginPlayAnimation: Plugin is not initialized!");
+				LogError("PluginPlayAnimation: Plugin is not initialized!\r\n");
 				return -1;
 			}
 
@@ -325,7 +325,7 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
-				LogError("PluginStopAnimation: Plugin is not initialized!");
+				LogError("PluginStopAnimation: Plugin is not initialized!\r\n");
 				return -1;
 			}
 
@@ -362,7 +362,7 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
-				LogError("PluginCloseAnimation: Plugin is not initialized!");
+				LogError("PluginCloseAnimation: Plugin is not initialized!\r\n");
 				return -1;
 			}
 
@@ -471,7 +471,7 @@ extern "C"
 
 		if (!PluginIsInitialized())
 		{
-			LogError("PluginSaveAnimation: Plugin is not initialized!");
+			LogError("PluginSaveAnimation: Plugin is not initialized!\r\n");
 			return -1;
 		}
 
@@ -498,7 +498,7 @@ extern "C"
 
 		if (!PluginIsInitialized())
 		{
-			LogError("PluginResetAnimation: Plugin is not initialized!");
+			LogError("PluginResetAnimation: Plugin is not initialized!\r\n");
 			return -1;
 		}
 
@@ -579,6 +579,21 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API int PluginGetMaxLeds(int device)
+	{
+		return ChromaSDKPlugin::GetInstance()->GetMaxLeds((EChromaSDKDevice1DEnum)device);
+	}
+
+	EXPORT_API int PluginGetMaxRow(int device)
+	{
+		return ChromaSDKPlugin::GetInstance()->GetMaxRow((EChromaSDKDevice2DEnum)device);
+	}
+
+	EXPORT_API int PluginGetMaxColumn(int device)
+	{
+		return ChromaSDKPlugin::GetInstance()->GetMaxColumn((EChromaSDKDevice2DEnum)device);
+	}
+
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length)
 	{
 		PluginStopAnimation(animationId);
@@ -588,7 +603,7 @@ extern "C"
 
 		if (!PluginIsInitialized())
 		{
-			LogError("PluginAddFrame: Plugin is not initialized!");
+			LogError("PluginAddFrame: Plugin is not initialized!\r\n");
 			return -1;
 		}
 
@@ -657,7 +672,7 @@ extern "C"
 
 		if (!PluginIsInitialized())
 		{
-			LogError("PluginUpdateFrame: Plugin is not initialized!");
+			LogError("PluginUpdateFrame: Plugin is not initialized!\r\n");
 			return -1;
 		}
 
@@ -734,7 +749,7 @@ extern "C"
 
 		if (!PluginIsInitialized())
 		{
-			LogError("PluginPreviewFrame: Plugin is not initialized!");
+			LogError("PluginPreviewFrame: Plugin is not initialized!\r\n");
 			return -1;
 		}
 
