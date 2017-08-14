@@ -262,14 +262,39 @@ int Animation1D::Save(const char* path)
 		expectedSize = sizeof(byte);
 		fwrite(&deviceType, expectedSize, 1, stream);
 
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			LogDebug("Save: DeviceType: 1D\r\n");
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			LogDebug("Save: DeviceType: 2D\r\n");
+			break;
+		}
+
 		//device
 		byte device = (byte)_mDevice;
 		fwrite(&device, expectedSize, 1, stream);
+
+		switch ((EChromaSDKDevice1DEnum)device)
+		{
+		case EChromaSDKDevice1DEnum::DE_ChromaLink:
+			LogDebug("Save: Device: DE_ChromaLink\r\n");
+			break;
+		case EChromaSDKDevice1DEnum::DE_Headset:
+			LogDebug("Save: Device: DE_Headset\r\n");
+			break;
+		case EChromaSDKDevice1DEnum::DE_Mousepad:
+			LogDebug("Save: Device: DE_Mousepad\r\n");
+			break;
+		}
 
 		//frame count
 		unsigned int frameCount = GetFrameCount();
 		expectedSize = sizeof(unsigned int);
 		fwrite(&frameCount, expectedSize, 1, stream);
+
+		LogDebug("Save: FrameCount: %d\r\n", frameCount);
 
 		//frames
 		float duration = 0.0f;
