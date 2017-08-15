@@ -850,4 +850,56 @@ extern "C"
 
 		return -1;
 	}
+
+	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginOverrideFrameDuration: Plugin is not initialized!\r\n");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginPreviewFrame: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					for (int i = 0; i < frames.size(); ++i)
+					{
+						FChromaSDKColorFrame1D& frame = frames[i];
+						frame.Duration = duration;
+					}
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					for (int i = 0; i < frames.size(); ++i)
+					{
+						FChromaSDKColorFrame2D& frame = frames[i];
+						frame.Duration = duration;
+					}
+				}
+				break;
+			}
+			return animationId;
+		}
+
+		return -1;
+	}
 }

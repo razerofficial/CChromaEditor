@@ -97,4 +97,5 @@ extern "C"
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
+	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration);
 }
