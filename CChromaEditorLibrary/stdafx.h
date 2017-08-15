@@ -89,6 +89,7 @@ extern "C"
 	EXPORT_API int PluginResetAnimation(int animationId);
 	EXPORT_API int PluginGetDeviceType(int animationId);
 	EXPORT_API int PluginGetDevice(int animationId);
+	EXPORT_API int PluginSetDevice(int animationId, int deviceType, int device);
 	EXPORT_API int PluginGetMaxLeds(int device);
 	EXPORT_API int PluginGetMaxRow(int device);
 	EXPORT_API int PluginGetMaxColumn(int device);

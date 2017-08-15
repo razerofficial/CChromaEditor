@@ -579,6 +579,44 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API int PluginSetDevice(int animationId, int deviceType, int device)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginSetDevice: Plugin is not initialized!\r\n");
+			return -1;
+		}
+
+		PluginCloseAnimation(animationId);
+
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+			{
+				Animation1D* animation1D = new Animation1D();
+				animation1D->SetDevice((EChromaSDKDevice1DEnum)device);
+				_gAnimations[animationId] = animation1D;
+				return animationId;
+			}
+			break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+			{
+				Animation2D* animation2D = new Animation2D();
+				animation2D->SetDevice((EChromaSDKDevice2DEnum)device);
+				_gAnimations[animationId] = animation2D;
+				return animationId;
+			}
+			break;
+		}
+
+		return -1;
+	}
+
 	EXPORT_API int PluginGetMaxLeds(int device)
 	{
 		return ChromaSDKPlugin::GetInstance()->GetMaxLeds((EChromaSDKDevice1DEnum)device);
