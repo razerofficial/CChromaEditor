@@ -101,4 +101,8 @@ extern "C"
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration);
+
+	EXPORT_API int PluginReverse(int animationId);
+	EXPORT_API int PluginMirrorHorizontally(int animationId);
+	EXPORT_API int PluginMirrorVertically(int animationId);
 }

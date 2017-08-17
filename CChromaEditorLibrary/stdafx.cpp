@@ -912,7 +912,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginPreviewFrame: Animation is null! id=%d", animationId);
+				LogError("PluginOverrideFrameDuration: Animation is null! id=%d", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -936,6 +936,198 @@ extern "C"
 					{
 						FChromaSDKColorFrame2D& frame = frames[i];
 						frame.Duration = duration;
+					}
+				}
+				break;
+			}
+			return animationId;
+		}
+
+		return -1;
+	}
+
+	EXPORT_API int PluginReverse(int animationId)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginReverse: Plugin is not initialized!\r\n");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginReverse: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					vector<FChromaSDKColorFrame1D> copy = vector<FChromaSDKColorFrame1D>();
+					for (int i = frames.size() - 1; i >= 0; --i)
+					{
+						FChromaSDKColorFrame1D& frame = frames[i];
+						copy.push_back(frame);
+					}
+					frames.clear();
+					for (int i = 0; i < copy.size(); ++i)
+					{
+						FChromaSDKColorFrame1D& frame = copy[i];
+						frames.push_back(frame);
+					}
+				}
+				break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					vector<FChromaSDKColorFrame2D> copy = vector<FChromaSDKColorFrame2D>();
+					for (int i = frames.size() - 1; i >= 0; --i)
+					{
+						FChromaSDKColorFrame2D& frame = frames[i];
+						copy.push_back(frame);
+					}
+					frames.clear();
+					for (int i = 0; i < copy.size(); ++i)
+					{
+						FChromaSDKColorFrame2D& frame = copy[i];
+						frames.push_back(frame);
+					}
+				}
+				break;
+			}
+			return animationId;
+		}
+
+		return -1;
+	}
+
+	EXPORT_API int PluginMirrorHorizontally(int animationId)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginMirrorHorizontally: Plugin is not initialized!\r\n");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginMirrorHorizontally: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+					for (int index = 0; index < frames.size(); ++index)
+					{
+						FChromaSDKColorFrame1D& frame = frames[index];
+						std::vector<COLORREF>& colors = frame.Colors;
+						std::vector<COLORREF> newColors = ChromaSDKPlugin::GetInstance()->CreateColors1D(animation1D->GetDevice());
+						for (int i = 0; i < maxLeds; ++i)
+						{
+							int reverse = maxLeds - 1 - i;
+							newColors[i] = colors[reverse];
+						}
+						frame.Colors = newColors;
+					}
+				}
+				break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+					int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+					for (int index = 0; index < frames.size(); ++index)
+					{
+						FChromaSDKColorFrame2D& frame = frames[index];
+						std::vector<FChromaSDKColors>& colors = frame.Colors;
+						std::vector<FChromaSDKColors> newColors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
+						for (int i = 0; i < maxRow; ++i)
+						{
+							std::vector<COLORREF>& row = colors[i].Colors;
+							std::vector<COLORREF>& newRow = newColors[i].Colors;
+							for (int j = 0; j < maxColumn; ++j)
+							{
+								int reverse = maxColumn - 1 - j;
+								newRow[j] = row[reverse];
+							}
+						}
+						frame.Colors = newColors;
+					}
+				}
+				break;
+			}
+			return animationId;
+		}
+
+		return -1;
+	}
+
+	EXPORT_API int PluginMirrorVertically(int animationId)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginMirrorVertically: Plugin is not initialized!\r\n");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginMirrorVertically: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+				//skip, only 1 high
+				break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+					for (int index = 0; index < frames.size(); ++index)
+					{
+						FChromaSDKColorFrame2D& frame = frames[index];
+						std::vector<FChromaSDKColors>& colors = frame.Colors;
+						std::vector<FChromaSDKColors> newColors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
+						for (int i = 0; i < maxRow; ++i)
+						{
+							int reverse = maxRow - 1 - i;
+							newColors[reverse].Colors = colors[i].Colors;
+						}
+						frame.Colors = newColors;
 					}
 				}
 				break;
