@@ -75,6 +75,9 @@ extern "C"
 	EXPORT_API int PluginPlayAnimation(int animationId);
 	EXPORT_API double PluginPlayAnimationD(double animationId);
 
+	EXPORT_API bool PluginIsPlaying(int animationId);
+	EXPORT_API double PluginIsPlayingD(double animationId);
+
 	EXPORT_API int PluginStopAnimation(int animationId);
 	EXPORT_API double PluginStopAnimationD(double animationId);
 

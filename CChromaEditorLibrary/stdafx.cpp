@@ -316,6 +316,49 @@ extern "C"
 		return (double)PluginPlayAnimation((int)animationId);
 	}
 
+	EXPORT_API bool PluginIsPlaying(int animationId)
+	{
+		try
+		{
+			// Chroma thread plays animations
+			SetupChromaThread();
+
+			if (!PluginIsInitialized())
+			{
+				LogError("PluginIsPlaying: Plugin is not initialized!\r\n");
+				return false;
+			}
+
+			if (_gAnimations.find(animationId) != _gAnimations.end())
+			{
+				AnimationBase* animation = _gAnimations[animationId];
+				if (animation == nullptr)
+				{
+					LogError("PluginIsPlaying: Animation is null! id=%d", animationId);
+					return false;
+				}
+				return animation->IsPlaying();
+			}
+		}
+		catch (exception)
+		{
+			LogError("PluginIsPlaying: Exception animationId=%d\r\n", (int)animationId);
+		}
+		return false;
+	}
+
+	EXPORT_API double PluginIsPlayingD(double animationId)
+	{
+		if (PluginIsPlaying((int)animationId))
+		{
+			return 1.0;
+		}
+		else
+		{
+			return 0.0;
+		}
+	}
+
 	EXPORT_API int PluginStopAnimation(int animationId)
 	{
 		try
