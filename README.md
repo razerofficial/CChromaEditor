@@ -230,14 +230,6 @@ Returns the frame count of a `Chroma` animation upon success. Returns -1 upon fa
 EXPORT_API int PluginGetFrameCount(int animationId);
 ```
 
-**PluginPreviewFrame**
-
-Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`. Returns the animation id upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
-```
-
 <a name="edit-api"></a>
 ## Edit API
 
@@ -277,7 +269,7 @@ EXPORT_API int PluginSetDevice(int animationId, int deviceType, int device);
 
 **PluginAddFrame**
 
-Adds a frame to the `Chroma` animation and sets the `duration` (in seconds). The `color` is expected to be an array of the expected dimensions for the `deviceType/device`. The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
+Adds a frame to the `Chroma` animation and sets the `duration` (in seconds). The `color` is expected to be an array of the dimensions for the `deviceType/device`. The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
@@ -285,11 +277,27 @@ EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int 
 
 **PluginUpdateFrame**
 
-Updates the `frameIndex` of the `Chroma` animation and sets the `duration` (in seconds). The `color` is expected to be an array of the expected dimensions for the `deviceType/device`. The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
+Updates the `frameIndex` of the `Chroma` animation and sets the `duration` (in seconds). The `color` is expected to be an array of the dimensions for the `deviceType/device`. The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex,
     float duration, int* colors, int length);
+```
+
+**PluginGetFrame**
+
+Gets the frame colors and duration (in seconds) for a `Chroma` animation. The `color` is expected to be an array of the expected dimensions for the `deviceType/device`. The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon failure. 
+
+```C++
+EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length)
+```
+
+**PluginPreviewFrame**
+
+Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`. Returns the animation id upon success. Returns -1 upon failure.
+
+```C++
+EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
 ```
 
 **PluginOverrideFrameDuration**
