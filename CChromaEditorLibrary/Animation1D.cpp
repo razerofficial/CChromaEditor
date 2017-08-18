@@ -149,6 +149,8 @@ void Animation1D::Play()
 
 void Animation1D::Stop()
 {
+	_mIsPlaying = false;
+
 	if (ChromaThread::Instance())
 	{
 		ChromaThread::Instance()->RemoveAnimation(this);
