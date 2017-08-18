@@ -65,6 +65,8 @@ bool _gDialogIsOpen = false;
 string _gPath = "";
 int _gAnimationId = 0;
 map<int, AnimationBase*> _gAnimations;
+map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
+map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
 
 void SetupChromaThread()
 {
@@ -93,6 +95,48 @@ void ThreadOpenEditorDialog()
 
 	// dialog is closed
 	_gDialogIsOpen = false;
+}
+
+void StopAnimationByType(int animationId, AnimationBase* animation)
+{
+	if (animation == nullptr)
+	{
+		return;
+	}
+
+	switch (animation->GetDeviceType())
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+			EChromaSDKDevice1DEnum device = animation1D->GetDevice();
+			if (_gPlayMap1D.find(device) != _gPlayMap1D.end())
+			{
+				int prevAnimation = _gPlayMap1D[device];
+				if (prevAnimation != -1)
+				{
+					PluginStopAnimation(prevAnimation);
+				}
+			}
+			_gPlayMap1D[device] = animationId;
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+			EChromaSDKDevice2DEnum device = animation2D->GetDevice();
+			if (_gPlayMap2D.find(device) != _gPlayMap2D.end())
+			{
+				int prevAnimation = _gPlayMap2D[device];
+				if (prevAnimation != -1)
+				{
+					PluginStopAnimation(prevAnimation);
+				}
+			}
+			_gPlayMap2D[device] = animationId;
+		}
+		break;
+	}
 }
 
 extern "C"
@@ -300,6 +344,7 @@ extern "C"
 					LogError("PluginPlayAnimation: Animation is null! id=%d", animationId);
 					return -1;
 				}
+				StopAnimationByType(animationId, animation);
 				animation->Play();
 				return animationId;
 			}
