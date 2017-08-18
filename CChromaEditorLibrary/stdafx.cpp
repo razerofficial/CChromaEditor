@@ -821,6 +821,81 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length)
+	{
+		PluginStopAnimation(animationId);
+
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginGetFrame: Plugin is not initialized!\r\n");
+			return -1;
+		}
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginGetFrame: Animation is null! id=%d", animationId);
+				return -1;
+			}
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
+					int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					if (frameIndex < 0 || frameIndex >= frames.size())
+					{
+						LogError("PluginGetFrame: frame index is invalid! %d of %d", frameIndex, frames.size());
+						return -1;
+					}
+					FChromaSDKColorFrame1D& frame = frames[frameIndex];
+					*duration = frame.Duration;
+					vector<COLORREF>& frameColors = frame.Colors;
+					for (int i = 0; i < maxLeds && i < length; ++i)
+					{
+						colors[i] = frameColors[i];
+					}
+				}
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+					int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					if (frameIndex < 0 || frameIndex >= frames.size())
+					{
+						LogError("PluginGetFrame: frame index is invalid! %d of %d", frameIndex, frames.size());
+						return -1;
+					}
+					FChromaSDKColorFrame2D& frame = frames[frameIndex];
+					*duration = frame.Duration;
+					vector<FChromaSDKColors>& frameColors = frame.Colors;
+					int index = 0;
+					for (int i = 0; i < maxRow && index < length; ++i)
+					{
+						std::vector<COLORREF>& row = frameColors[i].Colors;
+						for (int j = 0; j < maxColumn && index < length; ++j)
+						{
+							colors[index] = row[j];
+							++index;
+						}
+					}
+				}
+				break;
+			}
+			return animationId;
+		}
+
+		return -1;
+	}
+
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex)
 	{
 		//LogDebug("PluginPreviewFrame: animationId=%d frameIndex=%d\r\n", animationId, frameIndex);
