@@ -147,6 +147,23 @@ extern "C"
 		LogDebug("PluginSetLogDelegate:");
 	}
 
+	EXPORT_API bool PluginIsPlatformSupported()
+	{
+		return true;
+	}
+
+	EXPORT_API double PluginIsPlatformSupportedD()
+	{
+		if (PluginIsPlatformSupported())
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 	EXPORT_API bool PluginIsInitialized()
 	{
 		// Chroma thread plays animations
