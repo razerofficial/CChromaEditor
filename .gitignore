@@ -5,3 +5,7 @@ CChromaEditor.VC.db
 ipch/
 CChromaEditorLibrary/CChromaEditorLibrary.vcxproj.user
 CChromaEditor.VC.VC.opendb
+CChromaEditorLibrary/Release/
+CChromaEditorLibrary/x64/
+x64/
+Release/
