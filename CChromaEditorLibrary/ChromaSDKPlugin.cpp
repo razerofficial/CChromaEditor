@@ -1185,9 +1185,9 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							int maxLeds = GetMaxLeds((EChromaSDKDevice1DEnum)device);
 
 							//duration
-							frame.Duration = 0.0f;
+							float duration = 0.0f;
 							expectedSize = sizeof(float);
-							read = fread(&frame.Duration, expectedSize, 1, stream);
+							read = fread(&duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
 								LogError("OpenAnimation: Error detected reading duration!\r\n");
@@ -1197,6 +1197,15 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							}
 							else
 							{
+								if (duration >= 0.1f)
+								{
+									frame.Duration = duration;
+								}
+								else
+								{
+									frame.Duration = 0.1f;
+								}
+
 								// colors
 								expectedSize = sizeof(int);
 								for (int i = 0; i < maxLeds; ++i)
@@ -1279,9 +1288,9 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							int maxColumn = GetMaxColumn((EChromaSDKDevice2DEnum)device);
 
 							//duration
-							frame.Duration = 0.0f;
+							float duration = 0.0f;
 							expectedSize = sizeof(float);
-							read = fread(&frame.Duration, expectedSize, 1, stream);
+							read = fread(&duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
 								LogError("OpenAnimation: Error detected reading duration!\r\n");
@@ -1291,6 +1300,15 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							}
 							else
 							{
+								if (duration >= 0.1f)
+								{
+									frame.Duration = duration;
+								}
+								else
+								{
+									frame.Duration = 0.1f;
+								}
+
 								// colors
 								expectedSize = sizeof(int);
 								for (int i = 0; i < maxRow; ++i)
