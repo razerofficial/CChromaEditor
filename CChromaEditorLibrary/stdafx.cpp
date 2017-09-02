@@ -766,7 +766,14 @@ extern "C"
 					int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
-					frame.Duration = duration;
+					if (duration >= 0.1f)
+					{
+						frame.Duration = duration;
+					}
+					else
+					{
+						frame.Duration = 0.1f;
+					}
 					vector<COLORREF> newColors = ChromaSDKPlugin::GetInstance()->CreateColors1D(animation1D->GetDevice());
 					for (int i = 0; i < maxLeds && i < length; ++i)
 					{
@@ -783,7 +790,14 @@ extern "C"
 					int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
-					frame.Duration = duration;
+					if (duration >= 0.1f)
+					{
+						frame.Duration = duration;
+					}
+					else
+					{
+						frame.Duration = 0.1f;
+					}
 					vector<FChromaSDKColors> newColors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
 					int index = 0;
 					for (int i = 0; i < maxRow && index < length; ++i)
@@ -840,7 +854,14 @@ extern "C"
 						return -1;
 					}
 					FChromaSDKColorFrame1D& frame = frames[frameIndex];
-					frame.Duration = duration;
+					if (duration >= 0.1f)
+					{
+						frame.Duration = duration;
+					}
+					else
+					{
+						frame.Duration = 0.1f;
+					}
 					vector<COLORREF> newColors = ChromaSDKPlugin::GetInstance()->CreateColors1D(animation1D->GetDevice());
 					for (int i = 0; i < maxLeds && i < length; ++i)
 					{
@@ -861,7 +882,14 @@ extern "C"
 						return -1;
 					}
 					FChromaSDKColorFrame2D& frame = frames[frameIndex];
-					frame.Duration = duration;
+					if (duration >= 0.1f)
+					{
+						frame.Duration = duration;
+					}
+					else
+					{
+						frame.Duration = 0.1f;
+					}
 					vector<FChromaSDKColors> newColors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
 					int index = 0;
 					for (int i = 0; i < maxRow && index < length; ++i)
@@ -1061,7 +1089,14 @@ extern "C"
 					for (int i = 0; i < frames.size(); ++i)
 					{
 						FChromaSDKColorFrame1D& frame = frames[i];
-						frame.Duration = duration;
+						if (duration >= 0.1f)
+						{
+							frame.Duration = duration;
+						}
+						else
+						{
+							frame.Duration = 0.1f;
+						}
 					}
 				}
 				break;
@@ -1072,7 +1107,14 @@ extern "C"
 					for (int i = 0; i < frames.size(); ++i)
 					{
 						FChromaSDKColorFrame2D& frame = frames[i];
-						frame.Duration = duration;
+						if (duration >= 0.1f)
+						{
+							frame.Duration = duration;
+						}
+						else
+						{
+							frame.Duration = 0.1f;
+						}
 					}
 				}
 				break;
