@@ -266,6 +266,16 @@ EXPORT_API int PluginCreateAnimation(char* path, int deviceType, int device);
 
 Saves a `Chroma` animation file with the `.chroma` extension at the given path. Returns the animation id upon success. Returns -1 upon failure.
 
+**PluginCreateAnimationInMemory**
+
+Creates a `Chroma` animation in memory without creating a file. The `deviceType` parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective to the `deviceType`. Returns the animation id upon success. Returns -1 upon failure.
+
+```C++
+EXPORT_API int PluginCreateAnimationInMemory(int deviceType, int device);
+```
+
+Returns the animation id upon success. Returns -1 upon failure.
+
 **PluginSaveAnimation**
 
 ```C++

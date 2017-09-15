@@ -90,6 +90,7 @@ extern "C"
 	EXPORT_API int PluginUninit();
 	EXPORT_API double PluginUninitD();
 
+	EXPORT_API int PluginCreateAnimationInMemory(int deviceType, int device);
 	EXPORT_API int PluginCreateAnimation(char* path, int deviceType, int device);
 	EXPORT_API int PluginSaveAnimation(int animationId, char* path);
 	EXPORT_API int PluginResetAnimation(int animationId);
