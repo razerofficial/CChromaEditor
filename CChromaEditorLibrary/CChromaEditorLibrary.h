@@ -45,6 +45,7 @@ public:
 	~CMainViewDlg();
 
 	void OpenOrCreateAnimation(const std::string& path);
+	void PlayAnimationOnOpen();
 	void LoadFile();
 	void SaveFile();
 
@@ -65,7 +66,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButtonImportImage();
-	afx_msg void OnCbnSelchangeComboType();
 	afx_msg void OnBnClickedButtonImportAnimation();
 	afx_msg void OnBnClickedButtonImportOverrideTime();
 	afx_msg void OnBnClickedButtonSetDevice();
@@ -97,6 +97,7 @@ private:
 	AnimationBase* GetAnimation();
 
 	std::string _mPath;
+	bool _mPlayOnOpen;
 
 	CEdit* GetControlOverrideTime();
 	CComboBox* GetControlDeviceType();

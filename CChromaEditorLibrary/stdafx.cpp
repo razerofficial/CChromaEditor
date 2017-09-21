@@ -78,7 +78,7 @@ void StopChromaThread()
 	ChromaThread::Instance()->Stop();
 }
 
-void ThreadOpenEditorDialog()
+void ThreadOpenEditorDialog(bool playOnOpen)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	// normal function body here
@@ -89,6 +89,11 @@ void ThreadOpenEditorDialog()
 	CMainViewDlg mainViewDlg;
 
 	mainViewDlg.OpenOrCreateAnimation(_gPath);
+
+	if (playOnOpen)
+	{
+		mainViewDlg.PlayAnimationOnOpen();
+	}
 
 	// keep dialog focused
 	mainViewDlg.DoModal();
@@ -215,7 +220,7 @@ extern "C"
 
 		_gDialogIsOpen = true;
 		_gPath = path;
-		thread newThread(ThreadOpenEditorDialog);
+		thread newThread(ThreadOpenEditorDialog, false);
 		newThread.detach();
 
 		return 0;
@@ -224,6 +229,31 @@ extern "C"
 	EXPORT_API double PluginOpenEditorDialogD(char* path)
 	{
 		return PluginOpenEditorDialog(path);
+	}
+
+	EXPORT_API int PluginOpenEditorDialogAndPlay(char* path)
+	{
+		PluginIsInitialized();
+
+		LogDebug("PluginOpenEditorDialogAndPlay %s\r\n", path);
+
+		if (_gDialogIsOpen)
+		{
+			LogError("PluginOpenEditorDialogAndPlay: Dialog is already open!\r\n");
+			return -1;
+		}
+
+		_gDialogIsOpen = true;
+		_gPath = path;
+		thread newThread(ThreadOpenEditorDialog, true);
+		newThread.detach();
+
+		return 0;
+	}
+
+	EXPORT_API double PluginOpenEditorDialogAndPlayD(char* path)
+	{
+		return PluginOpenEditorDialogAndPlay(path);
 	}
 
 	EXPORT_API int PluginOpenAnimation(char* path)

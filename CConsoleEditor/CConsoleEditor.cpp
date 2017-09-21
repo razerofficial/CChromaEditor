@@ -11,6 +11,7 @@
 typedef double(*PLUGIN_IS_INITIALIZED)();
 typedef double(*PLUGIN_IS_DIALOG_OPEN)();
 typedef double(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
+typedef double(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const char* path);
 typedef double(*PLUGIN_OPEN_ANIMATION)(const char* path);
 typedef double(*PLUGIN_CLOSE_ANIMATION)(double animationId);
 typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
@@ -23,6 +24,7 @@ using namespace std::chrono;
 PLUGIN_IS_INITIALIZED _gMethodIsInitialized = nullptr;
 PLUGIN_IS_DIALOG_OPEN _gMethodIsDialogOpen = nullptr;
 PLUGIN_OPEN_EDITOR_DIALOG _gMethodOpenDialog = nullptr;
+PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY _gMethodOpenDialogAndPlay = nullptr;
 PLUGIN_OPEN_ANIMATION _gMethodOpenAnimation = nullptr;
 PLUGIN_CLOSE_ANIMATION _gMethodCloseAnimation = nullptr;
 PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
@@ -58,6 +60,13 @@ int Init()
 	if (_gMethodOpenDialog == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginOpenEditorDialog!\r\n");
+		return -1;
+	}
+
+	_gMethodOpenDialogAndPlay = (PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)GetProcAddress(library, "PluginOpenEditorDialogAndPlayD");
+	if (_gMethodOpenDialogAndPlay == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginOpenEditorDialogAndPlay!\r\n");
 		return -1;
 	}
 
@@ -123,6 +132,8 @@ int CloseAnimation(int animationId)
 	return result;
 }
 
+void DebugUnitTests();
+
 int main(int argc, char *argv[])
 {
 	fprintf(stderr, "App launched!\r\n");
@@ -133,49 +144,11 @@ int main(int argc, char *argv[])
 
 	if (argc <= 1)
 	{
-		if (true) // test editor
-		{
-			_gMethodOpenDialog("RandomKeyboardEffect.chroma");
-			while (_gMethodIsDialogOpen())
-			{
-				Sleep(0);
-			}
-		}
-
-		if (false) // test api
-		{
-			for (int i = 0; i < 25; ++i)
-			{
-				if (_gMethodIsInitialized() == 0)
-				{
-					fprintf(stdout, "Init...\r\n");
-					_gMethodInit();
-				}
-
-				fprintf(stdout, "Playing effects...\r\n");
-				int randomChromaLinkEffect = OpenAndPlay("RandomChromaLinkEffect.chroma");
-				int randomHeadsetEffect = OpenAndPlay("RandomHeadsetEffect.chroma");
-				int randomKeyboardEffect = OpenAndPlay("RandomKeyboardEffect.chroma");
-				int randomKeypadEffect = OpenAndPlay("RandomKeypadEffect.chroma");
-				int randomMouseEffect = OpenAndPlay("RandomMouseEffect.chroma");
-				int randomMousepadEffect = OpenAndPlay("RandomMousepadEffect.chroma");
-				this_thread::sleep_for(chrono::seconds(1));
-
-				_gMethodCloseAnimation(randomChromaLinkEffect);
-				_gMethodCloseAnimation(randomHeadsetEffect);
-				_gMethodCloseAnimation(randomKeyboardEffect);
-				_gMethodCloseAnimation(randomKeypadEffect);
-				_gMethodCloseAnimation(randomMouseEffect);
-				_gMethodCloseAnimation(randomMousepadEffect);
-
-				fprintf(stdout, "Simulate exit...\r\n");
-				_gMethodUninit();
-			}
-		}
+		DebugUnitTests();
 	}
 	else
 	{
-		_gMethodOpenDialog(argv[1]);
+		_gMethodOpenDialogAndPlay(argv[1]);
 	}
 
 	while (_gMethodIsDialogOpen())
@@ -187,4 +160,50 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "CConsoleEditor exited.\r\n");
 
     return 0;
+}
+
+void DebugUnitTests()
+{
+	if (false) // test editor
+	{
+		_gMethodOpenDialog("RandomKeyboardEffect.chroma");
+		while (_gMethodIsDialogOpen())
+		{
+			Sleep(0);
+		}
+	}
+	else if (false) // test api
+	{
+		for (int i = 0; i < 25; ++i)
+		{
+			if (_gMethodIsInitialized() == 0)
+			{
+				fprintf(stdout, "Init...\r\n");
+				_gMethodInit();
+			}
+
+			fprintf(stdout, "Playing effects...\r\n");
+			int randomChromaLinkEffect = OpenAndPlay("RandomChromaLinkEffect.chroma");
+			int randomHeadsetEffect = OpenAndPlay("RandomHeadsetEffect.chroma");
+			int randomKeyboardEffect = OpenAndPlay("RandomKeyboardEffect.chroma");
+			int randomKeypadEffect = OpenAndPlay("RandomKeypadEffect.chroma");
+			int randomMouseEffect = OpenAndPlay("RandomMouseEffect.chroma");
+			int randomMousepadEffect = OpenAndPlay("RandomMousepadEffect.chroma");
+			this_thread::sleep_for(chrono::seconds(1));
+
+			_gMethodCloseAnimation(randomChromaLinkEffect);
+			_gMethodCloseAnimation(randomHeadsetEffect);
+			_gMethodCloseAnimation(randomKeyboardEffect);
+			_gMethodCloseAnimation(randomKeypadEffect);
+			_gMethodCloseAnimation(randomMouseEffect);
+			_gMethodCloseAnimation(randomMousepadEffect);
+
+			fprintf(stdout, "Simulate exit...\r\n");
+			_gMethodUninit();
+		}
+	}
+	else
+	{
+		fprintf(stderr, "Missing argument! Please provide a path to a .chroma animation!\r\n");
+	}
 }

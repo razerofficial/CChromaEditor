@@ -66,6 +66,9 @@ extern "C"
 	EXPORT_API int PluginOpenEditorDialog(char* path);
 	EXPORT_API double PluginOpenEditorDialogD(char* path);
 
+	EXPORT_API int PluginOpenEditorDialogAndPlay(char* path);
+	EXPORT_API double PluginOpenEditorDialogAndPlayD(char* path);
+
 	EXPORT_API int PluginOpenAnimation(char* path);
 	EXPORT_API double PluginOpenAnimationD(char* path);
 

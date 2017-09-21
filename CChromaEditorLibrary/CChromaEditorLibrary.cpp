@@ -85,6 +85,7 @@ BOOL CCChromaEditorLibraryApp::InitInstance()
 CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 {
 	_mPath = "";
+	_mPlayOnOpen = false;
 }
 
 CMainViewDlg::~CMainViewDlg()
@@ -96,6 +97,11 @@ CMainViewDlg::~CMainViewDlg()
 void CMainViewDlg::OpenOrCreateAnimation(const std::string& path)
 {
 	_mPath = path;
+}
+
+void CMainViewDlg::PlayAnimationOnOpen()
+{
+	_mPlayOnOpen = true;
 }
 
 void CMainViewDlg::LoadFile()
@@ -711,6 +717,11 @@ BOOL CMainViewDlg::OnInitDialog()
 		++id;
 		GetColorButtons().push_back(button);
 		x += width + 2;
+	}
+
+	if (_mPlayOnOpen)
+	{
+		OnBnClickedButtonPlay();
 	}
 
 	return TRUE;
