@@ -36,4 +36,4 @@ Name: "{commondesktop}\ChromaEditor"; Filename: "{pf32}\Razer\ChromaEditor\CCons
 Name: "{group}\Uninstall ChromaEditor"; Filename: "{uninstallexe}"
 
 [Run]
-Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; Description: "Launch Chroma Editor"; Flags: postinstall skipifsilent runascurrentuser; Parameters: "temp.chroma"; WorkingDir: "{app}"
+Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; Description: "Launch Chroma Editor"; Flags: postinstall skipifsilent runascurrentuser; Parameters: "{userdesktop}\temp.chroma"; WorkingDir: "{app}"

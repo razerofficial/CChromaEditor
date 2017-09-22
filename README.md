@@ -49,11 +49,19 @@
 <a name="getting-started"></a>
 ## Getting Started
 
+**Running the editor application**
+
+1 Run the [Chroma Editor Installer](https://github.com/razerofficial/CChromaEditor/releases/tag/1.0) to associate `.chroma` animations with the editor.
+
+2 Double-click a `.chroma` animation file to open in the editor
+
+**Building the editor**
+
 1 Open `CChromaEditor.sln` in Visual Studio
 
 2 The `CChromaEditorLibrary` project builds the native C++ DLL for `x64` and `x86` platforms
 
-3 The `CConsoleEditor` project is a console project that uses the `DLL` and provides a command-line interface. The only parameter is the file path to a `Chroma` animation file. When no parameter is provided, the editor cycles through a series of unit tests.
+3 The `CConsoleEditor` project is a console project that uses the `DLL` and provides a command-line interface. The only parameter is the file path to a `Chroma` animation file. When no parameter is provided, the editor opens `temp.chroma` on the desktop.
 
 <a name="assets"></a>
 ## Assets

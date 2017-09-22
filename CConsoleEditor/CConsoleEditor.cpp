@@ -144,7 +144,22 @@ int main(int argc, char *argv[])
 
 	if (argc <= 1)
 	{
-		DebugUnitTests();
+		//DebugUnitTests();
+		char* buffer = nullptr;
+		size_t sz = 0;
+		if (_dupenv_s(&buffer, &sz, "USERPROFILE") == 0
+			&& buffer != nullptr)
+		{
+			//fprintf(stdout, "EnvVarName = %s\n", buffer);
+			char path[256] = { 0 };
+			sprintf_s(path, "%s\\Desktop\\temp.chroma", buffer);		
+			free(buffer);
+			_gMethodOpenDialogAndPlay(path);
+		}
+		else
+		{
+			_gMethodOpenDialogAndPlay("temp.chroma");
+		}
 	}
 	else
 	{
