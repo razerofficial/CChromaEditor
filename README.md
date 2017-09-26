@@ -379,38 +379,40 @@ EXPORT_API int PluginMirrorVertically(int animationId);
 
 **EChromaSDKDeviceTypeEnum: (byte)**
 
-<pre>
+```c++
 enum EChromaSDKDeviceTypeEnum
 {
     DE_1D = 0,
     DE_2D,
 };
-</pre>
+```
+
+* Depending on the `EChromaSDKDeviceTypeEnum`, the file will use either the `1D` or `2D` file format.
 
 **1D File Format**
 
 **EChromaSDKDevice1DEnum: (byte)**
 
-<pre>
+```c++
 enum EChromaSDKDevice1DEnum
 {
     DE_ChromaLink = 0,
     DE_Headset,
     DE_Mousepad,
 };
-</pre>
+```
 
 **Frame Count: (unsigned int)**
 
 **Frames: (FChromaSDKColorFrame1D[])**
 
-<pre>
+```c++
 struct FChromaSDKColorFrame1D
 {
     float Duration;
     std::vector<COLORREF> Colors;
 };
-</pre>
+```
 
 **Duration: (float)**
 
@@ -421,33 +423,33 @@ struct FChromaSDKColorFrame1D
 
 **EChromaSDKDevice2DEnum: (byte)**
 
-<pre>
+```c++
 enum EChromaSDKDevice2DEnum
 {
     DE_Keyboard = 0,
     DE_Keypad,
     DE_Mouse,
 };
-</pre>
+```
 
 **Frame Count: (unsigned int)**
 
 **Frames: (FChromaSDKColorFrame2D[])**
 
-<pre>
+```c++
 struct FChromaSDKColors
 {
     std::vector<COLORREF> Colors;
 };
-</pre>
+```
 
-<pre>
+```c++
 struct FChromaSDKColorFrame2D
 {
     float Duration;
     std::vector<FChromaSDKColors> Colors;
 };
-</pre>
+```
 
 **Duration: (float)**
 
