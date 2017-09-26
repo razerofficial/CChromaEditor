@@ -8,6 +8,7 @@
 * [Assets](#assets)
 * [API](#api)
 * [Edit API](#edit-api)
+* [File Format](#file-format)
 
 <a name="related"></a>
 ## Related
@@ -370,3 +371,84 @@ Flips the color grid vertically for all `Chroma` animation frames. This method h
 ```C++
 EXPORT_API int PluginMirrorVertically(int animationId);
 ```
+
+<a name="file-format"></a>
+## File Format
+
+**Version: (int)**
+
+**EChromaSDKDeviceTypeEnum: (byte)**
+
+<pre>
+enum EChromaSDKDeviceTypeEnum
+{
+    DE_1D = 0,
+    DE_2D,
+};
+</pre>
+
+**1D File Format**
+
+**EChromaSDKDevice1DEnum: (byte)**
+
+<pre>
+enum EChromaSDKDevice1DEnum
+{
+    DE_ChromaLink = 0,
+    DE_Headset,
+    DE_Mousepad,
+};
+</pre>
+
+**Frame Count: (unsigned int)**
+
+**Frames: (FChromaSDKColorFrame1D[])**
+
+<pre>
+struct FChromaSDKColorFrame1D
+{
+    float Duration;
+    std::vector<COLORREF> Colors;
+};
+</pre>
+
+**Duration: (float)**
+
+**Color Array: (int[])**
+
+
+**2D File Format**
+
+**EChromaSDKDevice2DEnum: (byte)**
+
+<pre>
+enum EChromaSDKDevice2DEnum
+{
+    DE_Keyboard = 0,
+    DE_Keypad,
+    DE_Mouse,
+};
+</pre>
+
+**Frame Count: (unsigned int)**
+
+**Frames: (FChromaSDKColorFrame2D[])**
+
+<pre>
+struct FChromaSDKColors
+{
+	std::vector<COLORREF> Colors;
+};
+</pre>
+
+<pre>
+struct FChromaSDKColorFrame2D
+{
+    float Duration;
+    std::vector<FChromaSDKColors> Colors;
+};
+</pre>
+
+**Duration: (float)**
+
+**Color Array: (int[][])**
