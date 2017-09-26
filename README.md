@@ -437,7 +437,7 @@ enum EChromaSDKDevice2DEnum
 <pre>
 struct FChromaSDKColors
 {
-	std::vector<COLORREF> Colors;
+    std::vector<COLORREF> Colors;
 };
 </pre>
 
