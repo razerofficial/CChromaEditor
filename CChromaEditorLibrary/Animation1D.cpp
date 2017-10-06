@@ -191,9 +191,9 @@ void Animation1D::Update(float deltaTime)
 		if (nextTime < _mTime)
 		{
 			_mTime = 0.0f;
-			++_mCurrentFrame;
-			if (_mCurrentFrame < _mEffects.size())
+			if ((_mCurrentFrame + 1) < _mEffects.size())
 			{
+				++_mCurrentFrame;
 				FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
 				try
 				{
