@@ -26,6 +26,7 @@ void Animation2D::Reset()
 	_mIsLoaded = false;
 	_mTime = 0.0f;
 	_mCurrentFrame = 0;
+	_mLoop = false;
 }
 
 EChromaSDKDeviceTypeEnum Animation2D::GetDeviceType()
@@ -50,6 +51,11 @@ bool Animation2D::SetDevice(EChromaSDKDevice2DEnum device)
 	{
 		return false;
 	}
+}
+
+int Animation2D::GetDeviceId()
+{
+	return (int)GetDevice();
 }
 
 vector<FChromaSDKColorFrame2D>& Animation2D::GetFrames()
@@ -130,7 +136,7 @@ void Animation2D::Unload()
 	_mIsLoaded = false;
 }
 
-void Animation2D::Play()
+void Animation2D::Play(bool loop)
 {
 	if (!_mIsLoaded)
 	{
@@ -140,6 +146,7 @@ void Animation2D::Play()
 	_mTime = 0.0f;
 	_mCurrentFrame = -1;
 	_mIsPlaying = true;
+	_mLoop = loop;
 
 	if (ChromaThread::Instance())
 	{
@@ -210,10 +217,18 @@ void Animation2D::Update(float deltaTime)
 			}
 			else
 			{
-				//fprintf(stdout, "Update: Animation Complete.\r\n");
-				_mIsPlaying = false;
-				_mTime = 0.0f;
-				_mCurrentFrame = 0;
+				if (_mLoop)
+				{
+					_mTime = 0.0f;
+					_mCurrentFrame = -1;
+				}
+				else
+				{
+					//fprintf(stdout, "Update: Animation Complete.\r\n");
+					_mIsPlaying = false;
+					_mTime = 0.0f;
+					_mCurrentFrame = 0;
+				}
 			}
 		}
 	}

@@ -814,6 +814,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_PASTE, &CMainViewDlg::OnBnClickedButtonPaste)
 	ON_BN_CLICKED(IDC_BUTTON_PREVIEW, &CMainViewDlg::OnBnClickedButtonPreview)
 	ON_BN_CLICKED(IDC_BUTTON_PLAY, &CMainViewDlg::OnBnClickedButtonPlay)
+	ON_BN_CLICKED(IDC_BUTTON_LOOP, &CMainViewDlg::OnBnClickedButtonLoop)
 	ON_BN_CLICKED(IDC_BUTTON_STOP, &CMainViewDlg::OnBnClickedButtonStop)
 	ON_BN_CLICKED(IDC_BUTTON_LOAD, &CMainViewDlg::OnBnClickedButtonLoad)
 	ON_BN_CLICKED(IDC_BUTTON_UNLOAD, &CMainViewDlg::OnBnClickedButtonUnload)
@@ -1378,10 +1379,17 @@ void CMainViewDlg::OnBnClickedButtonPlay()
 {
 	if (GetAnimation() != nullptr)
 	{
-		GetAnimation()->Play();
+		GetAnimation()->Play(false);
 	}
 }
 
+void CMainViewDlg::OnBnClickedButtonLoop()
+{
+	if (GetAnimation() != nullptr)
+	{
+		GetAnimation()->Play(true);
+	}
+}
 
 void CMainViewDlg::OnBnClickedButtonStop()
 {

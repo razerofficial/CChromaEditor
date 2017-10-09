@@ -64,6 +64,7 @@ void LogError(const char* format, ...)
 bool _gDialogIsOpen = false;
 string _gPath = "";
 int _gAnimationId = 0;
+map<string, int> _gAnimationMapID;
 map<int, AnimationBase*> _gAnimations;
 map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
 map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
@@ -206,7 +207,7 @@ extern "C"
 		}
 	}
 
-	EXPORT_API int PluginOpenEditorDialog(char* path)
+	EXPORT_API int PluginOpenEditorDialog(const char* path)
 	{
 		PluginIsInitialized();
 
@@ -226,12 +227,12 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API double PluginOpenEditorDialogD(char* path)
+	EXPORT_API double PluginOpenEditorDialogD(const char* path)
 	{
 		return PluginOpenEditorDialog(path);
 	}
 
-	EXPORT_API int PluginOpenEditorDialogAndPlay(char* path)
+	EXPORT_API int PluginOpenEditorDialogAndPlay(const char* path)
 	{
 		PluginIsInitialized();
 
@@ -251,12 +252,12 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API double PluginOpenEditorDialogAndPlayD(char* path)
+	EXPORT_API double PluginOpenEditorDialogAndPlayD(const char* path)
 	{
 		return PluginOpenEditorDialogAndPlay(path);
 	}
 
-	EXPORT_API int PluginOpenAnimation(char* path)
+	EXPORT_API int PluginOpenAnimation(const char* path)
 	{
 		try
 		{
@@ -278,9 +279,11 @@ extern "C"
 			}
 			else
 			{
+				animation->SetName(path);
 				int id = _gAnimationId;
 				_gAnimations[id] = animation;
 				++_gAnimationId;
+				_gAnimationMapID[path] = id;
 				return id;
 			}
 		}
@@ -291,7 +294,7 @@ extern "C"
 		}
 	}
 
-	EXPORT_API double PluginOpenAnimationD(char* path)
+	EXPORT_API double PluginOpenAnimationD(const char* path)
 	{
 		return PluginOpenAnimation(path);
 	}
@@ -392,7 +395,7 @@ extern "C"
 					return -1;
 				}
 				StopAnimationByType(animationId, animation);
-				animation->Play();
+				animation->Play(false);
 				return animationId;
 			}
 		}
@@ -603,7 +606,7 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginCreateAnimation(char* path, int deviceType, int device)
+	EXPORT_API int PluginCreateAnimation(const char* path, int deviceType, int device)
 	{
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
 		{
@@ -637,7 +640,7 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginSaveAnimation(int animationId, char* path)
+	EXPORT_API int PluginSaveAnimation(int animationId, const char* path)
 	{
 		PluginStopAnimation(animationId);
 
@@ -1387,48 +1390,151 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginGetAnimation(char* name)
+	EXPORT_API int PluginGetAnimation(const char* name)
 	{
-		return -1;
+		for (std::map<string, int>::iterator it = _gAnimationMapID.begin(); it != _gAnimationMapID.end(); ++it)
+		{
+			const string& item = (*it).first;
+			if (item.compare(name) == 0) {
+				return (*it).second;
+			}
+		}
+		return PluginOpenAnimation(name);
 	}
 
 	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop)
 	{
-
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginPlayAnimationLoop: Animation is null! id=%d\r\n", animationId);
+				return;
+			}
+			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
+			LogDebug("PluginPlayAnimationLoop: %s\r\n", animation->GetName().c_str());
+			animation->Play(loop);
+		}
 	}
 
 	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop)
 	{
-
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginPlayAnimationName: Animation not found! %s", path);
+			return;
+		}
+		PluginPlayAnimationLoop(animationId, loop);
 	}
 
 	EXPORT_API void PluginStopAnimationName(const char* path)
 	{
-
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginStopAnimationName: Animation not found! %s", path);
+			return;
+		}
+		PluginStopAnimation(animationId);
 	}
 
 	EXPORT_API void PluginStopAnimationType(int deviceType, int device)
 	{
-
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			{
+				if (_gPlayMap1D.find((EChromaSDKDevice1DEnum)device) != _gPlayMap1D.end())
+				{
+					int prevAnimation = _gPlayMap1D[(EChromaSDKDevice1DEnum)device];
+					if (prevAnimation != -1)
+					{
+						PluginStopAnimation(prevAnimation);
+						_gPlayMap1D[(EChromaSDKDevice1DEnum)device] = -1;
+					}
+				}
+			}
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			{
+				if (_gPlayMap2D.find((EChromaSDKDevice2DEnum)device) != _gPlayMap2D.end())
+				{
+					int prevAnimation = _gPlayMap2D[(EChromaSDKDevice2DEnum)device];
+					if (prevAnimation != -1)
+					{
+						PluginStopAnimation(prevAnimation);
+						_gPlayMap2D[(EChromaSDKDevice2DEnum)device] = -1;
+					}
+				}
+			}
+			break;
+		}
 	}
 
 	EXPORT_API bool PluginIsPlayingName(const char* path)
 	{
-		return false;
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginIsPlayingName: Animation not found! %s", path);
+			return false;
+		}
+		return PluginIsPlaying(animationId);
 	}
 
 	EXPORT_API bool PluginIsPlayingType(int deviceType, int device)
 	{
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			{
+				if (_gPlayMap1D.find((EChromaSDKDevice1DEnum)device) != _gPlayMap1D.end())
+				{
+					int prevAnimation = _gPlayMap1D[(EChromaSDKDevice1DEnum)device];
+					if (prevAnimation != -1)
+					{
+						return PluginIsPlaying(prevAnimation);
+					}
+				}
+			}
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			{
+				if (_gPlayMap2D.find((EChromaSDKDevice2DEnum)device) != _gPlayMap2D.end())
+				{
+					int prevAnimation = _gPlayMap2D[(EChromaSDKDevice2DEnum)device];
+					if (prevAnimation != -1)
+					{
+						return PluginIsPlaying(prevAnimation);
+					}
+				}
+			}
+			break;
+		}
 		return false;
 	}
 
-	EXPORT_API void PluginPlayComposite(char* name, bool loop)
+	EXPORT_API void PluginPlayComposite(const char* name, bool loop)
 	{
-
+		string baseName = name;
+		PluginPlayAnimationName((baseName + "_ChromaLink.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + "_Headset.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + "_Keyboard.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + "_Keypad.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + "_Mouse.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + "_Mousepad.chroma").c_str(), loop);
 	}
 
-	EXPORT_API void PluginStopComposite(char* name)
+	EXPORT_API void PluginStopComposite(const char* name)
 	{
-
+		string baseName = name;
+		PluginStopAnimationName((baseName + "_ChromaLink.chroma").c_str());
+		PluginStopAnimationName((baseName + "_Headset.chroma").c_str());
+		PluginStopAnimationName((baseName + "_Keyboard.chroma").c_str());
+		PluginStopAnimationName((baseName + "_Keypad.chroma").c_str());
+		PluginStopAnimationName((baseName + "_Mouse.chroma").c_str());
+		PluginStopAnimationName((baseName + "_Mousepad.chroma").c_str());
 	}
 }

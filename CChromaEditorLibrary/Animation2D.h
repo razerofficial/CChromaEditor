@@ -13,12 +13,13 @@ namespace ChromaSDK
 		EChromaSDKDeviceTypeEnum GetDeviceType();
 		EChromaSDKDevice2DEnum GetDevice();
 		bool SetDevice(EChromaSDKDevice2DEnum device);
+		int GetDeviceId();
 		std::vector<FChromaSDKColorFrame2D>& GetFrames();
 		int GetFrameCount();
 		float GetDuration(unsigned int index);
 		void Load();
 		void Unload();
-		void Play();
+		void Play(bool loop);
 		void Stop();
 		void Update(float deltaTime);
 		void ResetFrames();
@@ -26,5 +27,6 @@ namespace ChromaSDK
 	private:
 		EChromaSDKDevice2DEnum _mDevice;
 		std::vector<FChromaSDKColorFrame2D> _mFrames;
+		bool _mLoop;
 	};
 }

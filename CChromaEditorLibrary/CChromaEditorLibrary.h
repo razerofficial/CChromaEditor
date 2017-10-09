@@ -144,4 +144,6 @@ private:
 
 	// keyboard input
 	bool _mControlModifier;
+public:
+	afx_msg void OnBnClickedButtonLoop();
 };
