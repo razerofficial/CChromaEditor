@@ -1386,4 +1386,49 @@ extern "C"
 
 		return -1;
 	}
+
+	EXPORT_API int PluginGetAnimation(char* name)
+	{
+		return -1;
+	}
+
+	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop)
+	{
+
+	}
+
+	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop)
+	{
+
+	}
+
+	EXPORT_API void PluginStopAnimationName(const char* path)
+	{
+
+	}
+
+	EXPORT_API void PluginStopAnimationType(int deviceType, int device)
+	{
+
+	}
+
+	EXPORT_API bool PluginIsPlayingName(const char* path)
+	{
+		return false;
+	}
+
+	EXPORT_API bool PluginIsPlayingType(int deviceType, int device)
+	{
+		return false;
+	}
+
+	EXPORT_API void PluginPlayComposite(char* name, bool loop)
+	{
+
+	}
+
+	EXPORT_API void PluginStopComposite(char* name)
+	{
+
+	}
 }

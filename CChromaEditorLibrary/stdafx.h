@@ -113,4 +113,14 @@ extern "C"
 	EXPORT_API int PluginReverse(int animationId);
 	EXPORT_API int PluginMirrorHorizontally(int animationId);
 	EXPORT_API int PluginMirrorVertically(int animationId);
+
+	EXPORT_API int PluginGetAnimation(char* name);
+	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop);
+	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
+	EXPORT_API void PluginStopAnimationName(const char* path);
+	EXPORT_API void PluginStopAnimationType(int deviceType, int device);
+	EXPORT_API bool PluginIsPlayingName(const char* path);
+	EXPORT_API bool PluginIsPlayingType(int deviceType, int device);
+	EXPORT_API void PluginPlayComposite(char* name, bool loop);
+	EXPORT_API void PluginStopComposite(char* name);
 }
