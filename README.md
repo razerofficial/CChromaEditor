@@ -74,6 +74,104 @@ This library supports the `Chroma` animation exports from [UE4](https://github.c
 
 The API has various methods with the `D` suffix where `double` return-type/parameters were used. This is to support engines like `GameMaker` which have a limited number of data-types.
 
+
+**PluginGetAnimation**
+
+`PluginGetAnimation` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. This method returns the `animationId` of the opened animation.
+
+```C++
+EXPORT_API int PluginGetAnimation(const char* name);
+```
+
+
+**PluginPlayAnimationLoop**
+
+`PluginPlayAnimationLoop` automatically handles initializing the `ChromaSDK`. The method will play the animation given the `animationId` with looping `on` or `off`.
+
+```C++
+EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop);
+```
+
+
+**PluginPlayAnimationName**
+
+`PluginPlayAnimationName` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. The animation will play with looping `on` or `off`.
+
+```C++
+EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
+```
+
+
+**PluginStopAnimationName**
+
+`PluginStopAnimationName` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. The animation will stop if playing.
+
+```C++
+EXPORT_API void PluginStopAnimationName(const char* path);
+```
+
+
+**PluginStopAnimationType**
+
+`PluginStopAnimationType` automatically handles initializing the `ChromaSDK`. If any animation is playing for the `deviceType` and `device` combination, it will be stopped.
+
+```C++
+EXPORT_API void PluginStopAnimationType(int deviceType, int device);
+```
+
+
+**PluginIsPlayingName**
+
+`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. The method will return whether the animation is playing or not.
+
+```C++
+EXPORT_API bool PluginIsPlayingName(const char* path);
+```
+
+
+**PluginIsPlayingType**
+
+`PluginIsPlayingType` automatically handles initializing the `ChromaSDK`. If any animation is playing for the `deviceType` and `device` combination, the method will return true, otherwise false.
+
+```C++
+EXPORT_API bool PluginIsPlayingType(int deviceType, int device);
+```
+
+
+**PluginPlayComposite**
+
+`PluginPlayComposite` automatically handles initializing the `ChromaSDK`. The named animation files for the `.chroma` set will be automatically opened. The set of animations will play with looping `on` or `off`.
+
+```C++
+EXPORT_API void PluginPlayComposite(const char* name, bool loop);
+
+// Given "Random" this will invoke:
+// PluginPlayAnimationName(name + "_ChromaLink.chroma", loop);
+// PluginPlayAnimationName(name + "_Headset.chroma", loop);
+// PluginPlayAnimationName(name + "_Keyboard.chroma", loop);
+// PluginPlayAnimationName(name + "_Keypad.chroma", loop);
+// PluginPlayAnimationName(name + "_Mouse.chroma", loop);
+// PluginPlayAnimationName(name + "_Mousepad.chroma", loop);
+```
+
+
+**PluginStopComposite**
+
+`PluginStopComposite` automatically handles initializing the `ChromaSDK`. The named animation files for the `.chroma` set will be automatically opened. The set of animations will be stopped if playing.
+
+```C++
+EXPORT_API void PluginStopComposite(const char* name);
+
+// Given "Random" this will invoke:
+// PluginStopAnimationName(name + "_ChromaLink.chroma");
+// PluginStopAnimationName(name + "_Headset.chroma");
+// PluginStopAnimationName(name + "_Keyboard.chroma");
+// PluginStopAnimationName(name + "_Keypad.chroma");
+// PluginStopAnimationName(name + "_Mouse.chroma");
+// PluginStopAnimationName(name + "_Mousepad.chroma");
+```
+
+
 **PluginSetLogDelegate**
 
 Invokes the setup for a debug logging callback so that `stdout` is redirected to the callback. This is used by `Unity` so that debug messages can appear in the console window.
@@ -105,8 +203,8 @@ extern "C" EXPORT_API double PluginIsDialogOpenD();
 Opens a `Chroma` animation file with the `.chroma` extension. Returns zero upon success. Returns -1 if there was a failure.
 
 ```C++
-extern "C" EXPORT_API int PluginOpenEditorDialog(char* path);
-extern "C" EXPORT_API double PluginOpenEditorDialogD(char* path);
+extern "C" EXPORT_API int PluginOpenEditorDialog(const char* path);
+extern "C" EXPORT_API double PluginOpenEditorDialogD(const char* path);
 ```
 
 ![image_1](images/image_1.png)
@@ -116,8 +214,8 @@ extern "C" EXPORT_API double PluginOpenEditorDialogD(char* path);
 Opens a `Chroma` animation file so that it can be played. Returns an animation id >= 0 upon success. Returns -1 if there was a failure. The animation id is used in most of the API methods.
 
 ```C++
-extern "C" EXPORT_API int PluginOpenAnimation(char* path);
-extern "C" EXPORT_API double PluginOpenAnimationD(char* path);
+extern "C" EXPORT_API int PluginOpenAnimation(const char* path);
+extern "C" EXPORT_API double PluginOpenAnimationD(const char* path);
 ```
 
 **PluginLoadAnimation**
@@ -260,6 +358,7 @@ Returns the frame count of a `Chroma` animation upon success. Returns -1 upon fa
 EXPORT_API int PluginGetFrameCount(int animationId);
 ```
 
+
 <a name="edit-api"></a>
 ## Edit API
 
@@ -270,7 +369,7 @@ The following edit methods will modify the provided `Chroma` animation. `Edit` m
 Creates a `Chroma` animation at the given path. The `deviceType` parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective to the `deviceType`. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
-EXPORT_API int PluginCreateAnimation(char* path, int deviceType, int device);
+EXPORT_API int PluginCreateAnimation(const char* path, int deviceType, int device);
 ```
 
 Saves a `Chroma` animation file with the `.chroma` extension at the given path. Returns the animation id upon success. Returns -1 upon failure.
@@ -288,7 +387,7 @@ Returns the animation id upon success. Returns -1 upon failure.
 **PluginSaveAnimation**
 
 ```C++
-EXPORT_API int PluginSaveAnimation(int animationId, char* path);
+EXPORT_API int PluginSaveAnimation(int animationId, const char* path);
 ```
 
 **PluginResetAnimation**
