@@ -103,48 +103,6 @@ void ThreadOpenEditorDialog(bool playOnOpen)
 	_gDialogIsOpen = false;
 }
 
-void StopAnimationByType(int animationId, AnimationBase* animation)
-{
-	if (animation == nullptr)
-	{
-		return;
-	}
-
-	switch (animation->GetDeviceType())
-	{
-	case EChromaSDKDeviceTypeEnum::DE_1D:
-		{
-			Animation1D* animation1D = dynamic_cast<Animation1D*>(animation);
-			EChromaSDKDevice1DEnum device = animation1D->GetDevice();
-			if (_gPlayMap1D.find(device) != _gPlayMap1D.end())
-			{
-				int prevAnimation = _gPlayMap1D[device];
-				if (prevAnimation != -1)
-				{
-					PluginStopAnimation(prevAnimation);
-				}
-			}
-			_gPlayMap1D[device] = animationId;
-		}
-		break;
-	case EChromaSDKDeviceTypeEnum::DE_2D:
-		{
-			Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
-			EChromaSDKDevice2DEnum device = animation2D->GetDevice();
-			if (_gPlayMap2D.find(device) != _gPlayMap2D.end())
-			{
-				int prevAnimation = _gPlayMap2D[device];
-				if (prevAnimation != -1)
-				{
-					PluginStopAnimation(prevAnimation);
-				}
-			}
-			_gPlayMap2D[device] = animationId;
-		}
-		break;
-	}
-}
-
 extern "C"
 {
 	EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp)
@@ -394,7 +352,16 @@ extern "C"
 					LogError("PluginPlayAnimation: Animation is null! id=%d", animationId);
 					return -1;
 				}
-				StopAnimationByType(animationId, animation);
+				PluginStopAnimationType(animation->GetDeviceTypeId(), animation->GetDeviceId());
+				switch (animation->GetDeviceType())
+				{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+					_gPlayMap1D[(EChromaSDKDevice1DEnum)animation->GetDeviceId()] = animationId;
+					break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+					_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
+					break;
+				}
 				animation->Play(false);
 				return animationId;
 			}
@@ -1414,6 +1381,15 @@ extern "C"
 			}
 			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
 			LogDebug("PluginPlayAnimationLoop: %s\r\n", animation->GetName().c_str());
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				_gPlayMap1D[(EChromaSDKDevice1DEnum)animation->GetDeviceId()] = animationId;
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
+				break;
+			}
 			animation->Play(loop);
 		}
 	}
