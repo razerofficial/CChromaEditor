@@ -146,12 +146,12 @@ EXPORT_API bool PluginIsPlayingType(int deviceType, int device);
 EXPORT_API void PluginPlayComposite(const char* name, bool loop);
 
 // Given "Random" this will invoke:
-// PluginPlayAnimationName(name + "_ChromaLink.chroma", loop);
-// PluginPlayAnimationName(name + "_Headset.chroma", loop);
-// PluginPlayAnimationName(name + "_Keyboard.chroma", loop);
-// PluginPlayAnimationName(name + "_Keypad.chroma", loop);
-// PluginPlayAnimationName(name + "_Mouse.chroma", loop);
-// PluginPlayAnimationName(name + "_Mousepad.chroma", loop);
+// PluginPlayAnimationName("Random_ChromaLink.chroma", loop);
+// PluginPlayAnimationName("Random_Headset.chroma", loop);
+// PluginPlayAnimationName("Random_Keyboard.chroma", loop);
+// PluginPlayAnimationName("Random_Keypad.chroma", loop);
+// PluginPlayAnimationName("Random_Mouse.chroma", loop);
+// PluginPlayAnimationName("Random_Mousepad.chroma", loop);
 ```
 
 
@@ -163,12 +163,12 @@ EXPORT_API void PluginPlayComposite(const char* name, bool loop);
 EXPORT_API void PluginStopComposite(const char* name);
 
 // Given "Random" this will invoke:
-// PluginStopAnimationName(name + "_ChromaLink.chroma");
-// PluginStopAnimationName(name + "_Headset.chroma");
-// PluginStopAnimationName(name + "_Keyboard.chroma");
-// PluginStopAnimationName(name + "_Keypad.chroma");
-// PluginStopAnimationName(name + "_Mouse.chroma");
-// PluginStopAnimationName(name + "_Mousepad.chroma");
+// PluginStopAnimationName("Random_ChromaLink.chroma");
+// PluginStopAnimationName("Random_Headset.chroma");
+// PluginStopAnimationName("Random_Keyboard.chroma");
+// PluginStopAnimationName("Random_Keypad.chroma");
+// PluginStopAnimationName("Random_Mouse.chroma");
+// PluginStopAnimationName("Random_Mousepad.chroma");
 ```
 
 
