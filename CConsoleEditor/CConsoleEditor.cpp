@@ -7,6 +7,7 @@
 #include <chrono>
 #include <thread>
 #include <Windows.h>
+#include "..\CChromaEditorLibrary\ChromaSDKPluginTypes.h"
 
 typedef double(*PLUGIN_IS_INITIALIZED)();
 typedef double(*PLUGIN_IS_DIALOG_OPEN)();
@@ -15,11 +16,15 @@ typedef double(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const char* path);
 typedef double(*PLUGIN_OPEN_ANIMATION)(const char* path);
 typedef double(*PLUGIN_CLOSE_ANIMATION)(double animationId);
 typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
+typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
+typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
+typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
 typedef void(*PLUGIN_INIT)();
 typedef void(*PLUGIN_UNINIT)();
 
 using namespace std;
 using namespace std::chrono;
+using namespace ChromaSDK;
 
 PLUGIN_IS_INITIALIZED _gMethodIsInitialized = nullptr;
 PLUGIN_IS_DIALOG_OPEN _gMethodIsDialogOpen = nullptr;
@@ -28,6 +33,9 @@ PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY _gMethodOpenDialogAndPlay = nullptr;
 PLUGIN_OPEN_ANIMATION _gMethodOpenAnimation = nullptr;
 PLUGIN_CLOSE_ANIMATION _gMethodCloseAnimation = nullptr;
 PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
+PLUGIN_PLAY_ANIMATION_NAME _gMethodPlayAnimationName = nullptr;
+PLUGIN_STOP_ANIMATION_NAME _gMethodStopAnimationName = nullptr;
+PLUGIN_STOP_ANIMATION_TYPE _gMethodStopAnimationType = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
 
@@ -91,6 +99,27 @@ int Init()
 		return -1;
 	}
 
+	_gMethodPlayAnimationName = (PLUGIN_PLAY_ANIMATION_NAME)GetProcAddress(library, "PluginPlayAnimationName");
+	if (_gMethodPlayAnimationName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginPlayAnimationName!\r\n");
+		return -1;
+	}
+
+	_gMethodStopAnimationName = (PLUGIN_STOP_ANIMATION_NAME)GetProcAddress(library, "PluginStopAnimationName");
+	if (_gMethodStopAnimationName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginStopAnimationName!\r\n");
+		return -1;
+	}
+
+	_gMethodStopAnimationType = (PLUGIN_STOP_ANIMATION_TYPE)GetProcAddress(library, "PluginStopAnimationType");
+	if (_gMethodStopAnimationType == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginStopAnimationType!\r\n");
+		return -1;
+	}
+
 	_gMethodInit = (PLUGIN_UNINIT)GetProcAddress(library, "PluginInit");
 	if (_gMethodInit == nullptr)
 	{
@@ -144,7 +173,7 @@ int main(int argc, char *argv[])
 
 	if (argc <= 1)
 	{
-		//DebugUnitTests();
+		DebugUnitTests();
 		char* buffer = nullptr;
 		size_t sz = 0;
 		if (_dupenv_s(&buffer, &sz, "USERPROFILE") == 0
@@ -219,6 +248,24 @@ void DebugUnitTests()
 	}
 	else
 	{
-		fprintf(stderr, "Missing argument! Please provide a path to a .chroma animation!\r\n");
+		fprintf(stdout, "Call: PlayAnimationName\r\n");
+		_gMethodPlayAnimationName("RandomKeyboardEffect.chroma", true);
+		Sleep(1000);
+
+		fprintf(stdout, "Call: StopAnimationName\r\n");
+		_gMethodStopAnimationName("RandomKeyboardEffect.chroma");
+		Sleep(1000);
+
+		fprintf(stdout, "Call: PlayAnimationName\r\n");
+		_gMethodPlayAnimationName("RandomKeyboardEffect.chroma", true);
+		Sleep(1000);
+
+		fprintf(stdout, "Call: StopAnimationType\r\n");
+		_gMethodStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
+
+		while (true)
+		{
+			Sleep(100);
+		}
 	}
 }
