@@ -19,6 +19,8 @@ typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
 typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
 typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
+typedef bool(*PLUGIN_IS_PLAYING_NAME)(const char* name);
+typedef bool(*PLUGIN_IS_PLAYING_TYPE)(int deviceType, int device);
 typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
 typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_INIT)();
@@ -38,6 +40,8 @@ PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
 PLUGIN_PLAY_ANIMATION_NAME _gMethodPlayAnimationName = nullptr;
 PLUGIN_STOP_ANIMATION_NAME _gMethodStopAnimationName = nullptr;
 PLUGIN_STOP_ANIMATION_TYPE _gMethodStopAnimationType = nullptr;
+PLUGIN_IS_PLAYING_NAME _gMethodIsPlayingName = nullptr;
+PLUGIN_IS_PLAYING_TYPE _gMethodIsPlayingType = nullptr;
 PLUGIN_PLAY_COMPOSITE _gMethodPlayComposite = nullptr;
 PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
@@ -124,6 +128,19 @@ int Init()
 		return -1;
 	}
 
+	_gMethodIsPlayingName = (PLUGIN_IS_PLAYING_NAME)GetProcAddress(library, "PluginIsPlayingName");
+	if (_gMethodIsPlayingName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginIsPlayingName!\r\n");
+		return -1;
+	}
+
+	_gMethodIsPlayingType = (PLUGIN_IS_PLAYING_TYPE)GetProcAddress(library, "PluginIsPlayingType");
+	if (_gMethodIsPlayingType == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginIsPlayingType!\r\n");
+		return -1;
+	}
 
 	_gMethodPlayComposite = (PLUGIN_PLAY_COMPOSITE)GetProcAddress(library, "PluginPlayComposite");
 	if (_gMethodPlayComposite == nullptr)
@@ -225,6 +242,23 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+void IsPlaying(const char* name)
+{
+	fprintf(stdout, "%s_ChromaLink IsPlayingName: %s\r\n", name, _gMethodIsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	fprintf(stdout, "%s_Headset IsPlayingName: %s\r\n", name, _gMethodIsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	fprintf(stdout, "%s_Keyboard IsPlayingName: %s\r\n", name, _gMethodIsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	fprintf(stdout, "%s_Keypad IsPlayingName: %s\r\n", name, _gMethodIsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	fprintf(stdout, "%s_Mouse IsPlayingName: %s\r\n", name, _gMethodIsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	fprintf(stdout, "%s_Mousepad IsPlayingName: %s\r\n", name, _gMethodIsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+
+	fprintf(stdout, "ChromaLink IsPlayingType: %s\r\n", _gMethodIsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink) ? "true" : "false");
+	fprintf(stdout, "Headset IsPlayingType: %s\r\n", _gMethodIsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset) ? "true" : "false");
+	fprintf(stdout, "Keyboard IsPlayingType: %s\r\n", _gMethodIsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard) ? "true" : "false");
+	fprintf(stdout, "Keypad IsPlayingType: %s\r\n", _gMethodIsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad) ? "true" : "false");
+	fprintf(stdout, "Mouse IsPlayingType: %s\r\n", _gMethodIsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse) ? "true" : "false");
+	fprintf(stdout, "Mousepad IsPlayingType: %s\r\n", _gMethodIsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad) ? "true" : "false");
+}
+
 void DebugUnitTests()
 {
 	if (false) // test editor
@@ -267,14 +301,20 @@ void DebugUnitTests()
 	}
 	else
 	{
-		fprintf(stdout, "Call: PlayComposite\r\n");
+		fprintf(stdout, "Call: PlayComposite: Random\r\n");
 		_gMethodPlayComposite("Random", true);
+		IsPlaying("Random");
 		Sleep(3000);
 
 		fprintf(stdout, "Call: StopComposite\r\n");
 		_gMethodStopComposite("Random");
+		IsPlaying("Random");
 		Sleep(3000);
 
+		fprintf(stdout, "Call: PlayComposite: Blank\r\n");
+		_gMethodPlayComposite("Blank", false);
+		IsPlaying("Random"); //random should show false, type should be playing blank
+		Sleep(3000);
 
 		fprintf(stdout, "Call: PlayAnimationName\r\n");
 		_gMethodPlayAnimationName("Random_Keyboard.chroma", true);
