@@ -19,6 +19,8 @@ typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
 typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
 typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
+typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
+typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_INIT)();
 typedef void(*PLUGIN_UNINIT)();
 
@@ -36,6 +38,8 @@ PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
 PLUGIN_PLAY_ANIMATION_NAME _gMethodPlayAnimationName = nullptr;
 PLUGIN_STOP_ANIMATION_NAME _gMethodStopAnimationName = nullptr;
 PLUGIN_STOP_ANIMATION_TYPE _gMethodStopAnimationType = nullptr;
+PLUGIN_PLAY_COMPOSITE _gMethodPlayComposite = nullptr;
+PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
 
@@ -120,6 +124,21 @@ int Init()
 		return -1;
 	}
 
+
+	_gMethodPlayComposite = (PLUGIN_PLAY_COMPOSITE)GetProcAddress(library, "PluginPlayComposite");
+	if (_gMethodPlayComposite == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginPlayComposite!\r\n");
+		return -1;
+	}
+
+	_gMethodStopComposite = (PLUGIN_STOP_COMPOSITE)GetProcAddress(library, "PluginStopComposite");
+	if (_gMethodStopComposite == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginStopComposite!\r\n");
+		return -1;
+	}
+
 	_gMethodInit = (PLUGIN_UNINIT)GetProcAddress(library, "PluginInit");
 	if (_gMethodInit == nullptr)
 	{
@@ -173,7 +192,7 @@ int main(int argc, char *argv[])
 
 	if (argc <= 1)
 	{
-		DebugUnitTests();
+		//DebugUnitTests();
 		char* buffer = nullptr;
 		size_t sz = 0;
 		if (_dupenv_s(&buffer, &sz, "USERPROFILE") == 0
@@ -227,12 +246,12 @@ void DebugUnitTests()
 			}
 
 			fprintf(stdout, "Playing effects...\r\n");
-			int randomChromaLinkEffect = OpenAndPlay("RandomChromaLinkEffect.chroma");
-			int randomHeadsetEffect = OpenAndPlay("RandomHeadsetEffect.chroma");
-			int randomKeyboardEffect = OpenAndPlay("RandomKeyboardEffect.chroma");
-			int randomKeypadEffect = OpenAndPlay("RandomKeypadEffect.chroma");
-			int randomMouseEffect = OpenAndPlay("RandomMouseEffect.chroma");
-			int randomMousepadEffect = OpenAndPlay("RandomMousepadEffect.chroma");
+			int randomChromaLinkEffect = OpenAndPlay("Random_ChromaLink.chroma");
+			int randomHeadsetEffect = OpenAndPlay("Random_Headset.chroma");
+			int randomKeyboardEffect = OpenAndPlay("Random_Keyboard.chroma");
+			int randomKeypadEffect = OpenAndPlay("Random_Keypad.chroma");
+			int randomMouseEffect = OpenAndPlay("Random_Mouse.chroma");
+			int randomMousepadEffect = OpenAndPlay("Random_Mousepad.chroma");
 			this_thread::sleep_for(chrono::seconds(1));
 
 			_gMethodCloseAnimation(randomChromaLinkEffect);
@@ -248,17 +267,26 @@ void DebugUnitTests()
 	}
 	else
 	{
+		fprintf(stdout, "Call: PlayComposite\r\n");
+		_gMethodPlayComposite("Random", true);
+		Sleep(3000);
+
+		fprintf(stdout, "Call: StopComposite\r\n");
+		_gMethodStopComposite("Random");
+		Sleep(3000);
+
+
 		fprintf(stdout, "Call: PlayAnimationName\r\n");
-		_gMethodPlayAnimationName("RandomKeyboardEffect.chroma", true);
-		Sleep(1000);
+		_gMethodPlayAnimationName("Random_Keyboard.chroma", true);
+		Sleep(3000);
 
 		fprintf(stdout, "Call: StopAnimationName\r\n");
-		_gMethodStopAnimationName("RandomKeyboardEffect.chroma");
+		_gMethodStopAnimationName("Random_Keyboard.chroma");
 		Sleep(1000);
 
 		fprintf(stdout, "Call: PlayAnimationName\r\n");
-		_gMethodPlayAnimationName("RandomKeyboardEffect.chroma", true);
-		Sleep(1000);
+		_gMethodPlayAnimationName("Random_Keyboard.chroma", true);
+		Sleep(3000);
 
 		fprintf(stdout, "Call: StopAnimationType\r\n");
 		_gMethodStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
