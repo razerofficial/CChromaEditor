@@ -480,6 +480,11 @@ extern "C"
 					return -1;
 				}
 				animation->Stop();
+				string animationName = animation->GetName();
+				if (_gAnimationMapID.find(animationName) != _gAnimationMapID.end())
+				{
+					_gAnimationMapID.erase(animationName);
+				}
 				delete _gAnimations[animationId];
 				_gAnimations.erase(animationId);
 				return animationId;
@@ -664,18 +669,24 @@ extern "C"
 
 	EXPORT_API int PluginGetFrameCount(int animationId)
 	{
-		if (_gAnimations.find(animationId) != _gAnimations.end())
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
 		{
-			AnimationBase* animation = _gAnimations[animationId];
-			if (animation == nullptr)
-			{
-				LogError("PluginGetFrameCount: Animation is null! id=%d", animationId);
-				return -1;
-			}
-			return animation->GetFrameCount();
+			LogError("PluginGetFrameCount: Animation is null! id=%d", animationId);
+			return -1;
 		}
+		return animation->GetFrameCount();
+	}
 
-		return -1;
+	EXPORT_API int PluginGetFrameCountName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginGetFrameCountName: Animation not found! %s", path);
+			return -1;
+		}
+		return PluginGetFrameCount(animationId);
 	}
 
 	EXPORT_API int PluginGetDeviceType(int animationId)
@@ -1357,6 +1368,15 @@ extern "C"
 		return -1;
 	}
 
+	AnimationBase* GetAnimationInstance(int animationId)
+	{
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			return _gAnimations[animationId];
+		}
+		return nullptr;
+	}
+
 	EXPORT_API int PluginGetAnimation(const char* name)
 	{
 		for (std::map<string, int>::iterator it = _gAnimationMapID.begin(); it != _gAnimationMapID.end(); ++it)
@@ -1367,6 +1387,17 @@ extern "C"
 			}
 		}
 		return PluginOpenAnimation(name);
+	}
+
+	EXPORT_API void PluginCloseAnimationName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginCloseAnimationName: Animation not found! %s", path);
+			return;
+		}
+		PluginCloseAnimation(animationId);
 	}
 
 	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop)
@@ -1512,5 +1543,104 @@ extern "C"
 		PluginStopAnimationName((baseName + "_Keypad.chroma").c_str());
 		PluginStopAnimationName((baseName + "_Mouse.chroma").c_str());
 		PluginStopAnimationName((baseName + "_Mousepad.chroma").c_str());
+	}
+
+	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D &&
+			animation->GetDeviceId() == (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[frameId];
+				frame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = color;
+			}
+		}
+	}
+
+	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginSetKeyColorName: Animation not found! %s", path);
+			return;
+		}
+		PluginSetKeyColor(animationId, frameId, rzkey, color);
+	}
+
+	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey)
+	{
+		PluginStopAnimation(targetAnimationId);
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
+			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
+			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		if (frameId < 0)
+		{
+			return;
+		}
+		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+		if (sourceFrames.size() == 0)
+		{
+			return;
+		}
+		if (targetFrames.size() == 0)
+		{
+			return;
+		}
+		if (frameId < targetFrames.size())
+		{
+			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+			FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
+			targetFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = sourceFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)];
+		}
+	}
+
+	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginCopyKeyColorName: Source Animation not found! %s", sourceAnimation);
+			return;
+		}
+
+		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		if (targetAnimationId < 0)
+		{
+			LogError("PluginCopyKeyColorName: Target Animation not found! %s", targetAnimation);
+			return;
+		}
+
+		PluginCopyKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
 	}
 }

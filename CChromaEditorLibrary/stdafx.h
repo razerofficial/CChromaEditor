@@ -48,6 +48,8 @@ void LogDebug(const char* text, ...);
 void LogError(const char* text, ...);
 /* End of setup log mechanism */
 
+#include "AnimationBase.h"
+
 extern "C"
 {
 	//GameMaker: Only has double and char* types
@@ -103,7 +105,6 @@ extern "C"
 	EXPORT_API int PluginGetMaxLeds(int device);
 	EXPORT_API int PluginGetMaxRow(int device);
 	EXPORT_API int PluginGetMaxColumn(int device);
-	EXPORT_API int PluginGetFrameCount(int animationId);
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length);
@@ -114,7 +115,9 @@ extern "C"
 	EXPORT_API int PluginMirrorHorizontally(int animationId);
 	EXPORT_API int PluginMirrorVertically(int animationId);
 
+	ChromaSDK::AnimationBase* GetAnimationInstance(int animationId);
 	EXPORT_API int PluginGetAnimation(const char* name);
+	EXPORT_API void PluginCloseAnimationName(const char* path);
 	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop);
 	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
 	EXPORT_API void PluginStopAnimationName(const char* path);
@@ -123,4 +126,10 @@ extern "C"
 	EXPORT_API bool PluginIsPlayingType(int deviceType, int device);
 	EXPORT_API void PluginPlayComposite(const char* name, bool loop);
 	EXPORT_API void PluginStopComposite(const char* name);
+	EXPORT_API int PluginGetFrameCount(int animationId);
+	EXPORT_API int PluginGetFrameCountName(const char* path);
+	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
+	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
+	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 }

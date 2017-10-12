@@ -25,6 +25,10 @@ typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
 typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_INIT)();
 typedef void(*PLUGIN_UNINIT)();
+typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
+typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
+typedef int(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
+typedef int(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 
 using namespace std;
 using namespace std::chrono;
@@ -46,6 +50,10 @@ PLUGIN_PLAY_COMPOSITE _gMethodPlayComposite = nullptr;
 PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
+PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
+PLUGIN_GET_FRAME_COUNT_NAME _gMethodGetFrameCountName = nullptr;
+PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
+PLUGIN_COPY_KEY_COLOR_NAME _gMethodCopyKeyColorName = nullptr;
 
 int Init()
 {
@@ -167,6 +175,34 @@ int Init()
 	if (_gMethodUninit == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginUninit!\r\n");
+		return -1;
+	}
+
+	_gMethodCloseAnimationName = (PLUGIN_CLOSE_ANIMATION_NAME)GetProcAddress(library, "PluginCloseAnimationName");
+	if (_gMethodCloseAnimationName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCloseAnimationName!\r\n");
+		return -1;
+	}
+
+	_gMethodGetFrameCountName = (PLUGIN_GET_FRAME_COUNT_NAME)GetProcAddress(library, "PluginSetKeyColorName");
+	if (_gMethodGetFrameCountName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginSetKeyColorName!\r\n");
+		return -1;
+	}
+
+	_gMethodSetKeyColorName = (PLUGIN_SET_KEY_COLOR_NAME)GetProcAddress(library, "PluginCopyKeyColor");
+	if (_gMethodSetKeyColorName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCopyKeyColor!\r\n");
+		return -1;
+	}
+
+	_gMethodCopyKeyColorName = (PLUGIN_COPY_KEY_COLOR_NAME)GetProcAddress(library, "PluginCopyKeyColorName");
+	if (_gMethodCopyKeyColorName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCopyKeyColorName!\r\n");
 		return -1;
 	}
 
@@ -301,6 +337,21 @@ void DebugUnitTests()
 	}
 	else
 	{
+		const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+
+		int frameCount = _gMethodGetFrameCountName(RANDOM_KEYBOARD);
+		for (int index = 0; index < frameCount; ++index)
+		{
+			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_W);
+			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_A);
+			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_S);
+			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_D);
+		}
+		_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
+		Sleep(3000);
+
+		_gMethodCloseAnimationName(RANDOM_KEYBOARD);
+
 		fprintf(stdout, "Call: PlayComposite: Random\r\n");
 		_gMethodPlayComposite("Random", true);
 		IsPlaying("Random");
@@ -317,15 +368,15 @@ void DebugUnitTests()
 		Sleep(3000);
 
 		fprintf(stdout, "Call: PlayAnimationName\r\n");
-		_gMethodPlayAnimationName("Random_Keyboard.chroma", true);
+		_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
 		Sleep(3000);
 
 		fprintf(stdout, "Call: StopAnimationName\r\n");
-		_gMethodStopAnimationName("Random_Keyboard.chroma");
+		_gMethodStopAnimationName(RANDOM_KEYBOARD);
 		Sleep(1000);
 
 		fprintf(stdout, "Call: PlayAnimationName\r\n");
-		_gMethodPlayAnimationName("Random_Keyboard.chroma", true);
+		_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
 		Sleep(3000);
 
 		fprintf(stdout, "Call: StopAnimationType\r\n");
