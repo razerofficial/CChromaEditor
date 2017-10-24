@@ -128,6 +128,8 @@ extern "C"
 	EXPORT_API void PluginStopComposite(const char* name);
 	EXPORT_API int PluginGetFrameCount(int animationId);
 	EXPORT_API int PluginGetFrameCountName(const char* path);
+	EXPORT_API int PluginGetCurrentFrame(int animationId);
+	EXPORT_API int PluginGetCurrentFrameName(const char* path);
 	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
 	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);

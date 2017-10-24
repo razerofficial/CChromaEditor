@@ -698,6 +698,28 @@ extern "C"
 		return PluginGetFrameCount(animationId);
 	}
 
+	EXPORT_API int PluginGetCurrentFrame(int animationId)
+	{
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			LogError("PluginGetCurrentFrame: Animation is null! id=%d", animationId);
+			return -1;
+		}
+		return animation->GetCurrentFrame();
+	}
+
+	EXPORT_API int PluginGetCurrentFrameName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginGetCurrentFrameName: Animation not found! %s", path);
+			return -1;
+		}
+		return PluginGetCurrentFrame(animationId);
+	}
+
 	EXPORT_API int PluginGetDeviceType(int animationId)
 	{
 		if (_gAnimations.find(animationId) != _gAnimations.end())
