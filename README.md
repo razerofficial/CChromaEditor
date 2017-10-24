@@ -64,10 +64,14 @@
 
 3 The `CConsoleEditor` project is a console project that uses the `DLL` and provides a command-line interface. The only parameter is the file path to a `Chroma` animation file. When no parameter is provided, the editor opens `temp.chroma` on the desktop.
 
+
 <a name="assets"></a>
 ## Assets
 
 This library supports the `Chroma` animation exports from [UE4](https://github.com/razerofficial/UE4ChromaSDK), [Unity](https://github.com/razerofficial/UnityNativeChromaSDK/), and [GameMaker](https://github.com/razerofficial/GameMakerChromaExtension).
+
+![image_1](images/image_1.png)
+
 
 <a name="api"></a>
 ## API
@@ -206,8 +210,6 @@ Opens a `Chroma` animation file with the `.chroma` extension. Returns zero upon 
 extern "C" EXPORT_API int PluginOpenEditorDialog(const char* path);
 extern "C" EXPORT_API double PluginOpenEditorDialogD(const char* path);
 ```
-
-![image_1](images/image_1.png)
 
 **PluginOpenAnimation**
 

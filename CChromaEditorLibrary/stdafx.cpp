@@ -507,6 +507,12 @@ extern "C"
 		// Chroma thread plays animations
 		SetupChromaThread();
 
+		_gAnimationId = 0;
+		_gAnimationMapID.clear();
+		_gAnimations.clear();
+		_gPlayMap1D.clear();
+		_gPlayMap2D.clear();
+
 		return ChromaSDKPlugin::GetInstance()->ChromaSDKInit();
 	}
 
@@ -528,8 +534,11 @@ extern "C"
 				PluginCloseAnimation(iter->first);
 			}
 		}
-		_gAnimations.clear();
 		_gAnimationId = 0;
+		_gAnimationMapID.clear();
+		_gAnimations.clear();
+		_gPlayMap1D.clear();
+		_gPlayMap2D.clear();
 		return result;
 	}
 
