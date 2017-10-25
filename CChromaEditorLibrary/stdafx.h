@@ -139,10 +139,10 @@ extern "C"
 	EXPORT_API void PluginSetCurrentFrameName(const char* path, int frameId);
 	EXPORT_API void PluginPauseAnimation(int animationId);
 	EXPORT_API void PluginPauseAnimationName(const char* path);
-	EXPORT_API bool PluginIsPaused(int animationId);
-	EXPORT_API bool PluginIsPausedName(const char* path);
-	EXPORT_API bool PluginHasLoop(int animationId);
-	EXPORT_API bool PluginHasLoopName(const char* path);
+	EXPORT_API bool PluginIsAnimationPaused(int animationId);
+	EXPORT_API bool PluginIsAnimationPausedName(const char* path);
+	EXPORT_API bool PluginHasAnimationLoop(int animationId);
+	EXPORT_API bool PluginHasAnimationLoopName(const char* path);
 	EXPORT_API void PluginResumeAnimation(int animationId, bool loop);
 	EXPORT_API void PluginResumeAnimationName(const char* path, bool loop);
 }

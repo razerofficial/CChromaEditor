@@ -1682,6 +1682,7 @@ extern "C"
 		{
 			return;
 		}
+		animation->SetCurrentFrame(frameId);
 	}
 
 	EXPORT_API void PluginSetCurrentFrameName(const char* path, int frameId)
@@ -1716,7 +1717,7 @@ extern "C"
 		PluginPauseAnimation(animationId);
 	}
 
-	EXPORT_API bool PluginIsPaused(int animationId)
+	EXPORT_API bool PluginIsAnimationPaused(int animationId)
 	{
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
@@ -1726,18 +1727,18 @@ extern "C"
 		return animation->IsPaused();
 	}
 
-	EXPORT_API bool PluginIsPausedName(const char* path)
+	EXPORT_API bool PluginIsAnimationPausedName(const char* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginIsPausedName: Animation not found! %s", path);
+			LogError("PluginIsAnimationPausedName: Animation not found! %s", path);
 			return false;
 		}
-		return PluginIsPaused(animationId);
+		return PluginIsAnimationPaused(animationId);
 	}
 
-	EXPORT_API bool PluginHasLoop(int animationId)
+	EXPORT_API bool PluginHasAnimationLoop(int animationId)
 	{
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
@@ -1747,15 +1748,15 @@ extern "C"
 		return animation->HasLoop();
 	}
 
-	EXPORT_API bool PluginHasLoopName(const char* path)
+	EXPORT_API bool PluginHasAnimationLoopName(const char* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginHasLoopName: Animation not found! %s", path);
+			LogError("PluginHasAnimationLoopName: Animation not found! %s", path);
 			return false;
 		}
-		return PluginHasLoop(animationId);
+		return PluginHasAnimationLoop(animationId);
 	}
 
 	EXPORT_API void PluginResumeAnimation(int animationId, bool loop)
