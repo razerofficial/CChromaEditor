@@ -134,4 +134,15 @@ extern "C"
 	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+
+	EXPORT_API void PluginSetCurrentFrame(int animationId, int frameId);
+	EXPORT_API void PluginSetCurrentFrameName(const char* path, int frameId);
+	EXPORT_API void PluginPauseAnimation(int animationId);
+	EXPORT_API void PluginPauseAnimationName(const char* path);
+	EXPORT_API bool PluginIsPaused(int animationId);
+	EXPORT_API bool PluginIsPausedName(const char* path);
+	EXPORT_API bool PluginHasLoop(int animationId);
+	EXPORT_API bool PluginHasLoopName(const char* path);
+	EXPORT_API void PluginResumeAnimation(int animationId, bool loop);
+	EXPORT_API void PluginResumeAnimationName(const char* path, bool loop);
 }

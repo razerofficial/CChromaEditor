@@ -20,6 +20,8 @@ namespace ChromaSDK
 		void Load();
 		void Unload();
 		void Play(bool loop);
+		void Pause();
+		void Resume(bool loop);
 		void Stop();
 		void Update(float deltaTime);
 		void ResetFrames();
@@ -27,6 +29,5 @@ namespace ChromaSDK
 	private:
 		EChromaSDKDevice2DEnum _mDevice;
 		std::vector<FChromaSDKColorFrame2D> _mFrames;
-		bool _mLoop;
 	};
 }

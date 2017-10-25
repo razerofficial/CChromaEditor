@@ -154,6 +154,17 @@ void Animation1D::Play(bool loop)
 	}
 }
 
+void Animation1D::Pause()
+{
+	_mIsPaused = true;
+}
+
+void Animation1D::Resume(bool loop)
+{
+	_mIsPaused = false;
+	_mLoop = loop;
+}
+
 void Animation1D::Stop()
 {
 	_mIsPlaying = false;
@@ -166,6 +177,11 @@ void Animation1D::Stop()
 
 void Animation1D::Update(float deltaTime)
 {
+	if (_mIsPaused)
+	{
+		return;
+	}
+
 	if (!_mIsPlaying)
 	{
 		return;

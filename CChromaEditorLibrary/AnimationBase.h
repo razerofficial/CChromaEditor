@@ -18,7 +18,11 @@ namespace ChromaSDK
 		void SetCurrentFrame(int index);
 		virtual int GetFrameCount() = 0;
 		virtual void Play(bool loop) = 0;
+		virtual void Pause() = 0;
+		virtual void Resume(bool loop) = 0;
 		bool IsPlaying();
+		bool IsPaused();
+		bool HasLoop();
 		virtual void Load() = 0;
 		virtual void Unload() = 0;
 		virtual void Stop() = 0;
@@ -30,6 +34,8 @@ namespace ChromaSDK
 		int _mCurrentFrame;
 		bool _mIsLoaded;
 		bool _mIsPlaying;
+		bool _mIsPaused;
+		bool _mLoop;
 		float _mTime;
 		std::vector<FChromaSDKEffectResult> _mEffects;
 	};

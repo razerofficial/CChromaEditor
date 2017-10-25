@@ -46,3 +46,13 @@ bool AnimationBase::IsPlaying()
 {
 	return _mIsPlaying;
 }
+
+bool AnimationBase::IsPaused()
+{
+	return _mIsPaused;
+}
+
+bool AnimationBase::HasLoop()
+{
+	return _mLoop;
+}
