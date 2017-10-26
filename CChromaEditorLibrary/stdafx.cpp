@@ -698,6 +698,11 @@ extern "C"
 		return PluginGetFrameCount(animationId);
 	}
 
+	EXPORT_API double PluginGetFrameCountNameD(const char* path)
+	{
+		return (double)PluginGetFrameCountName(path);
+	}
+
 	EXPORT_API int PluginGetCurrentFrame(int animationId)
 	{
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -718,6 +723,11 @@ extern "C"
 			return -1;
 		}
 		return PluginGetCurrentFrame(animationId);
+	}
+
+	EXPORT_API double PluginGetCurrentFrameNameD(const char* path)
+	{
+		return (double)PluginGetCurrentFrameName(path);
 	}
 
 	EXPORT_API int PluginGetDeviceType(int animationId)
@@ -1141,6 +1151,11 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API double PluginPreviewFrameD(double animationId, double frameIndex)
+	{
+		return (int)PluginPreviewFrame((int)animationId, (int)frameIndex);
+	}
+
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration)
 	{
 		PluginStopAnimation(animationId);
@@ -1205,6 +1220,11 @@ extern "C"
 		}
 
 		return -1;
+	}
+
+	EXPORT_API double PluginOverrideFrameDurationD(double animationId, double duration)
+	{
+		return (double)PluginOverrideFrameDuration((int)animationId, (float)duration);
 	}
 
 	EXPORT_API int PluginReverse(int animationId)
@@ -1420,6 +1440,11 @@ extern "C"
 		return PluginOpenAnimation(name);
 	}
 
+	EXPORT_API double PluginGetAnimationD(const char* name)
+	{
+		return PluginGetAnimation(name);
+	}
+
 	EXPORT_API void PluginCloseAnimationName(const char* path)
 	{
 		int animationId = PluginGetAnimation(path);
@@ -1429,6 +1454,12 @@ extern "C"
 			return;
 		}
 		PluginCloseAnimation(animationId);
+	}
+
+	EXPORT_API double PluginCloseAnimationNameD(const char* path)
+	{
+		PluginCloseAnimationName(path);
+		return 0;
 	}
 
 	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop)
@@ -1467,6 +1498,19 @@ extern "C"
 		PluginPlayAnimationLoop(animationId, loop);
 	}
 
+	EXPORT_API double PluginPlayAnimationNameD(const char* path, double loop)
+	{
+		if (loop == 0)
+		{
+			PluginPlayAnimationName(path, false);
+		}
+		else
+		{
+			PluginPlayAnimationName(path, true);
+		}
+		return 0;
+	}
+
 	EXPORT_API void PluginStopAnimationName(const char* path)
 	{
 		int animationId = PluginGetAnimation(path);
@@ -1476,6 +1520,12 @@ extern "C"
 			return;
 		}
 		PluginStopAnimation(animationId);
+	}
+
+	EXPORT_API double PluginStopAnimationNameD(const char* path)
+	{
+		PluginStopAnimationName(path);
+		return 0;
 	}
 
 	EXPORT_API void PluginStopAnimationType(int deviceType, int device)
@@ -1511,6 +1561,12 @@ extern "C"
 		}
 	}
 
+	EXPORT_API double PluginStopAnimationTypeD(double deviceType, double device)
+	{
+		PluginStopAnimationType((int)deviceType, (int)device);
+		return 0;
+	}
+
 	EXPORT_API bool PluginIsPlayingName(const char* path)
 	{
 		int animationId = PluginGetAnimation(path);
@@ -1520,6 +1576,18 @@ extern "C"
 			return false;
 		}
 		return PluginIsPlaying(animationId);
+	}
+
+	EXPORT_API double PluginIsPlayingNameD(const char* path)
+	{
+		if (PluginIsPlayingName(path))
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	EXPORT_API bool PluginIsPlayingType(int deviceType, int device)
@@ -1554,6 +1622,18 @@ extern "C"
 		return false;
 	}
 
+	EXPORT_API double PluginIsPlayingTypeD(double deviceType, double device)
+	{
+		if (PluginIsPlayingType((int)deviceType, (int)device))
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 	EXPORT_API void PluginPlayComposite(const char* name, bool loop)
 	{
 		string baseName = name;
@@ -1565,6 +1645,19 @@ extern "C"
 		PluginPlayAnimationName((baseName + "_Mousepad.chroma").c_str(), loop);
 	}
 
+	EXPORT_API double PluginPlayCompositeD(const char* name, double loop)
+	{
+		if (loop == 0)
+		{
+			PluginPlayComposite(name, false);
+		}
+		else
+		{
+			PluginPlayComposite(name, true);
+		}
+		return 0;
+	}
+
 	EXPORT_API void PluginStopComposite(const char* name)
 	{
 		string baseName = name;
@@ -1574,6 +1667,12 @@ extern "C"
 		PluginStopAnimationName((baseName + "_Keypad.chroma").c_str());
 		PluginStopAnimationName((baseName + "_Mouse.chroma").c_str());
 		PluginStopAnimationName((baseName + "_Mousepad.chroma").c_str());
+	}
+
+	EXPORT_API double PluginStopCompositeD(const char* name)
+	{
+		PluginStopComposite(name);
+		return 0;
 	}
 
 	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color)
@@ -1607,6 +1706,12 @@ extern "C"
 			return;
 		}
 		PluginSetKeyColor(animationId, frameId, rzkey, color);
+	}
+
+	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color)
+	{
+		PluginSetKeyColorName(path, (int)frameId, (int)rzkey, (int)color);
+		return 0;
 	}
 
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey)
@@ -1675,6 +1780,12 @@ extern "C"
 		PluginCopyKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
 	}
 
+	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey)
+	{
+		PluginCopyKeyColorName(sourceAnimation, targetAnimation, (int)frameId, (int)rzkey);
+		return 0;
+	}
+
 	EXPORT_API void PluginSetCurrentFrame(int animationId, int frameId)
 	{
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -1694,6 +1805,12 @@ extern "C"
 			return;
 		}
 		PluginSetCurrentFrame(animationId, frameId);
+	}
+
+	EXPORT_API double PluginSetCurrentFrameNameD(const char* path, double frameId)
+	{
+		PluginSetCurrentFrameName(path, (int)frameId);
+		return 0;
 	}
 
 	EXPORT_API void PluginPauseAnimation(int animationId)
@@ -1717,6 +1834,12 @@ extern "C"
 		PluginPauseAnimation(animationId);
 	}
 
+	EXPORT_API double PluginPauseAnimationNameD(const char* path)
+	{
+		PluginPauseAnimationName(path);
+		return 0;
+	}
+
 	EXPORT_API bool PluginIsAnimationPaused(int animationId)
 	{
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -1736,6 +1859,18 @@ extern "C"
 			return false;
 		}
 		return PluginIsAnimationPaused(animationId);
+	}
+
+	EXPORT_API double PluginIsAnimationPausedNameD(const char* path)
+	{
+		if (PluginIsAnimationPausedName(path))
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	EXPORT_API bool PluginHasAnimationLoop(int animationId)
@@ -1759,6 +1894,18 @@ extern "C"
 		return PluginHasAnimationLoop(animationId);
 	}
 
+	EXPORT_API double PluginHasAnimationLoopNameD(const char* path)
+	{
+		if (PluginHasAnimationLoopName(path))
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 	EXPORT_API void PluginResumeAnimation(int animationId, bool loop)
 	{
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -1778,5 +1925,18 @@ extern "C"
 			return;
 		}
 		PluginResumeAnimation(animationId, loop);
+	}
+
+	EXPORT_API double PluginResumeAnimationNameD(const char* path, double loop)
+	{
+		if (loop == 0)
+		{
+			PluginResumeAnimationName(path, false);
+		}
+		else
+		{
+			PluginResumeAnimationName(path, true);
+		}
+		return 0;
 	}
 }

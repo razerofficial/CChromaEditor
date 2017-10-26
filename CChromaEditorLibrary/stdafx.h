@@ -108,41 +108,80 @@ extern "C"
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length);
+	
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
+	EXPORT_API double PluginPreviewFrameD(double animationId, double frameIndex);
+	
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration);
+	EXPORT_API double PluginOverrideFrameDurationD(double animationId, double duration);
 
 	EXPORT_API int PluginReverse(int animationId);
 	EXPORT_API int PluginMirrorHorizontally(int animationId);
 	EXPORT_API int PluginMirrorVertically(int animationId);
 
 	ChromaSDK::AnimationBase* GetAnimationInstance(int animationId);
+	
 	EXPORT_API int PluginGetAnimation(const char* name);
+	EXPORT_API double PluginGetAnimationD(const char* name);
+
 	EXPORT_API void PluginCloseAnimationName(const char* path);
+	EXPORT_API double PluginCloseAnimationNameD(const char* path);
+
 	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop);
 	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
+	EXPORT_API double PluginPlayAnimationNameD(const char* path, double loop);
+
 	EXPORT_API void PluginStopAnimationName(const char* path);
+	EXPORT_API double PluginStopAnimationNameD(const char* path);
+
 	EXPORT_API void PluginStopAnimationType(int deviceType, int device);
+	EXPORT_API double PluginStopAnimationTypeD(double deviceType, double device);
+
 	EXPORT_API bool PluginIsPlayingName(const char* path);
+	EXPORT_API double PluginIsPlayingNameD(const char* path);
+
 	EXPORT_API bool PluginIsPlayingType(int deviceType, int device);
+	EXPORT_API double PluginIsPlayingTypeD(double deviceType, double device);
+	
 	EXPORT_API void PluginPlayComposite(const char* name, bool loop);
+	EXPORT_API double PluginPlayCompositeD(const char* name, double loop);
+	
 	EXPORT_API void PluginStopComposite(const char* name);
-	EXPORT_API int PluginGetFrameCount(int animationId);
-	EXPORT_API int PluginGetFrameCountName(const char* path);
-	EXPORT_API int PluginGetCurrentFrame(int animationId);
-	EXPORT_API int PluginGetCurrentFrameName(const char* path);
+	EXPORT_API double PluginStopCompositeD(const char* name);
+	
 	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
 	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
+	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color);
+
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
+
+	EXPORT_API int PluginGetFrameCount(int animationId);
+	EXPORT_API int PluginGetFrameCountName(const char* path);
+	EXPORT_API double PluginGetFrameCountNameD(const char* path);
+
+	EXPORT_API int PluginGetCurrentFrame(int animationId);
+	EXPORT_API int PluginGetCurrentFrameName(const char* path);
+	EXPORT_API double PluginGetCurrentFrameNameD(const char* path);
 
 	EXPORT_API void PluginSetCurrentFrame(int animationId, int frameId);
 	EXPORT_API void PluginSetCurrentFrameName(const char* path, int frameId);
+	EXPORT_API double PluginSetCurrentFrameNameD(const char* path, double frameId);
+
 	EXPORT_API void PluginPauseAnimation(int animationId);
 	EXPORT_API void PluginPauseAnimationName(const char* path);
+	EXPORT_API double PluginPauseAnimationNameD(const char* path);
+
 	EXPORT_API bool PluginIsAnimationPaused(int animationId);
 	EXPORT_API bool PluginIsAnimationPausedName(const char* path);
+	EXPORT_API double PluginIsAnimationPausedNameD(const char* path);
+
 	EXPORT_API bool PluginHasAnimationLoop(int animationId);
 	EXPORT_API bool PluginHasAnimationLoopName(const char* path);
+	EXPORT_API double PluginHasAnimationLoopNameD(const char* path);
+
 	EXPORT_API void PluginResumeAnimation(int animationId, bool loop);
 	EXPORT_API void PluginResumeAnimationName(const char* path, bool loop);
+	EXPORT_API double PluginResumeAnimationNameD(const char* path, double loop);
 }
