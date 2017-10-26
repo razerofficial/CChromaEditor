@@ -6,6 +6,7 @@
 #include "CChromaEditorLibrary.h"
 #include "ChromaThread.h"
 #include <map>
+#include <sstream>
 #include <thread>
 
 using namespace ChromaSDK;
@@ -1708,9 +1709,21 @@ extern "C"
 		PluginSetKeyColor(animationId, frameId, rzkey, color);
 	}
 
-	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color)
+	EXPORT_API double PluginSetKeyColorNameD(const char* path, const char* frame, const char* key, const char* color)
 	{
-		PluginSetKeyColorName(path, (int)frameId, (int)rzkey, (int)color);
+		stringstream ssFrame(frame);
+		int frameId = 0;
+		ssFrame >> frameId;
+
+		stringstream ssKey(key);
+		int rzkey = 0;
+		ssKey >> rzkey;
+
+		stringstream ssColor(color);
+		int colorref = 0;
+		ssColor >> colorref;
+
+		PluginSetKeyColorName(path, frameId, rzkey, colorref);
 		return 0;
 	}
 
@@ -1780,9 +1793,17 @@ extern "C"
 		PluginCopyKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
 	}
 
-	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey)
+	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, const char* frame, const char* key)
 	{
-		PluginCopyKeyColorName(sourceAnimation, targetAnimation, (int)frameId, (int)rzkey);
+		stringstream ssFrame(frame);
+		int frameId = 0;
+		ssFrame >> frameId;
+
+		stringstream ssKey(key);
+		int rzkey = 0;
+		ssKey >> rzkey;
+
+		PluginCopyKeyColorName(sourceAnimation, targetAnimation, frameId, rzkey);
 		return 0;
 	}
 

@@ -151,11 +151,11 @@ extern "C"
 	
 	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
 	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
-	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color);
+	EXPORT_API double PluginSetKeyColorNameD(const char* path, const char* frame, const char* key, const char* color);
 
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
-	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
+	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, const char* frame, const char* key);
 
 	EXPORT_API int PluginGetFrameCount(int animationId);
 	EXPORT_API int PluginGetFrameCountName(const char* path);
