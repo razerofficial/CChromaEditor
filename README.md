@@ -100,6 +100,7 @@ Methods:
 * [PluginGetMaxRow](#PluginGetMaxRow)
 * [PluginHasAnimationLoop](#PluginHasAnimationLoop)
 * [PluginHasAnimationLoopName](#PluginHasAnimationLoopName)
+* [PluginInit](#PluginInit)
 * [PluginIsAnimationPaused](#PluginIsAnimationPaused)
 * [PluginIsAnimationPausedName](#PluginIsAnimationPausedName)
 * [PluginIsDialogOpen](#PluginIsDialogOpen)
@@ -254,6 +255,28 @@ Invokes the setup for a debug logging callback so that `stdout` is redirected to
 
 ```C++
 extern "C" EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
+```
+
+
+<a name="PluginInit"></a>
+**PluginInit**
+
+Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many API methods auto initialize the ChromaSDK if not already initialized. 
+
+```C++
+EXPORT_API int PluginInit();
+EXPORT_API double PluginInitD();
+```
+
+
+<a name="PluginIsPlatformSupported"></a>
+**PluginIsPlatformSupported**
+
+If the method can be invoked the method returns true.
+
+```C++
+EXPORT_API bool PluginIsPlatformSupported();
+EXPORT_API double PluginIsPlatformSupportedD();
 ```
 
 
