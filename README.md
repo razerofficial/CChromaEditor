@@ -601,6 +601,16 @@ EXPORT_API void PluginResumeAnimationName(const char* path, bool loop);
 ```
 
 
+<a name="PluginSetKeyColor"></a>
+**PluginSetKeyColor**
+
+Set animation key to a static color for the given frame.
+
+```C++
+EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
+```
+
+
 <a name="PluginSetKeyColorName"></a>
 **PluginSetKeyColorName**
 
@@ -611,13 +621,24 @@ EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, 
 ```
 
 
+<a name="PluginCopyKeyColor"></a>
+**PluginCopyKeyColor**
+
+Copy animation key color from the source animation to the target animation for the given frame. 
+
+```C++
+EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+```
+
+
 <a name="PluginCopyKeyColorName"></a>
 **PluginCopyKeyColorName**
 
 Copy animation key color from the source animation to the target animation for the given frame. 
 
 ```C++
-EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation,
+    int frameId, int rzkey);
 ```
 
 
