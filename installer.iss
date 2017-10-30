@@ -28,7 +28,7 @@ Root: HKCR; Subkey: "{#MyAppName}\shell\open\command";  ValueData: """{app}\{#My
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "x64\Release\*"; DestDir: "{pf32}\Razer\ChromaEditor"; Excludes: "*.pdb,*.exp,*.iobj,*.ipdb,*.lib"; CopyMode: alwaysoverwrite
+Source: "Release\*"; DestDir: "{pf32}\Razer\ChromaEditor"; Excludes: "*.pdb,*.exp,*.iobj,*.ipdb,*.lib"; CopyMode: alwaysoverwrite
 
 [Icons]
 Name: "{group}\ChromaEditor"; Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; WorkingDir: "{app}";
