@@ -87,6 +87,8 @@ Methods:
 * [PluginCloseAnimationName](#PluginCloseAnimationName)
 * [PluginCopyKeyColor](#PluginCopyKeyColor)
 * [PluginCopyKeyColorName](#PluginCopyKeyColorName)
+* [PluginCopyNonZeroKeyColor](#PluginCopyNonZeroKeyColor)
+* [PluginCopyNonZeroKeyColorName](#PluginCopyNonZeroKeyColorName)
 * [PluginCreateAnimation](#PluginCreateAnimation)
 * [PluginCreateAnimationInMemory](#PluginCreateAnimationInMemory)
 * [PluginGetAnimation](#PluginGetAnimation)
@@ -97,6 +99,8 @@ Methods:
 * [PluginGetFrame](#PluginGetFrame)
 * [PluginGetFrameCount](#PluginGetFrameCount)
 * [PluginGetFrameCountName](#PluginGetFrameCountName)
+* [PluginGetKeyColor](#PluginGetKeyColor)
+* [PluginGetKeyColorName](#PluginGetKeyColorName)
 * [PluginGetMaxColumn](#PluginGetMaxColumn)
 * [PluginGetMaxLeds](#PluginGetMaxLeds)
 * [PluginGetMaxRow](#PluginGetMaxRow)
@@ -646,6 +650,26 @@ EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, 
 ```
 
 
+<a name="PluginGetKeyColor"></a>
+**PluginGetKeyColor**
+
+Get the color of an animation key for the given frame referenced by id.
+
+```C++
+EXPORT_API int PluginGetKeyColor(int animationId, int frameId, int rzkey);
+```
+
+
+<a name="PluginGetKeyColorName"></a>
+**PluginGetKeyColorName**
+
+Get the color of an animation key for the given frame referenced by name.
+
+```C++
+EXPORT_API int PluginGetKeyColorName(const char* path, int frameId, int rzkey);
+```
+
+
 <a name="PluginCopyKeyColor"></a>
 **PluginCopyKeyColor**
 
@@ -663,6 +687,27 @@ Copy animation key color from the source animation to the target animation for t
 
 ```C++
 EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation,
+    int frameId, int rzkey);
+```
+
+
+<a name="PluginCopyNonZeroKeyColor"></a>
+**PluginCopyNonZeroKeyColor**
+
+Copy animation key color from the source animation to the target animation for the given frame where color is not zero. 
+
+```C++
+EXPORT_API void PluginCopyNonZeroKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+```
+
+
+<a name="PluginCopyNonZeroKeyColorName"></a>
+**PluginCopyNonZeroKeyColorName**
+
+Copy animation key color from the source animation to the target animation for the given frame where color is not zero. 
+
+```C++
+EXPORT_API void PluginCopyNonZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation,
     int frameId, int rzkey);
 ```
 
