@@ -97,7 +97,9 @@ Methods:
 * [PluginGetCurrentFrame](#PluginGetCurrentFrame)
 * [PluginGetCurrentFrameName](#PluginGetCurrentFrameName)
 * [PluginGetDevice](#PluginGetDevice)
+* [PluginGetDeviceName](#PluginGetDeviceName)
 * [PluginGetDeviceType](#PluginGetDeviceType)
+* [PluginGetDeviceTypeName](#PluginGetDeviceTypeName)
 * [PluginGetFrame](#PluginGetFrame)
 * [PluginGetFrameCount](#PluginGetFrameCount)
 * [PluginGetFrameCountName](#PluginGetFrameCountName)
@@ -454,6 +456,16 @@ EXPORT_API int PluginGetDeviceType(int animationId);
 ```
 
 
+<a name="PluginGetDeviceTypeName"></a>
+**PluginGetDeviceTypeName**
+
+Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer upon success. Returns -1 upon failure.
+
+```C++
+EXPORT_API int PluginGetDeviceTypeName(const char* path);
+```
+
+
 <a name="PluginGetDevice"></a>
 **PluginGetDevice**
 
@@ -461,6 +473,16 @@ Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` a
 
 ```C++
 EXPORT_API int PluginGetDevice(int animationId);
+```
+
+
+<a name="PluginGetDeviceName"></a>
+**PluginGetDeviceName**
+
+Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` animation respective to the `deviceType`, as an integer upon success. Returns -1 upon failure.
+
+```C++
+EXPORT_API int PluginGetDeviceName(const char* path);
 ```
 
 

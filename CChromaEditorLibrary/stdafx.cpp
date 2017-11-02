@@ -747,6 +747,22 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API int PluginGetDeviceTypeName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginGetDeviceTypeName: Animation not found! %s", path);
+			return -1;
+		}
+		return PluginGetDeviceType(animationId);
+	}
+
+	EXPORT_API double PluginGetDeviceTypeNameD(const char* path)
+	{
+		return (double)PluginGetDeviceTypeName(path);
+	}
+
 	EXPORT_API int PluginGetDevice(int animationId)
 	{
 		if (_gAnimations.find(animationId) != _gAnimations.end())
@@ -775,6 +791,22 @@ extern "C"
 		}
 
 		return -1;
+	}
+
+	EXPORT_API int PluginGetDeviceName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginGetDeviceName: Animation not found! %s", path);
+			return -1;
+		}
+		return PluginGetDevice(animationId);
+	}
+
+	EXPORT_API double PluginGetDeviceNameD(const char* path)
+	{
+		return (double)PluginGetDeviceName(path);
 	}
 
 	EXPORT_API int PluginSetDevice(int animationId, int deviceType, int device)
