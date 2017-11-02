@@ -188,7 +188,7 @@ extern "C"
 
 	EXPORT_API void PluginSet2DColor(int animationId, int frameId, int row, int column, int color);
 	EXPORT_API void PluginSet2DColorName(const char* path, int frameId, int row, int column, int color);
-	EXPORT_API double PluginSet2DColorNameD(const char* path, double frameId, double row, double column, double color);
+	EXPORT_API double PluginSet2DColorNameD(const char* path, double frameId, double rowColumnIndex, double color);
 
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);

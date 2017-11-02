@@ -1970,9 +1970,19 @@ extern "C"
 		PluginSet2DColor(animationId, frameId, row, column, color);
 	}
 
-	EXPORT_API double PluginSet2DColorNameD(const char* path, double frameId, double row, double column, double color)
+	// GMS only allows 4 params when string datatype is used
+	EXPORT_API double PluginSet2DColorNameD(const char* path, double frameId, double rowColumnIndex, double color)
 	{
-		PluginSet2DColorName(path, (int)frameId, (int)row, (int)column, (int)color);
+		int device = PluginGetDeviceName(path);
+		if (device == -1)
+		{
+			return 0;
+		}
+		int maxColumn = PluginGetMaxColumn(device);
+		int index = (int)rowColumnIndex;
+		int row = index / maxColumn;
+		int column = index - (row * maxColumn);
+		PluginSet2DColorName(path, (int)frameId, row, column, (int)color);
 		return 0;
 	}
 
