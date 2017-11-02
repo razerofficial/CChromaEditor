@@ -91,6 +91,8 @@ Methods:
 * [PluginCopyNonZeroKeyColorName](#PluginCopyNonZeroKeyColorName)
 * [PluginCreateAnimation](#PluginCreateAnimation)
 * [PluginCreateAnimationInMemory](#PluginCreateAnimationInMemory)
+* [PluginGet1DColorName](#PluginGet1DColorName)
+* [PluginGet2DColorName](#PluginGet2DColorName)
 * [PluginGetAnimation](#PluginGetAnimation)
 * [PluginGetCurrentFrame](#PluginGetCurrentFrame)
 * [PluginGetCurrentFrameName](#PluginGetCurrentFrameName)
@@ -133,6 +135,8 @@ Methods:
 * [PluginResumeAnimation](#PluginResumeAnimation)
 * [PluginReverse](#PluginReverse)
 * [PluginSaveAnimation](#PluginSaveAnimation)
+* [PluginSet1DColorName](#PluginSet1DColorName)
+* [PluginSet2DColorName](#PluginSet2DColorName)
 * [PluginSetCurrentFrame](#PluginSetCurrentFrame)
 * [PluginSetCurrentFrameName](#PluginSetCurrentFrameName)
 * [PluginSetDevice](#PluginSetDevice)
@@ -709,6 +713,50 @@ Copy animation key color from the source animation to the target animation for t
 ```C++
 EXPORT_API void PluginCopyNonZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation,
     int frameId, int rzkey);
+```
+
+
+<a name="PluginGet1DColorName"></a>
+**PluginGet1DColorName**
+
+Get the animation color for a frame given the `1D` `led`. The `led` should be greater than or equal to 0 and less than the `MaxLeds`. 
+
+```C++
+EXPORT_API int PluginGet1DColorName(const char* path, int frameId,
+    int led);
+```
+
+
+<a name="PluginGet2DColorName"></a>
+**PluginGet2DColorName**
+
+Get the animation color for a frame given the `2D` `row` and `column`. The `row` should be greater than or equal to 0 and less than the `MaxRow`. The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
+
+```C++
+EXPORT_API int PluginGet2DColorName(const char* path, int frameId,
+    int row, int column);
+```
+
+
+<a name="PluginSet1DColorName"></a>
+**PluginSet1DColorName**
+
+Set the animation color for a frame given the `1D` `led`. The `led` should be greater than or equal to 0 and less than the `MaxLeds`.
+
+```C++
+EXPORT_API void PluginSet1DColorName(const char* path, int frameId,
+    int led, int color);
+```
+
+
+<a name="PluginSet2DColorName"></a>
+**PluginSet2DColorName**
+
+Set the animation color for a frame given the `2D` `row` and `column`. The `row` should be greater than or equal to 0 and less than the `MaxRow`. The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
+
+```C++
+EXPORT_API void PluginSet2DColorName(const char* path, int frameId,
+    int row, int column, int color);
 ```
 
 

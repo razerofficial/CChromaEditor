@@ -105,9 +105,16 @@ extern "C"
 	EXPORT_API int PluginGetDeviceType(int animationId);
 	EXPORT_API int PluginGetDevice(int animationId);
 	EXPORT_API int PluginSetDevice(int animationId, int deviceType, int device);
+
 	EXPORT_API int PluginGetMaxLeds(int device);
+	EXPORT_API double PluginGetMaxLedsD(double device);
+
 	EXPORT_API int PluginGetMaxRow(int device);
+	EXPORT_API double PluginGetMaxRowD(double device);
+
 	EXPORT_API int PluginGetMaxColumn(int device);
+	EXPORT_API double PluginGetMaxColumnD(double device);
+
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length);
@@ -155,10 +162,26 @@ extern "C"
 	EXPORT_API int PluginGetKeyColor(int animationId, int frameId, int rzkey);
 	EXPORT_API int PluginGetKeyColorName(const char* path, int frameId, int rzkey);
 	EXPORT_API double PluginGetKeyColorD(const char* path, double frameId, double rzkey);
+
+	EXPORT_API int PluginGet1DColor(int animationId, int frameId, int led);
+	EXPORT_API int PluginGet1DColorName(const char* path, int frameId, int led);
+	EXPORT_API double PluginGet1DColorNameD(const char* path, double frameId, double led);
+
+	EXPORT_API int PluginGet2DColor(int animationId, int frameId, int row, int column);
+	EXPORT_API int PluginGet2DColorName(const char* path, int frameId, int row, int column);
+	EXPORT_API double PluginGet2DColorNameD(const char* path, double frameId, double row, double column);
 	
 	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
 	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
 	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color);
+
+	EXPORT_API void PluginSet1DColor(int animationId, int frameId, int led, int color);
+	EXPORT_API void PluginSet1DColorName(const char* path, int frameId, int led, int color);
+	EXPORT_API double PluginSet1DColorNameD(const char* path, double frameId, double led, double color);
+
+	EXPORT_API void PluginSet2DColor(int animationId, int frameId, int row, int column, int color);
+	EXPORT_API void PluginSet2DColorName(const char* path, int frameId, int row, int column, int color);
+	EXPORT_API double PluginSet2DColorNameD(const char* path, double frameId, double row, double column, double color);
 
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
