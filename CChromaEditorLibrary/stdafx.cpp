@@ -1723,6 +1723,23 @@ extern "C"
 		return 0;
 	}
 
+	EXPORT_API void PluginCloseComposite(const char* name)
+	{
+		string baseName = name;
+		PluginCloseAnimationName((baseName + "_ChromaLink.chroma").c_str());
+		PluginCloseAnimationName((baseName + "_Headset.chroma").c_str());
+		PluginCloseAnimationName((baseName + "_Keyboard.chroma").c_str());
+		PluginCloseAnimationName((baseName + "_Keypad.chroma").c_str());
+		PluginCloseAnimationName((baseName + "_Mouse.chroma").c_str());
+		PluginCloseAnimationName((baseName + "_Mousepad.chroma").c_str());
+	}
+
+	EXPORT_API double PluginCloseCompositeD(const char* name)
+	{
+		PluginCloseComposite(name);
+		return 0;
+	}
+
 	EXPORT_API int PluginGetKeyColor(int animationId, int frameId, int rzkey)
 	{
 		AnimationBase* animation = GetAnimationInstance(animationId);

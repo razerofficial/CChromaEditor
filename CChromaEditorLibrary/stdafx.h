@@ -166,6 +166,9 @@ extern "C"
 	EXPORT_API void PluginStopComposite(const char* name);
 	EXPORT_API double PluginStopCompositeD(const char* name);
 
+	EXPORT_API void PluginCloseComposite(const char* name);
+	EXPORT_API double PluginCloseCompositeD(const char* name);
+
 	EXPORT_API int PluginGetKeyColor(int animationId, int frameId, int rzkey);
 	EXPORT_API int PluginGetKeyColorName(const char* path, int frameId, int rzkey);
 	EXPORT_API double PluginGetKeyColorD(const char* path, double frameId, double rzkey);

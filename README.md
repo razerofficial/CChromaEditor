@@ -85,6 +85,7 @@ Methods:
 * [PluginAddFrame](#PluginAddFrame)
 * [PluginCloseAnimation](#PluginCloseAnimation)
 * [PluginCloseAnimationName](#PluginCloseAnimationName)
+* [PluginCloseComposite](#PluginCloseComposite)
 * [PluginCopyKeyColor](#PluginCopyKeyColor)
 * [PluginCopyKeyColorName](#PluginCopyKeyColorName)
 * [PluginCopyNonZeroKeyColor](#PluginCopyNonZeroKeyColor)
@@ -260,6 +261,24 @@ EXPORT_API void PluginStopComposite(const char* name);
 ```
 
 
+<a name="PluginCloseComposite"></a>
+**PluginCloseComposite**
+
+`PluginCloseComposite` closes a set of animations so they can be reloaded from disk. The set of animations will be stopped if playing.
+
+```C++
+EXPORT_API void PluginCloseComposite(const char* name);
+
+// Given "Random" this will invoke:
+// PluginCloseAnimationName("Random_ChromaLink.chroma");
+// PluginCloseAnimationName("Random_Headset.chroma");
+// PluginCloseAnimationName("Random_Keyboard.chroma");
+// PluginCloseAnimationName("Random_Keypad.chroma");
+// PluginCloseAnimationName("Random_Mouse.chroma");
+// PluginCloseAnimationName("Random_Mousepad.chroma");
+```
+
+
 <a name="PluginSetLogDelegate"></a>
 **PluginSetLogDelegate**
 
@@ -383,11 +402,22 @@ extern "C" EXPORT_API double PluginStopAnimationD(double animationId);
 <a name="PluginCloseAnimation"></a>
 **PluginCloseAnimation**
 
-Closes the `Chroma` animation to free up resources. Returns the animation id upon success. Returns -1 upon failure. This might be used while authoring effects if there was a change necessitating re-opening the animation. The animation id can no longer be used once closed.
+Closes the `Chroma` animation to free up resources referenced by id. Returns the animation id upon success. Returns -1 upon failure. This might be used while authoring effects if there was a change necessitating re-opening the animation. The animation id can no longer be used once closed.
 
 ```C++
 extern "C" EXPORT_API int PluginCloseAnimation(int animationId);
 extern "C" EXPORT_API double PluginCloseAnimationD(double animationId);
+```
+
+
+<a name="PluginCloseAnimationName"></a>
+**PluginCloseAnimationName**
+
+Closes the `Chroma` animation referenced by name so that the animation can be reloaded from disk.
+
+```C++
+EXPORT_API void PluginCloseAnimationName(const char* path);
+EXPORT_API double PluginCloseAnimationNameD(const char* path);
 ```
 
 
