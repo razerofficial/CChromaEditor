@@ -148,6 +148,10 @@ extern "C"
 	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
 	EXPORT_API double PluginPlayAnimationNameD(const char* path, double loop);
 
+	EXPORT_API void PluginPlayAnimationFrame(int animationId, int frameId, bool loop);
+	EXPORT_API void PluginPlayAnimationFrameName(const char* path, int frameId, bool loop);
+	EXPORT_API double PluginPlayAnimationFrameNameD(const char* path, double frameId, double loop);
+
 	EXPORT_API void PluginStopAnimationName(const char* path);
 	EXPORT_API double PluginStopAnimationNameD(const char* path);
 

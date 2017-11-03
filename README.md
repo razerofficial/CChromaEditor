@@ -132,6 +132,8 @@ Methods:
 * [PluginPlayAnimation](#PluginPlayAnimation)
 * [PluginPlayAnimationLoop](#PluginPlayAnimationLoop)
 * [PluginPlayAnimationName](#PluginPlayAnimationName)
+* [PluginPlayAnimationFrame](#PluginPlayAnimationFrame)
+* [PluginPlayAnimationFrameName](#PluginPlayAnimationFrameName)
 * [PluginPlayComposite](#PluginPlayComposite)
 * [PluginPreviewFrame](#PluginPreviewFrame)
 * [PluginResetAnimation](#PluginResetAnimation)
@@ -182,6 +184,26 @@ EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop);
 
 ```C++
 EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
+```
+
+
+<a name="PluginPlayAnimationFrame"></a>
+**PluginPlayAnimationFrame**
+
+`PluginPlayAnimationFrame` automatically handles initializing the `ChromaSDK`. The method will play the animation given the `animationId` with looping `on` or `off` starting at the `frameId`.
+
+```C++
+EXPORT_API void PluginPlayAnimationFrame(int animationId, int frameId, bool loop);
+```
+
+
+<a name="PluginPlayAnimationFrameName"></a>
+**PluginPlayAnimationFrameName**
+
+`PluginPlayAnimationFrameName` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. The animation will play with looping `on` or `off` starting at the `frameId`.
+
+```C++
+EXPORT_API void PluginPlayAnimationFrameName(const char* path, int frameId, bool loop);
 ```
 
 

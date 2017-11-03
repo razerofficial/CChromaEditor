@@ -147,6 +147,7 @@ void Animation1D::Play(bool loop)
 	_mCurrentFrame = -1;
 	_mIsPlaying = true;
 	_mLoop = loop;
+	_mIsPaused = false;
 
 	if (ChromaThread::Instance())
 	{

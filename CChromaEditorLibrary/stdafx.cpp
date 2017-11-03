@@ -109,7 +109,7 @@ extern "C"
 	EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp)
 	{
 		_gDebugLogPtr = fp;
-		LogDebug("PluginSetLogDelegate:");
+		//LogDebug("PluginSetLogDelegate:");
 	}
 
 	EXPORT_API bool PluginIsPlatformSupported()
@@ -170,7 +170,7 @@ extern "C"
 	{
 		PluginIsInitialized();
 
-		LogDebug("PluginOpenEditorDialog %s\r\n", path);
+		//LogDebug("PluginOpenEditorDialog %s\r\n", path);
 
 		if (_gDialogIsOpen)
 		{
@@ -195,7 +195,7 @@ extern "C"
 	{
 		PluginIsInitialized();
 
-		LogDebug("PluginOpenEditorDialogAndPlay %s\r\n", path);
+		//LogDebug("PluginOpenEditorDialogAndPlay %s\r\n", path);
 
 		if (_gDialogIsOpen)
 		{
@@ -1521,7 +1521,7 @@ extern "C"
 				return;
 			}
 			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
-			LogDebug("PluginPlayAnimationLoop: %s\r\n", animation->GetName().c_str());
+			//LogDebug("PluginPlayAnimationLoop: %s\r\n", animation->GetName().c_str());
 			switch (animation->GetDeviceType())
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -1555,6 +1555,56 @@ extern "C"
 		else
 		{
 			PluginPlayAnimationName(path, true);
+		}
+		return 0;
+	}
+
+	EXPORT_API void PluginPlayAnimationFrame(int animationId, int frameId, bool loop)
+	{
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginPlayAnimationFrame: Animation is null! id=%d\r\n", animationId);
+				return;
+			}
+			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
+			//LogDebug("PluginPlayAnimationFrame: %s\r\n", animation->GetName().c_str());
+			animation->SetCurrentFrame(frameId);
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+				_gPlayMap1D[(EChromaSDKDevice1DEnum)animation->GetDeviceId()] = animationId;
+				break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+				_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
+				break;
+			}
+			animation->Play(loop);
+		}
+	}
+
+	EXPORT_API void PluginPlayAnimationFrameName(const char* path, int frameId, bool loop)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginPlayAnimationFrameName: Animation not found! %s", path);
+			return;
+		}
+		PluginPlayAnimationFrame(animationId, frameId, loop);
+	}
+
+	EXPORT_API double PluginPlayAnimationFrameNameD(const char* path, double frameId, double loop)
+	{
+		if (loop == 0)
+		{
+			PluginPlayAnimationFrameName(path, frameId, false);
+		}
+		else
+		{
+			PluginPlayAnimationFrameName(path, frameId, true);
 		}
 		return 0;
 	}
