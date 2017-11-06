@@ -923,7 +923,12 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 				if (dlg.DoModal() == IDOK)
 				{
 					COLORREF color = dlg.GetColor();
-					SetColor(color);
+					// switch from RGB ro BGR
+					int red = (color & 0xFF000) >> 16;
+					int green = (color & 0xFF00) >> 8;
+					int blue = (color & 0xFF);
+					int bgrInt = (blue) << 16 | green << 8 | red;
+					SetColor(bgrInt);
 					GetColorButtons()[0]->SetColor(color, color);
 					GetColorButtons()[0]->Invalidate();
 				}
@@ -940,6 +945,9 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 		}
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 void CMainViewDlg::OnBnClickedButtonSetDeviceType()
@@ -983,6 +991,9 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 		// Display grid
 		RefreshGrid();
 	}
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -997,6 +1008,9 @@ void CMainViewDlg::OnBnClickedButtonImportImage()
 	RefreshGrid();
 	RefreshFrames();
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1011,6 +1025,9 @@ void CMainViewDlg::OnBnClickedButtonImportAnimation()
 	RefreshGrid();
 	RefreshFrames();
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1030,6 +1047,9 @@ void CMainViewDlg::OnBnClickedButtonImportOverrideTime()
 		break;
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1060,6 +1080,9 @@ void CMainViewDlg::OnBnClickedButtonSetDevice()
 		// Display grid
 		RefreshGrid();
 	}
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1105,6 +1128,9 @@ void CMainViewDlg::OnBnClickedButtonClear()
 		break;
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1163,6 +1189,9 @@ void CMainViewDlg::OnBnClickedButtonFill()
 		break;
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1208,6 +1237,9 @@ void CMainViewDlg::OnBnClickedButtonRandom()
 		break;
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1295,6 +1327,9 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 		break;
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1440,6 +1475,9 @@ void CMainViewDlg::OnBnClickedButtonSetKey()
 			RefreshGrid();
 		}
 	}
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 void CMainViewDlg::OnBnClickedButtonSetLed()
@@ -1464,6 +1502,9 @@ void CMainViewDlg::OnBnClickedButtonSetLed()
 			RefreshGrid();
 		}
 	}
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1506,6 +1547,9 @@ void CMainViewDlg::OnBnClickedButtonPrevious()
 		}
 		break;
 	}
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1548,6 +1592,9 @@ void CMainViewDlg::OnBnClickedButtonNext()
 		}
 		break;
 	}
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1567,6 +1614,9 @@ void CMainViewDlg::OnBnClickedButtonAdd()
 		break;
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1634,6 +1684,9 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 		break;
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1647,6 +1700,9 @@ void CMainViewDlg::OnBnClickedButtonReset()
 		RefreshFrames();
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
 
 
@@ -1690,4 +1746,7 @@ void CMainViewDlg::OnBnClickedButtonSetDuration()
 		break;
 	}
 	SaveFile();
+
+	//show changes
+	OnBnClickedButtonPreview();
 }
