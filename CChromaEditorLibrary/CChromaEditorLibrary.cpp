@@ -923,12 +923,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 				if (dlg.DoModal() == IDOK)
 				{
 					COLORREF color = dlg.GetColor();
-					// switch from RGB ro BGR
-					int red = (color & 0xFF000) >> 16;
-					int green = (color & 0xFF00) >> 8;
-					int blue = (color & 0xFF);
-					int bgrInt = (blue) << 16 | green << 8 | red;
-					SetColor(bgrInt);
+					SetColor(color);
 					GetColorButtons()[0]->SetColor(color, color);
 					GetColorButtons()[0]->Invalidate();
 				}
