@@ -822,29 +822,15 @@ extern "C"
 			return -1;
 		}
 
-		PluginCloseAnimation(animationId);
-
-		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
 		{
-			case EChromaSDKDeviceTypeEnum::DE_1D:
-			{
-				Animation1D* animation1D = new Animation1D();
-				animation1D->SetDevice((EChromaSDKDevice1DEnum)device);
-				_gAnimations[animationId] = animation1D;
-				return animationId;
-			}
-			break;
-			case EChromaSDKDeviceTypeEnum::DE_2D:
-			{
-				Animation2D* animation2D = new Animation2D();
-				animation2D->SetDevice((EChromaSDKDevice2DEnum)device);
-				_gAnimations[animationId] = animation2D;
-				return animationId;
-			}
-			break;
+			LogError("PluginSetDevice: Animation is null! id=%d", animationId);
+			return -1;
 		}
-
-		return -1;
+		string path = animation->GetName();
+		PluginCloseAnimation(animationId);
+		return PluginCreateAnimation(path.c_str(), deviceType, device);
 	}
 
 	EXPORT_API int PluginGetMaxLeds(int device)
