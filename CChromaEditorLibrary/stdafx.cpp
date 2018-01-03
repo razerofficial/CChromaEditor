@@ -220,15 +220,6 @@ extern "C"
 	{
 		try
 		{
-			// Chroma thread plays animations
-			SetupChromaThread();
-
-			if (!PluginIsInitialized())
-			{
-				LogError("PluginOpenAnimation: Plugin is not initialized!\r\n");
-				return -1;
-			}
-
 			//return animation id
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
 			if (animation == nullptr)
@@ -262,15 +253,6 @@ extern "C"
 	{
 		try
 		{
-			// Chroma thread plays animations
-			SetupChromaThread();
-
-			if (!PluginIsInitialized())
-			{
-				LogError("PluginLoadAnimation: Plugin is not initialized!\r\n");
-				return -1;
-			}
-
 			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
@@ -299,15 +281,6 @@ extern "C"
 	{
 		try
 		{
-			// Chroma thread plays animations
-			SetupChromaThread();
-
-			if (!PluginIsInitialized())
-			{
-				LogError("PluginUnloadAnimation: Plugin is not initialized!\r\n");
-				return -1;
-			}
-
 			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
@@ -383,15 +356,6 @@ extern "C"
 	{
 		try
 		{
-			// Chroma thread plays animations
-			SetupChromaThread();
-
-			if (!PluginIsInitialized())
-			{
-				LogError("PluginIsPlaying: Plugin is not initialized!\r\n");
-				return false;
-			}
-
 			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
@@ -426,15 +390,6 @@ extern "C"
 	{
 		try
 		{
-			// Chroma thread plays animations
-			SetupChromaThread();
-
-			if (!PluginIsInitialized())
-			{
-				LogError("PluginStopAnimation: Plugin is not initialized!\r\n");
-				return -1;
-			}
-
 			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
@@ -463,15 +418,6 @@ extern "C"
 	{
 		try
 		{
-			// Chroma thread plays animations
-			SetupChromaThread();
-
-			if (!PluginIsInitialized())
-			{
-				LogError("PluginCloseAnimation: Plugin is not initialized!\r\n");
-				return -1;
-			}
-
 			if (_gAnimations.find(animationId) != _gAnimations.end())
 			{
 				AnimationBase* animation = _gAnimations[animationId];
@@ -626,15 +572,6 @@ extern "C"
 	{
 		PluginStopAnimation(animationId);
 
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginSaveAnimation: Plugin is not initialized!\r\n");
-			return -1;
-		}
-
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
 			AnimationBase* animation = _gAnimations[animationId];
@@ -652,15 +589,6 @@ extern "C"
 	EXPORT_API int PluginResetAnimation(int animationId)
 	{
 		PluginStopAnimation(animationId);
-
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginResetAnimation: Plugin is not initialized!\r\n");
-			return -1;
-		}
 
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
@@ -813,15 +741,6 @@ extern "C"
 	{
 		PluginStopAnimation(animationId);
 
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginSetDevice: Plugin is not initialized!\r\n");
-			return -1;
-		}
-
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
 		{
@@ -866,15 +785,6 @@ extern "C"
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length)
 	{
 		PluginStopAnimation(animationId);
-
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginAddFrame: Plugin is not initialized!\r\n");
-			return -1;
-		}
 
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
@@ -949,15 +859,6 @@ extern "C"
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length)
 	{
 		PluginStopAnimation(animationId);
-
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginUpdateFrame: Plugin is not initialized!\r\n");
-			return -1;
-		}
 
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
@@ -1040,15 +941,6 @@ extern "C"
 	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length)
 	{
 		PluginStopAnimation(animationId);
-
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginGetFrame: Plugin is not initialized!\r\n");
-			return -1;
-		}
 
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
@@ -1194,15 +1086,6 @@ extern "C"
 	{
 		PluginStopAnimation(animationId);
 
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginOverrideFrameDuration: Plugin is not initialized!\r\n");
-			return -1;
-		}
-
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
 			AnimationBase* animation = _gAnimations[animationId];
@@ -1265,15 +1148,6 @@ extern "C"
 	{
 		PluginStopAnimation(animationId);
 
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginReverse: Plugin is not initialized!\r\n");
-			return -1;
-		}
-
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
 			AnimationBase* animation = _gAnimations[animationId];
@@ -1330,15 +1204,6 @@ extern "C"
 	EXPORT_API int PluginMirrorHorizontally(int animationId)
 	{
 		PluginStopAnimation(animationId);
-
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginMirrorHorizontally: Plugin is not initialized!\r\n");
-			return -1;
-		}
 
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
@@ -1404,15 +1269,6 @@ extern "C"
 	EXPORT_API int PluginMirrorVertically(int animationId)
 	{
 		PluginStopAnimation(animationId);
-
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		if (!PluginIsInitialized())
-		{
-			LogError("PluginMirrorVertically: Plugin is not initialized!\r\n");
-			return -1;
-		}
 
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
