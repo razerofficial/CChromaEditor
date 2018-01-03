@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<application>
+    <title>Chroma Animation Editor</title>
+    <description>Edit Chroma animations</description>
+    <author name="Tim Graupmann" contact="https://github.com/RazerOfficial/CChromaEditor"/>
+    <device_supported keyboard="1" mouse="1" headset="1" mousemat="1" keypad="1" chromalink="1"/> 
+	<category game="0"/>
+</application>

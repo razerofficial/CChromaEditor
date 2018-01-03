@@ -28,6 +28,7 @@ Root: HKCR; Subkey: "{#MyAppName}\shell\open\command";  ValueData: """{app}\{#My
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
+Source: "ChromaAppInfo.xml"; DestDir: "{pf32}\Razer\ChromaEditor"; CopyMode: alwaysoverwrite
 Source: "Release\*"; DestDir: "{pf32}\Razer\ChromaEditor"; Excludes: "*.pdb,*.exp,*.iobj,*.ipdb,*.lib"; CopyMode: alwaysoverwrite
 
 [Icons]
