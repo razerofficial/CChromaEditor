@@ -83,6 +83,8 @@ The API has various methods with the `D` suffix where `double` return-type/param
 Methods:
 
 * [PluginAddFrame](#PluginAddFrame)
+* [PluginClearAll](#PluginClearAll)
+* [PluginClearAnimationType](#PluginClearAnimationType)
 * [PluginCloseAnimation](#PluginCloseAnimation)
 * [PluginCloseAnimationName](#PluginCloseAnimationName)
 * [PluginCloseComposite](#PluginCloseComposite)
@@ -95,6 +97,9 @@ Methods:
 * [PluginGet1DColorName](#PluginGet1DColorName)
 * [PluginGet2DColorName](#PluginGet2DColorName)
 * [PluginGetAnimation](#PluginGetAnimation)
+* [PluginGetAnimationCount](#PluginGetAnimationCount)
+* [PluginGetAnimationId](#PluginGetAnimationId)
+* [PluginGetAnimationName](#PluginGetAnimationName)
 * [PluginGetCurrentFrame](#PluginGetCurrentFrame)
 * [PluginGetCurrentFrameName](#PluginGetCurrentFrameName)
 * [PluginGetDevice](#PluginGetDevice)
@@ -109,6 +114,8 @@ Methods:
 * [PluginGetMaxColumn](#PluginGetMaxColumn)
 * [PluginGetMaxLeds](#PluginGetMaxLeds)
 * [PluginGetMaxRow](#PluginGetMaxRow)
+* [PluginGetPlayingAnimationCount](#PluginGetPlayingAnimationCount)
+* [PluginGetPlayingAnimationId](#PluginGetPlayingAnimationId)
 * [PluginHasAnimationLoop](#PluginHasAnimationLoop)
 * [PluginHasAnimationLoopName](#PluginHasAnimationLoopName)
 * [PluginInit](#PluginInit)
@@ -148,6 +155,7 @@ Methods:
 * [PluginSetKeyColor](#PluginSetKeyColor)
 * [PluginSetKeyColorName](#PluginSetKeyColorName)
 * [PluginSetLogDelegate](#PluginSetLogDelegate)
+* [PluginStopAll](#PluginStopAll)
 * [PluginStopAnimation](#PluginStopAnimation)
 * [PluginStopAnimationName](#PluginStopAnimationName)
 * [PluginStopAnimationType](#PluginStopAnimationType)
@@ -166,6 +174,14 @@ Methods:
 EXPORT_API int PluginGetAnimation(const char* name);
 ```
 
+<a name="PluginGetAnimationName"></a>
+##PluginGetAnimationName##
+
+`PluginGetAnimationName` takes an `animationId` and returns the name of the animation of the `.chroma` animation file. If a name is not available then an empty string will be returned.
+
+```C++
+EXPORT_API const char* PluginGetAnimationName(int animationId);
+```
 
 <a name="PluginPlayAnimationLoop"></a>
 **PluginPlayAnimationLoop**
@@ -224,6 +240,76 @@ EXPORT_API void PluginStopAnimationName(const char* path);
 
 ```C++
 EXPORT_API void PluginStopAnimationType(int deviceType, int device);
+```
+
+
+<a name="PluginStopAll"></a>
+**PluginStopAll**
+
+`PluginStopAll` wil automatically stop all animations that are playing.
+
+```C++
+EXPORT_API void PluginStopAll();
+```
+
+
+<a name="PluginClearAnimationType"></a>
+**PluginClearAnimationType**
+
+```C++
+EXPORT_API void PluginClearAnimationType(int deviceType, int device);
+```
+
+`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
+
+
+<a name="PluginClearAll"></a>
+**PluginClearAll**
+
+`PluginClearAll` will issue a `CLEAR` effect for all devices.
+
+```C++
+EXPORT_API void PluginClearAll();
+```
+
+
+<a name="PluginGetAnimationCount"></a>
+**PluginGetAnimationCount**
+
+`PluginGetAnimationCount` will return the number of loaded animations.
+
+```C++
+EXPORT_API int PluginGetAnimationCount();
+```
+
+
+<a name="PluginGetAnimationId"></a>
+**PluginGetAnimationId**
+
+`PluginGetAnimationId` will return the `animationId` given the `index` of the loaded animation. The `index` is zero-based and less than the number returned by `PluginGetAnimationCount`. Use `PluginGetAnimationName` to get the name of the animation.
+
+```C++
+EXPORT_API int PluginGetAnimationId(int index);
+```
+
+
+<a name="PluginGetPlayingAnimationCount"></a>
+**PluginGetPlayingAnimationCount**
+
+`PluginGetPlayingAnimationCount` will return the number of playing animations.
+
+```C++
+EXPORT_API int PluginGetPlayingAnimationCount();
+```
+
+
+<a name="PluginGetPlayingAnimationId"></a>
+**PluginGetPlayingAnimationId**
+
+`PluginGetPlayingAnimationId` will return the `animationId` given the `index` of the playing animation. The `index` is zero-based and less than the number returned by `PluginGetPlayingAnimationCount`. Use `PluginGetAnimationName` to get the name of the animation.
+
+```C++
+EXPORT_API int PluginGetPlayingAnimationId(int index);
 ```
 
 
@@ -314,7 +400,7 @@ extern "C" EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 <a name="PluginInit"></a>
 **PluginInit**
 
-Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many API methods auto initialize the ChromaSDK if not already initialized. 
+Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many API methods auto initialize the ChromaSDK if not already initialized.
 
 ```C++
 EXPORT_API int PluginInit();
@@ -541,7 +627,7 @@ EXPORT_API int PluginGetDeviceName(const char* path);
 <a name="PluginGetMaxLeds"></a>
 **PluginGetMaxLeds**
 
-Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer upon success. Returns -1 upon failure. 
+Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginGetMaxLeds(int device);
@@ -751,7 +837,7 @@ EXPORT_API int PluginGetKeyColorName(const char* path, int frameId, int rzkey);
 <a name="PluginCopyKeyColor"></a>
 **PluginCopyKeyColor**
 
-Copy animation key color from the source animation to the target animation for the given frame. 
+Copy animation key color from the source animation to the target animation for the given frame.
 
 ```C++
 EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
@@ -761,7 +847,7 @@ EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId,
 <a name="PluginCopyKeyColorName"></a>
 **PluginCopyKeyColorName**
 
-Copy animation key color from the source animation to the target animation for the given frame. 
+Copy animation key color from the source animation to the target animation for the given frame.
 
 ```C++
 EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation,
@@ -772,7 +858,7 @@ EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* 
 <a name="PluginCopyNonZeroKeyColor"></a>
 **PluginCopyNonZeroKeyColor**
 
-Copy animation key color from the source animation to the target animation for the given frame where color is not zero. 
+Copy animation key color from the source animation to the target animation for the given frame where color is not zero.
 
 ```C++
 EXPORT_API void PluginCopyNonZeroKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
@@ -782,7 +868,7 @@ EXPORT_API void PluginCopyNonZeroKeyColor(int sourceAnimationId, int targetAnima
 <a name="PluginCopyNonZeroKeyColorName"></a>
 **PluginCopyNonZeroKeyColorName**
 
-Copy animation key color from the source animation to the target animation for the given frame where color is not zero. 
+Copy animation key color from the source animation to the target animation for the given frame where color is not zero.
 
 ```C++
 EXPORT_API void PluginCopyNonZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation,
@@ -793,7 +879,7 @@ EXPORT_API void PluginCopyNonZeroKeyColorName(const char* sourceAnimation, const
 <a name="PluginGet1DColorName"></a>
 **PluginGet1DColorName**
 
-Get the animation color for a frame given the `1D` `led`. The `led` should be greater than or equal to 0 and less than the `MaxLeds`. 
+Get the animation color for a frame given the `1D` `led`. The `led` should be greater than or equal to 0 and less than the `MaxLeds`.
 
 ```C++
 EXPORT_API int PluginGet1DColorName(const char* path, int frameId,
@@ -804,7 +890,7 @@ EXPORT_API int PluginGet1DColorName(const char* path, int frameId,
 <a name="PluginGet2DColorName"></a>
 **PluginGet2DColorName**
 
-Get the animation color for a frame given the `2D` `row` and `column`. The `row` should be greater than or equal to 0 and less than the `MaxRow`. The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
+Get the animation color for a frame given the `2D` `row` and `column`. The `row` should be greater than or equal to 0 and less than the `MaxRow`. The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
 
 ```C++
 EXPORT_API int PluginGet2DColorName(const char* path, int frameId,
@@ -916,7 +1002,7 @@ EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex,
 <a name="PluginGetFrame"></a>
 **PluginGetFrame**
 
-Gets the frame colors and duration (in seconds) for a `Chroma` animation. The `color` is expected to be an array of the expected dimensions for the `deviceType/device`. The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon failure. 
+Gets the frame colors and duration (in seconds) for a `Chroma` animation. The `color` is expected to be an array of the expected dimensions for the `deviceType/device`. The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length)

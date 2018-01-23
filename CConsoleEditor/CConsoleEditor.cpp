@@ -427,13 +427,15 @@ void DebugUnitTests()
 
 		Sleep(1000);
 
-		fprintf(stdout, "Playing animation.\r\n");
-		_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
+		fprintf(stdout, "Playing animations.\r\n");
+		_gMethodPlayComposite("Random", false);
 		Sleep(100);
 
 		for (int wait = 0; wait < 3; ++wait)
 		{
-			for (int i = 0; i < _gMethodGetAnimationCount(); ++i)
+			int count = _gMethodGetAnimationCount();
+			fprintf(stdout, "[%d] animation(s) are open.\r\n", count);
+			for (int i = 0; i < count; ++i)
 			{
 				animationId = _gMethodGetAnimationId(i);
 				if (animationId < 0)
@@ -448,7 +450,9 @@ void DebugUnitTests()
 
 		for (int wait = 0; wait < 10; ++wait)
 		{
-			for (int i = 0; i < _gMethodGetPlayingAnimationCount(); ++i)
+			int count = _gMethodGetPlayingAnimationCount();
+			fprintf(stdout, "[%d] animation(s) are playing.\r\n", count);
+			for (int i = 0; i < count; ++i)
 			{
 				animationId = _gMethodGetPlayingAnimationId(i);
 				if (animationId < 0)
