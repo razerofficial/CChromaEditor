@@ -15,6 +15,8 @@ namespace ChromaSDK
 		void Stop();
 		void AddAnimation(AnimationBase* animation);
 		void RemoveAnimation(AnimationBase* animation);
+		int GetAnimationCount();
+		int GetAnimationId(int index);
 	private:
 		ChromaThread();
 		void ChromaWorker();

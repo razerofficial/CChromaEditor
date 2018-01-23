@@ -74,6 +74,21 @@ extern "C"
 	EXPORT_API int PluginOpenEditorDialogAndPlay(const char* path);
 	EXPORT_API double PluginOpenEditorDialogAndPlayD(const char* path);
 
+	EXPORT_API const char* PluginGetAnimationName(int animationId);
+
+	EXPORT_API void PluginStopAnimationType(int deviceType, int device);
+	EXPORT_API double PluginStopAnimationTypeD(double deviceType, double device);
+	
+	EXPORT_API void PluginStopAll();
+
+	EXPORT_API void PluginClearAnimationType(int deviceType, int device);
+	EXPORT_API void PluginClearAll();
+
+	EXPORT_API int PluginGetAnimationCount();
+	EXPORT_API int PluginGetAnimationId(int index);
+	EXPORT_API int PluginGetPlayingAnimationCount();
+	EXPORT_API int PluginGetPlayingAnimationId(int index);
+
 	EXPORT_API int PluginOpenAnimation(const char* path);
 	EXPORT_API double PluginOpenAnimationD(const char* path);
 
@@ -136,6 +151,7 @@ extern "C"
 	EXPORT_API int PluginMirrorHorizontally(int animationId);
 	EXPORT_API int PluginMirrorVertically(int animationId);
 
+	int PluginGetAnimationIdFromInstance(ChromaSDK::AnimationBase* animation);
 	ChromaSDK::AnimationBase* GetAnimationInstance(int animationId);
 	
 	EXPORT_API int PluginGetAnimation(const char* name);
@@ -154,9 +170,6 @@ extern "C"
 
 	EXPORT_API void PluginStopAnimationName(const char* path);
 	EXPORT_API double PluginStopAnimationNameD(const char* path);
-
-	EXPORT_API void PluginStopAnimationType(int deviceType, int device);
-	EXPORT_API double PluginStopAnimationTypeD(double deviceType, double device);
 
 	EXPORT_API bool PluginIsPlayingName(const char* path);
 	EXPORT_API double PluginIsPlayingNameD(const char* path);

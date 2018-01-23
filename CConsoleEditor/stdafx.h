@@ -13,3 +13,7 @@
 
 
 // TODO: reference additional headers your program requires here
+
+//#define RUN_UNIT_TESTS true
+
+#define CHROMA_EDITOR_DLL _T("CChromaEditorLibrary.dll")

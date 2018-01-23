@@ -29,6 +29,18 @@ typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
 typedef int(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
 typedef int(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
+typedef void(*PLUGIN_STOP_ALL)();
+typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
+typedef void(*PLUGIN_CLEAR_ALL)();
+typedef int(*PLUGIN_GET_ANIMATION_COUNT)();
+typedef int(*PLUGIN_GET_ANIMATION_ID)(int index);
+typedef int(*PLUGIN_GET_PLAYING_ANIMATION_COUNT)();
+typedef int(*PLUGIN_GET_PLAYING_ANIMATION_ID)(int index);
+
+#if RUN_UNIT_TESTS
+void DebugUnitTests();
+#endif
 
 using namespace std;
 using namespace std::chrono;
@@ -54,6 +66,14 @@ PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
 PLUGIN_GET_FRAME_COUNT_NAME _gMethodGetFrameCountName = nullptr;
 PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
 PLUGIN_COPY_KEY_COLOR_NAME _gMethodCopyKeyColorName = nullptr;
+PLUGIN_GET_ANIMATION_NAME _gMethodGetAnimationName = nullptr;
+PLUGIN_STOP_ALL _gMethodStopAll = nullptr;
+PLUGIN_CLEAR_ANIMATION_TYPE _gMethodClearAnimationType = nullptr;
+PLUGIN_CLEAR_ALL _gMethodClearAll = nullptr;
+PLUGIN_GET_ANIMATION_COUNT _gMethodGetAnimationCount = nullptr;
+PLUGIN_GET_ANIMATION_ID _gMethodGetAnimationId = nullptr;
+PLUGIN_GET_PLAYING_ANIMATION_COUNT _gMethodGetPlayingAnimationCount = nullptr;
+PLUGIN_GET_PLAYING_ANIMATION_ID _gMethodGetPlayingAnimationId = nullptr;
 
 int Init()
 {
@@ -185,17 +205,17 @@ int Init()
 		return -1;
 	}
 
-	_gMethodGetFrameCountName = (PLUGIN_GET_FRAME_COUNT_NAME)GetProcAddress(library, "PluginSetKeyColorName");
+	_gMethodGetFrameCountName = (PLUGIN_GET_FRAME_COUNT_NAME)GetProcAddress(library, "PluginGetFrameCountName");
 	if (_gMethodGetFrameCountName == nullptr)
 	{
-		fprintf(stderr, "Failed to find method PluginSetKeyColorName!\r\n");
+		fprintf(stderr, "Failed to find method PluginGetFrameCountName!\r\n");
 		return -1;
 	}
 
-	_gMethodSetKeyColorName = (PLUGIN_SET_KEY_COLOR_NAME)GetProcAddress(library, "PluginCopyKeyColor");
+	_gMethodSetKeyColorName = (PLUGIN_SET_KEY_COLOR_NAME)GetProcAddress(library, "PluginSetKeyColorName");
 	if (_gMethodSetKeyColorName == nullptr)
 	{
-		fprintf(stderr, "Failed to find method PluginCopyKeyColor!\r\n");
+		fprintf(stderr, "Failed to find method PluginSetKeyColorName!\r\n");
 		return -1;
 	}
 
@@ -203,6 +223,62 @@ int Init()
 	if (_gMethodCopyKeyColorName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginCopyKeyColorName!\r\n");
+		return -1;
+	}
+
+	_gMethodGetAnimationName = (PLUGIN_GET_ANIMATION_NAME)GetProcAddress(library, "PluginGetAnimationName");
+	if (_gMethodGetAnimationName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginGetAnimationName!\r\n");
+		return -1;
+	}
+
+	_gMethodStopAll = (PLUGIN_STOP_ALL)GetProcAddress(library, "PluginStopAll");
+	if (_gMethodStopAll == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginStopAll!\r\n");
+		return -1;
+	}
+
+	_gMethodClearAnimationType = (PLUGIN_CLEAR_ANIMATION_TYPE)GetProcAddress(library, "PluginClearAnimationType");
+	if (_gMethodClearAnimationType == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginClearAnimationType!\r\n");
+		return -1;
+	}
+
+	_gMethodClearAll = (PLUGIN_CLEAR_ALL)GetProcAddress(library, "PluginClearAll");
+	if (_gMethodClearAll == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginClearAll!\r\n");
+		return -1;
+	}
+
+	_gMethodGetAnimationCount = (PLUGIN_GET_ANIMATION_COUNT)GetProcAddress(library, "PluginGetAnimationCount");
+	if (_gMethodGetAnimationCount == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginGetAnimationCount!\r\n");
+		return -1;
+	}
+
+	_gMethodGetAnimationId = (PLUGIN_GET_ANIMATION_ID)GetProcAddress(library, "PluginGetAnimationId");
+	if (_gMethodGetAnimationId == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginGetAnimationId!\r\n");
+		return -1;
+	}
+
+	_gMethodGetPlayingAnimationCount = (PLUGIN_GET_PLAYING_ANIMATION_COUNT)GetProcAddress(library, "PluginGetPlayingAnimationCount");
+	if (_gMethodGetPlayingAnimationCount == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginGetPlayingAnimationCount!\r\n");
+		return -1;
+	}
+
+	_gMethodGetPlayingAnimationId = (PLUGIN_GET_PLAYING_ANIMATION_ID)GetProcAddress(library, "PluginGetPlayingAnimationId");
+	if (_gMethodGetPlayingAnimationId == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginGetPlayingAnimationId!\r\n");
 		return -1;
 	}
 
@@ -233,8 +309,6 @@ int CloseAnimation(int animationId)
 	return result;
 }
 
-void DebugUnitTests();
-
 int main(int argc, char *argv[])
 {
 	fprintf(stderr, "App launched!\r\n");
@@ -243,9 +317,12 @@ int main(int argc, char *argv[])
 		return -1;
 	}	
 
+#if RUN_UNIT_TESTS
+	DebugUnitTests();
+#endif
+
 	if (argc <= 1)
 	{
-		//DebugUnitTests();
 		char* buffer = nullptr;
 		size_t sz = 0;
 		if (_dupenv_s(&buffer, &sz, "USERPROFILE") == 0
@@ -338,6 +415,64 @@ void DebugUnitTests()
 	else
 	{
 		const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+		int animationId = -1;
+		const char* animationName = "";
+
+		fprintf(stdout, "Playing animation.\r\n");
+		_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
+		Sleep(100);
+
+		fprintf(stdout, "Clearing animations.\r\n");
+		_gMethodClearAll();
+
+		Sleep(1000);
+
+		fprintf(stdout, "Playing animation.\r\n");
+		_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
+		Sleep(100);
+
+		for (int wait = 0; wait < 3; ++wait)
+		{
+			for (int i = 0; i < _gMethodGetAnimationCount(); ++i)
+			{
+				animationId = _gMethodGetAnimationId(i);
+				if (animationId < 0)
+				{
+					continue;
+				}
+				animationName = _gMethodGetAnimationName(animationId);
+				fprintf(stdout, "Animation is open: [%d] %s\r\n", animationId, animationName);
+			}
+			Sleep(500);
+		}
+
+		for (int wait = 0; wait < 10; ++wait)
+		{
+			for (int i = 0; i < _gMethodGetPlayingAnimationCount(); ++i)
+			{
+				animationId = _gMethodGetPlayingAnimationId(i);
+				if (animationId < 0)
+				{
+					continue;
+				}
+
+				animationName = _gMethodGetAnimationName(animationId);
+				fprintf(stdout, "Animation is playing: [%d] %s\r\n", animationId, animationName);
+			}
+			if (_gMethodGetPlayingAnimationCount() == 0)
+			{
+				fprintf(stdout, "No animations are playing.\r\n");
+			}
+			Sleep(500);
+		}
+
+		_gMethodClearAll();
+
+		Sleep(3000);
+
+		fprintf(stdout, "Playing animation.\r\n");
+		_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
+		Sleep(100);
 
 		int frameCount = _gMethodGetFrameCountName(RANDOM_KEYBOARD);
 		for (int index = 0; index < frameCount; ++index)
