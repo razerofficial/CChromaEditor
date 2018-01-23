@@ -256,11 +256,11 @@ EXPORT_API void PluginStopAll();
 <a name="PluginClearAnimationType"></a>
 **PluginClearAnimationType**
 
+`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
+
 ```C++
 EXPORT_API void PluginClearAnimationType(int deviceType, int device);
 ```
-
-`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
 
 
 <a name="PluginClearAll"></a>
