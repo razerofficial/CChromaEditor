@@ -175,7 +175,7 @@ EXPORT_API int PluginGetAnimation(const char* name);
 ```
 
 <a name="PluginGetAnimationName"></a>
-##PluginGetAnimationName##
+**PluginGetAnimationName**
 
 `PluginGetAnimationName` takes an `animationId` and returns the name of the animation of the `.chroma` animation file. If a name is not available then an empty string will be returned.
 
