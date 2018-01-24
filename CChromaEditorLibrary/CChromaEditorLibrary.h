@@ -81,6 +81,8 @@ public:
 	afx_msg void OnBnClickedButtonUnload();
 	afx_msg void OnBnClickedButtonSetKey();
 	afx_msg void OnBnClickedButtonSetLed();
+	afx_msg void OnBnClickedButtonFirst();
+	afx_msg void OnBnClickedButtonLast();
 	afx_msg void OnBnClickedButtonPrevious();
 	afx_msg void OnBnClickedButtonNext();
 	afx_msg void OnBnClickedButtonAdd();
@@ -88,6 +90,15 @@ public:
 	afx_msg void OnBnClickedButtonReset();
 	afx_msg void OnBnClickedButtonSetDeviceType();
 	afx_msg void OnBnClickedButtonSetDuration();
+	afx_msg void OnBnClickedButtonLoop();
+	afx_msg void OnTextChangeFrameIndex();
+
+	// Avoid enter closing dialog
+	virtual void OnOK();
+
+	void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+
+	void OnSliderBrushIntensity();
 
 	void OnBnClickedButtonColor(UINT nID);
 
@@ -95,6 +106,10 @@ private:
 
 	EditorAnimationBase* GetEditor();
 	AnimationBase* GetAnimation();
+
+	int GetCurrentFrame();
+	void SetCurrentFrame(unsigned int index);
+	int GetFrameCount();
 
 	std::string _mPath;
 	bool _mPlayOnOpen;
@@ -110,7 +125,9 @@ private:
 	CComboBox* GetControlSetLEDCombo();
 	CButton* GetControlSetLEDButton();
 	CStatic* GetControlFrames();
+	CEdit* GetControlFrameIndex();
 	CEdit* GetControlDuration();
+	CSliderCtrl* GetBrushSlider();
 
 	void UpdateOverrideTime(float time);
 	float GetOverrideTime();
@@ -144,6 +161,6 @@ private:
 
 	// keyboard input
 	bool _mControlModifier;
-public:
-	afx_msg void OnBnClickedButtonLoop();
+
+	float _mBrushIntensitity;
 };

@@ -322,9 +322,19 @@ CStatic* CMainViewDlg::GetControlFrames()
 	return (CStatic*)GetDlgItem(IDC_STATIC_FRAMES);
 }
 
+CEdit* CMainViewDlg::GetControlFrameIndex()
+{
+	return (CEdit*)GetDlgItem(IDC_EDIT_FRAME_INDEX);
+}
+
 CEdit* CMainViewDlg::GetControlDuration()
 {
 	return (CEdit*)GetDlgItem(IDC_EDIT_DURATION);
+}
+
+CSliderCtrl* CMainViewDlg::GetBrushSlider()
+{
+	return (CSliderCtrl*)GetDlgItem(IDC_SLIDER_BRUSH);
 }
 
 void CMainViewDlg::UpdateOverrideTime(float time)
@@ -573,16 +583,19 @@ void CMainViewDlg::RefreshFrames()
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
-		currentFrame = _mEdit1D.GetCurrentFrame() + 1;
+		currentFrame = _mEdit1D.GetCurrentFrame();
 		frameCount = _mEdit1D.GetFrames().size();
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
-		currentFrame = _mEdit2D.GetCurrentFrame() + 1;
+		currentFrame = _mEdit2D.GetCurrentFrame();
 		frameCount = _mEdit2D.GetFrames().size();
 		break;
 	}
 
-	sprintf_s(bufferFrameInfo, "%d of %d", currentFrame, frameCount);
+	sprintf_s(bufferFrameInfo, "%d", currentFrame + 1);
+	GetControlFrameIndex()->SetWindowText(CString(bufferFrameInfo));
+
+	sprintf_s(bufferFrameInfo, "%d of %d", currentFrame + 1, frameCount);
 	GetControlFrames()->SetWindowText(CString(bufferFrameInfo));
 
 	//update the frame duration
@@ -629,6 +642,9 @@ void CMainViewDlg::RefreshFrames()
 
 BOOL CMainViewDlg::OnInitDialog()
 {
+	_mBrushIntensitity = 1.0f;
+	GetBrushSlider()->SetPos(100);
+
 	// Setup default
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 
@@ -727,6 +743,31 @@ BOOL CMainViewDlg::OnInitDialog()
 	return TRUE;
 }
 
+void CMainViewDlg::OnTextChangeFrameIndex()
+{
+	//update frames label
+	char bufferFrameInfo[48] = { 0 };
+	int currentFrame = GetCurrentFrame();
+	int frameCount = GetFrameCount();
+
+	CString strIndex;
+	GetControlFrameIndex()->GetWindowText(strIndex);
+	int index;
+	int result = swscanf_s(strIndex, _T("%d"), &index);
+	if (result == 1 &&
+		index > 0 &&
+		index <= frameCount &&
+		index != (currentFrame + 1))
+	{
+		SetCurrentFrame(index - 1);
+		RefreshGrid();
+		RefreshFrames();
+
+		//show changes
+		OnBnClickedButtonPreview();
+	}
+}
+
 BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// check focus first
@@ -820,6 +861,8 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_UNLOAD, &CMainViewDlg::OnBnClickedButtonUnload)
 	ON_BN_CLICKED(IDC_BUTTON_SET_KEY, &CMainViewDlg::OnBnClickedButtonSetKey)
 	ON_BN_CLICKED(IDC_BUTTON_SET_LED, &CMainViewDlg::OnBnClickedButtonSetLed)
+	ON_BN_CLICKED(IDC_BUTTON_FIRST, &CMainViewDlg::OnBnClickedButtonFirst)
+	ON_BN_CLICKED(IDC_BUTTON_LAST, &CMainViewDlg::OnBnClickedButtonLast)
 	ON_BN_CLICKED(IDC_BUTTON_PREVIOUS, &CMainViewDlg::OnBnClickedButtonPrevious)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CMainViewDlg::OnBnClickedButtonNext)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CMainViewDlg::OnBnClickedButtonAdd)
@@ -828,6 +871,8 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_COMMAND_RANGE(ID_DYNAMIC_BUTTON_MIN, ID_DYNAMIC_BUTTON_MAX, &CMainViewDlg::OnBnClickedButtonColor)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE_TYPE, &CMainViewDlg::OnBnClickedButtonSetDeviceType)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DURATION, &CMainViewDlg::OnBnClickedButtonSetDuration)
+	ON_WM_HSCROLL()
+	ON_EN_CHANGE(IDC_EDIT_FRAME_INDEX, &CMainViewDlg::OnTextChangeFrameIndex)
 END_MESSAGE_MAP()
 
 vector<CColorButton*>& CMainViewDlg::GetGridButtons()
@@ -842,12 +887,54 @@ vector<CColorButton*>& CMainViewDlg::GetColorButtons()
 
 COLORREF CMainViewDlg::GetColor()
 {
-	return _mColor;
+	// temp copy
+	COLORREF color = _mColor;
+	int red = (color & 0xFF);
+	int green = (color & 0xFF00) >> 8;
+	int blue = (color & 0xFF0000) >> 16;
+
+	red = (int)(red * _mBrushIntensitity);
+	green = (int)(green * _mBrushIntensitity);
+	blue = (int)(blue * _mBrushIntensitity);
+
+	color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+	return color;
 }
 
 void CMainViewDlg::SetColor(COLORREF color)
 {
 	_mColor = color;
+}
+
+void CMainViewDlg::OnOK()
+{
+	// stop enter from closing the dialog
+}
+
+void CMainViewDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	OnSliderBrushIntensity();
+}
+
+void CMainViewDlg::OnSliderBrushIntensity()
+{
+	UINT nPos = GetBrushSlider()->GetPos();
+	_mBrushIntensitity = nPos / 100.0f;
+
+	// temp copy
+	COLORREF color = _mColor;
+	int red = (color & 0xFF);
+	int green = (color & 0xFF00) >> 8;
+	int blue = (color & 0xFF0000) >> 16;
+
+	red = (int)(red * _mBrushIntensitity);
+	green = (int)(green * _mBrushIntensitity);
+	blue = (int)(blue * _mBrushIntensitity);
+
+	color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+
+	GetColorButtons()[0]->SetColor(color, color);
+	GetColorButtons()[0]->Invalidate();
 }
 
 void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
@@ -1047,6 +1134,20 @@ void CMainViewDlg::OnBnClickedButtonImportOverrideTime()
 	OnBnClickedButtonPreview();
 }
 
+int CMainViewDlg::GetCurrentFrame()
+{
+	return GetEditor()->GetCurrentFrame();
+}
+
+void CMainViewDlg::SetCurrentFrame(unsigned int index)
+{
+	GetEditor()->SetCurrentFrame(index);
+}
+
+int CMainViewDlg::GetFrameCount()
+{
+	return GetEditor()->GetFrameCount();
+}
 
 void CMainViewDlg::OnBnClickedButtonSetDevice()
 {
@@ -1149,7 +1250,7 @@ void CMainViewDlg::OnBnClickedButtonFill()
 				FChromaSDKColorFrame1D& frame = frames[currentFrame];
 				for (int i = 0; i < maxLeds; ++i)
 				{
-					frame.Colors[i] = _mColor;
+					frame.Colors[i] = GetColor();
 				}
 				RefreshGrid();
 			}
@@ -1175,7 +1276,7 @@ void CMainViewDlg::OnBnClickedButtonFill()
 					FChromaSDKColors& row = frame.Colors[i];
 					for (int j = 0; j < maxColumn; ++j)
 					{
-						row.Colors[j] = _mColor;
+						row.Colors[j] = GetColor();
 					}
 				}
 				RefreshGrid();
@@ -1466,7 +1567,7 @@ void CMainViewDlg::OnBnClickedButtonSetKey()
 			EChromaSDKKeyboardKey key = (EChromaSDKKeyboardKey)id;
 			FChromaSDKColorFrame2D& frame = frames[currentFrame];
 			std::vector<FChromaSDKColors>& colors = frame.Colors;
-			ChromaSDKPlugin::GetInstance()->SetKeyboardKeyColor(key, _mColor, colors);
+			ChromaSDKPlugin::GetInstance()->SetKeyboardKeyColor(key, GetColor(), colors);
 			RefreshGrid();
 		}
 	}
@@ -1493,7 +1594,7 @@ void CMainViewDlg::OnBnClickedButtonSetLed()
 			EChromaSDKMouseLED led = (EChromaSDKMouseLED)id;
 			FChromaSDKColorFrame2D& frame = frames[currentFrame];
 			std::vector<FChromaSDKColors>& colors = frame.Colors;
-			ChromaSDKPlugin::GetInstance()->SetMouseLEDColor(led, _mColor, colors);
+			ChromaSDKPlugin::GetInstance()->SetMouseLEDColor(led, GetColor(), colors);
 			RefreshGrid();
 		}
 	}
@@ -1502,6 +1603,29 @@ void CMainViewDlg::OnBnClickedButtonSetLed()
 	OnBnClickedButtonPreview();
 }
 
+void CMainViewDlg::OnBnClickedButtonFirst()
+{
+	SetCurrentFrame(0);
+	RefreshGrid();
+	RefreshFrames();
+
+	//show changes
+	OnBnClickedButtonPreview();
+}
+
+void CMainViewDlg::OnBnClickedButtonLast()
+{
+	int frameCount = GetFrameCount();
+	if (frameCount > 0)
+	{
+		SetCurrentFrame(frameCount - 1);
+		RefreshGrid();
+		RefreshFrames();
+
+		//show changes
+		OnBnClickedButtonPreview();
+	}
+}
 
 void CMainViewDlg::OnBnClickedButtonPrevious()
 {
