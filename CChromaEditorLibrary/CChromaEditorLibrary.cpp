@@ -1081,6 +1081,8 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 
 void CMainViewDlg::OnBnClickedButtonImportImage()
 {
+	OnBnClickedButtonUnload();
+
 	EditorAnimationBase* editor = GetEditor();
 	if (editor == nullptr)
 	{
@@ -1098,6 +1100,8 @@ void CMainViewDlg::OnBnClickedButtonImportImage()
 
 void CMainViewDlg::OnBnClickedButtonImportAnimation()
 {
+	OnBnClickedButtonUnload();
+
 	EditorAnimationBase* editor = GetEditor();
 	if (editor == nullptr)
 	{

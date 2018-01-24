@@ -83,11 +83,11 @@ float EditorAnimation1D::GetDuration(unsigned int index)
 void EditorAnimation1D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
 {
 	std::vector<COLORREF>& colors = _mFrameCopy.Colors;
-	for (int i = 0; i < (int)height; i++)
+	for (int i = 0; i < (int)height && i < _mFrameCopy.Colors.size(); i++)
 	{
 		COLORREF* nextRow = pColor + width;
 		vector<int> row = vector<int>();
-		for (int j = 0; j < (int)width; j++)
+		for (int j = 0; j < (int)width && j < colors.size(); j++)
 		{
 			int red = GetBValue(*pColor);
 			int green = GetGValue(*pColor) << 8;

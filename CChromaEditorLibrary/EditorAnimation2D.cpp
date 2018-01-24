@@ -83,11 +83,11 @@ float EditorAnimation2D::GetDuration(unsigned int index)
 void EditorAnimation2D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
 {
 	std::vector<FChromaSDKColors>& colors = _mFrameCopy.Colors;
-	for (int i = 0; i < (int)height; i++)
+	for (int i = 0; i < (int)height && i < _mFrameCopy.Colors.size(); i++)
 	{
 		COLORREF* nextRow = pColor + width;
 		FChromaSDKColors& row = colors[i];
-		for (int j = 0; j < (int)width; j++)
+		for (int j = 0; j < (int)width && j < row.Colors.size(); j++)
 		{
 			int red = GetBValue(*pColor);
 			int green = GetGValue(*pColor) << 8;
