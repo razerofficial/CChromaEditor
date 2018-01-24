@@ -246,20 +246,10 @@ EXPORT_API void PluginStopAnimationType(int deviceType, int device);
 <a name="PluginStopAll"></a>
 **PluginStopAll**
 
-`PluginStopAll` wil automatically stop all animations that are playing.
+`PluginStopAll` will automatically stop all animations that are playing.
 
 ```C++
 EXPORT_API void PluginStopAll();
-```
-
-
-<a name="PluginClearAnimationType"></a>
-**PluginClearAnimationType**
-
-`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
-
-```C++
-EXPORT_API void PluginClearAnimationType(int deviceType, int device);
 ```
 
 
@@ -270,6 +260,16 @@ EXPORT_API void PluginClearAnimationType(int deviceType, int device);
 
 ```C++
 EXPORT_API void PluginClearAll();
+```
+
+
+<a name="PluginClearAnimationType"></a>
+**PluginClearAnimationType**
+
+`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
+
+```C++
+EXPORT_API void PluginClearAnimationType(int deviceType, int device);
 ```
 
 

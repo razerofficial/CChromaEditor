@@ -292,6 +292,7 @@ extern "C"
 			}
 			++i;
 		}
+		return -1;
 	}
 
 	EXPORT_API int PluginGetPlayingAnimationCount()
