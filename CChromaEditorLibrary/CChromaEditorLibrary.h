@@ -107,7 +107,7 @@ public:
 	virtual void OnCancel();
 
 	// Update preview when animation is playing
-	void OnTimer(UINT TimerVal);
+	virtual void OnTimer(UINT_PTR TimerVal);
 
 	void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 

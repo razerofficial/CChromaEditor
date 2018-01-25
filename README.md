@@ -6,6 +6,7 @@
 * [Frameworks supported](#frameworks-supported)
 * [Prerequisites](#prerequisites)
 * [Assets](#assets)
+* [Dialog](dialog)
 * [API](#api)
 * [Edit API](#edit-api)
 * [File Format](#file-format)
@@ -72,8 +73,43 @@
 
 This library supports the `Chroma` animation exports from [UE4](https://github.com/razerofficial/UE4ChromaSDK), [Unity](https://github.com/razerofficial/UnityNativeChromaSDK/), and [GameMaker](https://github.com/razerofficial/GameMakerChromaExtension).
 
+<a name="dialog"></a>
+## Dialog
+
 ![image_1](images/image_1.png)
 
+**File Menu**
+
+![image_3](images/image_3.png)
+
+**New**
+
+Start with a new animationName
+
+**Open**
+
+Open a file dialog and open a `Chroma` animation
+
+**Save**
+
+Save the open animation
+
+**Save As**
+
+Open a file dialog and save the open animation
+
+**Import Menu**
+
+![image_4](images/image_4.png)
+
+**Import Image**
+
+Import a BMP, JPG, or PNG texture into the grid layout. The images will be stretched to fit the grid.
+
+**Import Animation**
+
+Import a GIF animation into the grid layout. Multiple frames will be added if they exist in the GIF. The image will be stretched to fit the grid.
+<br/>
 
 <a name="api"></a>
 ## API

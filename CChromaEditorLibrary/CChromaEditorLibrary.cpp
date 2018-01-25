@@ -1147,7 +1147,7 @@ void CMainViewDlg::OnCancel()
 	// stop escape from closing the dialog
 }
 
-void CMainViewDlg::OnTimer(UINT TimerVal)
+void CMainViewDlg::OnTimer(UINT_PTR TimerVal)
 {
 	if (GetAnimation() == nullptr)
 	{
