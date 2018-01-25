@@ -828,6 +828,24 @@ BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 					return true;
 				}
 				break;
+			case VK_OEM_4:
+				_mBrushIntensitity -= 0.2f;
+				if (_mBrushIntensitity < 0.0f)
+				{
+					_mBrushIntensitity = 0.0f;
+				}
+				GetBrushSlider()->SetPos(_mBrushIntensitity * 100);
+				OnSliderBrushIntensity();
+				break;
+			case VK_OEM_6:
+				_mBrushIntensitity += 0.2f;
+				if (_mBrushIntensitity > 100.0f)
+				{
+					_mBrushIntensitity = 100.0f;
+				}
+				GetBrushSlider()->SetPos(_mBrushIntensitity * 100);
+				OnSliderBrushIntensity();
+				break;
 			default:
 				fprintf(stdout, "Pressed: %d\r\n", pMsg->wParam);
 				break;
