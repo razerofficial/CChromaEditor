@@ -647,6 +647,8 @@ void CMainViewDlg::RefreshFrames()
 
 BOOL CMainViewDlg::OnInitDialog()
 {
+	ModifyStyle(WS_SYSMENU, 0);
+
 	_mBrushIntensitity = 1.0f;
 	GetBrushSlider()->SetPos(100);
 	GetControlEditBrush()->SetWindowText(_T("100"));
@@ -864,7 +866,7 @@ BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 				{
 					_mBrushIntensitity = 0.0f;
 				}
-				GetBrushSlider()->SetPos(_mBrushIntensitity * 100);
+				GetBrushSlider()->SetPos((int)(_mBrushIntensitity * 100));
 				OnSliderBrushIntensity();
 				break;
 			case VK_OEM_6:
@@ -873,7 +875,7 @@ BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 				{
 					_mBrushIntensitity = 100.0f;
 				}
-				GetBrushSlider()->SetPos(_mBrushIntensitity * 100);
+				GetBrushSlider()->SetPos((int)(_mBrushIntensitity * 100));
 				OnSliderBrushIntensity();
 				break;
 			default:
@@ -892,8 +894,8 @@ void CMainViewDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 
-	ON_BN_CLICKED(IDC_BUTTON_IMPORT_IMAGE, &CMainViewDlg::OnBnClickedButtonImportImage)
-	ON_BN_CLICKED(IDC_BUTTON_IMPORT_ANIMATION, &CMainViewDlg::OnBnClickedButtonImportAnimation)
+	ON_BN_CLICKED(IDC_BUTTON_SAVE, &CMainViewDlg::OnBnClickedMenuSave)
+	ON_BN_CLICKED(IDC_BUTTON_EXIT, &CMainViewDlg::OnBnClickedMenuExit)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_OVERRIDE_TIME, &CMainViewDlg::OnBnClickedButtonImportOverrideTime)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE, &CMainViewDlg::OnBnClickedButtonSetDevice)
 	ON_BN_CLICKED(IDC_BUTTON_CLEAR, &CMainViewDlg::OnBnClickedButtonClear)
@@ -922,7 +924,183 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_WM_HSCROLL()
 	ON_EN_CHANGE(IDC_EDIT_FRAME_INDEX, &CMainViewDlg::OnTextChangeFrameIndex)
 	ON_EN_CHANGE(IDC_EDIT_BRUSH, &CMainViewDlg::OnTextChangeBrush)
+	ON_BN_CLICKED(ID_MENU_NEW, &CMainViewDlg::OnBnClickedMenuNew)
+	ON_BN_CLICKED(ID_MENU_OPEN, &CMainViewDlg::OnBnClickedMenuOpen)
+	ON_BN_CLICKED(ID_MENU_SAVE, &CMainViewDlg::OnBnClickedMenuSave)
+	ON_BN_CLICKED(ID_MENU_SAVE_AS, &CMainViewDlg::OnBnClickedMenuSaveAs)
+	ON_BN_CLICKED(ID_MENU_EXIT, &CMainViewDlg::OnBnClickedMenuExit)
+	ON_BN_CLICKED(ID_MENU_IMPORT_IMAGE, &CMainViewDlg::OnBnClickedMenuImportImage)
+	ON_BN_CLICKED(ID_MENU_IMPORT_ANIMATION, &CMainViewDlg::OnBnClickedMenuImportAnimation)
 END_MESSAGE_MAP()
+
+void CMainViewDlg::OnBnClickedMenuNew()
+{
+	OnBnClickedButtonStop();
+	OnBnClickedButtonUnload();
+
+	_mPath = "";
+	OnBnClickedButtonReset();
+
+	// Create the grid buttons
+	RecreateGrid();
+
+	// Display enums
+	RefreshDevice();
+
+	// Display grid
+	RefreshGrid();
+
+	// DIsplay frames
+	RefreshFrames();
+
+	//show changes
+	OnBnClickedButtonPreview();
+}
+
+void CMainViewDlg::OnBnClickedMenuOpen()
+{
+	// stop animation
+	OnBnClickedButtonStop();
+
+	// get path from loaded filename
+	CString szDir;
+	size_t lastSlash = _mPath.find_last_of("/\\");
+	if (lastSlash < 0)
+	{
+		return;
+	}
+	string path = _mPath.substr(0, lastSlash);
+	//LogDebug("ImportTextureAnimation path=%s", path.c_str());
+	szDir += path.c_str();
+
+	const int MAX_CFileDialog_FILE_COUNT = 99;
+	const int FILE_LIST_BUFFER_SIZE = ((MAX_CFileDialog_FILE_COUNT * (MAX_PATH + 1)) + 1);
+
+	CString fileName;
+	wchar_t* p = fileName.GetBuffer(FILE_LIST_BUFFER_SIZE);
+	CFileDialog dlgFile(TRUE);
+	OPENFILENAME& ofn = dlgFile.GetOFN();
+	ofn.lpstrFilter = _TEXT("Animation\0*.chroma\0");
+	ofn.lpstrInitialDir = szDir;
+	ofn.lpstrFile = p;
+	ofn.nMaxFile = FILE_LIST_BUFFER_SIZE;
+
+	if (dlgFile.DoModal() == IDOK)
+	{
+		_mPath = string(CT2CA(fileName));
+		if (_mPath.size() <= 2 ||
+			_mPath.substr(_mPath.find_last_of(".") + 1) != "chroma")
+		{
+			_mPath += ".chroma";
+		}
+		LoadFile();
+
+		// Create the grid buttons
+		RecreateGrid();
+
+		// Display enums
+		RefreshDevice();
+
+		// Display grid
+		RefreshGrid();
+
+		//show changes
+		OnBnClickedButtonPreview();
+	}
+	fileName.ReleaseBuffer();
+}
+
+void CMainViewDlg::OnBnClickedMenuSave()
+{
+	// stop animation
+	OnBnClickedButtonStop();
+
+	SaveFile();
+}
+
+void CMainViewDlg::OnBnClickedMenuSaveAs()
+{
+	// stop animation
+	OnBnClickedButtonStop();
+
+	// get path from loaded filename
+	CString szDir;
+	size_t lastSlash = _mPath.find_last_of("/\\");
+	if (lastSlash < 0)
+	{
+		return;
+	}
+	string path = _mPath.substr(0, lastSlash);
+	//LogDebug("ImportTextureAnimation path=%s", path.c_str());
+	szDir += path.c_str();
+
+	const int MAX_CFileDialog_FILE_COUNT = 99;
+	const int FILE_LIST_BUFFER_SIZE = ((MAX_CFileDialog_FILE_COUNT * (MAX_PATH + 1)) + 1);
+
+	CString fileName;
+	wchar_t* p = fileName.GetBuffer(FILE_LIST_BUFFER_SIZE);
+	CFileDialog dlgFile(TRUE);
+	OPENFILENAME& ofn = dlgFile.GetOFN();
+	ofn.lpstrFilter = _TEXT("Animation\0*.chroma\0");
+	ofn.lpstrInitialDir = szDir;
+	ofn.lpstrFile = p;
+	ofn.nMaxFile = FILE_LIST_BUFFER_SIZE;
+
+	if (dlgFile.DoModal() == IDOK)
+	{
+		_mPath = string(CT2CA(fileName));
+		if (_mPath.size() <= 2 ||
+			_mPath.substr(_mPath.find_last_of(".") + 1) != "chroma")
+		{
+			_mPath += ".chroma";
+		}
+		SaveFile();
+	}
+	fileName.ReleaseBuffer();
+}
+
+void CMainViewDlg::OnBnClickedMenuExit()
+{
+	// stop animation
+	OnBnClickedButtonStop();
+
+	PostQuitMessage(0);
+}
+
+void CMainViewDlg::OnBnClickedMenuImportImage()
+{
+	OnBnClickedButtonUnload();
+
+	EditorAnimationBase* editor = GetEditor();
+	if (editor == nullptr)
+	{
+		return;
+	}
+	editor->ImportTextureImage();
+	RefreshGrid();
+	RefreshFrames();
+
+	//show changes
+	OnBnClickedButtonPreview();
+}
+
+
+void CMainViewDlg::OnBnClickedMenuImportAnimation()
+{
+	OnBnClickedButtonUnload();
+
+	EditorAnimationBase* editor = GetEditor();
+	if (editor == nullptr)
+	{
+		return;
+	}
+	editor->ImportTextureAnimation();
+	RefreshGrid();
+	RefreshFrames();
+
+	//show changes
+	OnBnClickedButtonPreview();
+}
 
 vector<CColorButton*>& CMainViewDlg::GetGridButtons()
 {
@@ -958,6 +1136,11 @@ void CMainViewDlg::SetColor(COLORREF color)
 void CMainViewDlg::OnOK()
 {
 	// stop enter from closing the dialog
+}
+
+void CMainViewDlg::OnCancel()
+{
+	// stop escape from closing the dialog
 }
 
 void CMainViewDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
@@ -1078,7 +1261,6 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 			}
 		}
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1113,9 +1295,6 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 
 	if (changed)
 	{
-		// Save the file
-		SaveFile();
-
 		// Create the grid buttons
 		RecreateGrid();
 
@@ -1129,45 +1308,6 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 	//show changes
 	OnBnClickedButtonPreview();
 }
-
-
-void CMainViewDlg::OnBnClickedButtonImportImage()
-{
-	OnBnClickedButtonUnload();
-
-	EditorAnimationBase* editor = GetEditor();
-	if (editor == nullptr)
-	{
-		return;
-	}
-	editor->ImportTextureImage();
-	RefreshGrid();
-	RefreshFrames();
-	SaveFile();
-
-	//show changes
-	OnBnClickedButtonPreview();
-}
-
-
-void CMainViewDlg::OnBnClickedButtonImportAnimation()
-{
-	OnBnClickedButtonUnload();
-
-	EditorAnimationBase* editor = GetEditor();
-	if (editor == nullptr)
-	{
-		return;
-	}
-	editor->ImportTextureAnimation();
-	RefreshGrid();
-	RefreshFrames();
-	SaveFile();
-
-	//show changes
-	OnBnClickedButtonPreview();
-}
-
 
 void CMainViewDlg::OnBnClickedButtonImportOverrideTime()
 {
@@ -1184,7 +1324,6 @@ void CMainViewDlg::OnBnClickedButtonImportOverrideTime()
 		RefreshFrames();
 		break;
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1220,9 +1359,6 @@ void CMainViewDlg::OnBnClickedButtonSetDevice()
 
 	if (changed)
 	{
-		// Save the file
-		SaveFile();
-
 		// Create the grid buttons
 		RecreateGrid();
 
@@ -1279,7 +1415,6 @@ void CMainViewDlg::OnBnClickedButtonClear()
 		}
 		break;
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1340,7 +1475,6 @@ void CMainViewDlg::OnBnClickedButtonFill()
 		}
 		break;
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1388,7 +1522,6 @@ void CMainViewDlg::OnBnClickedButtonRandom()
 		}
 		break;
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1478,7 +1611,6 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 		}
 		break;
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1788,7 +1920,6 @@ void CMainViewDlg::OnBnClickedButtonAdd()
 		RefreshFrames();
 		break;
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1858,7 +1989,6 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 		}
 		break;
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1874,7 +2004,6 @@ void CMainViewDlg::OnBnClickedButtonReset()
 		RefreshGrid();
 		RefreshFrames();
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1920,7 +2049,6 @@ void CMainViewDlg::OnBnClickedButtonSetDuration()
 		}
 		break;
 	}
-	SaveFile();
 
 	//show changes
 	OnBnClickedButtonPreview();

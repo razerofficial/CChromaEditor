@@ -65,8 +65,6 @@ protected:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedButtonImportImage();
-	afx_msg void OnBnClickedButtonImportAnimation();
 	afx_msg void OnBnClickedButtonImportOverrideTime();
 	afx_msg void OnBnClickedButtonSetDevice();
 	afx_msg void OnBnClickedButtonClear();
@@ -94,8 +92,19 @@ public:
 	afx_msg void OnTextChangeFrameIndex();
 	afx_msg void OnTextChangeBrush();
 
+	afx_msg void OnBnClickedMenuNew();
+	afx_msg void OnBnClickedMenuOpen();
+	afx_msg void OnBnClickedMenuSave();
+	afx_msg void OnBnClickedMenuSaveAs();
+	afx_msg void OnBnClickedMenuExit();
+	afx_msg void OnBnClickedMenuImportImage();
+	afx_msg void OnBnClickedMenuImportAnimation();
+
 	// Avoid enter closing dialog
 	virtual void OnOK();
+
+	// Avoid esc closing dialog
+	void OnCancel();
 
 	void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 
