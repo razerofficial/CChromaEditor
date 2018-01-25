@@ -104,7 +104,10 @@ public:
 	virtual void OnOK();
 
 	// Avoid esc closing dialog
-	void OnCancel();
+	virtual void OnCancel();
+
+	// Update preview when animation is playing
+	void OnTimer(UINT TimerVal);
 
 	void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 
@@ -174,4 +177,6 @@ private:
 	bool _mControlModifier;
 
 	float _mBrushIntensitity;
+
+	UINT _mTimer;
 };

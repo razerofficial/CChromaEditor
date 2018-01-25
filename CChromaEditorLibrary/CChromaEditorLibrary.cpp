@@ -11,9 +11,10 @@
 
 #define TEMP_FILE "temp.chroma"
 #define ANIMATION_VERSION 1
-#define ID_DYNAMIC_BUTTON_MIN 2000
-#define ID_DYNAMIC_COLOR_MIN 2200
-#define ID_DYNAMIC_BUTTON_MAX 2256
+#define ID_DYNAMIC_BUTTON_MIN	2000
+#define ID_DYNAMIC_COLOR_MIN	2200
+#define ID_DYNAMIC_BUTTON_MAX	2256
+#define	IDT_TIMER_0				2257
 
 #define DEFAULT_OVERRIDE_TIME 0.1f
 #define DEFAULT_DURATION 1.0f
@@ -748,6 +749,8 @@ BOOL CMainViewDlg::OnInitDialog()
 		OnBnClickedButtonPlay();
 	}
 
+	_mTimer = SetTimer(IDT_TIMER_0, 100, NULL);
+
 	return TRUE;
 }
 
@@ -931,6 +934,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(ID_MENU_EXIT, &CMainViewDlg::OnBnClickedMenuExit)
 	ON_BN_CLICKED(ID_MENU_IMPORT_IMAGE, &CMainViewDlg::OnBnClickedMenuImportImage)
 	ON_BN_CLICKED(ID_MENU_IMPORT_ANIMATION, &CMainViewDlg::OnBnClickedMenuImportAnimation)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 void CMainViewDlg::OnBnClickedMenuNew()
@@ -1141,6 +1145,22 @@ void CMainViewDlg::OnOK()
 void CMainViewDlg::OnCancel()
 {
 	// stop escape from closing the dialog
+}
+
+void CMainViewDlg::OnTimer(UINT TimerVal)
+{
+	if (GetAnimation() == nullptr)
+	{
+		return;
+	}
+	if (GetAnimation()->IsPlaying())
+	{
+		// Display grid
+		RefreshGrid();
+
+		// DIsplay frames
+		RefreshFrames();
+	}
 }
 
 void CMainViewDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
