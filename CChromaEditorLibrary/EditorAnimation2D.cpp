@@ -80,24 +80,36 @@ float EditorAnimation2D::GetDuration(unsigned int index)
 	return 0.0f;
 }
 
-void EditorAnimation2D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
+void EditorAnimation2D::CopyPixels(COLORREF* pColor, const UINT width, const UINT height)
 {
-	std::vector<FChromaSDKColors>& colors = _mFrameCopy.Colors;
-	for (int i = 0; i < (int)height && i < _mFrameCopy.Colors.size(); i++)
+	//copy pixels into an array
+	vector<vector<int>> rows = vector<vector<int>>();
+	for (UINT i = 0; i < height; ++i)
 	{
-		COLORREF* nextRow = pColor + width;
-		FChromaSDKColors& row = colors[i];
-		for (int j = 0; j < (int)width && j < row.Colors.size(); j++)
+		vector<int> row = vector<int>();
+		for (UINT j = 0; j < width; ++j)
 		{
 			int red = GetBValue(*pColor);
 			int green = GetGValue(*pColor) << 8;
 			int blue = GetRValue(*pColor) << 16;
-
 			int color = red | green | blue;
-			row.Colors[j] = color;
-			pColor++;
+			row.push_back(color);
+			++pColor;
 		}
-		pColor = nextRow;
+		rows.push_back(row);
+	}
+
+	//scale pixels
+	std::vector<FChromaSDKColors>& colors = _mFrameCopy.Colors;
+	for (int i = 0; i < _mFrameCopy.Colors.size(); ++i)
+	{
+		int a = (i / (float)_mFrameCopy.Colors.size()) * height;
+		FChromaSDKColors& row = _mFrameCopy.Colors[i];
+		for (int j = 0; j < row.Colors.size(); ++j)
+		{
+			int b = (j / (float)row.Colors.size()) * width;
+			row.Colors[j] = rows[a][b];
+		}
 	}
 
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();

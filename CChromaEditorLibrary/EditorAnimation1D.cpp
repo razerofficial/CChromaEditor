@@ -82,22 +82,29 @@ float EditorAnimation1D::GetDuration(unsigned int index)
 
 void EditorAnimation1D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
 {
-	std::vector<COLORREF>& colors = _mFrameCopy.Colors;
-	for (int i = 0; i < (int)height && i < _mFrameCopy.Colors.size(); i++)
+	//copy pixels into an array
+	vector<vector<int>> rows = vector<vector<int>>();
+	for (UINT i = 0; i < height; ++i)
 	{
-		COLORREF* nextRow = pColor + width;
 		vector<int> row = vector<int>();
-		for (int j = 0; j < (int)width && j < colors.size(); j++)
+		for (UINT j = 0; j < width; ++j)
 		{
 			int red = GetBValue(*pColor);
 			int green = GetGValue(*pColor) << 8;
 			int blue = GetRValue(*pColor) << 16;
-
 			int color = red | green | blue;
-			colors[j] = color;
-			pColor++;
+			row.push_back(color);
+			++pColor;
 		}
-		pColor = nextRow;
+		rows.push_back(row);
+	}
+
+	//scale pixels
+	std::vector<COLORREF>& colors = _mFrameCopy.Colors;
+	for (int i = 0; i < _mFrameCopy.Colors.size(); ++i)
+	{
+		int b = (i / (float)_mFrameCopy.Colors.size()) * width;
+		colors[i] = rows[height/2][b];
 	}
 
 	vector<FChromaSDKColorFrame1D>& frames = GetFrames();
