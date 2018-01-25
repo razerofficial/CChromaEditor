@@ -337,6 +337,11 @@ CSliderCtrl* CMainViewDlg::GetBrushSlider()
 	return (CSliderCtrl*)GetDlgItem(IDC_SLIDER_BRUSH);
 }
 
+CEdit* CMainViewDlg::GetControlEditBrush()
+{
+	return (CEdit*)GetDlgItem(IDC_EDIT_BRUSH);
+}
+
 void CMainViewDlg::UpdateOverrideTime(float time)
 {
 	char buffer[10] = { 0 };
@@ -644,6 +649,7 @@ BOOL CMainViewDlg::OnInitDialog()
 {
 	_mBrushIntensitity = 1.0f;
 	GetBrushSlider()->SetPos(100);
+	GetControlEditBrush()->SetWindowText(_T("100"));
 
 	// Setup default
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
@@ -765,6 +771,30 @@ void CMainViewDlg::OnTextChangeFrameIndex()
 
 		//show changes
 		OnBnClickedButtonPreview();
+	}
+}
+
+void CMainViewDlg::OnTextChangeBrush()
+{
+	CString strIntensity;
+	GetControlEditBrush()->GetWindowText(strIntensity);
+	int intensity;
+	int result = swscanf_s(strIntensity, _T("%d"), &intensity);
+	if (result == 1)
+	{
+		if (intensity < 0)
+		{
+			intensity = 0;
+		}
+		else if (intensity > 100)
+		{
+			intensity = 100;
+		}
+		if (GetBrushSlider()->GetPos() != intensity)
+		{
+			GetBrushSlider()->SetPos(intensity);
+			OnSliderBrushIntensity();
+		}
 	}
 }
 
@@ -891,6 +921,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DURATION, &CMainViewDlg::OnBnClickedButtonSetDuration)
 	ON_WM_HSCROLL()
 	ON_EN_CHANGE(IDC_EDIT_FRAME_INDEX, &CMainViewDlg::OnTextChangeFrameIndex)
+	ON_EN_CHANGE(IDC_EDIT_BRUSH, &CMainViewDlg::OnTextChangeBrush)
 END_MESSAGE_MAP()
 
 vector<CColorButton*>& CMainViewDlg::GetGridButtons()
@@ -937,6 +968,9 @@ void CMainViewDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 void CMainViewDlg::OnSliderBrushIntensity()
 {
 	UINT nPos = GetBrushSlider()->GetPos();
+	char buffer[10] = { 0 };
+	sprintf_s(buffer, "%d", nPos);
+	GetControlEditBrush()->SetWindowText(CString(buffer));
 	_mBrushIntensitity = nPos / 100.0f;
 
 	// temp copy

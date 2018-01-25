@@ -92,6 +92,7 @@ public:
 	afx_msg void OnBnClickedButtonSetDuration();
 	afx_msg void OnBnClickedButtonLoop();
 	afx_msg void OnTextChangeFrameIndex();
+	afx_msg void OnTextChangeBrush();
 
 	// Avoid enter closing dialog
 	virtual void OnOK();
@@ -128,6 +129,7 @@ private:
 	CEdit* GetControlFrameIndex();
 	CEdit* GetControlDuration();
 	CSliderCtrl* GetBrushSlider();
+	CEdit* GetControlEditBrush();
 
 	void UpdateOverrideTime(float time);
 	float GetOverrideTime();
