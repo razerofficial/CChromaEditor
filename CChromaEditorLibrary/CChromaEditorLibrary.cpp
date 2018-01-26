@@ -2058,6 +2058,10 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 
 void CMainViewDlg::OnBnClickedButtonReset()
 {
+	OnBnClickedButtonStop();
+
+	OnBnClickedButtonUnload();
+
 	AnimationBase* animation = GetAnimation();
 	if (animation != nullptr)
 	{
