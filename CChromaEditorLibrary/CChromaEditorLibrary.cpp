@@ -343,6 +343,11 @@ CEdit* CMainViewDlg::GetControlEditBrush()
 	return (CEdit*)GetDlgItem(IDC_EDIT_BRUSH);
 }
 
+CEdit* CMainViewDlg::GetControlEditDelete()
+{
+	return (CEdit*)GetDlgItem(IDC_EDIT_DELETE);
+}
+
 void CMainViewDlg::UpdateOverrideTime(float time)
 {
 	char buffer[10] = { 0 };
@@ -654,6 +659,8 @@ BOOL CMainViewDlg::OnInitDialog()
 	GetBrushSlider()->SetPos(100);
 	GetControlEditBrush()->SetWindowText(_T("100"));
 
+	GetControlEditDelete()->SetWindowText(_T("2"));
+
 	// Setup default
 	_mDeviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 
@@ -803,6 +810,39 @@ void CMainViewDlg::OnTextChangeBrush()
 	}
 }
 
+void CMainViewDlg::OnBnClickedButtonNthDelete()
+{
+	OnBnClickedButtonStop();
+	OnBnClickedButtonUnload();
+	OnBnClickedButtonFirst();
+
+	CString strNth;
+	GetControlEditDelete()->GetWindowText(strNth);
+
+	int nth;
+	int result = swscanf_s(strNth, _T("%d"), &nth);
+	if (result == 1 &&
+		nth > 1)
+	{
+		int index = 0;
+		int currentFrame;
+		do
+		{
+			currentFrame = GetCurrentFrame();
+			++index;
+			if (index == nth)
+			{
+				index = 0;
+				OnBnClickedButtonDelete();
+			}
+			else
+			{
+				OnBnClickedButtonNext();
+			}
+		} while ((currentFrame + 1) < GetFrameCount());
+	}
+}
+
 BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// check focus first
@@ -927,6 +967,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_WM_HSCROLL()
 	ON_EN_CHANGE(IDC_EDIT_FRAME_INDEX, &CMainViewDlg::OnTextChangeFrameIndex)
 	ON_EN_CHANGE(IDC_EDIT_BRUSH, &CMainViewDlg::OnTextChangeBrush)
+	ON_BN_CLICKED(IDC_BUTTON_NTH_DELETE, &CMainViewDlg::OnBnClickedButtonNthDelete)
 	ON_BN_CLICKED(ID_MENU_NEW, &CMainViewDlg::OnBnClickedMenuNew)
 	ON_BN_CLICKED(ID_MENU_OPEN, &CMainViewDlg::OnBnClickedMenuOpen)
 	ON_BN_CLICKED(ID_MENU_SAVE, &CMainViewDlg::OnBnClickedMenuSave)

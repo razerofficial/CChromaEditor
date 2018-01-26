@@ -91,7 +91,7 @@ public:
 	afx_msg void OnBnClickedButtonLoop();
 	afx_msg void OnTextChangeFrameIndex();
 	afx_msg void OnTextChangeBrush();
-
+	afx_msg void OnBnClickedButtonNthDelete();
 	afx_msg void OnBnClickedMenuNew();
 	afx_msg void OnBnClickedMenuOpen();
 	afx_msg void OnBnClickedMenuSave();
@@ -142,6 +142,7 @@ private:
 	CEdit* GetControlDuration();
 	CSliderCtrl* GetBrushSlider();
 	CEdit* GetControlEditBrush();
+	CEdit* GetControlEditDelete();
 
 	void UpdateOverrideTime(float time);
 	float GetOverrideTime();
