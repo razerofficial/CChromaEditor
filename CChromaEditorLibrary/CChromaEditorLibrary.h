@@ -65,8 +65,8 @@ protected:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
+	afx_msg void OnSelChangeListTypes();
 	afx_msg void OnBnClickedButtonImportOverrideTime();
-	afx_msg void OnBnClickedButtonSetDevice();
 	afx_msg void OnBnClickedButtonClear();
 	afx_msg void OnBnClickedButtonFill();
 	afx_msg void OnBnClickedButtonRandom();
@@ -86,7 +86,6 @@ public:
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonDelete();
 	afx_msg void OnBnClickedButtonReset();
-	afx_msg void OnBnClickedButtonSetDeviceType();
 	afx_msg void OnBnClickedButtonSetDuration();
 	afx_msg void OnBnClickedButtonLoop();
 	afx_msg void OnTextChangeFrameIndex();
@@ -127,9 +126,8 @@ private:
 	std::string _mPath;
 	bool _mPlayOnOpen;
 
+	CListBox* GetControlListTypes();
 	CEdit* GetControlOverrideTime();
-	CComboBox* GetControlDeviceType();
-	CComboBox* GetControlDevice();
 	CStatic* GetControlGridSize();
 	CStatic* GetControlSetKeyLabel();
 	CComboBox* GetControlSetKeyCombo();

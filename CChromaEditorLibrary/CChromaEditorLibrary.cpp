@@ -273,16 +273,6 @@ CEdit* CMainViewDlg::GetControlOverrideTime()
 	return (CEdit*)GetDlgItem(IDC_TEXT_OVERRIDE_TIME);
 }
 
-CComboBox* CMainViewDlg::GetControlDeviceType()
-{
-	return (CComboBox*)GetDlgItem(IDC_COMBO_TYPE);
-}
-
-CComboBox* CMainViewDlg::GetControlDevice()
-{
-	return (CComboBox*)GetDlgItem(IDC_COMBO_DEVICE);
-}
-
 CStatic* CMainViewDlg::GetControlGridSize()
 {
 	return (CStatic*)GetDlgItem(IDC_STATIC_GRID_SIZE);
@@ -392,26 +382,6 @@ float CMainViewDlg::GetDuration()
 
 void CMainViewDlg::RefreshDevice()
 {
-	GetControlDeviceType()->SetCurSel(_mDeviceType);
-
-	switch (_mDeviceType)
-	{
-	case EChromaSDKDeviceTypeEnum::DE_1D:
-		GetControlDevice()->ResetContent();
-		GetControlDevice()->AddString(_T(DEVICE_CHROMA_LINK));
-		GetControlDevice()->AddString(_T(DEVICE_HEADSET));
-		GetControlDevice()->AddString(_T(DEVICE_MOUSEPAD));
-		GetControlDevice()->SetCurSel(_mEdit1D.GetDevice());
-		break;
-	case EChromaSDKDeviceTypeEnum::DE_2D:
-		GetControlDevice()->ResetContent();
-		GetControlDevice()->AddString(_T(DEVICE_KEYBOARD));
-		GetControlDevice()->AddString(_T(DEVICE_KEYPAD));
-		GetControlDevice()->AddString(_T(DEVICE_MOUSE));
-		GetControlDevice()->SetCurSel(_mEdit2D.GetDevice());
-		break;
-	}
-
 	int show = _mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D && _mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Keyboard;
 	GetControlSetKeyLabel()->ShowWindow(show);
 	GetControlSetKeyCombo()->ShowWindow(show);
@@ -421,6 +391,48 @@ void CMainViewDlg::RefreshDevice()
 	GetControlSetLEDLabel()->ShowWindow(show);
 	GetControlSetLEDCombo()->ShowWindow(show);
 	GetControlSetLEDButton()->ShowWindow(show);
+
+	GetControlListTypes()->ResetContent();
+	GetControlListTypes()->AddString(_T("ChromaLink"));
+	GetControlListTypes()->AddString(_T("Headset"));
+	GetControlListTypes()->AddString(_T("Keyboard"));
+	GetControlListTypes()->AddString(_T("Keypad"));
+	GetControlListTypes()->AddString(_T("Mouse"));
+	GetControlListTypes()->AddString(_T("Mousepad"));
+
+	int index = 0;
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		switch (_mEdit1D.GetDevice())
+		{
+		case EChromaSDKDevice1DEnum::DE_ChromaLink:
+			index = 0;
+			break;
+		case EChromaSDKDevice1DEnum::DE_Headset:
+			index = 1;
+			break;
+		case EChromaSDKDevice1DEnum::DE_Mousepad:
+			index = 5;
+			break;
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		switch (_mEdit2D.GetDevice())
+		{
+		case EChromaSDKDevice2DEnum::DE_Keyboard:
+			index = 2;
+			break;
+		case EChromaSDKDevice2DEnum::DE_Keypad:
+			index = 3;
+			break;
+		case EChromaSDKDevice2DEnum::DE_Mouse:
+			index = 4;
+			break;
+		}
+		break;
+	}
+	GetControlListTypes()->SetCurSel(index);
 }
 
 void CMainViewDlg::RecreateGrid()
@@ -651,6 +663,11 @@ void CMainViewDlg::RefreshFrames()
 	GetControlDuration()->SetWindowText(CString(bufferDuration));
 }
 
+CListBox* CMainViewDlg::GetControlListTypes()
+{
+	return (CListBox*)GetDlgItem(IDC_LIST_TYPES);
+}
+
 BOOL CMainViewDlg::OnInitDialog()
 {
 	ModifyStyle(WS_SYSMENU, 0);
@@ -668,8 +685,6 @@ BOOL CMainViewDlg::OnInitDialog()
 
 	// setup dialog
 	UpdateOverrideTime(DEFAULT_OVERRIDE_TIME);
-	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_1D));
-	GetControlDeviceType()->AddString(_T(DEVICE_TYPE_2D));
 
 	// setup keyboard chars
 	for (int key = EChromaSDKKeyboardKey::KK_ESC; key < EChromaSDKKeyboardKey::KK_INVALID; ++key)
@@ -686,9 +701,6 @@ BOOL CMainViewDlg::OnInitDialog()
 		GetControlSetLEDCombo()->AddString(CString(strLed));
 	}
 	GetControlSetLEDCombo()->SetCurSel(0);
-
-	// Set default type
-	GetControlDeviceType()->SetCurSel(_mDeviceType);
 
 	// Create the grid buttons
 	RecreateGrid();
@@ -939,8 +951,8 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 
 	ON_BN_CLICKED(IDC_BUTTON_SAVE, &CMainViewDlg::OnBnClickedMenuSave)
 	ON_BN_CLICKED(IDC_BUTTON_EXIT, &CMainViewDlg::OnBnClickedMenuExit)
+	ON_LBN_SELCHANGE(IDC_LIST_TYPES, &CMainViewDlg::OnSelChangeListTypes)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT_OVERRIDE_TIME, &CMainViewDlg::OnBnClickedButtonImportOverrideTime)
-	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE, &CMainViewDlg::OnBnClickedButtonSetDevice)
 	ON_BN_CLICKED(IDC_BUTTON_CLEAR, &CMainViewDlg::OnBnClickedButtonClear)
 	ON_BN_CLICKED(IDC_BUTTON_FILL, &CMainViewDlg::OnBnClickedButtonFill)
 	ON_BN_CLICKED(IDC_BUTTON_RANDOM, &CMainViewDlg::OnBnClickedButtonRandom)
@@ -962,7 +974,6 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMainViewDlg::OnBnClickedButtonDelete)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &CMainViewDlg::OnBnClickedButtonReset)
 	ON_COMMAND_RANGE(ID_DYNAMIC_BUTTON_MIN, ID_DYNAMIC_BUTTON_MAX, &CMainViewDlg::OnBnClickedButtonColor)
-	ON_BN_CLICKED(IDC_BUTTON_SET_DEVICE_TYPE, &CMainViewDlg::OnBnClickedButtonSetDeviceType)
 	ON_BN_CLICKED(IDC_BUTTON_SET_DURATION, &CMainViewDlg::OnBnClickedButtonSetDuration)
 	ON_WM_HSCROLL()
 	ON_EN_CHANGE(IDC_EDIT_FRAME_INDEX, &CMainViewDlg::OnTextChangeFrameIndex)
@@ -1327,12 +1338,39 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 	OnBnClickedButtonPreview();
 }
 
-void CMainViewDlg::OnBnClickedButtonSetDeviceType()
+void CMainViewDlg::OnSelChangeListTypes()
 {
+	// stop animation
+	OnBnClickedButtonStop();
+
 	bool changed = false;
-	if (_mDeviceType != (EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel())
+
+	EChromaSDKDeviceTypeEnum deviceType = EChromaSDKDeviceTypeEnum::DE_1D;
+	int index = GetControlListTypes()->GetCurSel();
+	switch (index)
 	{
-		_mDeviceType = (EChromaSDKDeviceTypeEnum)GetControlDeviceType()->GetCurSel();
+	case 0: //chromalink
+		deviceType = EChromaSDKDeviceTypeEnum::DE_1D;
+		break;
+	case 1: //headset
+		deviceType = EChromaSDKDeviceTypeEnum::DE_1D;
+		break;
+	case 2: //keyboard
+		deviceType = EChromaSDKDeviceTypeEnum::DE_2D;
+		break;
+	case 3: //keypad
+		deviceType = EChromaSDKDeviceTypeEnum::DE_2D;
+		break;
+	case 4://mouse
+		deviceType = EChromaSDKDeviceTypeEnum::DE_2D;
+		break;
+	case 5: //mousepad
+		deviceType = EChromaSDKDeviceTypeEnum::DE_1D;
+		break;
+	}
+	if (_mDeviceType != deviceType)
+	{
+		_mDeviceType = deviceType;
 		changed = true;
 	}
 	if (changed)
@@ -1354,6 +1392,46 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 		}
 	}
 
+	EChromaSDKDevice1DEnum device1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
+	EChromaSDKDevice2DEnum device2D = EChromaSDKDevice2DEnum::DE_Keyboard;
+	switch (index)
+	{
+	case 0: //chromalink
+		device1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
+		break;
+	case 1: //headset
+		device1D = EChromaSDKDevice1DEnum::DE_Headset;
+		break;
+	case 2: //keyboard
+		device2D = EChromaSDKDevice2DEnum::DE_Keyboard;
+		break;
+	case 3: //keypad
+		device2D = EChromaSDKDevice2DEnum::DE_Keypad;
+		break;
+	case 4://mouse
+		device2D = EChromaSDKDevice2DEnum::DE_Mouse;
+		break;
+	case 5: //mousepad
+		device1D = EChromaSDKDevice1DEnum::DE_Mousepad;
+		break;
+	}
+
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		if (_mEdit1D.SetDevice(device1D))
+		{
+			changed = true;
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		if (_mEdit2D.SetDevice(device2D))
+		{
+			changed = true;
+		}
+		break;
+	}
+
 	if (changed)
 	{
 		// Create the grid buttons
@@ -1365,6 +1443,8 @@ void CMainViewDlg::OnBnClickedButtonSetDeviceType()
 		// Display grid
 		RefreshGrid();
 	}
+
+	GetControlListTypes()->SetCurSel(index);
 
 	//show changes
 	OnBnClickedButtonPreview();
@@ -1404,36 +1484,6 @@ int CMainViewDlg::GetFrameCount()
 {
 	return GetEditor()->GetFrameCount();
 }
-
-void CMainViewDlg::OnBnClickedButtonSetDevice()
-{
-	bool changed = false;
-	switch (_mDeviceType)
-	{
-	case EChromaSDKDeviceTypeEnum::DE_1D:
-		changed = _mEdit1D.SetDevice((EChromaSDKDevice1DEnum)GetControlDevice()->GetCurSel());
-		break;
-	case EChromaSDKDeviceTypeEnum::DE_2D:
-		changed = _mEdit2D.SetDevice((EChromaSDKDevice2DEnum)GetControlDevice()->GetCurSel());
-		break;
-	}
-
-	if (changed)
-	{
-		// Create the grid buttons
-		RecreateGrid();
-
-		// Display enums
-		RefreshDevice();
-
-		// Display grid
-		RefreshGrid();
-	}
-
-	//show changes
-	OnBnClickedButtonPreview();
-}
-
 
 void CMainViewDlg::OnBnClickedButtonClear()
 {
