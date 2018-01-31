@@ -27,8 +27,8 @@ typedef void(*PLUGIN_INIT)();
 typedef void(*PLUGIN_UNINIT)();
 typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
-typedef int(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
-typedef int(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
+typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef void(*PLUGIN_STOP_ALL)();
 typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
@@ -415,8 +415,21 @@ void DebugUnitTests()
 	else
 	{
 		const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
-		int animationId = -1;
+		const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
 		const char* animationName = "";
+
+		animationName = BLANK_KEYBOARD;
+		int frameCount = _gMethodGetFrameCountName(animationName);
+
+		for (int i = 0; i < frameCount; ++i)
+		{
+			_gMethodSetKeyColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_W, 0xFF);
+		}
+		_gMethodPlayAnimationName(animationName, false);
+		Sleep(3000);
+
+		_gMethodCloseAnimationName(animationName);
+		Sleep(100);
 
 		fprintf(stdout, "Playing animation.\r\n");
 		_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
@@ -430,6 +443,8 @@ void DebugUnitTests()
 		fprintf(stdout, "Playing animations.\r\n");
 		_gMethodPlayComposite("Random", false);
 		Sleep(100);
+
+		int animationId = -1;
 
 		for (int wait = 0; wait < 3; ++wait)
 		{
@@ -478,7 +493,7 @@ void DebugUnitTests()
 		_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
 		Sleep(100);
 
-		int frameCount = _gMethodGetFrameCountName(RANDOM_KEYBOARD);
+		frameCount = _gMethodGetFrameCountName(RANDOM_KEYBOARD);
 		for (int index = 0; index < frameCount; ++index)
 		{
 			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_W);
