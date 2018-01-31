@@ -857,6 +857,8 @@ void CMainViewDlg::OnBnClickedButtonNthDelete()
 
 BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 {
+	int refocusToControl = IDC_BUTTON_CLEAR;
+
 	// check focus first
 	bool textFieldHasFocus = false;
 	CWnd* control = GetFocus();
@@ -864,9 +866,33 @@ BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		switch (control->GetDlgCtrlID())
 		{
-		case IDC_TEXT_OVERRIDE_TIME:
+		case IDC_COMBO_KEYS:
+		case IDC_COMBO_LEDS:
+		case IDC_EDIT_BRUSH:
+		case IDC_EDIT_DELETE:
 		case IDC_EDIT_DURATION:
+		case IDC_EDIT_FRAME_INDEX:
+		case IDC_LIST_TYPES:
+		case IDC_SLIDER_BRUSH:
+		case IDC_TEXT_OVERRIDE_TIME:
 			textFieldHasFocus = true;
+			break;
+		}
+
+		if ((pMsg->message == WM_KEYDOWN ||
+			pMsg->message == WM_KEYUP) &&
+			ID_DYNAMIC_BUTTON_MIN <= control->GetDlgCtrlID() &&
+			control->GetDlgCtrlID() <= ID_DYNAMIC_BUTTON_MAX)
+		{
+			bool result = CDialogEx::PreTranslateMessage(pMsg);
+			GotoDlgCtrl(GetDlgItem(refocusToControl));
+			return result;
+		}
+
+		switch (control->GetDlgCtrlID())
+		{
+		case IDC_LIST_TYPES:
+			GotoDlgCtrl(GetDlgItem(refocusToControl));
 			break;
 		}
 	}
