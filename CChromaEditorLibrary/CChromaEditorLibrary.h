@@ -173,9 +173,11 @@ private:
 	ChromaSDK::EditorAnimation2D _mEdit2D;
 
 	// keyboard input
+	bool _mShiftModifier;
 	bool _mControlModifier;
 
 	float _mBrushIntensitity;
 
 	UINT _mTimer;
+	bool _mWasPlaying;
 };

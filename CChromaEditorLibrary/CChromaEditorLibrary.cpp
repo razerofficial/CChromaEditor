@@ -769,6 +769,7 @@ BOOL CMainViewDlg::OnInitDialog()
 	}
 
 	_mTimer = SetTimer(IDT_TIMER_0, 100, NULL);
+	_mWasPlaying = false;
 
 	return TRUE;
 }
@@ -879,16 +880,6 @@ BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 			break;
 		}
 
-		if ((pMsg->message == WM_KEYDOWN ||
-			pMsg->message == WM_KEYUP) &&
-			ID_DYNAMIC_BUTTON_MIN <= control->GetDlgCtrlID() &&
-			control->GetDlgCtrlID() <= ID_DYNAMIC_BUTTON_MAX)
-		{
-			bool result = CDialogEx::PreTranslateMessage(pMsg);
-			GotoDlgCtrl(GetDlgItem(refocusToControl));
-			return result;
-		}
-
 		switch (control->GetDlgCtrlID())
 		{
 		case IDC_LIST_TYPES:
@@ -905,6 +896,9 @@ BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 			{
 			case VK_CONTROL:
 				_mControlModifier = true;
+				break;
+			case VK_SHIFT:
+				_mShiftModifier = true;
 				break;
 			}
 		}
@@ -926,6 +920,9 @@ BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 				return true;
 			case VK_CONTROL:
 				_mControlModifier = false;
+				break;
+			case VK_SHIFT:
+				_mShiftModifier = false;
 				break;
 			case 'C':
 				if (_mControlModifier)
@@ -1236,7 +1233,19 @@ void CMainViewDlg::OnTimer(UINT_PTR TimerVal)
 		// Display grid
 		RefreshGrid();
 
-		// DIsplay frames
+		// Display frames
+		RefreshFrames();
+
+		_mWasPlaying = true;
+	}
+	else if (_mWasPlaying)
+	{
+		_mWasPlaying = false;
+
+		// Display grid
+		RefreshGrid();
+
+		// Display frames
 		RefreshFrames();
 	}
 }
@@ -1280,10 +1289,14 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 			vector<CColorButton*>& buttons = GetGridButtons();
 			if (index < buttons.size())
 			{
+				COLORREF color = 0;
 				CColorButton* button = buttons[index];
-				COLORREF color = GetColor();
-				button->SetColor(color, color);
-				button->Invalidate();
+				if (!_mShiftModifier)
+				{
+					color = GetColor();
+					button->SetColor(color, color);
+					button->Invalidate();
+				}
 
 				switch (_mDeviceType)
 				{
@@ -1302,8 +1315,19 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 						{
 							FChromaSDKColorFrame1D& frame = frames[currentFrame];
 							int i = index;
-							frame.Colors[i] = color;
-							RefreshGrid();
+							if (_mShiftModifier)
+							{
+								color = frame.Colors[i];
+								SetColor(color);
+								GetColorButtons()[0]->SetColor(color, color);
+								GetColorButtons()[0]->Invalidate();
+								OnSliderBrushIntensity();
+							}
+							else
+							{
+								frame.Colors[i] = color;
+								RefreshGrid();
+							}
 						}
 					}
 					break;
@@ -1325,8 +1349,19 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 							int i = index / maxColumn;
 							FChromaSDKColors& row = frame.Colors[i];
 							int j = index - i * maxColumn;
-							row.Colors[j] = color;
-							RefreshGrid();
+							if (_mShiftModifier)
+							{
+								color = row.Colors[j];
+								SetColor(color);
+								GetColorButtons()[0]->SetColor(color, color);
+								GetColorButtons()[0]->Invalidate();
+								OnSliderBrushIntensity();
+							}
+							else
+							{
+								row.Colors[j] = color;
+								RefreshGrid();
+							}
 						}
 					}
 					break;
@@ -1346,6 +1381,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 					SetColor(color);
 					GetColorButtons()[0]->SetColor(color, color);
 					GetColorButtons()[0]->Invalidate();
+					OnSliderBrushIntensity();
 				}
 			}
 			else
@@ -1356,6 +1392,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 				SetColor(color);
 				GetColorButtons()[0]->SetColor(color, color);
 				GetColorButtons()[0]->Invalidate();
+				OnSliderBrushIntensity();
 			}
 		}
 	}
