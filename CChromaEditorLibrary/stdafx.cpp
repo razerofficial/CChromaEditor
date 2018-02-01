@@ -1920,7 +1920,7 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API void PluginSetKeysColor(int animationId, int frameId, int* rzkeys, int keyCount, int color)
+	EXPORT_API void PluginSetKeysColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color)
 	{
 		PluginStopAnimation(animationId);
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -1938,7 +1938,7 @@ extern "C"
 			{
 				for (int index = 0; index < keyCount; ++index)
 				{
-					int* rzkey = &rzkeys[index];
+					const int* rzkey = &rzkeys[index];
 					FChromaSDKColorFrame2D& frame = frames[frameId];
 					frame.Colors[HIBYTE(*rzkey)].Colors[LOBYTE(*rzkey)] = color;
 				}
@@ -1946,7 +1946,7 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, int* rzkeys, int keyCount, int color)
+	EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
