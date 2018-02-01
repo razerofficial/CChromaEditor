@@ -190,6 +190,8 @@ Methods:
 * [PluginSetDevice](#PluginSetDevice)
 * [PluginSetKeyColor](#PluginSetKeyColor)
 * [PluginSetKeyColorName](#PluginSetKeyColorName)
+* [PluginSetKeysColor](#PluginSetKeysColor)
+* [PluginSetKeysColorName](#PluginSetKeysColorName)
 * [PluginSetLogDelegate](#PluginSetLogDelegate)
 * [PluginStopAll](#PluginStopAll)
 * [PluginStopAnimation](#PluginStopAnimation)
@@ -849,6 +851,45 @@ Set animation key to a static color for the given frame.
 EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
 ```
 
+
+<a name="PluginSetKeysColor"></a>
+**PluginSetKeysColor**
+
+Set an array of animation keys to a static color for the given frame.
+
+```C++
+EXPORT_API void PluginSetKeysColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+```
+
+
+<a name="PluginSetKeysColorName"></a>
+**PluginSetKeysColorName**
+
+Set an array of animation keys to a static color for the given frame.
+
+```C++
+EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+```
+
+Usage:
+
+```C++
+const char* animationName = "Blank_Keyboard.chroma";
+int frameCount = _gMethodGetFrameCountName(animationName);
+
+int wasdKeys[4] =
+{
+  (int)Keyboard::RZKEY::RZKEY_W,
+  (int)Keyboard::RZKEY::RZKEY_A,
+  (int)Keyboard::RZKEY::RZKEY_S,
+  (int)Keyboard::RZKEY::RZKEY_D,
+};
+for (int i = 0; i < frameCount; ++i)
+{
+  _gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
+}
+_gMethodPlayAnimationName(animationName, false);
+```
 
 <a name="PluginGetKeyColor"></a>
 **PluginGetKeyColor**
