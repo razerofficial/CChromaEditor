@@ -202,6 +202,9 @@ extern "C"
 	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
 	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color);
 
+	EXPORT_API void PluginSetKeysColor(int animationId, int frameId, int* rzkeys, int keyCount, int color);
+	EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, int* rzkeys, int keyCount, int color);
+
 	EXPORT_API void PluginSet1DColor(int animationId, int frameId, int led, int color);
 	EXPORT_API void PluginSet1DColorName(const char* path, int frameId, int led, int color);
 	EXPORT_API double PluginSet1DColorNameD(const char* path, double frameId, double led, double color);

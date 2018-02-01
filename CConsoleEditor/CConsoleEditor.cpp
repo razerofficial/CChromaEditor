@@ -28,6 +28,7 @@ typedef void(*PLUGIN_UNINIT)();
 typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
 typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
+typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef void(*PLUGIN_STOP_ALL)();
@@ -65,6 +66,7 @@ PLUGIN_UNINIT _gMethodUninit = nullptr;
 PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
 PLUGIN_GET_FRAME_COUNT_NAME _gMethodGetFrameCountName = nullptr;
 PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
+PLUGIN_SET_KEYS_COLOR_NAME _gMethodSetKeysColorName = nullptr;
 PLUGIN_COPY_KEY_COLOR_NAME _gMethodCopyKeyColorName = nullptr;
 PLUGIN_GET_ANIMATION_NAME _gMethodGetAnimationName = nullptr;
 PLUGIN_STOP_ALL _gMethodStopAll = nullptr;
@@ -216,6 +218,13 @@ int Init()
 	if (_gMethodSetKeyColorName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginSetKeyColorName!\r\n");
+		return -1;
+	}
+
+	_gMethodSetKeysColorName = (PLUGIN_SET_KEYS_COLOR_NAME)GetProcAddress(library, "PluginSetKeysColorName");
+	if (_gMethodSetKeysColorName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginSetKeysColorName!\r\n");
 		return -1;
 	}
 
@@ -420,6 +429,23 @@ void DebugUnitTests()
 
 		animationName = BLANK_KEYBOARD;
 		int frameCount = _gMethodGetFrameCountName(animationName);
+
+		int wasdKeys[4] =
+		{
+			(int)Keyboard::RZKEY::RZKEY_W,
+			(int)Keyboard::RZKEY::RZKEY_A,
+			(int)Keyboard::RZKEY::RZKEY_S,
+			(int)Keyboard::RZKEY::RZKEY_D,
+		};
+		for (int i = 0; i < frameCount; ++i)
+		{
+			_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
+		}
+		_gMethodPlayAnimationName(animationName, false);
+		Sleep(3000);
+
+		_gMethodCloseAnimationName(animationName);
+		Sleep(100);
 
 		for (int i = 0; i < frameCount; ++i)
 		{
