@@ -76,11 +76,6 @@ extern "C"
 
 	EXPORT_API const char* PluginGetAnimationName(int animationId);
 
-	EXPORT_API void PluginStopAnimationType(int deviceType, int device);
-	EXPORT_API double PluginStopAnimationTypeD(double deviceType, double device);
-	
-	EXPORT_API void PluginStopAll();
-
 	EXPORT_API void PluginClearAnimationType(int deviceType, int device);
 	EXPORT_API void PluginClearAll();
 
@@ -108,9 +103,16 @@ extern "C"
 
 	EXPORT_API int PluginStopAnimation(int animationId);
 	EXPORT_API double PluginStopAnimationD(double animationId);
+	EXPORT_API void PluginStopAnimationName(const char* path);
+	EXPORT_API double PluginStopAnimationNameD(const char* path);
+	EXPORT_API void PluginStopAnimationType(int deviceType, int device);
+	EXPORT_API double PluginStopAnimationTypeD(double deviceType, double device);
+	EXPORT_API void PluginStopAll();
 
 	EXPORT_API int PluginCloseAnimation(int animationId);
 	EXPORT_API double PluginCloseAnimationD(double animationId);
+	EXPORT_API void PluginCloseAnimationName(const char* path);
+	EXPORT_API double PluginCloseAnimationNameD(const char* path);
 
 	EXPORT_API int PluginUninit();
 	EXPORT_API double PluginUninitD();
@@ -159,9 +161,6 @@ extern "C"
 	EXPORT_API int PluginGetAnimation(const char* name);
 	EXPORT_API double PluginGetAnimationD(const char* name);
 
-	EXPORT_API void PluginCloseAnimationName(const char* path);
-	EXPORT_API double PluginCloseAnimationNameD(const char* path);
-
 	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop);
 	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
 	EXPORT_API double PluginPlayAnimationNameD(const char* path, double loop);
@@ -170,14 +169,14 @@ extern "C"
 	EXPORT_API void PluginPlayAnimationFrameName(const char* path, int frameId, bool loop);
 	EXPORT_API double PluginPlayAnimationFrameNameD(const char* path, double frameId, double loop);
 
-	EXPORT_API void PluginStopAnimationName(const char* path);
-	EXPORT_API double PluginStopAnimationNameD(const char* path);
-
 	EXPORT_API bool PluginIsPlayingName(const char* path);
 	EXPORT_API double PluginIsPlayingNameD(const char* path);
 
 	EXPORT_API bool PluginIsPlayingType(int deviceType, int device);
 	EXPORT_API double PluginIsPlayingTypeD(double deviceType, double device);
+
+	EXPORT_API void PluginLoadComposite(const char* name);
+	EXPORT_API void PluginUnloadComposite(const char* name);
 	
 	EXPORT_API void PluginPlayComposite(const char* name, bool loop);
 	EXPORT_API double PluginPlayCompositeD(const char* name, double loop);

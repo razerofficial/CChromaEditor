@@ -1720,6 +1720,28 @@ extern "C"
 		}
 	}
 
+	EXPORT_API void PluginLoadComposite(const char* name)
+	{
+		string baseName = name;
+		PluginLoadAnimationName((baseName + "_ChromaLink.chroma").c_str());
+		PluginLoadAnimationName((baseName + "_Headset.chroma").c_str());
+		PluginLoadAnimationName((baseName + "_Keyboard.chroma").c_str());
+		PluginLoadAnimationName((baseName + "_Keypad.chroma").c_str());
+		PluginLoadAnimationName((baseName + "_Mouse.chroma").c_str());
+		PluginLoadAnimationName((baseName + "_Mousepad.chroma").c_str());
+	}
+
+	EXPORT_API void PluginUnloadComposite(const char* name)
+	{
+		string baseName = name;
+		PluginUnloadAnimationName((baseName + "_ChromaLink.chroma").c_str());
+		PluginUnloadAnimationName((baseName + "_Headset.chroma").c_str());
+		PluginUnloadAnimationName((baseName + "_Keyboard.chroma").c_str());
+		PluginUnloadAnimationName((baseName + "_Keypad.chroma").c_str());
+		PluginUnloadAnimationName((baseName + "_Mouse.chroma").c_str());
+		PluginUnloadAnimationName((baseName + "_Mousepad.chroma").c_str());
+	}
+
 	EXPORT_API void PluginPlayComposite(const char* name, bool loop)
 	{
 		string baseName = name;

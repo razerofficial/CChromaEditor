@@ -21,8 +21,11 @@ typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
 typedef bool(*PLUGIN_IS_PLAYING_NAME)(const char* name);
 typedef bool(*PLUGIN_IS_PLAYING_TYPE)(int deviceType, int device);
+typedef void(*PLUGIN_LOAD_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_UNLOAD_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
 typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_INIT)();
 typedef void(*PLUGIN_UNINIT)();
 typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
@@ -61,8 +64,11 @@ PLUGIN_STOP_ANIMATION_NAME _gMethodStopAnimationName = nullptr;
 PLUGIN_STOP_ANIMATION_TYPE _gMethodStopAnimationType = nullptr;
 PLUGIN_IS_PLAYING_NAME _gMethodIsPlayingName = nullptr;
 PLUGIN_IS_PLAYING_TYPE _gMethodIsPlayingType = nullptr;
+PLUGIN_LOAD_COMPOSITE _gMethodLoadComposite = nullptr;
+PLUGIN_UNLOAD_COMPOSITE _gMethodUnloadComposite = nullptr;
 PLUGIN_PLAY_COMPOSITE _gMethodPlayComposite = nullptr;
 PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
+PLUGIN_CLOSE_COMPOSITE _gMethodCloseComposite = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
 PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
@@ -176,6 +182,20 @@ int Init()
 		return -1;
 	}
 
+	_gMethodLoadComposite = (PLUGIN_LOAD_COMPOSITE)GetProcAddress(library, "PluginLoadComposite");
+	if (_gMethodLoadComposite == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginLoadComposite!\r\n");
+		return -1;
+	}
+
+	_gMethodUnloadComposite = (PLUGIN_UNLOAD_COMPOSITE)GetProcAddress(library, "PluginUnloadComposite");
+	if (_gMethodUnloadComposite == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginUnloadComposite!\r\n");
+		return -1;
+	}
+
 	_gMethodPlayComposite = (PLUGIN_PLAY_COMPOSITE)GetProcAddress(library, "PluginPlayComposite");
 	if (_gMethodPlayComposite == nullptr)
 	{
@@ -187,6 +207,13 @@ int Init()
 	if (_gMethodStopComposite == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginStopComposite!\r\n");
+		return -1;
+	}
+
+	_gMethodCloseComposite = (PLUGIN_CLOSE_COMPOSITE)GetProcAddress(library, "PluginCloseComposite");
+	if (_gMethodCloseComposite == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCloseComposite!\r\n");
 		return -1;
 	}
 
@@ -441,16 +468,6 @@ void DebugUnitTests()
 	}
 	else
 	{
-		const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
-		const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
-		const char* animationName = "";
-
-		animationName = BLANK_KEYBOARD;
-		int frameCount = _gMethodGetFrameCountName(animationName);
-
-		_gMethodPlayAnimationName(animationName, false);
-		Sleep(1000);
-
 		int wasdKeys[4] =
 		{
 			(int)Keyboard::RZKEY::RZKEY_W,
@@ -458,9 +475,39 @@ void DebugUnitTests()
 			(int)Keyboard::RZKEY::RZKEY_S,
 			(int)Keyboard::RZKEY::RZKEY_D,
 		};
+
+		const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+		const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+		const char* RANDOM_COMPOSITE = "Random";
+		const char* animationName = "";		
+		const char* compositeName = "";
+		const int COLOR_RED = 0xFF;
+
+		compositeName = RANDOM_COMPOSITE;
+		_gMethodLoadComposite(compositeName);
+		_gMethodPlayComposite(compositeName, false);
+		Sleep(1000);
+		animationName = RANDOM_KEYBOARD;
+		int frameCount = _gMethodGetFrameCountName(animationName);
 		for (int i = 0; i < frameCount; ++i)
 		{
-			_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
+			_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_RED);
+		}
+		_gMethodUnloadComposite(compositeName);
+		_gMethodPlayComposite(compositeName, false);
+		Sleep(3000);
+		_gMethodCloseComposite(compositeName);
+		Sleep(1000);
+
+		animationName = BLANK_KEYBOARD;
+		frameCount = _gMethodGetFrameCountName(animationName);
+
+		_gMethodPlayAnimationName(animationName, false);
+		Sleep(1000);
+
+		for (int i = 0; i < frameCount; ++i)
+		{
+			_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_RED);
 		}
 		_gMethodUnloadAnimationName(animationName);
 		_gMethodPlayAnimationName(animationName, false);
@@ -471,7 +518,7 @@ void DebugUnitTests()
 
 		for (int i = 0; i < frameCount; ++i)
 		{
-			_gMethodSetKeyColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_W, 0xFF);
+			_gMethodSetKeyColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_W, COLOR_RED);
 		}
 		_gMethodPlayAnimationName(animationName, false);
 		Sleep(3000);
