@@ -369,6 +369,17 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API void PluginLoadAnimationName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginLoadAnimationName: Animation not found! %s", path);
+			return;
+		}
+		PluginLoadAnimation(animationId);
+	}
+
 	EXPORT_API double PluginLoadAnimationD(double animationId)
 	{
 		return (double)PluginLoadAnimation((int)animationId);
@@ -395,6 +406,17 @@ extern "C"
 			LogError("PluginUnloadAnimation: Exception animationId=%d\r\n", (int)animationId);
 		}
 		return -1;
+	}
+
+	EXPORT_API void PluginUnloadAnimationName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginUnloadAnimationName: Animation not found! %s", path);
+			return;
+		}
+		PluginUnloadAnimation(animationId);
 	}
 
 	EXPORT_API double PluginUnloadAnimationD(double animationId)

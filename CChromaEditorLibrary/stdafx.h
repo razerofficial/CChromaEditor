@@ -93,9 +93,11 @@ extern "C"
 	EXPORT_API double PluginOpenAnimationD(const char* path);
 
 	EXPORT_API int PluginLoadAnimation(int animationId);
+	EXPORT_API void PluginLoadAnimationName(const char* path);
 	EXPORT_API double PluginLoadAnimationD(double animationId);
 
 	EXPORT_API int PluginUnloadAnimation(int animationId);
+	EXPORT_API void PluginUnloadAnimationName(const char* path);
 	EXPORT_API double PluginUnloadAnimationD(double animationId);
 
 	EXPORT_API int PluginPlayAnimation(int animationId);
