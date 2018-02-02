@@ -83,6 +83,7 @@ public:
 	afx_msg void OnBnClickedButtonLast();
 	afx_msg void OnBnClickedButtonPrevious();
 	afx_msg void OnBnClickedButtonNext();
+	afx_msg void OnBnClickedButtonInsert();
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonDelete();
 	afx_msg void OnBnClickedButtonReset();
@@ -115,6 +116,9 @@ public:
 	void OnBnClickedButtonColor(UINT nID);
 
 private:
+
+	void UpdateWindowTitle();
+	void SetPath(const std::string& path);
 
 	EditorAnimationBase* GetEditor();
 	AnimationBase* GetAnimation();
@@ -180,4 +184,6 @@ private:
 
 	UINT _mTimer;
 	bool _mWasPlaying;
+
+	bool _mDialogInitialized;
 };

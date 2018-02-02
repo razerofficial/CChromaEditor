@@ -85,7 +85,8 @@ BOOL CCChromaEditorLibraryApp::InitInstance()
 
 CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 {
-	_mPath = "";
+	_mDialogInitialized = false; //must be first
+	SetPath("");
 	_mPlayOnOpen = false;
 }
 
@@ -97,7 +98,7 @@ CMainViewDlg::~CMainViewDlg()
 
 void CMainViewDlg::OpenOrCreateAnimation(const std::string& path)
 {
-	_mPath = path;
+	SetPath(path);
 }
 
 void CMainViewDlg::PlayAnimationOnOpen()
@@ -110,8 +111,10 @@ void CMainViewDlg::LoadFile()
 	if (_mPath.empty())
 	{
 		fprintf(stderr, "LoadFile: Path cannot be empty! Using `%s` instead.\r\n", TEMP_FILE);
-		_mPath = TEMP_FILE;
+		SetPath(TEMP_FILE);
 	}
+	
+	UpdateWindowTitle();
 
 	AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(_mPath);
 	if (animation)
@@ -668,8 +671,33 @@ CListBox* CMainViewDlg::GetControlListTypes()
 	return (CListBox*)GetDlgItem(IDC_LIST_TYPES);
 }
 
+void CMainViewDlg::UpdateWindowTitle()
+{
+	if (_mDialogInitialized)
+	{
+		CString title = _T("Chroma Animation Editor - ");
+		if (_mPath.empty())
+		{
+			title += _T("Untitled");
+		}
+		else
+		{
+			title += _mPath.c_str();
+		}
+		SetWindowText(title);
+	}
+}
+
+void CMainViewDlg::SetPath(const string& path)
+{
+	_mPath = path;
+	UpdateWindowTitle();
+}
+
 BOOL CMainViewDlg::OnInitDialog()
 {
+	_mDialogInitialized = true;
+
 	ModifyStyle(WS_SYSMENU, 0);
 
 	_mBrushIntensitity = 1.0f;
@@ -993,6 +1021,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_LAST, &CMainViewDlg::OnBnClickedButtonLast)
 	ON_BN_CLICKED(IDC_BUTTON_PREVIOUS, &CMainViewDlg::OnBnClickedButtonPrevious)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CMainViewDlg::OnBnClickedButtonNext)
+	ON_BN_CLICKED(IDC_BUTTON_INSERT, &CMainViewDlg::OnBnClickedButtonInsert)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CMainViewDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMainViewDlg::OnBnClickedButtonDelete)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &CMainViewDlg::OnBnClickedButtonReset)
@@ -1017,7 +1046,7 @@ void CMainViewDlg::OnBnClickedMenuNew()
 	OnBnClickedButtonStop();
 	OnBnClickedButtonUnload();
 
-	_mPath = "";
+	SetPath("");
 	OnBnClickedButtonReset();
 
 	// Create the grid buttons
@@ -1066,7 +1095,7 @@ void CMainViewDlg::OnBnClickedMenuOpen()
 
 	if (dlgFile.DoModal() == IDOK)
 	{
-		_mPath = string(CT2CA(fileName));
+		SetPath(string(CT2CA(fileName)));
 		if (_mPath.size() <= 2 ||
 			_mPath.substr(_mPath.find_last_of(".") + 1) != "chroma")
 		{
@@ -1127,7 +1156,7 @@ void CMainViewDlg::OnBnClickedMenuSaveAs()
 
 	if (dlgFile.DoModal() == IDOK)
 	{
-		_mPath = string(CT2CA(fileName));
+		SetPath(string(CT2CA(fileName)));
 		if (_mPath.size() <= 2 ||
 			_mPath.substr(_mPath.find_last_of(".") + 1) != "chroma")
 		{
@@ -2078,6 +2107,15 @@ void CMainViewDlg::OnBnClickedButtonNext()
 	OnBnClickedButtonPreview();
 }
 
+void CMainViewDlg::OnBnClickedButtonInsert()
+{
+	OnBnClickedButtonCopy();
+	OnBnClickedButtonAdd();
+	OnBnClickedButtonNext();
+	OnBnClickedButtonPaste();
+	OnBnClickedButtonPrevious();
+	OnBnClickedButtonClear();
+}
 
 void CMainViewDlg::OnBnClickedButtonAdd()
 {
