@@ -448,6 +448,9 @@ void DebugUnitTests()
 		animationName = BLANK_KEYBOARD;
 		int frameCount = _gMethodGetFrameCountName(animationName);
 
+		_gMethodPlayAnimationName(animationName, false);
+		Sleep(1000);
+
 		int wasdKeys[4] =
 		{
 			(int)Keyboard::RZKEY::RZKEY_W,
@@ -459,6 +462,7 @@ void DebugUnitTests()
 		{
 			_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
 		}
+		_gMethodUnloadAnimationName(animationName);
 		_gMethodPlayAnimationName(animationName, false);
 		Sleep(3000);
 
