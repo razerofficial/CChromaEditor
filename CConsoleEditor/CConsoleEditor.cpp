@@ -26,6 +26,8 @@ typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_INIT)();
 typedef void(*PLUGIN_UNINIT)();
 typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
+typedef void(*PLUGIN_LOAD_ANIMATION_NAME)(const char* path);
+typedef void(*PLUGIN_UNLOAD_ANIMATION_NAME)(const char* path);
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
 typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
 typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
@@ -64,6 +66,8 @@ PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
 PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
+PLUGIN_LOAD_ANIMATION_NAME _gMethodLoadAnimationName = nullptr;
+PLUGIN_UNLOAD_ANIMATION_NAME _gMethodUnloadAnimationName = nullptr;
 PLUGIN_GET_FRAME_COUNT_NAME _gMethodGetFrameCountName = nullptr;
 PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
 PLUGIN_SET_KEYS_COLOR_NAME _gMethodSetKeysColorName = nullptr;
@@ -204,6 +208,20 @@ int Init()
 	if (_gMethodCloseAnimationName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginCloseAnimationName!\r\n");
+		return -1;
+	}
+
+	_gMethodLoadAnimationName = (PLUGIN_LOAD_ANIMATION_NAME)GetProcAddress(library, "PluginLoadAnimationName");
+	if (_gMethodLoadAnimationName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginLoadAnimationName!\r\n");
+		return -1;
+	}
+
+	_gMethodUnloadAnimationName = (PLUGIN_UNLOAD_ANIMATION_NAME)GetProcAddress(library, "PluginUnloadAnimationName");
+	if (_gMethodUnloadAnimationName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginUnloadAnimationName!\r\n");
 		return -1;
 	}
 
