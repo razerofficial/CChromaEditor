@@ -113,6 +113,7 @@ extern "C"
 	EXPORT_API double PluginCloseAnimationD(double animationId);
 	EXPORT_API void PluginCloseAnimationName(const char* path);
 	EXPORT_API double PluginCloseAnimationNameD(const char* path);
+	EXPORT_API void PluginCloseAll();
 
 	EXPORT_API int PluginUninit();
 	EXPORT_API double PluginUninitD();

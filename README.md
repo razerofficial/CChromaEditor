@@ -124,6 +124,7 @@ Methods:
 * [PluginCloseAnimation](#PluginCloseAnimation)
 * [PluginCloseAnimationName](#PluginCloseAnimationName)
 * [PluginCloseComposite](#PluginCloseComposite)
+* [PluginCloseAll](#PluginCloseAll)
 * [PluginCopyKeyColor](#PluginCopyKeyColor)
 * [PluginCopyKeyColorName](#PluginCopyKeyColorName)
 * [PluginCopyNonZeroKeyColor](#PluginCopyNonZeroKeyColor)
@@ -422,6 +423,16 @@ EXPORT_API void PluginCloseComposite(const char* name);
 // PluginCloseAnimationName("Random_Keypad.chroma");
 // PluginCloseAnimationName("Random_Mouse.chroma");
 // PluginCloseAnimationName("Random_Mousepad.chroma");
+```
+
+
+<a name="PluginCloseAll"></a>
+**PluginCloseAll**
+
+`PluginCloseAll` closes all open animations so they can be reloaded from disk. The set of animations will be stopped if playing.
+
+```C++
+EXPORT_API void PluginCloseAll();
 ```
 
 

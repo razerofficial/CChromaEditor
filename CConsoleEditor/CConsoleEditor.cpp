@@ -9,26 +9,28 @@
 #include <Windows.h>
 #include "..\CChromaEditorLibrary\ChromaSDKPluginTypes.h"
 
+typedef void(*PLUGIN_INIT)();
 typedef double(*PLUGIN_IS_INITIALIZED)();
+typedef void(*PLUGIN_UNINIT)();
 typedef double(*PLUGIN_IS_DIALOG_OPEN)();
 typedef double(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
 typedef double(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const char* path);
 typedef double(*PLUGIN_OPEN_ANIMATION)(const char* path);
 typedef double(*PLUGIN_CLOSE_ANIMATION)(double animationId);
+typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
+typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_CLOSE_ALL)();
 typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
 typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
 typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
+typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_STOP_ALL)();
 typedef bool(*PLUGIN_IS_PLAYING_NAME)(const char* name);
 typedef bool(*PLUGIN_IS_PLAYING_TYPE)(int deviceType, int device);
 typedef void(*PLUGIN_LOAD_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_UNLOAD_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
-typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
-typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
-typedef void(*PLUGIN_INIT)();
-typedef void(*PLUGIN_UNINIT)();
-typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_LOAD_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_UNLOAD_ANIMATION_NAME)(const char* path);
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
@@ -36,7 +38,6 @@ typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzke
 typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
-typedef void(*PLUGIN_STOP_ALL)();
 typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
 typedef void(*PLUGIN_CLEAR_ALL)();
 typedef int(*PLUGIN_GET_ANIMATION_COUNT)();
@@ -69,6 +70,7 @@ PLUGIN_UNLOAD_COMPOSITE _gMethodUnloadComposite = nullptr;
 PLUGIN_PLAY_COMPOSITE _gMethodPlayComposite = nullptr;
 PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
 PLUGIN_CLOSE_COMPOSITE _gMethodCloseComposite = nullptr;
+PLUGIN_CLOSE_ALL _gMethodCloseAll = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
 PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
@@ -214,6 +216,13 @@ int Init()
 	if (_gMethodCloseComposite == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginCloseComposite!\r\n");
+		return -1;
+	}
+
+	_gMethodCloseAll = (PLUGIN_CLOSE_ALL)GetProcAddress(library, "PluginCloseAll");
+	if (_gMethodCloseAll == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCloseAll!\r\n");
 		return -1;
 	}
 
@@ -476,12 +485,44 @@ void DebugUnitTests()
 			(int)Keyboard::RZKEY::RZKEY_D,
 		};
 
-		const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
 		const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+		const char* BLANK_COMPOSITE = "Blank";
+		const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
 		const char* RANDOM_COMPOSITE = "Random";
 		const char* animationName = "";		
 		const char* compositeName = "";
 		const int COLOR_RED = 0xFF;
+		int animationId = -1;
+
+		_gMethodPlayComposite(BLANK_COMPOSITE, false);
+		_gMethodPlayComposite(RANDOM_COMPOSITE, true);
+		Sleep(500);
+		int count = _gMethodGetAnimationCount();
+		fprintf(stdout, "[%d] animation(s) are open.\r\n", count);
+		for (int i = 0; i < count; ++i)
+		{
+			animationId = _gMethodGetAnimationId(i);
+			if (animationId < 0)
+			{
+				continue;
+			}
+			animationName = _gMethodGetAnimationName(animationId);
+			fprintf(stdout, "Animation is open: [%d] %s\r\n", animationId, animationName);
+		}
+		fprintf(stdout, "Closing open animations...\r\n");
+		_gMethodCloseAll();
+		count = _gMethodGetAnimationCount();
+		fprintf(stdout, "[%d] animation(s) are open.\r\n", count);
+		fprintf(stdout, "All animations are closed.\r\n");
+
+		animationName = RANDOM_KEYBOARD;
+		fprintf(stdout, "Playing animation %s.\r\n", animationName);
+		_gMethodPlayAnimationName(animationName, false);
+		while (_gMethodIsPlayingName(animationName))
+		{
+			Sleep(0);
+		}
+		fprintf(stdout, "Animation complete %s.\r\n", animationName);
 
 		compositeName = RANDOM_COMPOSITE;
 		_gMethodLoadComposite(compositeName);
@@ -538,8 +579,6 @@ void DebugUnitTests()
 		fprintf(stdout, "Playing animations.\r\n");
 		_gMethodPlayComposite("Random", false);
 		Sleep(100);
-
-		int animationId = -1;
 
 		for (int wait = 0; wait < 3; ++wait)
 		{

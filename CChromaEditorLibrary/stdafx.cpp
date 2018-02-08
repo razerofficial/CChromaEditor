@@ -1488,6 +1488,15 @@ extern "C"
 		return 0;
 	}
 
+	EXPORT_API void PluginCloseAll()
+	{
+		while (PluginGetAnimationCount() > 0)
+		{
+			int animationId = PluginGetAnimationId(0);
+			PluginCloseAnimation(animationId);
+		}
+	}
+
 	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop)
 	{
 		// Chroma thread plays animations
