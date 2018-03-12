@@ -32,9 +32,9 @@ Source: "ChromaAppInfo.xml"; DestDir: "{pf32}\Razer\ChromaEditor"; CopyMode: alw
 Source: "Release\*"; DestDir: "{pf32}\Razer\ChromaEditor"; Excludes: "*.pdb,*.exp,*.iobj,*.ipdb,*.lib"; CopyMode: alwaysoverwrite
 
 [Icons]
-Name: "{group}\ChromaEditor"; Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; WorkingDir: "{app}";
-Name: "{commondesktop}\ChromaEditor"; Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; WorkingDir: "{app}";
-Name: "{group}\Uninstall ChromaEditor"; Filename: "{uninstallexe}"
+Name: "{group}\Chroma Editor"; Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; WorkingDir: "{app}";
+Name: "{commondesktop}\Chroma Editor"; Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; WorkingDir: "{app}";
+Name: "{group}\Uninstall Chroma Editor"; Filename: "{uninstallexe}"
 
 [Run]
 Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; Description: "Launch Chroma Editor"; Flags: postinstall skipifsilent runascurrentuser nowait; Parameters: "{userdesktop}\temp.chroma"; WorkingDir: "{app}"
