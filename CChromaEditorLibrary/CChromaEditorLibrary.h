@@ -85,6 +85,7 @@ public:
 	afx_msg void OnBnClickedButtonNext();
 	afx_msg void OnBnClickedButtonInsert();
 	afx_msg void OnBnClickedButtonAdd();
+	afx_msg void OnBnClickedButtonDuplicate();
 	afx_msg void OnBnClickedButtonDelete();
 	afx_msg void OnBnClickedButtonReset();
 	afx_msg void OnBnClickedButtonSetDuration();
@@ -130,6 +131,7 @@ private:
 	std::string _mPath;
 	bool _mPlayOnOpen;
 
+	CStatic* GetControlVersion();
 	CListBox* GetControlListTypes();
 	CEdit* GetControlOverrideTime();
 	CStatic* GetControlGridSize();

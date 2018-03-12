@@ -666,6 +666,11 @@ void CMainViewDlg::RefreshFrames()
 	GetControlDuration()->SetWindowText(CString(bufferDuration));
 }
 
+CStatic* CMainViewDlg::GetControlVersion()
+{
+	return (CStatic*)GetDlgItem(IDC_LABEL_VERSION);
+}
+
 CListBox* CMainViewDlg::GetControlListTypes()
 {
 	return (CListBox*)GetDlgItem(IDC_LIST_TYPES);
@@ -696,6 +701,8 @@ void CMainViewDlg::SetPath(const string& path)
 
 BOOL CMainViewDlg::OnInitDialog()
 {
+	GetControlVersion()->SetWindowTextW(_T("Version: 1.4"));
+
 	_mDialogInitialized = true;
 
 	ModifyStyle(WS_SYSMENU, 0);
@@ -853,6 +860,8 @@ void CMainViewDlg::OnTextChangeBrush()
 
 void CMainViewDlg::OnBnClickedButtonNthDelete()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	OnBnClickedButtonStop();
 	OnBnClickedButtonUnload();
 	OnBnClickedButtonFirst();
@@ -1023,6 +1032,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CMainViewDlg::OnBnClickedButtonNext)
 	ON_BN_CLICKED(IDC_BUTTON_INSERT, &CMainViewDlg::OnBnClickedButtonInsert)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CMainViewDlg::OnBnClickedButtonAdd)
+	ON_BN_CLICKED(IDC_BUTTON_DUPLICATE, &CMainViewDlg::OnBnClickedButtonDuplicate)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMainViewDlg::OnBnClickedButtonDelete)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &CMainViewDlg::OnBnClickedButtonReset)
 	ON_COMMAND_RANGE(ID_DYNAMIC_BUTTON_MIN, ID_DYNAMIC_BUTTON_MAX, &CMainViewDlg::OnBnClickedButtonColor)
@@ -1177,6 +1187,8 @@ void CMainViewDlg::OnBnClickedMenuExit()
 
 void CMainViewDlg::OnBnClickedMenuImportImage()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	OnBnClickedButtonUnload();
 
 	EditorAnimationBase* editor = GetEditor();
@@ -1195,6 +1207,8 @@ void CMainViewDlg::OnBnClickedMenuImportImage()
 
 void CMainViewDlg::OnBnClickedMenuImportAnimation()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	OnBnClickedButtonUnload();
 
 	EditorAnimationBase* editor = GetEditor();
@@ -1310,6 +1324,8 @@ void CMainViewDlg::OnSliderBrushIntensity()
 
 void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	if (nID >= ID_DYNAMIC_BUTTON_MIN)
 	{
 		if (nID < ID_DYNAMIC_COLOR_MIN)
@@ -1579,6 +1595,8 @@ int CMainViewDlg::GetFrameCount()
 
 void CMainViewDlg::OnBnClickedButtonClear()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -1626,6 +1644,8 @@ void CMainViewDlg::OnBnClickedButtonClear()
 
 void CMainViewDlg::OnBnClickedButtonFill()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -1686,6 +1706,8 @@ void CMainViewDlg::OnBnClickedButtonFill()
 
 void CMainViewDlg::OnBnClickedButtonRandom()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -1775,6 +1797,8 @@ void CMainViewDlg::OnBnClickedButtonCopy()
 
 void CMainViewDlg::OnBnClickedButtonPaste()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -1822,6 +1846,8 @@ void CMainViewDlg::OnBnClickedButtonPaste()
 
 void CMainViewDlg::OnBnClickedButtonPreview()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -1942,6 +1968,8 @@ void CMainViewDlg::OnBnClickedButtonUnload()
 
 void CMainViewDlg::OnBnClickedButtonSetKey()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D &&
 		_mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Keyboard)
 	{
@@ -1969,6 +1997,8 @@ void CMainViewDlg::OnBnClickedButtonSetKey()
 
 void CMainViewDlg::OnBnClickedButtonSetLed()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	if (_mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D &&
 		_mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Mouse)
 	{
@@ -2109,6 +2139,8 @@ void CMainViewDlg::OnBnClickedButtonNext()
 
 void CMainViewDlg::OnBnClickedButtonInsert()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	OnBnClickedButtonCopy();
 	OnBnClickedButtonAdd();
 	OnBnClickedButtonNext();
@@ -2119,6 +2151,8 @@ void CMainViewDlg::OnBnClickedButtonInsert()
 
 void CMainViewDlg::OnBnClickedButtonAdd()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -2137,9 +2171,36 @@ void CMainViewDlg::OnBnClickedButtonAdd()
 	OnBnClickedButtonPreview();
 }
 
+void CMainViewDlg::OnBnClickedButtonDuplicate()
+{
+	OnBnClickedButtonUnload(); // delete frame state
+
+	OnBnClickedButtonCopy();
+
+	switch (_mDeviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		_mEdit1D.AddFrame();
+		RefreshGrid();
+		RefreshFrames();
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		_mEdit2D.AddFrame();
+		RefreshGrid();
+		RefreshFrames();
+		break;
+	}
+
+	OnBnClickedButtonPaste();
+
+	//show changes
+	OnBnClickedButtonPreview();
+}
 
 void CMainViewDlg::OnBnClickedButtonDelete()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -2209,6 +2270,8 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 
 void CMainViewDlg::OnBnClickedButtonReset()
 {
+	OnBnClickedButtonUnload(); // delete frame state
+
 	OnBnClickedButtonStop();
 
 	OnBnClickedButtonUnload();
