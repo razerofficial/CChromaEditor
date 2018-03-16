@@ -69,6 +69,9 @@ public:
 	afx_msg void OnBnClickedButtonImportOverrideTime();
 	afx_msg void OnBnClickedButtonClear();
 	afx_msg void OnBnClickedButtonFill();
+	afx_msg void OnBnClickedButtonFillBlank();
+	afx_msg void OnBnClickedButtonDarken();
+	afx_msg void OnBnClickedButtonLighten();
 	afx_msg void OnBnClickedButtonRandom();
 	afx_msg void OnBnClickedButtonCopy();
 	afx_msg void OnBnClickedButtonPaste();
