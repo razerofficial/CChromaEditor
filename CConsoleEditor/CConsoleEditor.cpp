@@ -33,9 +33,14 @@ typedef void(*PLUGIN_UNLOAD_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
 typedef void(*PLUGIN_LOAD_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_UNLOAD_ANIMATION_NAME)(const char* path);
+typedef int(*PLUGIN_GET_MAX_ROW)(int device);
+typedef int(*PLUGIN_GET_MAX_COLUMN)(int device);
+typedef int(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int length);
+typedef int(*PLUGIN_GET_FRAME)(int animationId, int frameIndex, float* duration, int* colors, int length);
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
 typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
 typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
@@ -76,9 +81,14 @@ PLUGIN_UNINIT _gMethodUninit = nullptr;
 PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
 PLUGIN_LOAD_ANIMATION_NAME _gMethodLoadAnimationName = nullptr;
 PLUGIN_UNLOAD_ANIMATION_NAME _gMethodUnloadAnimationName = nullptr;
+PLUGIN_GET_MAX_ROW _gMethodGetMaxRow = nullptr;
+PLUGIN_GET_MAX_COLUMN _gMethodGetMaxColumn = nullptr;
+PLUGIN_ADD_FRAME _gMethodAddFrame = nullptr;
+PLUGIN_GET_FRAME _gMethodGetFrame = nullptr;
 PLUGIN_GET_FRAME_COUNT_NAME _gMethodGetFrameCountName = nullptr;
 PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
 PLUGIN_SET_KEYS_COLOR_NAME _gMethodSetKeysColorName = nullptr;
+PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME _gMethodCopyNonZeroAllKeysAllFramesName = nullptr;
 PLUGIN_COPY_KEY_COLOR_NAME _gMethodCopyKeyColorName = nullptr;
 PLUGIN_GET_ANIMATION_NAME _gMethodGetAnimationName = nullptr;
 PLUGIN_STOP_ALL _gMethodStopAll = nullptr;
@@ -261,6 +271,34 @@ int Init()
 		return -1;
 	}
 
+	_gMethodGetMaxRow = (PLUGIN_GET_MAX_ROW)GetProcAddress(library, "PluginGetMaxRow");
+	if (_gMethodGetMaxRow == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginGetMaxRow!\r\n");
+		return -1;
+	}
+
+	_gMethodGetMaxColumn = (PLUGIN_GET_MAX_COLUMN)GetProcAddress(library, "PluginGetMaxColumn");
+	if (_gMethodGetMaxColumn == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginGetMaxColumn!\r\n");
+		return -1;
+	}
+
+	_gMethodAddFrame = (PLUGIN_ADD_FRAME)GetProcAddress(library, "PluginAddFrame");
+	if (_gMethodAddFrame == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginAddFrame!\r\n");
+		return -1;
+	}
+
+	_gMethodGetFrame = (PLUGIN_GET_FRAME)GetProcAddress(library, "PluginGetFrame");
+	if (_gMethodGetFrame == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginGetFrame!\r\n");
+		return -1;
+	}
+
 	_gMethodGetFrameCountName = (PLUGIN_GET_FRAME_COUNT_NAME)GetProcAddress(library, "PluginGetFrameCountName");
 	if (_gMethodGetFrameCountName == nullptr)
 	{
@@ -279,6 +317,13 @@ int Init()
 	if (_gMethodSetKeysColorName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginSetKeysColorName!\r\n");
+		return -1;
+	}
+
+	_gMethodCopyNonZeroAllKeysAllFramesName = (PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)GetProcAddress(library, "PluginCopyNonZeroAllKeysAllFramesName");
+	if (_gMethodCopyNonZeroAllKeysAllFramesName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCopyNonZeroAllKeysAllFramesName!\r\n");
 		return -1;
 	}
 
@@ -493,6 +538,29 @@ void DebugUnitTests()
 		const char* compositeName = "";
 		const int COLOR_RED = 0xFF;
 		int animationId = -1;
+
+		int keyboardMaxRow = _gMethodGetMaxRow((int)EChromaSDKDevice2DEnum::DE_Keyboard);
+		int keyboardMaxColumn = _gMethodGetMaxColumn((int)EChromaSDKDevice2DEnum::DE_Keyboard);
+
+		// create colors to use in making frames
+		int* colors = new int[keyboardMaxRow * keyboardMaxColumn];
+		for (int i = 0; i < (keyboardMaxRow * keyboardMaxColumn); ++i)
+		{
+			colors[i] = 0;
+		}
+		animationName = BLANK_KEYBOARD;
+		animationId = _gMethodOpenAnimation(animationName);
+		// add a bunch of blank frames
+		for (int frameNumber = 0; frameNumber < 100; ++frameNumber)
+		{
+			_gMethodAddFrame(animationId, 0.5f, &colors[0], keyboardMaxRow * keyboardMaxColumn);
+		}
+
+		fprintf(stdout, "Playing animation %s.\r\n", animationName);
+		_gMethodCopyNonZeroAllKeysAllFramesName(RANDOM_KEYBOARD, BLANK_KEYBOARD);
+		_gMethodPlayAnimationName(animationName, false);
+		Sleep(10000);
+		_gMethodCloseAnimationName(animationName);
 
 		_gMethodPlayComposite(BLANK_COMPOSITE, false);
 		_gMethodPlayComposite(RANDOM_COMPOSITE, true);

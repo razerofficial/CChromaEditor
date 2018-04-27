@@ -2181,6 +2181,86 @@ extern "C"
 		return 0;
 	}
 
+	EXPORT_API void PluginCopyNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId)
+	{
+		PluginStopAnimation(targetAnimationId);
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
+			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
+			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+		if (sourceFrames.size() == 0)
+		{
+			return;
+		}
+		if (targetFrames.size() == 0)
+		{
+			return;
+		}
+		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
+		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
+		for (int frameId = 0; frameId < targetFrames.size(); ++frameId)
+		{
+			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+			FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
+			for (int i = 0; i < maxRow; ++i)
+			{
+				for (int j = 0; j < maxColumn; ++j)
+				{
+					int color = sourceFrame.Colors[i].Colors[j];
+					if (color != 0)
+					{
+						targetFrame.Colors[i].Colors[j] = color;
+					}
+				}
+			}
+		}
+	}
+
+	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginCopyNonZeroAllKeysAllFramesName: Source Animation not found! %s", sourceAnimation);
+			return;
+		}
+
+		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		if (targetAnimationId < 0)
+		{
+			LogError("PluginCopyNonZeroAllKeysAllFramesName: Target Animation not found! %s", targetAnimation);
+			return;
+		}
+
+		PluginCopyNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+	}
+
+	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	{
+		PluginCopyNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
+		return 0;
+	}
+
 	EXPORT_API void PluginCopyNonZeroKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey)
 	{
 		PluginStopAnimation(targetAnimationId);

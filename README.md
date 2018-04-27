@@ -11,7 +11,7 @@
 * [Edit API](#edit-api)
 * [File Format](#file-format)
 
-<a name="related"></a>
+<a name="see-also"></a>
 ## See Also
 
 **Apps:**
@@ -133,6 +133,8 @@ Methods:
 * [PluginCloseAll](#PluginCloseAll)
 * [PluginCopyKeyColor](#PluginCopyKeyColor)
 * [PluginCopyKeyColorName](#PluginCopyKeyColorName)
+* [PluginCopyNonZeroAllKeysAllFrames](#PluginCopyNonZeroAllKeysAllFrames)
+* [PluginCopyNonZeroAllKeysAllFramesName](#PluginCopyNonZeroAllKeysAllFramesName)
 * [PluginCopyNonZeroKeyColor](#PluginCopyNonZeroKeyColor)
 * [PluginCopyNonZeroKeyColorName](#PluginCopyNonZeroKeyColorName)
 * [PluginCreateAnimation](#PluginCreateAnimation)
@@ -946,6 +948,26 @@ Copy animation key color from the source animation to the target animation for t
 ```C++
 EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation,
     int frameId, int rzkey);
+```
+
+
+<a name="PluginCopyNonZeroAllKeysAllFrames"></a>
+**PluginCopyNonZeroAllKeysAllFrames**
+
+Copy nonzero colors from a source animation to a target animation for all keys.
+
+```C++
+EXPORT_API void PluginCopyNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
+```
+
+
+<a name="PluginCopyNonZeroAllKeysAllFramesName"></a>
+**PluginCopyNonZeroAllKeysAllFramesName**
+
+Copy nonzero colors from a source animation to a target animation for all keys.
+
+```C++
+EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 ```
 
 
