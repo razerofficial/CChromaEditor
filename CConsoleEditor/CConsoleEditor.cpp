@@ -42,6 +42,9 @@ typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzke
 typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+typedef void(*PLUGIN_FILL_COLOR_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
 typedef void(*PLUGIN_CLEAR_ALL)();
@@ -90,6 +93,9 @@ PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
 PLUGIN_SET_KEYS_COLOR_NAME _gMethodSetKeysColorName = nullptr;
 PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME _gMethodCopyNonZeroAllKeysAllFramesName = nullptr;
 PLUGIN_COPY_KEY_COLOR_NAME _gMethodCopyKeyColorName = nullptr;
+PLUGIN_FILL_COLOR_NAME _gMethodFillColorName = nullptr;
+PLUGIN_OFFSET_COLORS_NAME _gMethodOffsetColorsName = nullptr;
+PLUGIN_MULTIPLY_INTENSITY_NAME _gMethodMultiplyIntensityName = nullptr;
 PLUGIN_GET_ANIMATION_NAME _gMethodGetAnimationName = nullptr;
 PLUGIN_STOP_ALL _gMethodStopAll = nullptr;
 PLUGIN_CLEAR_ANIMATION_TYPE _gMethodClearAnimationType = nullptr;
@@ -334,6 +340,27 @@ int Init()
 		return -1;
 	}
 
+	_gMethodFillColorName = (PLUGIN_FILL_COLOR_NAME)GetProcAddress(library, "PluginFillColorName");
+	if (_gMethodFillColorName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginFillColorName!\r\n");
+		return -1;
+	}
+
+	_gMethodOffsetColorsName = (PLUGIN_OFFSET_COLORS_NAME)GetProcAddress(library, "PluginOffsetColorsName");
+	if (_gMethodOffsetColorsName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginOffsetColorsName!\r\n");
+		return -1;
+	}
+
+	_gMethodMultiplyIntensityName = (PLUGIN_MULTIPLY_INTENSITY_NAME)GetProcAddress(library, "PluginMultiplyIntensityName");
+	if (_gMethodMultiplyIntensityName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginMultiplyIntensityName!\r\n");
+		return -1;
+	}
+
 	_gMethodGetAnimationName = (PLUGIN_GET_ANIMATION_NAME)GetProcAddress(library, "PluginGetAnimationName");
 	if (_gMethodGetAnimationName == nullptr)
 	{
@@ -480,91 +507,206 @@ void IsPlaying(const char* name)
 	fprintf(stdout, "Mousepad IsPlayingType: %s\r\n", _gMethodIsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad) ? "true" : "false");
 }
 
-void DebugUnitTests()
+void DebugUnitTestsOpenDialog()
 {
-	if (false) // test editor
+	_gMethodOpenDialog("RandomKeyboardEffect.chroma");
+	while (_gMethodIsDialogOpen())
 	{
-		_gMethodOpenDialog("RandomKeyboardEffect.chroma");
-		while (_gMethodIsDialogOpen())
-		{
-			Sleep(0);
-		}
+		Sleep(0);
 	}
-	else if (false) // test api
+}
+
+void DebugUnitTestsOpenClose()
+{
+	for (int i = 0; i < 25; ++i)
 	{
-		for (int i = 0; i < 25; ++i)
+		if (_gMethodIsInitialized() == 0)
 		{
-			if (_gMethodIsInitialized() == 0)
-			{
-				fprintf(stdout, "Init...\r\n");
-				_gMethodInit();
-			}
-
-			fprintf(stdout, "Playing effects...\r\n");
-			int randomChromaLinkEffect = OpenAndPlay("Random_ChromaLink.chroma");
-			int randomHeadsetEffect = OpenAndPlay("Random_Headset.chroma");
-			int randomKeyboardEffect = OpenAndPlay("Random_Keyboard.chroma");
-			int randomKeypadEffect = OpenAndPlay("Random_Keypad.chroma");
-			int randomMouseEffect = OpenAndPlay("Random_Mouse.chroma");
-			int randomMousepadEffect = OpenAndPlay("Random_Mousepad.chroma");
-			this_thread::sleep_for(chrono::seconds(1));
-
-			_gMethodCloseAnimation(randomChromaLinkEffect);
-			_gMethodCloseAnimation(randomHeadsetEffect);
-			_gMethodCloseAnimation(randomKeyboardEffect);
-			_gMethodCloseAnimation(randomKeypadEffect);
-			_gMethodCloseAnimation(randomMouseEffect);
-			_gMethodCloseAnimation(randomMousepadEffect);
-
-			fprintf(stdout, "Simulate exit...\r\n");
-			_gMethodUninit();
+			fprintf(stdout, "Init...\r\n");
+			_gMethodInit();
 		}
+
+		fprintf(stdout, "Playing effects...\r\n");
+		int randomChromaLinkEffect = OpenAndPlay("Random_ChromaLink.chroma");
+		int randomHeadsetEffect = OpenAndPlay("Random_Headset.chroma");
+		int randomKeyboardEffect = OpenAndPlay("Random_Keyboard.chroma");
+		int randomKeypadEffect = OpenAndPlay("Random_Keypad.chroma");
+		int randomMouseEffect = OpenAndPlay("Random_Mouse.chroma");
+		int randomMousepadEffect = OpenAndPlay("Random_Mousepad.chroma");
+		this_thread::sleep_for(chrono::seconds(1));
+
+		_gMethodCloseAnimation(randomChromaLinkEffect);
+		_gMethodCloseAnimation(randomHeadsetEffect);
+		_gMethodCloseAnimation(randomKeyboardEffect);
+		_gMethodCloseAnimation(randomKeypadEffect);
+		_gMethodCloseAnimation(randomMouseEffect);
+		_gMethodCloseAnimation(randomMousepadEffect);
+
+		fprintf(stdout, "Simulate exit...\r\n");
+		_gMethodUninit();
 	}
-	else
+}
+
+void DebugUnitTestsLayering()
+{
+	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+
+	const char* animationName = "";
+	int animationId = -1;
+
+	int keyboardMaxRow = _gMethodGetMaxRow((int)EChromaSDKDevice2DEnum::DE_Keyboard);
+	int keyboardMaxColumn = _gMethodGetMaxColumn((int)EChromaSDKDevice2DEnum::DE_Keyboard);
+
+	// create colors to use in making frames
+	int* colors = new int[keyboardMaxRow * keyboardMaxColumn];
+	for (int i = 0; i < (keyboardMaxRow * keyboardMaxColumn); ++i)
 	{
-		int wasdKeys[4] =
+		colors[i] = 0;
+	}
+	animationName = BLANK_KEYBOARD;
+	animationId = _gMethodOpenAnimation(animationName);
+	// add a bunch of blank frames
+	for (int frameNumber = 0; frameNumber < 100; ++frameNumber)
+	{
+		_gMethodAddFrame(animationId, 0.5f, &colors[0], keyboardMaxRow * keyboardMaxColumn);
+	}
+
+	fprintf(stdout, "Playing animation %s.\r\n", animationName);
+	_gMethodCopyNonZeroAllKeysAllFramesName(RANDOM_KEYBOARD, BLANK_KEYBOARD);
+	_gMethodPlayAnimationName(animationName, false);
+	Sleep(10000);
+	_gMethodCloseAnimationName(animationName);
+}
+
+void DebugUnitTestsLoadedAnimations()
+{
+	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+	const char* BLANK_COMPOSITE = "Blank";
+	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+	const char* RANDOM_COMPOSITE = "Random";
+	const char* animationName = "";
+	int animationId = -1;
+
+	_gMethodPlayComposite(BLANK_COMPOSITE, false);
+	_gMethodPlayComposite(RANDOM_COMPOSITE, true);
+	Sleep(500);
+	int count = _gMethodGetAnimationCount();
+	fprintf(stdout, "[%d] animation(s) are open.\r\n", count);
+	for (int i = 0; i < count; ++i)
+	{
+		animationId = _gMethodGetAnimationId(i);
+		if (animationId < 0)
 		{
-			(int)Keyboard::RZKEY::RZKEY_W,
-			(int)Keyboard::RZKEY::RZKEY_A,
-			(int)Keyboard::RZKEY::RZKEY_S,
-			(int)Keyboard::RZKEY::RZKEY_D,
-		};
-
-		const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
-		const char* BLANK_COMPOSITE = "Blank";
-		const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
-		const char* RANDOM_COMPOSITE = "Random";
-		const char* animationName = "";		
-		const char* compositeName = "";
-		const int COLOR_RED = 0xFF;
-		int animationId = -1;
-
-		int keyboardMaxRow = _gMethodGetMaxRow((int)EChromaSDKDevice2DEnum::DE_Keyboard);
-		int keyboardMaxColumn = _gMethodGetMaxColumn((int)EChromaSDKDevice2DEnum::DE_Keyboard);
-
-		// create colors to use in making frames
-		int* colors = new int[keyboardMaxRow * keyboardMaxColumn];
-		for (int i = 0; i < (keyboardMaxRow * keyboardMaxColumn); ++i)
-		{
-			colors[i] = 0;
+			continue;
 		}
-		animationName = BLANK_KEYBOARD;
-		animationId = _gMethodOpenAnimation(animationName);
-		// add a bunch of blank frames
-		for (int frameNumber = 0; frameNumber < 100; ++frameNumber)
-		{
-			_gMethodAddFrame(animationId, 0.5f, &colors[0], keyboardMaxRow * keyboardMaxColumn);
-		}
+		animationName = _gMethodGetAnimationName(animationId);
+		fprintf(stdout, "Animation is open: [%d] %s\r\n", animationId, animationName);
+	}
+	fprintf(stdout, "Closing open animations...\r\n");
+	_gMethodCloseAll();
+	count = _gMethodGetAnimationCount();
+	fprintf(stdout, "[%d] animation(s) are open.\r\n", count);
+	fprintf(stdout, "All animations are closed.\r\n");
 
-		fprintf(stdout, "Playing animation %s.\r\n", animationName);
-		_gMethodCopyNonZeroAllKeysAllFramesName(RANDOM_KEYBOARD, BLANK_KEYBOARD);
-		_gMethodPlayAnimationName(animationName, false);
-		Sleep(10000);
-		_gMethodCloseAnimationName(animationName);
+	animationName = RANDOM_KEYBOARD;
+	fprintf(stdout, "Playing animation %s.\r\n", animationName);
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+	fprintf(stdout, "Animation complete %s.\r\n", animationName);
+}
 
-		_gMethodPlayComposite(BLANK_COMPOSITE, false);
-		_gMethodPlayComposite(RANDOM_COMPOSITE, true);
-		Sleep(500);
+void DebugUnitTestsSetKeys()
+{
+	int wasdKeys[4] =
+	{
+		(int)Keyboard::RZKEY::RZKEY_W,
+		(int)Keyboard::RZKEY::RZKEY_A,
+		(int)Keyboard::RZKEY::RZKEY_S,
+		(int)Keyboard::RZKEY::RZKEY_D,
+	};
+
+	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+	const char* BLANK_COMPOSITE = "Blank";
+	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+	const char* RANDOM_COMPOSITE = "Random";
+	const char* animationName = "";
+	const char* compositeName = "";
+	const int COLOR_RED = 0xFF;
+	int animationId = -1;
+
+	compositeName = RANDOM_COMPOSITE;
+	_gMethodLoadComposite(compositeName);
+	_gMethodPlayComposite(compositeName, false);
+	Sleep(1000);
+	animationName = RANDOM_KEYBOARD;
+	int frameCount = _gMethodGetFrameCountName(animationName);
+	for (int i = 0; i < frameCount; ++i)
+	{
+		_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_RED);
+	}
+	_gMethodUnloadComposite(compositeName);
+	_gMethodPlayComposite(compositeName, false);
+	Sleep(3000);
+	_gMethodCloseComposite(compositeName);
+	Sleep(1000);
+
+	animationName = BLANK_KEYBOARD;
+	frameCount = _gMethodGetFrameCountName(animationName);
+
+	_gMethodPlayAnimationName(animationName, false);
+	Sleep(1000);
+
+	for (int i = 0; i < frameCount; ++i)
+	{
+		_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_RED);
+	}
+	_gMethodUnloadAnimationName(animationName);
+	_gMethodPlayAnimationName(animationName, false);
+	Sleep(3000);
+
+	_gMethodCloseAnimationName(animationName);
+	Sleep(100);
+
+	for (int i = 0; i < frameCount; ++i)
+	{
+		_gMethodSetKeyColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_W, COLOR_RED);
+	}
+	_gMethodPlayAnimationName(animationName, false);
+	Sleep(3000);
+
+	_gMethodCloseAnimationName(animationName);
+	Sleep(100);
+}
+
+void DebugUnitTestsClear()
+{
+	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+	const char* BLANK_COMPOSITE = "Blank";
+	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+	const char* RANDOM_COMPOSITE = "Random";
+	const char* animationName = "";
+	const char* compositeName = "";
+	int animationId = -1;
+
+	fprintf(stdout, "Playing animation.\r\n");
+	_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
+	Sleep(100);
+
+	fprintf(stdout, "Clearing animations.\r\n");
+	_gMethodClearAll();
+
+	Sleep(1000);
+
+	fprintf(stdout, "Playing animations.\r\n");
+	_gMethodPlayComposite("Random", false);
+	Sleep(100);
+
+	for (int wait = 0; wait < 3; ++wait)
+	{
 		int count = _gMethodGetAnimationCount();
 		fprintf(stdout, "[%d] animation(s) are open.\r\n", count);
 		for (int i = 0; i < count; ++i)
@@ -577,170 +719,282 @@ void DebugUnitTests()
 			animationName = _gMethodGetAnimationName(animationId);
 			fprintf(stdout, "Animation is open: [%d] %s\r\n", animationId, animationName);
 		}
-		fprintf(stdout, "Closing open animations...\r\n");
-		_gMethodCloseAll();
-		count = _gMethodGetAnimationCount();
+		Sleep(500);
+	}
+
+	for (int wait = 0; wait < 10; ++wait)
+	{
+		int count = _gMethodGetPlayingAnimationCount();
+		fprintf(stdout, "[%d] animation(s) are playing.\r\n", count);
+		for (int i = 0; i < count; ++i)
+		{
+			animationId = _gMethodGetPlayingAnimationId(i);
+			if (animationId < 0)
+			{
+				continue;
+			}
+
+			animationName = _gMethodGetAnimationName(animationId);
+			fprintf(stdout, "Animation is playing: [%d] %s\r\n", animationId, animationName);
+		}
+		if (_gMethodGetPlayingAnimationCount() == 0)
+		{
+			fprintf(stdout, "No animations are playing.\r\n");
+		}
+		Sleep(500);
+	}
+
+	_gMethodClearAll();
+
+	Sleep(3000);
+}
+
+void DebugUnitTestsWait()
+{
+	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+	const char* BLANK_COMPOSITE = "Blank";
+	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+	const char* RANDOM_COMPOSITE = "Random";
+	const char* animationName = "";
+	int animationId = -1;
+
+	fprintf(stdout, "Playing animation.\r\n");
+	_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
+	Sleep(100);
+
+	fprintf(stdout, "Clearing animations.\r\n");
+	_gMethodClearAll();
+
+	Sleep(1000);
+
+	fprintf(stdout, "Playing animations.\r\n");
+	_gMethodPlayComposite("Random", false);
+	Sleep(100);
+
+	for (int wait = 0; wait < 3; ++wait)
+	{
+		int count = _gMethodGetAnimationCount();
 		fprintf(stdout, "[%d] animation(s) are open.\r\n", count);
-		fprintf(stdout, "All animations are closed.\r\n");
-
-		animationName = RANDOM_KEYBOARD;
-		fprintf(stdout, "Playing animation %s.\r\n", animationName);
-		_gMethodPlayAnimationName(animationName, false);
-		while (_gMethodIsPlayingName(animationName))
+		for (int i = 0; i < count; ++i)
 		{
-			Sleep(0);
-		}
-		fprintf(stdout, "Animation complete %s.\r\n", animationName);
-
-		compositeName = RANDOM_COMPOSITE;
-		_gMethodLoadComposite(compositeName);
-		_gMethodPlayComposite(compositeName, false);
-		Sleep(1000);
-		animationName = RANDOM_KEYBOARD;
-		int frameCount = _gMethodGetFrameCountName(animationName);
-		for (int i = 0; i < frameCount; ++i)
-		{
-			_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_RED);
-		}
-		_gMethodUnloadComposite(compositeName);
-		_gMethodPlayComposite(compositeName, false);
-		Sleep(3000);
-		_gMethodCloseComposite(compositeName);
-		Sleep(1000);
-
-		animationName = BLANK_KEYBOARD;
-		frameCount = _gMethodGetFrameCountName(animationName);
-
-		_gMethodPlayAnimationName(animationName, false);
-		Sleep(1000);
-
-		for (int i = 0; i < frameCount; ++i)
-		{
-			_gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_RED);
-		}
-		_gMethodUnloadAnimationName(animationName);
-		_gMethodPlayAnimationName(animationName, false);
-		Sleep(3000);
-
-		_gMethodCloseAnimationName(animationName);
-		Sleep(100);
-
-		for (int i = 0; i < frameCount; ++i)
-		{
-			_gMethodSetKeyColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_W, COLOR_RED);
-		}
-		_gMethodPlayAnimationName(animationName, false);
-		Sleep(3000);
-
-		_gMethodCloseAnimationName(animationName);
-		Sleep(100);
-
-		fprintf(stdout, "Playing animation.\r\n");
-		_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
-		Sleep(100);
-
-		fprintf(stdout, "Clearing animations.\r\n");
-		_gMethodClearAll();
-
-		Sleep(1000);
-
-		fprintf(stdout, "Playing animations.\r\n");
-		_gMethodPlayComposite("Random", false);
-		Sleep(100);
-
-		for (int wait = 0; wait < 3; ++wait)
-		{
-			int count = _gMethodGetAnimationCount();
-			fprintf(stdout, "[%d] animation(s) are open.\r\n", count);
-			for (int i = 0; i < count; ++i)
+			animationId = _gMethodGetAnimationId(i);
+			if (animationId < 0)
 			{
-				animationId = _gMethodGetAnimationId(i);
-				if (animationId < 0)
-				{
-					continue;
-				}
-				animationName = _gMethodGetAnimationName(animationId);
-				fprintf(stdout, "Animation is open: [%d] %s\r\n", animationId, animationName);
+				continue;
 			}
-			Sleep(500);
+			animationName = _gMethodGetAnimationName(animationId);
+			fprintf(stdout, "Animation is open: [%d] %s\r\n", animationId, animationName);
 		}
+		Sleep(500);
+	}
 
-		for (int wait = 0; wait < 10; ++wait)
+	for (int wait = 0; wait < 10; ++wait)
+	{
+		int count = _gMethodGetPlayingAnimationCount();
+		fprintf(stdout, "[%d] animation(s) are playing.\r\n", count);
+		for (int i = 0; i < count; ++i)
 		{
-			int count = _gMethodGetPlayingAnimationCount();
-			fprintf(stdout, "[%d] animation(s) are playing.\r\n", count);
-			for (int i = 0; i < count; ++i)
+			animationId = _gMethodGetPlayingAnimationId(i);
+			if (animationId < 0)
 			{
-				animationId = _gMethodGetPlayingAnimationId(i);
-				if (animationId < 0)
-				{
-					continue;
-				}
+				continue;
+			}
 
-				animationName = _gMethodGetAnimationName(animationId);
-				fprintf(stdout, "Animation is playing: [%d] %s\r\n", animationId, animationName);
-			}
-			if (_gMethodGetPlayingAnimationCount() == 0)
-			{
-				fprintf(stdout, "No animations are playing.\r\n");
-			}
-			Sleep(500);
+			animationName = _gMethodGetAnimationName(animationId);
+			fprintf(stdout, "Animation is playing: [%d] %s\r\n", animationId, animationName);
 		}
+		if (_gMethodGetPlayingAnimationCount() == 0)
+		{
+			fprintf(stdout, "No animations are playing.\r\n");
+		}
+		Sleep(500);
+	}
 
-		_gMethodClearAll();
+	_gMethodClearAll();
 
-		Sleep(3000);
+	Sleep(3000);
 
-		fprintf(stdout, "Playing animation.\r\n");
-		_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
+	fprintf(stdout, "Playing animation.\r\n");
+	_gMethodPlayAnimationName(RANDOM_KEYBOARD, false);
+	Sleep(100);
+}
+
+void DebugUnitTestsCopy()
+{
+	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+
+	int frameCount = _gMethodGetFrameCountName(RANDOM_KEYBOARD);
+	for (int index = 0; index < frameCount; ++index)
+	{
+		_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_W);
+		_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_A);
+		_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_S);
+		_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_D);
+	}
+	_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
+	Sleep(3000);
+
+	_gMethodCloseAnimationName(RANDOM_KEYBOARD);
+}
+
+void DebugUnitTestsMisc()
+{
+	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+
+	fprintf(stdout, "Call: PlayComposite: Random\r\n");
+	_gMethodPlayComposite("Random", true);
+	IsPlaying("Random");
+	Sleep(3000);
+
+	fprintf(stdout, "Call: StopComposite\r\n");
+	_gMethodStopComposite("Random");
+	IsPlaying("Random");
+	Sleep(3000);
+
+	fprintf(stdout, "Call: PlayComposite: Blank\r\n");
+	_gMethodPlayComposite("Blank", false);
+	IsPlaying("Random"); //random should show false, type should be playing blank
+	Sleep(3000);
+
+	fprintf(stdout, "Call: PlayAnimationName\r\n");
+	_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
+	Sleep(3000);
+
+	fprintf(stdout, "Call: StopAnimationName\r\n");
+	_gMethodStopAnimationName(RANDOM_KEYBOARD);
+	Sleep(1000);
+
+	fprintf(stdout, "Call: PlayAnimationName\r\n");
+	_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
+	Sleep(3000);
+
+	fprintf(stdout, "Call: StopAnimationType\r\n");
+	_gMethodStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
+}
+
+void DebugUnitTestsOffset()
+{
+	fprintf(stdout, "Start of offset unit test.\r\n");
+	
+	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+
+	const char* animationName = "";
+	int animationId = -1;
+
+	animationName = RANDOM_KEYBOARD;
+	_gMethodCloseAnimationName(animationName);
+
+	animationId = _gMethodOpenAnimation(animationName);
+
+	int frameCount = _gMethodGetFrameCountName(animationName);
+
+	fprintf(stdout, "Set all frames white with FillColor.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		_gMethodFillColorName(animationName, index, 255, 255, 255);
+	}
+
+	fprintf(stdout, "Fade out black with MultiplyIntensity.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		float ratio = (index + 1) / (float)frameCount;
+		float intensity = 1.0f - ratio;
+		_gMethodMultiplyIntensityName(animationName, index, intensity);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+
+	fprintf(stdout, "Set all frames black with FillColor.\r\n");
+	_gMethodUnloadAnimationName(animationName);
+	for (int index = 0; index < frameCount; ++index)
+	{
+		_gMethodFillColorName(animationName, index, 0, 0, 0);
+	}
+
+	fprintf(stdout, "Fade in red with FillColor.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		int ratio = (255 * index + 1) / frameCount;
+		_gMethodFillColorName(animationName, index, ratio, 0, 0);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+
+	fprintf(stdout, "Set all frames red with FillColor.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		_gMethodFillColorName(animationName, index, 255, 0, 0);
+	}
+
+	fprintf(stdout, "Fade in green with OffsetColors.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		const int greenOffset = 16;
+		_gMethodOffsetColorsName(animationName, index, 0, index * greenOffset, 0);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+
+	fprintf(stdout, "Set all frames yellow with FillColor.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		_gMethodFillColorName(animationName, index, 255, 255, 0);
+	}
+
+	fprintf(stdout, "Fade out red with OffsetColors.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		const int redOffset = -16;
+		_gMethodOffsetColorsName(animationName, index, index * redOffset, 0, 0);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+
+	fprintf(stdout, "Set all frames green with FillColor.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		_gMethodFillColorName(animationName, index, 0, 255, 0);
+	}
+
+	fprintf(stdout, "Fade in white with OffsetColors.\r\n");
+	for (int index = 0; index < frameCount; ++index)
+	{
+		const int redOffset = 16;
+		const int blueOffset = 16;
+		_gMethodOffsetColorsName(animationName, index, index * redOffset, 0, index * blueOffset);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+
+	fprintf(stdout, "End of offset unit test.\r\n");
+}
+
+void DebugUnitTests()
+{
+	DebugUnitTestsOffset();
+
+	while (true)
+	{
 		Sleep(100);
-
-		frameCount = _gMethodGetFrameCountName(RANDOM_KEYBOARD);
-		for (int index = 0; index < frameCount; ++index)
-		{
-			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_W);
-			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_A);
-			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_S);
-			_gMethodCopyKeyColorName("Fire_Keyboard.chroma", RANDOM_KEYBOARD, index, (int)Keyboard::RZKEY::RZKEY_D);
-		}
-		_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
-		Sleep(3000);
-
-		_gMethodCloseAnimationName(RANDOM_KEYBOARD);
-
-		fprintf(stdout, "Call: PlayComposite: Random\r\n");
-		_gMethodPlayComposite("Random", true);
-		IsPlaying("Random");
-		Sleep(3000);
-
-		fprintf(stdout, "Call: StopComposite\r\n");
-		_gMethodStopComposite("Random");
-		IsPlaying("Random");
-		Sleep(3000);
-
-		fprintf(stdout, "Call: PlayComposite: Blank\r\n");
-		_gMethodPlayComposite("Blank", false);
-		IsPlaying("Random"); //random should show false, type should be playing blank
-		Sleep(3000);
-
-		fprintf(stdout, "Call: PlayAnimationName\r\n");
-		_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
-		Sleep(3000);
-
-		fprintf(stdout, "Call: StopAnimationName\r\n");
-		_gMethodStopAnimationName(RANDOM_KEYBOARD);
-		Sleep(1000);
-
-		fprintf(stdout, "Call: PlayAnimationName\r\n");
-		_gMethodPlayAnimationName(RANDOM_KEYBOARD, true);
-		Sleep(3000);
-
-		fprintf(stdout, "Call: StopAnimationType\r\n");
-		_gMethodStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
-
-		while (true)
-		{
-			Sleep(100);
-		}
 	}
 }

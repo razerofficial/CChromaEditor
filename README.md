@@ -141,6 +141,8 @@ Methods:
 * [PluginCopyNonZeroKeyColorName](#PluginCopyNonZeroKeyColorName)
 * [PluginCreateAnimation](#PluginCreateAnimation)
 * [PluginCreateAnimationInMemory](#PluginCreateAnimationInMemory)
+* [PluginFillColor](#PluginFillColor)
+* [PluginFillColorName](#PluginFillColorName)
 * [PluginGet1DColorName](#PluginGet1DColorName)
 * [PluginGet2DColorName](#PluginGet2DColorName)
 * [PluginGetAnimation](#PluginGetAnimation)
@@ -177,6 +179,10 @@ Methods:
 * [PluginLoadAnimation](#PluginLoadAnimation)
 * [PluginMirrorHorizontally](#PluginMirrorHorizontally)
 * [PluginMirrorVertically](#PluginMirrorVertically)
+* [PluginMultiplyIntensity](#PluginMultiplyIntensity)
+* [PluginMultiplyIntensityName](#PluginMultiplyIntensityName)
+* [PluginOffsetColors](#PluginOffsetColors)
+* [PluginOffsetColorsName](#PluginOffsetColorsName)
 * [PluginOpenAnimation](#PluginOpenAnimation)
 * [PluginOpenEditorDialog](#PluginOpenEditorDialog)
 * [PluginOpenEditorDialogAndPlay](#PluginOpenEditorDialogAndPlay)
@@ -1174,6 +1180,66 @@ Flips the color grid vertically for all `Chroma` animation frames. This method h
 
 ```C++
 EXPORT_API int PluginMirrorVertically(int animationId);
+```
+
+
+<a name="PluginFillColor"></a>
+**PluginFillColor**
+
+Set the RGB value for all colors in the specified frame. Use the range of 0 to 255 for red, green, and blue parameters.
+
+```C++
+EXPORT_API void PluginFillColor(int animationId, int frameId, int red, int green, int blue);
+```
+
+
+<a name="PluginFillColorName"></a>
+**PluginFillColorName**
+
+Set the RGB value for all colors in the specified frame. Use the range of 0 to 255 for red, green, and blue parameters.
+
+```C++
+EXPORT_API void PluginFillColorName(const char* path, int frameId, int red, int green, int blue);
+```
+
+
+<a name="PluginOffsetColors"></a>
+**PluginOffsetColors**
+
+Offset all colors in the frame using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
+
+```C++
+EXPORT_API void PluginOffsetColors(int animationId, int frameId, int red, int green, int blue);
+```
+
+
+<a name="PluginOffsetColorsName"></a>
+**PluginOffsetColorsName**
+
+Offset all colors in the frame using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
+
+```C++
+EXPORT_API void PluginOffsetColorsName(const char* path, int frameId, int red, int green, int blue);
+```
+
+
+<a name="PluginMultiplyIntensity"></a>
+**PluginMultiplyIntensity**
+
+Multiply all the colors in the frame by the intensity value. Use the intensity range from 0.0 to 1.0. RGB components are multiplied equally.
+
+```C++
+EXPORT_API void PluginMultiplyIntensity(int animationId, int frameId, float intensity);
+```
+
+
+<a name="PluginMultiplyIntensityName"></a>
+**PluginMultiplyIntensityName**
+
+Multiply all the colors in the frame by the intensity value. Use the intensity range from 0.0 to 1.0. RGB components are multiplied equally.
+
+```C++
+EXPORT_API void PluginMultiplyIntensityName(const char* path, int frameId, float intensity);
 ```
 
 
