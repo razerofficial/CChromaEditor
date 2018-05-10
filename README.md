@@ -933,7 +933,8 @@ _gMethodPlayAnimationName(animationName, false);
 Set animation key to a static color for the given frame if the existing color is not already black.
 
 ```C++
-EXPORT_API void PluginSetKeyNonZeroColor(int animationId, int frameId, int rzkey, int color);
+EXPORT_API void PluginSetKeyNonZeroColor(int animationId, int frameId,
+  int rzkey, int color);
 ```
 
 
@@ -943,7 +944,8 @@ EXPORT_API void PluginSetKeyNonZeroColor(int animationId, int frameId, int rzkey
 Set animation key to a static color for the given frame if the existing color is not already black.
 
 ```C++
-EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId, int rzkey, int color);
+EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId,
+  int rzkey, int color);
 ```
 
 
@@ -953,7 +955,8 @@ EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId, int 
 Set an array of animation keys to a static color for the given frame if the existing color is not already black.
 
 ```C++
-EXPORT_API void PluginSetKeysNonZeroColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+EXPORT_API void PluginSetKeysNonZeroColor(int animationId, int frameId,
+    const int* rzkeys, int keyCount, int color);
 ```
 
 
@@ -963,7 +966,8 @@ EXPORT_API void PluginSetKeysNonZeroColor(int animationId, int frameId, const in
 Set an array of animation keys to a static color for the given frame if the existing color is not already black.
 
 ```C++
-EXPORT_API void PluginSetKeysNonZeroColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+EXPORT_API void PluginSetKeysNonZeroColorName(const char* path, int frameId,
+  const int* rzkeys, int keyCount, int color);
 ```
 
 Usage:
