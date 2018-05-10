@@ -143,6 +143,8 @@ Methods:
 * [PluginCreateAnimationInMemory](#PluginCreateAnimationInMemory)
 * [PluginFillColor](#PluginFillColor)
 * [PluginFillColorName](#PluginFillColorName)
+* [PluginFillNonZeroColor](#PluginFillColor)
+* [PluginFillNonZeroColorName](#PluginFillColorName)
 * [PluginGet1DColorName](#PluginGet1DColorName)
 * [PluginGet2DColorName](#PluginGet2DColorName)
 * [PluginGetAnimation](#PluginGetAnimation)
@@ -183,6 +185,8 @@ Methods:
 * [PluginMultiplyIntensityName](#PluginMultiplyIntensityName)
 * [PluginOffsetColors](#PluginOffsetColors)
 * [PluginOffsetColorsName](#PluginOffsetColorsName)
+* [PluginOffsetNonZeroColors](#PluginOffsetNonZeroColors)
+* [PluginOffsetNonZeroColorsName](#PluginOffsetNonZeroColorsName)
 * [PluginOpenAnimation](#PluginOpenAnimation)
 * [PluginOpenEditorDialog](#PluginOpenEditorDialog)
 * [PluginOpenEditorDialogAndPlay](#PluginOpenEditorDialogAndPlay)
@@ -209,6 +213,10 @@ Methods:
 * [PluginSetKeyColorName](#PluginSetKeyColorName)
 * [PluginSetKeysColor](#PluginSetKeysColor)
 * [PluginSetKeysColorName](#PluginSetKeysColorName)
+* [PluginSetKeyNonZeroColor](#PluginSetKeyNonZeroColor)
+* [PluginSetKeyNonZeroColorName](#PluginSetKeyNonZeroColorName)
+* [PluginSetKeysNonZeroColor](#PluginSetKeysNonZeroColor)
+* [PluginSetKeysNonZeroColorName](#PluginSetKeysNonZeroColorName)
 * [PluginSetLogDelegate](#PluginSetLogDelegate)
 * [PluginStopAll](#PluginStopAll)
 * [PluginStopAnimation](#PluginStopAnimation)
@@ -918,6 +926,67 @@ for (int i = 0; i < frameCount; ++i)
 _gMethodPlayAnimationName(animationName, false);
 ```
 
+
+<a name="PluginSetKeyNonZeroColor"></a>
+**PluginSetKeyNonZeroColor**
+
+Set animation key to a static color for the given frame if the existing color is not already black.
+
+```C++
+EXPORT_API void PluginSetKeyNonZeroColor(int animationId, int frameId, int rzkey, int color);
+```
+
+
+<a name="PluginSetKeyNonZeroColorName"></a>
+**PluginSetKeyNonZeroColorName**
+
+Set animation key to a static color for the given frame if the existing color is not already black.
+
+```C++
+EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId, int rzkey, int color);
+```
+
+
+<a name="PluginSetKeysNonZeroColor"></a>
+**PluginSetKeysNonZeroColor**
+
+Set an array of animation keys to a static color for the given frame if the existing color is not already black.
+
+```C++
+EXPORT_API void PluginSetKeysNonZeroColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+```
+
+
+<a name="PluginSetKeysNonZeroColorName"></a>
+**PluginSetKeysNonZeroColorName**
+
+Set an array of animation keys to a static color for the given frame if the existing color is not already black.
+
+```C++
+EXPORT_API void PluginSetKeysNonZeroColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+```
+
+Usage:
+
+```C++
+const char* animationName = "Blank_Keyboard.chroma";
+int frameCount = _gMethodGetFrameCountName(animationName);
+
+int wasdKeys[4] =
+{
+  (int)Keyboard::RZKEY::RZKEY_W,
+  (int)Keyboard::RZKEY::RZKEY_A,
+  (int)Keyboard::RZKEY::RZKEY_S,
+  (int)Keyboard::RZKEY::RZKEY_D,
+};
+for (int i = 0; i < frameCount; ++i)
+{
+  _gMethodSetKeysNonZeroColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
+}
+_gMethodPlayAnimationName(animationName, false);
+```
+
+
 <a name="PluginGetKeyColor"></a>
 **PluginGetKeyColor**
 
@@ -1203,6 +1272,26 @@ EXPORT_API void PluginFillColorName(const char* path, int frameId, int red, int 
 ```
 
 
+<a name="PluginFillNonZeroColor"></a>
+**PluginFillNonZeroColor**
+
+This method will only update colors in the animation that are not already set to black. Set the RGB value for a subset of colors in the specified frame. Use the range of 0 to 255 for red, green, and blue parameters.
+
+```C++
+EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int red, int green, int blue);
+```
+
+
+<a name="PluginFillNonZeroColorName"></a>
+**PluginFillNonZeroColorName**
+
+This method will only update colors in the animation that are not already set to black. Set the RGB value for a subset of colors in the specified frame. Use the range of 0 to 255 for red, green, and blue parameters.
+
+```C++
+EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int red, int green, int blue);
+```
+
+
 <a name="PluginOffsetColors"></a>
 **PluginOffsetColors**
 
@@ -1223,10 +1312,30 @@ EXPORT_API void PluginOffsetColorsName(const char* path, int frameId, int red, i
 ```
 
 
+<a name="PluginOffsetNonZeroColors"></a>
+**PluginOffsetNonZeroColors**
+
+This method will only update colors in the animation that are not already set to black. Offset a subset of colors in the frame using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
+
+```C++
+EXPORT_API void PluginOffsetNonZeroColors(int animationId, int frameId, int red, int green, int blue);
+```
+
+
+<a name="PluginOffsetNonZeroColorsName"></a>
+**PluginOffsetNonZeroColorsName**
+
+This method will only update colors in the animation that are not already set to black. Offset a subset of colors in the frame using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
+
+```C++
+EXPORT_API void PluginOffsetNonZeroColorsName(const char* path, int frameId, int red, int green, int blue);
+```
+
+
 <a name="PluginMultiplyIntensity"></a>
 **PluginMultiplyIntensity**
 
-Multiply all the colors in the frame by the intensity value. Use the intensity range from 0.0 to 1.0. RGB components are multiplied equally.
+Multiply all the colors in the frame by the intensity value. The valid the intensity range is from 0.0 to 255.0. RGB components are multiplied equally. An intensity of 0.5 would half the color value. Black colors in the frame will not be affected by this method.
 
 ```C++
 EXPORT_API void PluginMultiplyIntensity(int animationId, int frameId, float intensity);
@@ -1236,7 +1345,7 @@ EXPORT_API void PluginMultiplyIntensity(int animationId, int frameId, float inte
 <a name="PluginMultiplyIntensityName"></a>
 **PluginMultiplyIntensityName**
 
-Multiply all the colors in the frame by the intensity value. Use the intensity range from 0.0 to 1.0. RGB components are multiplied equally.
+Multiply all the colors in the frame by the intensity value. The valid the intensity range is from 0.0 to 255.0. RGB components are multiplied equally. An intensity of 0.5 would half the color value. Black colors in the frame will not be affected by this method.
 
 ```C++
 EXPORT_API void PluginMultiplyIntensityName(const char* path, int frameId, float intensity);

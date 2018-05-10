@@ -40,10 +40,14 @@ typedef int(*PLUGIN_GET_FRAME)(int animationId, int frameIndex, float* duration,
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
 typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
 typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+typedef void(*PLUGIN_SET_KEY_NONZERO_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
+typedef void(*PLUGIN_SET_KEYS_NONZERO_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef void(*PLUGIN_FILL_COLOR_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_NONZERO_COLOR_NAME)(const char* path, int frameId, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
@@ -91,10 +95,14 @@ PLUGIN_GET_FRAME _gMethodGetFrame = nullptr;
 PLUGIN_GET_FRAME_COUNT_NAME _gMethodGetFrameCountName = nullptr;
 PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
 PLUGIN_SET_KEYS_COLOR_NAME _gMethodSetKeysColorName = nullptr;
+PLUGIN_SET_KEY_NONZERO_COLOR_NAME _gMethodSetKeyNonZeroColorName = nullptr;
+PLUGIN_SET_KEYS_NONZERO_COLOR_NAME _gMethodSetKeysNonZeroColorName = nullptr;
 PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME _gMethodCopyNonZeroAllKeysAllFramesName = nullptr;
 PLUGIN_COPY_KEY_COLOR_NAME _gMethodCopyKeyColorName = nullptr;
 PLUGIN_FILL_COLOR_NAME _gMethodFillColorName = nullptr;
+PLUGIN_FILL_NONZERO_COLOR_NAME _gMethodFillNonZeroColorName = nullptr;
 PLUGIN_OFFSET_COLORS_NAME _gMethodOffsetColorsName = nullptr;
+PLUGIN_OFFSET_NONZERO_COLORS_NAME _gMethodOffsetNonZeroColorsName = nullptr;
 PLUGIN_MULTIPLY_INTENSITY_NAME _gMethodMultiplyIntensityName = nullptr;
 PLUGIN_GET_ANIMATION_NAME _gMethodGetAnimationName = nullptr;
 PLUGIN_STOP_ALL _gMethodStopAll = nullptr;
@@ -326,6 +334,20 @@ int Init()
 		return -1;
 	}
 
+	_gMethodSetKeyNonZeroColorName = (PLUGIN_SET_KEY_NONZERO_COLOR_NAME)GetProcAddress(library, "PluginSetKeyNonZeroColorName");
+	if (_gMethodSetKeyNonZeroColorName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginSetKeyNonZeroColorName!\r\n");
+		return -1;
+	}
+
+	_gMethodSetKeysNonZeroColorName = (PLUGIN_SET_KEYS_NONZERO_COLOR_NAME)GetProcAddress(library, "PluginSetKeysNonZeroColorName");
+	if (_gMethodSetKeysNonZeroColorName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginSetKeysNonZeroColorName!\r\n");
+		return -1;
+	}
+
 	_gMethodCopyNonZeroAllKeysAllFramesName = (PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)GetProcAddress(library, "PluginCopyNonZeroAllKeysAllFramesName");
 	if (_gMethodCopyNonZeroAllKeysAllFramesName == nullptr)
 	{
@@ -347,10 +369,24 @@ int Init()
 		return -1;
 	}
 
+	_gMethodFillNonZeroColorName = (PLUGIN_FILL_NONZERO_COLOR_NAME)GetProcAddress(library, "PluginFillNonZeroColorName");
+	if (_gMethodFillNonZeroColorName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginFillNonZeroColorName!\r\n");
+		return -1;
+	}
+
 	_gMethodOffsetColorsName = (PLUGIN_OFFSET_COLORS_NAME)GetProcAddress(library, "PluginOffsetColorsName");
 	if (_gMethodOffsetColorsName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginOffsetColorsName!\r\n");
+		return -1;
+	}
+
+	_gMethodOffsetNonZeroColorsName = (PLUGIN_OFFSET_NONZERO_COLORS_NAME)GetProcAddress(library, "PluginOffsetNonZeroColorsName");
+	if (_gMethodOffsetNonZeroColorsName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginOffsetNonZeroColorsName!\r\n");
 		return -1;
 	}
 
@@ -878,13 +914,10 @@ void DebugUnitTestsOffset()
 	
 	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
 
-	const char* animationName = "";
-	int animationId = -1;
-
-	animationName = RANDOM_KEYBOARD;
+	const char* animationName = RANDOM_KEYBOARD;
 	_gMethodCloseAnimationName(animationName);
 
-	animationId = _gMethodOpenAnimation(animationName);
+	int animationId = _gMethodOpenAnimation(animationName);
 
 	int frameCount = _gMethodGetFrameCountName(animationName);
 
@@ -989,9 +1022,135 @@ void DebugUnitTestsOffset()
 	fprintf(stdout, "End of offset unit test.\r\n");
 }
 
+void DebugUnitTestsNonZero()
+{
+	fprintf(stdout, "Start of nonzero unit test.\r\n");
+
+	const int COLOR_WHITE = 0xFFFFFF;
+
+	int wasdKeys[4] =
+	{
+		(int)Keyboard::RZKEY::RZKEY_W,
+		(int)Keyboard::RZKEY::RZKEY_A,
+		(int)Keyboard::RZKEY::RZKEY_S,
+		(int)Keyboard::RZKEY::RZKEY_D,
+	};
+
+	const char* SPRITE_KEYBOARD = "Sprite_Keyboard.chroma";
+	const char* WAVE_KEYBOARD = "Rows_Keyboard.chroma";
+
+	const char* animationName = WAVE_KEYBOARD;
+	int animationId = _gMethodOpenAnimation(animationName);
+	
+	// Reload from disk
+	_gMethodCloseAnimationName(animationName);
+
+	int frameCount = _gMethodGetFrameCountName(animationName);
+
+	fprintf(stdout, "Fade out red.\r\n");
+	for (int i = 0; i < frameCount; ++i)
+	{
+		float ratio = (i + 1) / (float)frameCount;
+		_gMethodOffsetNonZeroColorsName(animationName, i, -255 * ratio, 0, 0);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+	fprintf(stdout, "Red should be gone.\r\n");
+	Sleep(3000);
+
+	fprintf(stdout, "Fade out green.\r\n");
+	for (int i = 0; i < frameCount; ++i)
+	{
+		float ratio = (i + 1) / (float)frameCount;
+		_gMethodOffsetNonZeroColorsName(animationName, i, -255, -255 * ratio, 0);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+	fprintf(stdout, "Green should be gone.\r\n");
+	Sleep(3000);
+
+	fprintf(stdout, "Fade out blue.\r\n");
+	for (int i = 0; i < frameCount; ++i)
+	{
+		float ratio = (i + 1) / (float)frameCount;
+		_gMethodOffsetNonZeroColorsName(animationName, i, -255, -255, -255 * ratio);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+	fprintf(stdout, "Blue should be gone.\r\n");
+	Sleep(3000);
+
+	fprintf(stdout, "Non zero keys should fade in to white.\r\n");
+	for (int i = 0; i < frameCount; ++i)
+	{
+		float ratio = (i + 1) / (float)frameCount;
+		_gMethodFillNonZeroColorName(animationName, i, ratio * 255, ratio * 255, ratio * 255);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+
+	// Reload from disk
+	_gMethodCloseAnimationName(animationName);
+
+	animationName = SPRITE_KEYBOARD;
+	frameCount = _gMethodGetFrameCountName(animationName);
+
+	// Reload from disk
+	_gMethodCloseAnimationName(animationName);
+
+	fprintf(stdout, "WASD keys should be white every other frame.\r\n");
+	for (int i = 0; i < frameCount; ++i)
+	{
+		_gMethodSetKeyNonZeroColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_W, COLOR_WHITE);
+		_gMethodSetKeyNonZeroColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_A, COLOR_WHITE);
+		_gMethodSetKeyNonZeroColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_S, COLOR_WHITE);
+		_gMethodSetKeyNonZeroColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_D, COLOR_WHITE);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+
+	// Reload from disk
+	_gMethodCloseAnimationName(animationName);
+
+	fprintf(stdout, "WASD keys should be white every other frame.\r\n");
+	for (int i = 0; i < frameCount; ++i)
+	{
+		_gMethodSetKeysNonZeroColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_WHITE);
+	}
+	_gMethodUnloadAnimationName(animationName); //show changes
+	_gMethodPlayAnimationName(animationName, false);
+	while (_gMethodIsPlayingName(animationName))
+	{
+		Sleep(0);
+	}
+
+	fprintf(stdout, "End of nonzero unit test.\r\n");
+}
+
 void DebugUnitTests()
 {
-	DebugUnitTestsOffset();
+	//DebugUnitTestsOffset();
+	DebugUnitTestsNonZero();
 
 	while (true)
 	{

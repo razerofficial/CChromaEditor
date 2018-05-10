@@ -206,6 +206,15 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 	EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	//D doesn't support array type
+
+	EXPORT_API void PluginSetKeyNonZeroColor(int animationId, int frameId, int rzkey, int color);
+	EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId, int rzkey, int color);
+	EXPORT_API double PluginSetKeyNonZeroColorNameD(const char* path, double frameId, double rzkey, double color);
+
+	EXPORT_API void PluginSetKeysNonZeroColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+	EXPORT_API void PluginSetKeysNonZeroColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	//D doesn't support array type
 
 	EXPORT_API void PluginSet1DColor(int animationId, int frameId, int led, int color);
 	EXPORT_API void PluginSet1DColorName(const char* path, int frameId, int led, int color);
@@ -231,9 +240,17 @@ extern "C"
 	EXPORT_API void PluginFillColorName(const char* path, int frameId, int red, int green, int blue);
 	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double red, double green, double blue);
 
+	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int red, int green, int blue);
+	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int red, int green, int blue);
+	EXPORT_API double PluginFillNonZeroColorNameD(const char* path, double frameId, double red, double green, double blue);
+
 	EXPORT_API void PluginOffsetColors(int animationId, int frameId, int red, int green, int blue);
 	EXPORT_API void PluginOffsetColorsName(const char* path, int frameId, int red, int green, int blue);
 	EXPORT_API double PluginOffsetColorsNameD(const char* path, double frameId, double red, double green, double blue);
+
+	EXPORT_API void PluginOffsetNonZeroColors(int animationId, int frameId, int red, int green, int blue);
+	EXPORT_API void PluginOffsetNonZeroColorsName(const char* path, int frameId, int red, int green, int blue);
+	EXPORT_API double PluginOffsetNonZeroColorsNameD(const char* path, double frameId, double red, double green, double blue);
 
 	EXPORT_API void PluginMultiplyIntensity(int animationId, int frameId, float intensity);
 	EXPORT_API void PluginMultiplyIntensityName(const char* path, int frameId, float intensity);
