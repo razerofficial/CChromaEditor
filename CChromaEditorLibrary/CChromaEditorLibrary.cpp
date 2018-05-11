@@ -548,7 +548,7 @@ void CMainViewDlg::RefreshGrid()
 			{
 				FChromaSDKColorFrame1D& frame = frames[currentFrame];
 				int id = 0;
-				for (int i = 0; i < maxLeds; ++i)
+				for (int i = 0; i < maxLeds && i < frame.Colors.size(); ++i)
 				{
 					CColorButton* button = buttons[id];
 					if (button)
@@ -578,7 +578,7 @@ void CMainViewDlg::RefreshGrid()
 			{
 				FChromaSDKColorFrame2D& frame = frames[currentFrame];
 				int id = 0;
-				for (int i = 0; i < maxRow; ++i)
+				for (int i = 0; i < maxRow && i < frame.Colors.size(); ++i)
 				{
 					FChromaSDKColors& row = frame.Colors[i];
 					for (int j = 0; j < maxColumn; ++j)
