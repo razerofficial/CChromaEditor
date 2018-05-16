@@ -1197,13 +1197,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							}
 							else
 							{
-								if (duration >= 0.1f)
+								if (duration >= 0.033f)
 								{
 									frame.Duration = duration;
 								}
 								else
 								{
-									frame.Duration = 0.1f;
+									frame.Duration = 0.033f;
 								}
 
 								// colors
@@ -1300,13 +1300,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							}
 							else
 							{
-								if (duration >= 0.1f)
+								if (duration >= 0.033f)
 								{
 									frame.Duration = duration;
 								}
 								else
 								{
-									frame.Duration = 0.1f;
+									frame.Duration = 0.033f;
 								}
 
 								// colors
