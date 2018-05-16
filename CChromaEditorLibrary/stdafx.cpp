@@ -2420,6 +2420,7 @@ extern "C"
 		return 0;
 	}
 
+
 	EXPORT_API void PluginFillColor(int animationId, int frameId, int red, int green, int blue)
 	{
 		//clamp values
@@ -2493,6 +2494,40 @@ extern "C"
 		PluginFillColorName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
 	}
+
+
+	EXPORT_API void PluginFillColorAllFrames(int animationId, int red, int green, int blue)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginFillColor(animationId, frameId, red, green, blue);
+		}
+	}
+
+	EXPORT_API void PluginFillColorAllFramesName(const char* path, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillColorAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillColorAllFrames(animationId, red, green, blue);
+	}
+
+	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double red, double green, double blue)
+	{
+		PluginFillColorAllFramesName(path, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
 
 	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int red, int green, int blue)
 	{
@@ -2574,6 +2609,40 @@ extern "C"
 		return 0;
 	}
 
+
+	EXPORT_API void PluginFillNonZeroColorAllFrames(int animationId, int red, int green, int blue)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginFillNonZeroColor(animationId, frameId, red, green, blue);
+		}
+	}
+
+	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillNonZeroColorAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillNonZeroColorAllFrames(animationId, red, green, blue);
+	}
+
+	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const char* path, double red, double green, double blue)
+	{
+		PluginFillNonZeroColorAllFramesName(path, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
+
 	EXPORT_API void PluginOffsetColors(int animationId, int frameId, int offsetRed, int offsetGreen, int offsetBlue)
 	{
 		PluginStopAnimation(animationId);
@@ -2654,9 +2723,43 @@ extern "C"
 
 	EXPORT_API double PluginOffsetColorsNameD(const char* path, double frameId, double red, double green, double blue)
 	{
-		PluginOffsetColorsNameD(path, (int)frameId, (int)red, (int)green, (int)blue);
+		PluginOffsetColorsName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
 	}
+
+
+	EXPORT_API void PluginOffsetColorsAllFrames(int animationId, int offsetRed, int offsetGreen, int offsetBlue)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginOffsetColors(animationId, frameId, offsetRed, offsetGreen, offsetBlue);
+		}
+	}
+
+	EXPORT_API void PluginOffsetColorsAllFramesName(const char* path, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginOffsetColorsAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginOffsetColorsAllFrames(animationId, red, green, blue);
+	}
+
+	EXPORT_API double PluginOffsetColorsAllFramesNameD(const char* path, double red, double green, double blue)
+	{
+		PluginOffsetColorsAllFramesName(path, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
 
 	EXPORT_API void PluginOffsetNonZeroColors(int animationId, int frameId, int offsetRed, int offsetGreen, int offsetBlue)
 	{
@@ -2744,9 +2847,43 @@ extern "C"
 
 	EXPORT_API double PluginOffsetNonZeroColorsNameD(const char* path, double frameId, double red, double green, double blue)
 	{
-		PluginOffsetNonZeroColorsNameD(path, (int)frameId, (int)red, (int)green, (int)blue);
+		PluginOffsetNonZeroColorsName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
 	}
+
+
+	EXPORT_API void PluginOffsetNonZeroColorsAllFrames(int animationId, int offsetRed, int offsetGreen, int offsetBlue)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginOffsetNonZeroColors(animationId, frameId, offsetRed, offsetGreen, offsetBlue);
+		}
+	}
+
+	EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(const char* path, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginOffsetNonZeroColorsAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginOffsetNonZeroColorsAllFrames(animationId, red, green, blue);
+	}
+
+	EXPORT_API double PluginOffsetNonZeroColorsAllFramesNameD(const char* path, double red, double green, double blue)
+	{
+		PluginOffsetNonZeroColorsAllFramesName(path, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
 
 	EXPORT_API void PluginMultiplyIntensity(int animationId, int frameId, float intensity)
 	{
@@ -2831,6 +2968,40 @@ extern "C"
 		PluginMultiplyIntensityName(path, (int)frameId, (float)intensity);
 		return 0;
 	}
+
+
+	EXPORT_API void PluginMultiplyIntensityAllFrames(int animationId, float intensity)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginMultiplyIntensity(animationId, frameId, intensity);
+		}
+	}
+
+	EXPORT_API void PluginMultiplyIntensityAllFramesName(const char* path, float intensity)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMultiplyIntensityAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginMultiplyIntensityAllFrames(animationId, intensity);
+	}
+
+	EXPORT_API double PluginMultiplyIntensityAllFramesNameD(const char* path, double intensity)
+	{
+		PluginMultiplyIntensityAllFramesName(path, (float)intensity);
+		return 0;
+	}
+
 
 	EXPORT_API void PluginSetCurrentFrame(int animationId, int frameId)
 	{
