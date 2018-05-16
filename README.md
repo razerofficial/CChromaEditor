@@ -143,8 +143,12 @@ Methods:
 * [PluginCreateAnimationInMemory](#PluginCreateAnimationInMemory)
 * [PluginFillColor](#PluginFillColor)
 * [PluginFillColorName](#PluginFillColorName)
+* [PluginFillColorAllFrames](#PluginFillColorAllFrames)
+* [PluginFillColorAllFramesName](#PluginFillColorAllFramesName)
 * [PluginFillNonZeroColor](#PluginFillColor)
 * [PluginFillNonZeroColorName](#PluginFillColorName)
+* [PluginFillNonZeroColorAllFrames](#PluginFillColorAllFrames)
+* [PluginFillNonZeroColorAllFramesName](#PluginFillColorAllFramesName)
 * [PluginGet1DColorName](#PluginGet1DColorName)
 * [PluginGet2DColorName](#PluginGet2DColorName)
 * [PluginGetAnimation](#PluginGetAnimation)
@@ -183,10 +187,16 @@ Methods:
 * [PluginMirrorVertically](#PluginMirrorVertically)
 * [PluginMultiplyIntensity](#PluginMultiplyIntensity)
 * [PluginMultiplyIntensityName](#PluginMultiplyIntensityName)
+* [PluginMultiplyIntensityAllFrames](#PluginMultiplyIntensityAllFrames)
+* [PluginMultiplyIntensityAllFramesName](#PluginMultiplyIntensityAllFramesName)
 * [PluginOffsetColors](#PluginOffsetColors)
 * [PluginOffsetColorsName](#PluginOffsetColorsName)
+* [PluginOffsetColorsAllFrames](#PluginOffsetColorsAllFrames)
+* [PluginOffsetColorsAllFramesName](#PluginOffsetColorsAllFramesName)
 * [PluginOffsetNonZeroColors](#PluginOffsetNonZeroColors)
 * [PluginOffsetNonZeroColorsName](#PluginOffsetNonZeroColorsName)
+* [PluginOffsetNonZeroColorsAllFrames](#PluginOffsetNonZeroColorsAllFrames)
+* [PluginOffsetNonZeroColorsAllFramesName](#PluginOffsetNonZeroColorsAllFramesName)
 * [PluginOpenAnimation](#PluginOpenAnimation)
 * [PluginOpenEditorDialog](#PluginOpenEditorDialog)
 * [PluginOpenEditorDialogAndPlay](#PluginOpenEditorDialogAndPlay)
@@ -466,7 +476,7 @@ EXPORT_API void PluginCloseAll();
 Invokes the setup for a debug logging callback so that `stdout` is redirected to the callback. This is used by `Unity` so that debug messages can appear in the console window.
 
 ```C++
-extern "C" EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
+EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 ```
 
 
@@ -498,8 +508,8 @@ EXPORT_API double PluginIsPlatformSupportedD();
 Returns true if the plugin has been initialized. Returns false if the plugin is uninitialized.
 
 ```C++
-extern "C" EXPORT_API bool PluginIsInitialized();
-extern "C" EXPORT_API double PluginIsInitializedD();
+EXPORT_API bool PluginIsInitialized();
+EXPORT_API double PluginIsInitializedD();
 ```
 
 
@@ -509,8 +519,8 @@ extern "C" EXPORT_API double PluginIsInitializedD();
 The editor dialog is a non-blocking modal window, this method returns true if the modal window is open, otherwise false.
 
 ```C++
-extern "C" EXPORT_API bool PluginIsDialogOpen();
-extern "C" EXPORT_API double PluginIsDialogOpenD();
+EXPORT_API bool PluginIsDialogOpen();
+EXPORT_API double PluginIsDialogOpenD();
 ```
 
 
@@ -520,8 +530,8 @@ extern "C" EXPORT_API double PluginIsDialogOpenD();
 Opens a `Chroma` animation file with the `.chroma` extension. Returns zero upon success. Returns -1 if there was a failure.
 
 ```C++
-extern "C" EXPORT_API int PluginOpenEditorDialog(const char* path);
-extern "C" EXPORT_API double PluginOpenEditorDialogD(const char* path);
+EXPORT_API int PluginOpenEditorDialog(const char* path);
+EXPORT_API double PluginOpenEditorDialogD(const char* path);
 ```
 
 
@@ -531,8 +541,8 @@ extern "C" EXPORT_API double PluginOpenEditorDialogD(const char* path);
 Opens a `Chroma` animation file so that it can be played. Returns an animation id >= 0 upon success. Returns -1 if there was a failure. The animation id is used in most of the API methods.
 
 ```C++
-extern "C" EXPORT_API int PluginOpenAnimation(const char* path);
-extern "C" EXPORT_API double PluginOpenAnimationD(const char* path);
+EXPORT_API int PluginOpenAnimation(const char* path);
+EXPORT_API double PluginOpenAnimationD(const char* path);
 ```
 
 
@@ -542,8 +552,8 @@ extern "C" EXPORT_API double PluginOpenAnimationD(const char* path);
 Loads `Chroma` effects so that the animation can be played immediately. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
-extern "C" EXPORT_API int PluginLoadAnimation(int animationId);
-extern "C" EXPORT_API double PluginLoadAnimationD(double animationId);
+EXPORT_API int PluginLoadAnimation(int animationId);
+EXPORT_API double PluginLoadAnimationD(double animationId);
 ```
 
 
@@ -553,19 +563,18 @@ extern "C" EXPORT_API double PluginLoadAnimationD(double animationId);
 Unloads `Chroma` effects to free up resources. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
-extern "C" EXPORT_API int PluginUnloadAnimation(int animationId);
-extern "C" EXPORT_API double PluginUnloadAnimationD(double animationId);
+EXPORT_API int PluginUnloadAnimation(int animationId);
+EXPORT_API double PluginUnloadAnimationD(double animationId);
 ```
 
 
 <a name="PluginPlayAnimation"></a>
 **PluginPlayAnimation**
-
 Plays the `Chroma` animation. This will load the animation, if not loaded previously. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
-extern "C" EXPORT_API int PluginPlayAnimation(int animationId);
-extern "C" EXPORT_API double PluginPlayAnimationD(double animationId);
+EXPORT_API int PluginPlayAnimation(int animationId);
+EXPORT_API double PluginPlayAnimationD(double animationId);
 ```
 
 
@@ -575,8 +584,8 @@ extern "C" EXPORT_API double PluginPlayAnimationD(double animationId);
 Stops animation playback if in progress. Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
-extern "C" EXPORT_API int PluginStopAnimation(int animationId);
-extern "C" EXPORT_API double PluginStopAnimationD(double animationId);
+EXPORT_API int PluginStopAnimation(int animationId);
+EXPORT_API double PluginStopAnimationD(double animationId);
 ```
 
 
@@ -586,8 +595,8 @@ extern "C" EXPORT_API double PluginStopAnimationD(double animationId);
 Closes the `Chroma` animation to free up resources referenced by id. Returns the animation id upon success. Returns -1 upon failure. This might be used while authoring effects if there was a change necessitating re-opening the animation. The animation id can no longer be used once closed.
 
 ```C++
-extern "C" EXPORT_API int PluginCloseAnimation(int animationId);
-extern "C" EXPORT_API double PluginCloseAnimationD(double animationId);
+EXPORT_API int PluginCloseAnimation(int animationId);
+EXPORT_API double PluginCloseAnimationD(double animationId);
 ```
 
 
@@ -608,8 +617,8 @@ EXPORT_API double PluginCloseAnimationNameD(const char* path);
 Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
 
 ```C++
-extern "C" EXPORT_API int PluginUninit();
-extern "C" EXPORT_API double PluginUninitD();
+EXPORT_API int PluginUninit();
+EXPORT_API double PluginUninitD();
 ```
 
 
@@ -1254,107 +1263,207 @@ Flips the color grid vertically for all `Chroma` animation frames. This method h
 ```C++
 EXPORT_API int PluginMirrorVertically(int animationId);
 ```
-
-
+---
 <a name="PluginFillColor"></a>
 **PluginFillColor**
 
 Set the RGB value for all colors in the specified frame. Use the range of 0 to 255 for red, green, and blue parameters.
 
 ```C++
-EXPORT_API void PluginFillColor(int animationId, int frameId, int red, int green, int blue);
+EXPORT_API void PluginFillColor(int animationId,
+  int frameId, int red, int green, int blue);
 ```
-
-
+---
 <a name="PluginFillColorName"></a>
 **PluginFillColorName**
 
 Set the RGB value for all colors in the specified frame. Use the range of 0 to 255 for red, green, and blue parameters.
 
 ```C++
-EXPORT_API void PluginFillColorName(const char* path, int frameId, int red, int green, int blue);
+EXPORT_API void PluginFillColorName(const char* path,
+  int frameId, int red, int green, int blue);
 ```
+---
+<a name="PluginFillColorAllFrames"></a>
+**PluginFillColorAllFrames**
 
+Set the RGB value for all colors for all frames. Use the range of 0 to 255 for red, green, and blue parameters.
 
+```C++
+EXPORT_API void PluginFillColorAllFrames(int animationId,
+  int red, int green, int blue);
+```
+---
+<a name="PluginFillColorAllFramesName"></a>
+**PluginFillColorAllFramesName**
+
+Set the RGB value for all colors for all frames. Use the range of 0 to 255 for red, green, and blue parameters.
+
+```C++
+EXPORT_API void PluginFillColorAllFramesName(const char* path,
+  int red, int green, int blue);
+```
+---
 <a name="PluginFillNonZeroColor"></a>
 **PluginFillNonZeroColor**
 
 This method will only update colors in the animation that are not already set to black. Set the RGB value for a subset of colors in the specified frame. Use the range of 0 to 255 for red, green, and blue parameters.
 
 ```C++
-EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int red, int green, int blue);
+EXPORT_API void PluginFillNonZeroColor(int animationId,
+  int frameId, int red, int green, int blue);
 ```
-
-
+---
 <a name="PluginFillNonZeroColorName"></a>
 **PluginFillNonZeroColorName**
 
 This method will only update colors in the animation that are not already set to black. Set the RGB value for a subset of colors in the specified frame. Use the range of 0 to 255 for red, green, and blue parameters.
 
 ```C++
-EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int red, int green, int blue);
+EXPORT_API void PluginFillNonZeroColorName(const char* path,
+  int frameId, int red, int green, int blue);
 ```
+---
+<a name="PluginFillNonZeroColorAllFrames"></a>
+**PluginFillNonZeroColorAllFrames**
 
+This method will only update colors in the animation that are not already set to black. Set the RGB value for a subset of colors for all frames. Use the range of 0 to 255 for red, green, and blue parameters.
 
+```C++
+EXPORT_API void PluginFillNonZeroColorAllFrames(int animationId,
+  int red, int green, int blue);
+```
+---
+<a name="PluginFillNonZeroColorAllFramesName"></a>
+**PluginFillNonZeroColorAllFramesName**
+
+This method will only update colors in the animation that are not already set to black. Set the RGB value for a subset of colors for all frames. Use the range of 0 to 255 for red, green, and blue parameters.
+
+```C++
+EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path,
+  int red, int green, int blue);
+```
+---
 <a name="PluginOffsetColors"></a>
 **PluginOffsetColors**
 
 Offset all colors in the frame using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
 
 ```C++
-EXPORT_API void PluginOffsetColors(int animationId, int frameId, int red, int green, int blue);
+EXPORT_API void PluginOffsetColors(int animationId,
+  int frameId, int red, int green, int blue);
 ```
-
-
+---
 <a name="PluginOffsetColorsName"></a>
 **PluginOffsetColorsName**
 
 Offset all colors in the frame using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
 
 ```C++
-EXPORT_API void PluginOffsetColorsName(const char* path, int frameId, int red, int green, int blue);
+EXPORT_API void PluginOffsetColorsName(const char* path,
+  int frameId, int red, int green, int blue);
 ```
+---
+<a name="PluginOffsetColorsAllFrames"></a>
+**PluginOffsetColorsAllFrames**
 
+Offset all colors for all frames using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
 
+```C++
+EXPORT_API void PluginOffsetColorsAllFrames(int animationId,
+  int red, int green, int blue);
+```
+---
+<a name="PluginOffsetColorsAllFramesName"></a>
+**PluginOffsetColorsAllFramesName**
+
+Offset all colors for all frames using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
+
+```C++
+EXPORT_API void PluginOffsetColorsAllFramesName(const char* path,
+  int red, int green, int blue);
+```
+---
 <a name="PluginOffsetNonZeroColors"></a>
 **PluginOffsetNonZeroColors**
 
 This method will only update colors in the animation that are not already set to black. Offset a subset of colors in the frame using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
 
 ```C++
-EXPORT_API void PluginOffsetNonZeroColors(int animationId, int frameId, int red, int green, int blue);
+EXPORT_API void PluginOffsetNonZeroColors(int animationId,
+  int frameId, int red, int green, int blue);
 ```
-
-
+---
 <a name="PluginOffsetNonZeroColorsName"></a>
 **PluginOffsetNonZeroColorsName**
 
 This method will only update colors in the animation that are not already set to black. Offset a subset of colors in the frame using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
 
 ```C++
-EXPORT_API void PluginOffsetNonZeroColorsName(const char* path, int frameId, int red, int green, int blue);
+EXPORT_API void PluginOffsetNonZeroColorsName(const char* path,
+  int frameId, int red, int green, int blue);
 ```
+---
+<a name="PluginOffsetNonZeroColorsAllFrames"></a>
+**PluginOffsetNonZeroColorsAllFrames**
 
+This method will only update colors in the animation that are not already set to black. Offset a subset of colors for all frames using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
 
+```C++
+EXPORT_API void PluginOffsetNonZeroColorsAllFrames(int animationId,
+  int red, int green, int blue);
+```
+---
+<a name="PluginOffsetNonZeroColorsAllFramesName"></a>
+**PluginOffsetNonZeroColorsAllFramesName**
+
+This method will only update colors in the animation that are not already set to black. Offset a subset of colors for all frames using the RGB offset. Use the range of -255 to 255 for red, green, and blue parameters. Negative values remove color. Positive values add color.
+
+```C++
+EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(const char* path,
+  int red, int green, int blue);
+```
+---
 <a name="PluginMultiplyIntensity"></a>
 **PluginMultiplyIntensity**
 
 Multiply all the colors in the frame by the intensity value. The valid the intensity range is from 0.0 to 255.0. RGB components are multiplied equally. An intensity of 0.5 would half the color value. Black colors in the frame will not be affected by this method.
 
 ```C++
-EXPORT_API void PluginMultiplyIntensity(int animationId, int frameId, float intensity);
+EXPORT_API void PluginMultiplyIntensity(int animationId,
+  int frameId, float intensity);
 ```
-
-
+---
 <a name="PluginMultiplyIntensityName"></a>
 **PluginMultiplyIntensityName**
 
 Multiply all the colors in the frame by the intensity value. The valid the intensity range is from 0.0 to 255.0. RGB components are multiplied equally. An intensity of 0.5 would half the color value. Black colors in the frame will not be affected by this method.
 
 ```C++
-EXPORT_API void PluginMultiplyIntensityName(const char* path, int frameId, float intensity);
+EXPORT_API void PluginMultiplyIntensityName(const char* path,
+  int frameId, float intensity);
 ```
+---
+<a name="PluginMultiplyIntensityAllFrames"></a>
+**PluginMultiplyIntensityAllFrames**
 
+Multiply all the colors for all frames by the intensity value. The valid the intensity range is from 0.0 to 255.0. RGB components are multiplied equally. An intensity of 0.5 would half the color value. Black colors in the frame will not be affected by this method.
+
+```C++
+EXPORT_API void PluginMultiplyIntensityAllFrames(int animationId,
+  float intensity);
+```
+---
+<a name="PluginMultiplyIntensityAllFramesName"></a>
+**PluginMultiplyIntensityAllFramesName**
+
+Multiply all the colors for all frames by the intensity value. The valid the intensity range is from 0.0 to 255.0. RGB components are multiplied equally. An intensity of 0.5 would half the color value. Black colors in the frame will not be affected by this method.
+
+```C++
+EXPORT_API void PluginMultiplyIntensityAllFramesName(const char* path,
+  float intensity);
+```
+---
 
 <a name="file-format"></a>
 ## File Format
