@@ -45,10 +45,15 @@ typedef void(*PLUGIN_SET_KEYS_NONZERO_COLOR_NAME)(const char* path, int frameId,
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef void(*PLUGIN_FILL_COLOR_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_COLOR_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_FILL_NONZERO_COLOR_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
+typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)(const char* path, float intensity);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
 typedef void(*PLUGIN_CLEAR_ALL)();
@@ -100,10 +105,15 @@ PLUGIN_SET_KEYS_NONZERO_COLOR_NAME _gMethodSetKeysNonZeroColorName = nullptr;
 PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME _gMethodCopyNonZeroAllKeysAllFramesName = nullptr;
 PLUGIN_COPY_KEY_COLOR_NAME _gMethodCopyKeyColorName = nullptr;
 PLUGIN_FILL_COLOR_NAME _gMethodFillColorName = nullptr;
+PLUGIN_FILL_COLOR_ALL_FRAMES_NAME _gMethodFillColorAllFramesName = nullptr;
 PLUGIN_FILL_NONZERO_COLOR_NAME _gMethodFillNonZeroColorName = nullptr;
+PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME _gMethodFillNonZeroColorAllFramesName = nullptr;
 PLUGIN_OFFSET_COLORS_NAME _gMethodOffsetColorsName = nullptr;
+PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME _gMethodOffsetColorsAllFramesName = nullptr;
 PLUGIN_OFFSET_NONZERO_COLORS_NAME _gMethodOffsetNonZeroColorsName = nullptr;
+PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME _gMethodOffsetNonZeroColorsAllFramesName = nullptr;
 PLUGIN_MULTIPLY_INTENSITY_NAME _gMethodMultiplyIntensityName = nullptr;
+PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME _gMethodMultiplyIntensityAllFramesName = nullptr;
 PLUGIN_GET_ANIMATION_NAME _gMethodGetAnimationName = nullptr;
 PLUGIN_STOP_ALL _gMethodStopAll = nullptr;
 PLUGIN_CLEAR_ANIMATION_TYPE _gMethodClearAnimationType = nullptr;
@@ -369,10 +379,24 @@ int Init()
 		return -1;
 	}
 
+	_gMethodFillColorAllFramesName = (PLUGIN_FILL_COLOR_ALL_FRAMES_NAME)GetProcAddress(library, "PluginFillColorAllFramesName");
+	if (_gMethodFillColorAllFramesName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginFillColorAllFramesName!\r\n");
+		return -1;
+	}
+
 	_gMethodFillNonZeroColorName = (PLUGIN_FILL_NONZERO_COLOR_NAME)GetProcAddress(library, "PluginFillNonZeroColorName");
 	if (_gMethodFillNonZeroColorName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginFillNonZeroColorName!\r\n");
+		return -1;
+	}
+
+	_gMethodFillNonZeroColorAllFramesName = (PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME)GetProcAddress(library, "PluginFillNonZeroColorAllFramesName");
+	if (_gMethodFillNonZeroColorAllFramesName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginFillNonZeroColorAllFramesName!\r\n");
 		return -1;
 	}
 
@@ -383,6 +407,13 @@ int Init()
 		return -1;
 	}
 
+	_gMethodOffsetColorsAllFramesName = (PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)GetProcAddress(library, "PluginOffsetColorsAllFramesName");
+	if (_gMethodOffsetColorsAllFramesName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginOffsetColorsAllFramesName!\r\n");
+		return -1;
+	}
+
 	_gMethodOffsetNonZeroColorsName = (PLUGIN_OFFSET_NONZERO_COLORS_NAME)GetProcAddress(library, "PluginOffsetNonZeroColorsName");
 	if (_gMethodOffsetNonZeroColorsName == nullptr)
 	{
@@ -390,10 +421,24 @@ int Init()
 		return -1;
 	}
 
+	_gMethodOffsetNonZeroColorsAllFramesName = (PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME)GetProcAddress(library, "PluginOffsetNonZeroColorsAllFramesName");
+	if (_gMethodOffsetNonZeroColorsAllFramesName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginOffsetNonZeroColorsAllFramesName!\r\n");
+		return -1;
+	}
+
 	_gMethodMultiplyIntensityName = (PLUGIN_MULTIPLY_INTENSITY_NAME)GetProcAddress(library, "PluginMultiplyIntensityName");
 	if (_gMethodMultiplyIntensityName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginMultiplyIntensityName!\r\n");
+		return -1;
+	}
+
+	_gMethodMultiplyIntensityAllFramesName = (PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)GetProcAddress(library, "PluginMultiplyIntensityAllFramesName");
+	if (_gMethodMultiplyIntensityAllFramesName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginMultiplyIntensityAllFramesName!\r\n");
 		return -1;
 	}
 
@@ -922,10 +967,7 @@ void DebugUnitTestsOffset()
 	int frameCount = _gMethodGetFrameCountName(animationName);
 
 	fprintf(stdout, "Set all frames white with FillColor.\r\n");
-	for (int index = 0; index < frameCount; ++index)
-	{
-		_gMethodFillColorName(animationName, index, 255, 255, 255);
-	}
+	_gMethodFillColorAllFramesName(animationName, 255, 255, 255);
 
 	fprintf(stdout, "Fade out black with MultiplyIntensity.\r\n");
 	for (int index = 0; index < frameCount; ++index)
@@ -943,10 +985,7 @@ void DebugUnitTestsOffset()
 
 	fprintf(stdout, "Set all frames black with FillColor.\r\n");
 	_gMethodUnloadAnimationName(animationName);
-	for (int index = 0; index < frameCount; ++index)
-	{
-		_gMethodFillColorName(animationName, index, 0, 0, 0);
-	}
+	_gMethodFillColorAllFramesName(animationName, 0, 0, 0);
 
 	fprintf(stdout, "Fade in red with FillColor.\r\n");
 	for (int index = 0; index < frameCount; ++index)
@@ -962,10 +1001,7 @@ void DebugUnitTestsOffset()
 	}
 
 	fprintf(stdout, "Set all frames red with FillColor.\r\n");
-	for (int index = 0; index < frameCount; ++index)
-	{
-		_gMethodFillColorName(animationName, index, 255, 0, 0);
-	}
+	_gMethodFillColorAllFramesName(animationName, 255, 0, 0);
 
 	fprintf(stdout, "Fade in green with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
@@ -981,10 +1017,7 @@ void DebugUnitTestsOffset()
 	}
 
 	fprintf(stdout, "Set all frames yellow with FillColor.\r\n");
-	for (int index = 0; index < frameCount; ++index)
-	{
-		_gMethodFillColorName(animationName, index, 255, 255, 0);
-	}
+	_gMethodFillColorAllFramesName(animationName, 255, 255, 0);
 
 	fprintf(stdout, "Fade out red with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
@@ -1000,10 +1033,7 @@ void DebugUnitTestsOffset()
 	}
 
 	fprintf(stdout, "Set all frames green with FillColor.\r\n");
-	for (int index = 0; index < frameCount; ++index)
-	{
-		_gMethodFillColorName(animationName, index, 0, 255, 0);
-	}
+	_gMethodFillColorAllFramesName(animationName, 0, 255, 0);
 
 	fprintf(stdout, "Fade in white with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
