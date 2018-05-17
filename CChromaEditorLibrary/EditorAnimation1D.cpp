@@ -99,6 +99,10 @@ void EditorAnimation1D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
 		rows.push_back(row);
 	}
 
+	//clear copy
+	EChromaSDKDevice1DEnum device = GetDevice();
+	_mFrameCopy.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(device);
+
 	//scale pixels
 	std::vector<COLORREF>& colors = _mFrameCopy.Colors;
 	for (int i = 0; i < _mFrameCopy.Colors.size(); ++i)

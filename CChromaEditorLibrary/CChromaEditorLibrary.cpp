@@ -1212,8 +1212,6 @@ void CMainViewDlg::OnBnClickedMenuImportAnimation()
 {
 	OnBnClickedButtonUnload(); // delete frame state
 
-	OnBnClickedButtonUnload();
-
 	EditorAnimationBase* editor = GetEditor();
 	if (editor == nullptr)
 	{
@@ -2492,8 +2490,6 @@ void CMainViewDlg::OnBnClickedButtonReset()
 	OnBnClickedButtonUnload(); // delete frame state
 
 	OnBnClickedButtonStop();
-
-	OnBnClickedButtonUnload();
 
 	AnimationBase* animation = GetAnimation();
 	if (animation != nullptr)
