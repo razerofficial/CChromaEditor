@@ -61,6 +61,9 @@ typedef int(*PLUGIN_GET_ANIMATION_COUNT)();
 typedef int(*PLUGIN_GET_ANIMATION_ID)(int index);
 typedef int(*PLUGIN_GET_PLAYING_ANIMATION_COUNT)();
 typedef int(*PLUGIN_GET_PLAYING_ANIMATION_ID)(int index);
+typedef long(*PLUGIN_CREATE_EFFECT)(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectGUID);
+typedef long(*PLUGIN_SET_EFFECT)(const ChromaSDK::FChromaSDKGuid& effectGUID);
+typedef long(*PLUGIN_DELETE_EFFECT)(const ChromaSDK::FChromaSDKGuid& effectGUID);
 
 #if RUN_UNIT_TESTS
 void DebugUnitTests();
@@ -122,6 +125,9 @@ PLUGIN_GET_ANIMATION_COUNT _gMethodGetAnimationCount = nullptr;
 PLUGIN_GET_ANIMATION_ID _gMethodGetAnimationId = nullptr;
 PLUGIN_GET_PLAYING_ANIMATION_COUNT _gMethodGetPlayingAnimationCount = nullptr;
 PLUGIN_GET_PLAYING_ANIMATION_ID _gMethodGetPlayingAnimationId = nullptr;
+PLUGIN_CREATE_EFFECT _gMethodCreateEffect = nullptr;
+PLUGIN_SET_EFFECT _gMethodSetEffect = nullptr;
+PLUGIN_DELETE_EFFECT _gMethodDeleteEffect = nullptr;
 
 int Init()
 {
@@ -495,6 +501,27 @@ int Init()
 	if (_gMethodGetPlayingAnimationId == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginGetPlayingAnimationId!\r\n");
+		return -1;
+	}
+
+	_gMethodCreateEffect = (PLUGIN_CREATE_EFFECT)GetProcAddress(library, "PluginCreateEffect");
+	if (_gMethodCreateEffect == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCreateEffect!\r\n");
+		return -1;
+	}
+
+	_gMethodSetEffect = (PLUGIN_SET_EFFECT)GetProcAddress(library, "PluginSetEffect");
+	if (_gMethodSetEffect == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginSetEffect!\r\n");
+		return -1;
+	}
+	
+	_gMethodDeleteEffect = (PLUGIN_DELETE_EFFECT)GetProcAddress(library, "PluginDeleteEffect");
+	if (_gMethodDeleteEffect == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginDeleteEffect!\r\n");
 		return -1;
 	}
 
@@ -1177,10 +1204,49 @@ void DebugUnitTestsNonZero()
 	fprintf(stdout, "End of nonzero unit test.\r\n");
 }
 
+void DebugHDK()
+{
+	int size = MAX_ROW * MAX_COLUMN;
+	int index = 0;
+	int* colors = new int[size];
+	for (int i = 0; i < MAX_ROW; i++)
+	{
+		for (int j = 0; j < MAX_COLUMN; ++j)
+		{
+			int red = rand() % 256;
+			int green = rand() % 256;
+			int blue = rand() % 256;
+			COLORREF color = RGB(red, green, blue);
+			colors[index] = color;
+			++index;
+		}
+	}
+
+	fprintf(stdout, "Create random HDK LED colors effect.\r\n");
+
+	FChromaSDKGuid effectId = FChromaSDKGuid();
+	_gMethodCreateEffect(CHROMABOX, EFFECT_TYPE::CHROMA_CUSTOM, colors, size, &effectId);
+
+	fprintf(stdout, "Set HDK Effect.\r\n");
+
+	_gMethodSetEffect(effectId);
+
+	Sleep(3000);
+
+	fprintf(stdout, "Delete HDK Effect.\r\n");
+
+	_gMethodDeleteEffect(effectId);
+
+	Sleep(1000);
+
+	delete colors;
+}
+
 void DebugUnitTests()
 {
+	DebugHDK();
 	//DebugUnitTestsOffset();
-	DebugUnitTestsNonZero();
+	//DebugUnitTestsNonZero();
 
 	while (true)
 	{

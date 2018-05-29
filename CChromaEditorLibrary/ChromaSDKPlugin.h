@@ -38,6 +38,7 @@ namespace ChromaSDK
 		std::vector<FChromaSDKColors> CreateRandomColors2D(const EChromaSDKDevice2DEnum& device);
 		const std::vector<FChromaSDKColors>& SetKeyboardKeyColor(const EChromaSDKKeyboardKey& key, COLORREF color, std::vector<FChromaSDKColors>& colors);
 		const std::vector<FChromaSDKColors>& SetMouseLEDColor(const EChromaSDKMouseLED& led, COLORREF color, std::vector<FChromaSDKColors>& colors);
+		FChromaSDKEffectResult CreateEffect(RZDEVICEID deviceId, EFFECT_TYPE effect, const std::vector<FChromaSDKColors>& colors);
 		FChromaSDKEffectResult CreateEffectNone1D(const EChromaSDKDevice1DEnum& device);
 		FChromaSDKEffectResult CreateEffectNone2D(const EChromaSDKDevice2DEnum& device);
 		FChromaSDKEffectResult CreateEffectStatic1D(const EChromaSDKDevice1DEnum& device, COLORREF color);

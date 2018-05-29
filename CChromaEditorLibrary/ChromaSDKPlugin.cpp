@@ -720,6 +720,33 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetMouseLEDColor(const EChromaS
 	return colors;
 }
 
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffect(RZDEVICEID deviceId, EFFECT_TYPE effect, const vector<FChromaSDKColors>& colors)
+{
+	LogDebug("ChromaSDKPlugin::CreateEffect Invoke.\r\n");
+
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	CUSTOM_EFFECT_TYPE pParam = {};
+	for (int i = 0; i < MAX_ROW; i++)
+	{
+		const FChromaSDKColors& row = colors[i];
+		for (int j = 0; j < MAX_COLUMN; ++j)
+		{
+			pParam.Color[i][j] = row.Colors[j];
+		}
+	}
+
+	RZRESULT result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	result = ChromaSDKCreateEffect(deviceId, EFFECT_TYPE::CHROMA_CUSTOM, &pParam, &effectId);
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	LogDebug("ChromaSDKPlugin::CreateEffect Result=%d.\r\n", data.Result);
+
+	return data;
+}
+
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevice1DEnum& device)
 {
 	LogDebug("ChromaSDKPlugin::CreateEffectNone1D Invoke.\r\n");

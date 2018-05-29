@@ -1579,11 +1579,11 @@ extern "C"
 	{
 		if (loop == 0)
 		{
-			PluginPlayAnimationFrameName(path, frameId, false);
+			PluginPlayAnimationFrameName(path, (int)frameId, false);
 		}
 		else
 		{
-			PluginPlayAnimationFrameName(path, frameId, true);
+			PluginPlayAnimationFrameName(path, (int)frameId, true);
 		}
 		return 0;
 	}
@@ -3137,5 +3137,62 @@ extern "C"
 			PluginResumeAnimationName(path, true);
 		}
 		return 0;
+	}
+
+	EXPORT_API RZRESULT PluginCreateEffect(RZDEVICEID deviceId, EFFECT_TYPE effect, int* colors, int size, FChromaSDKGuid* effectId)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		vector<FChromaSDKColors> newColors = vector<FChromaSDKColors>();
+
+		int index = 0;
+		for (int i = 0; i < MAX_ROW; i++)
+		{
+			FChromaSDKColors row = FChromaSDKColors();
+			for (int j = 0; j < MAX_COLUMN; ++j)
+			{
+				if (index < size)
+				{
+					int color = colors[index];
+					row.Colors.push_back(color);
+				}
+				++index;
+			}
+			newColors.push_back(row);
+		}
+
+		FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffect(deviceId, effect, newColors);
+
+		effectId->Data.Data1 = result.EffectId.Data.Data1;
+		effectId->Data.Data2 = result.EffectId.Data.Data2;
+		effectId->Data.Data3 = result.EffectId.Data.Data3;
+		effectId->Data.Data4[0] = result.EffectId.Data.Data4[0];
+		effectId->Data.Data4[1] = result.EffectId.Data.Data4[1];
+		effectId->Data.Data4[2] = result.EffectId.Data.Data4[2];
+		effectId->Data.Data4[3] = result.EffectId.Data.Data4[3];
+		effectId->Data.Data4[4] = result.EffectId.Data.Data4[4];
+		effectId->Data.Data4[5] = result.EffectId.Data.Data4[5];
+		effectId->Data.Data4[6] = result.EffectId.Data.Data4[6];
+		effectId->Data.Data4[7] = result.EffectId.Data.Data4[7];
+		return result.Result;
+	}
+
+	EXPORT_API RZRESULT PluginSetEffect(const FChromaSDKGuid& effectId)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		RZRESULT result = ChromaSDKPlugin::GetInstance()->SetEffect(effectId);
+		return result;
+	}
+
+	EXPORT_API RZRESULT PluginDeleteEffect(const FChromaSDKGuid& effectId)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		RZRESULT result = ChromaSDKPlugin::GetInstance()->DeleteEffect(effectId);
+		return result;
 	}
 }

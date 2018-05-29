@@ -309,4 +309,10 @@ extern "C"
 	EXPORT_API void PluginResumeAnimation(int animationId, bool loop);
 	EXPORT_API void PluginResumeAnimationName(const char* path, bool loop);
 	EXPORT_API double PluginResumeAnimationNameD(const char* path, double loop);
+
+	EXPORT_API RZRESULT PluginCreateEffect(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectId);
+
+	EXPORT_API RZRESULT PluginSetEffect(const ChromaSDK::FChromaSDKGuid& effectId);
+
+	EXPORT_API RZRESULT PluginDeleteEffect(const ChromaSDK::FChromaSDKGuid& effectId);
 }
