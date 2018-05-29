@@ -1204,19 +1204,59 @@ void DebugUnitTestsNonZero()
 	fprintf(stdout, "End of nonzero unit test.\r\n");
 }
 
-void DebugHDK()
+void DebugHDKIndividualLEDs()
 {
 	int size = MAX_ROW * MAX_COLUMN;
 	int index = 0;
 	int* colors = new int[size];
+	int alternateStrip1[] =
+	{
+		0xFF0000,
+		0x00FF00,
+		0x0000FF,
+	};
+	int alternateStrip2[] =
+	{
+		0xFF00FF,
+		0xFFFF00,
+		0x00FFFF,
+	};
+	int alternateStrip3[] =
+	{
+		0x080000,
+		0x400000,
+		0x7F0000,
+	};
+	int alternateStrip4[] =
+	{
+		0x000800,
+		0x004000,
+		0x007F00,
+	};
+	const int alternateSize = 3;
 	for (int i = 0; i < MAX_ROW; i++)
 	{
 		for (int j = 0; j < MAX_COLUMN; ++j)
 		{
-			int red = rand() % 256;
-			int green = rand() % 256;
-			int blue = rand() % 256;
-			COLORREF color = RGB(red, green, blue);
+			COLORREF color = 0;
+			switch (i)
+			{
+			case 0:
+				color = alternateStrip1[j % alternateSize];
+				break;
+			case 1:
+				color = alternateStrip2[j % alternateSize];
+				break;
+			case 2:
+				color = alternateStrip3[j % alternateSize];
+				break;
+			case 3:
+				color = alternateStrip4[j % alternateSize];
+				break;
+			default:
+				color = 0; //not used
+				break;
+			}
 			colors[index] = color;
 			++index;
 		}
@@ -1242,9 +1282,49 @@ void DebugHDK()
 	delete colors;
 }
 
+void DebugHDKIndividualLEDsGradient()
+{
+	int size = MAX_ROW * MAX_COLUMN;
+	int index = 0;
+	int* colors = new int[size];
+	const int alternateSize = 3;
+	const int HDK_MAX_LEDS = 16;
+	for (int i = 0; i < MAX_ROW; i++)
+	{
+		for (int j = 0; j < MAX_COLUMN; ++j)
+		{
+			int red = 0xFF;
+			int green = min(255, j / (float)HDK_MAX_LEDS * 255);
+			COLORREF color = RGB(red, green, 0);
+			colors[index] = color;
+			++index;
+		}
+	}
+
+	fprintf(stdout, "Create HDK gradient.\r\n");
+
+	FChromaSDKGuid effectId = FChromaSDKGuid();
+	_gMethodCreateEffect(CHROMABOX, EFFECT_TYPE::CHROMA_CUSTOM, colors, size, &effectId);
+
+	fprintf(stdout, "Set HDK Effect.\r\n");
+
+	_gMethodSetEffect(effectId);
+
+	Sleep(3000);
+
+	fprintf(stdout, "Delete HDK Effect.\r\n");
+
+	_gMethodDeleteEffect(effectId);
+
+	Sleep(1000);
+
+	delete colors;
+}
+
 void DebugUnitTests()
 {
-	DebugHDK();
+	DebugHDKIndividualLEDsGradient();
+	//DebugHDKIndividualLEDs();
 	//DebugUnitTestsOffset();
 	//DebugUnitTestsNonZero();
 
