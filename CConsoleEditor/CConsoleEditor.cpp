@@ -624,6 +624,17 @@ void IsPlaying(const char* name)
 	fprintf(stdout, "Mousepad IsPlayingType: %s\r\n", _gMethodIsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad) ? "true" : "false");
 }
 
+void DebugUnitTestsPlayComposite()
+{
+	while (true)
+	{
+		fprintf(stdout, "Measure CPU usage.\r\n");
+		const char* RANDOM_COMPOSITE = "Random";
+		_gMethodPlayComposite(RANDOM_COMPOSITE, false);
+		Sleep(3000);
+	}
+}
+
 void DebugUnitTestsOpenDialog()
 {
 	_gMethodOpenDialog("RandomKeyboardEffect.chroma");
@@ -1342,11 +1353,12 @@ void DebugUnitTestsCreateAnimation()
 
 void DebugUnitTests()
 {
+	DebugUnitTestsPlayComposite();
 	//DebugUnitTestsHDKIndividualLEDsGradient();
 	//DebugUnitTestsHDKIndividualLEDs();
 	//DebugUnitTestsOffset();
 	//DebugUnitTestsNonZero();
-	DebugUnitTestsCreateAnimation();
+	//DebugUnitTestsCreateAnimation();
 
 	while (true)
 	{
