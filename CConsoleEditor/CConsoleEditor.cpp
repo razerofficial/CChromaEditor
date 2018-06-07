@@ -20,6 +20,7 @@ typedef double(*PLUGIN_CLOSE_ANIMATION)(double animationId);
 typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_CLOSE_ALL)();
+typedef int(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int device);
 typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
 typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
 typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
@@ -91,6 +92,7 @@ PLUGIN_PLAY_COMPOSITE _gMethodPlayComposite = nullptr;
 PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
 PLUGIN_CLOSE_COMPOSITE _gMethodCloseComposite = nullptr;
 PLUGIN_CLOSE_ALL _gMethodCloseAll = nullptr;
+PLUGIN_CREATE_ANIMATION _gMethodCreateAnimation = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
 PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
@@ -263,6 +265,13 @@ int Init()
 	if (_gMethodCloseAll == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginCloseAll!\r\n");
+		return -1;
+	}
+
+	_gMethodCreateAnimation = (PLUGIN_CREATE_ANIMATION)GetProcAddress(library, "PluginCreateAnimation");
+	if (_gMethodCreateAnimation == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCreateAnimation!\r\n");
 		return -1;
 	}
 
@@ -1204,7 +1213,7 @@ void DebugUnitTestsNonZero()
 	fprintf(stdout, "End of nonzero unit test.\r\n");
 }
 
-void DebugHDKIndividualLEDs()
+void DebugUnitTestsHDKIndividualLEDs()
 {
 	int size = MAX_ROW * MAX_COLUMN;
 	int index = 0;
@@ -1282,7 +1291,7 @@ void DebugHDKIndividualLEDs()
 	delete colors;
 }
 
-void DebugHDKIndividualLEDsGradient()
+void DebugUnitTestsHDKIndividualLEDsGradient()
 {
 	int size = MAX_ROW * MAX_COLUMN;
 	int index = 0;
@@ -1321,12 +1330,23 @@ void DebugHDKIndividualLEDsGradient()
 	delete colors;
 }
 
+void DebugUnitTestsCreateAnimation()
+{
+	const char* animationName = "New_ChromaLink.chroma";
+	int animationId = _gMethodCreateAnimation(animationName, (int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink);
+	if (animationId < 0)
+	{
+		fprintf(stderr, "Failed to create animation! %s\r\n", animationName);
+	}
+}
+
 void DebugUnitTests()
 {
-	DebugHDKIndividualLEDsGradient();
-	//DebugHDKIndividualLEDs();
+	//DebugUnitTestsHDKIndividualLEDsGradient();
+	//DebugUnitTestsHDKIndividualLEDs();
 	//DebugUnitTestsOffset();
 	//DebugUnitTestsNonZero();
+	DebugUnitTestsCreateAnimation();
 
 	while (true)
 	{

@@ -19,6 +19,7 @@ namespace ChromaSDK
 		int GetAnimationId(int index);
 	private:
 		ChromaThread();
+		void ProcessAnimations(float deltaTime);
 		void ChromaWorker();
 		static ChromaThread* _sInstance;
 		std::vector<AnimationBase*> _mAnimations;

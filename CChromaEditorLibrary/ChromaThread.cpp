@@ -19,6 +19,40 @@ ChromaThread* ChromaThread::Instance()
 	return _sInstance;
 }
 
+void ChromaThread::ProcessAnimations(float deltaTime)
+{
+	lock_guard<mutex> guard(_mMutex);
+
+	// update animations
+	vector<AnimationBase*> doneList = vector<AnimationBase*>();
+	for (int i = 0; i < _mAnimations.size() && _mWaitForExit; ++i)
+	{
+		AnimationBase* animation = _mAnimations[i];
+		if (animation != nullptr)
+		{
+			animation->Update(deltaTime);
+			// no need to update animations that are no longer playing
+			if (!animation->IsPlaying())
+			{
+				doneList.push_back(animation);
+			}
+		}
+	}
+
+	for (int i = 0; i < doneList.size() && _mWaitForExit; ++i)
+	{
+		AnimationBase* animation = doneList[i];
+		if (animation != nullptr)
+		{
+			auto it = find(_mAnimations.begin(), _mAnimations.end(), animation);
+			if (it != _mAnimations.end())
+			{
+				_mAnimations.erase(it);
+			}
+		}
+	}
+}
+
 void ChromaThread::ChromaWorker()
 {
 	// get current time
@@ -37,43 +71,15 @@ void ChromaThread::ChromaWorker()
 		float deltaTime = (float)(time_span.count() / 1000.0f);
 		timerLast = timer;
 
-		lock_guard<mutex> guard(_mMutex);
+		ProcessAnimations(deltaTime);
 
-		// update animations
-		vector<AnimationBase*> doneList = vector<AnimationBase*>();
-		for (int i = 0; i < _mAnimations.size(); ++i)
+		if (!_mWaitForExit)
 		{
-			AnimationBase* animation = _mAnimations[i];
-			if (animation != nullptr)
-			{
-				animation->Update(deltaTime);
-				// no need to update animations that are no longer playing
-				if (!animation->IsPlaying())
-				{
-					doneList.push_back(animation);
-				}
-			}
+			break;
 		}
-
-		for (int i = 0; i < doneList.size(); ++i)
-		{
-			AnimationBase* animation = doneList[i];
-			if (animation != nullptr)
-			{
-				auto it = find(_mAnimations.begin(), _mAnimations.end(), animation);
-				if (it != _mAnimations.end())
-				{
-					_mAnimations.erase(it);
-				}
-			}
-		}
-
-		//this_thread::sleep_for(chrono::seconds(1));
+			
 		//fprintf(stdout, "ChromaThread: Sleeping...\r\n");
-
-		//this_thread::sleep_for(chrono::microseconds(1));
-
-		this_thread::yield();
+		this_thread::sleep_for(chrono::milliseconds(0));
 	}
 
 	_mThread = nullptr;
