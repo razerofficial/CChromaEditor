@@ -78,8 +78,7 @@ void ChromaThread::ChromaWorker()
 			break;
 		}
 			
-		//fprintf(stdout, "ChromaThread: Sleeping...\r\n");
-		this_thread::sleep_for(chrono::milliseconds(0));
+		this_thread::sleep_for(chrono::milliseconds(1));
 	}
 
 	_mThread = nullptr;
