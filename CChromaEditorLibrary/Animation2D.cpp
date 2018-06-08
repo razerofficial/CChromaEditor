@@ -12,6 +12,7 @@ Animation2D::Animation2D()
 {
 	//default device
 	_mDevice = EChromaSDKDevice2DEnum::DE_Keyboard;
+	_mUseChromaCustom = false;
 	Reset();
 }
 
@@ -90,7 +91,16 @@ void Animation2D::Load()
 		FChromaSDKColorFrame2D& frame = _mFrames[i];
 		try
 		{
-			FChromaSDKEffectResult effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors);
+			FChromaSDKEffectResult effect;
+			if (_mDevice == EChromaSDKDevice2DEnum::DE_Keyboard &&
+				_mUseChromaCustom)
+			{
+				effect = ChromaSDKPlugin::GetInstance()->CreateEffectKeyboardCustom2D(frame.Colors);
+			}
+			else
+			{
+				effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors);
+			}
 			if (effect.Result != 0)
 			{
 				fprintf(stderr, "Load: Failed to create effect!\r\n");
@@ -364,4 +374,14 @@ int Animation2D::Save(const char* path)
 	}
 
 	return -1;
+}
+
+void Animation2D::SetChromaCustom(bool flag)
+{
+	_mUseChromaCustom = flag;
+}
+
+bool Animation2D::UseChromaCustom()
+{
+	return _mUseChromaCustom;
 }

@@ -147,6 +147,7 @@ extern "C"
 	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length);
 	
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
+	EXPORT_API void PluginPreviewFrameName(const char* path, int frameIndex);
 	EXPORT_API double PluginPreviewFrameD(double animationId, double frameIndex);
 	
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration);
@@ -309,6 +310,10 @@ extern "C"
 	EXPORT_API void PluginResumeAnimation(int animationId, bool loop);
 	EXPORT_API void PluginResumeAnimationName(const char* path, bool loop);
 	EXPORT_API double PluginResumeAnimationNameD(const char* path, double loop);
+
+	EXPORT_API void PluginKeyboardUseChromaCustom(int animationId, bool flag);
+	EXPORT_API void PluginKeyboardUseChromaCustomName(const char* path, bool flag);
+	EXPORT_API double PluginKeyboardUseChromaCustomNameD(const char* path, double flag);
 
 	EXPORT_API RZRESULT PluginCreateEffect(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectId);
 

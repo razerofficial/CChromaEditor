@@ -21,6 +21,8 @@ typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_CLOSE_ALL)();
 typedef int(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int device);
+typedef int(*PLUGIN_CREATE_ANIMATION_IN_MEMORY)(int deviceType, int device);
+typedef int(*PLUGIN_PREVIEW_FRAME)(int animationId, int frameIndex);
 typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
 typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
 typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
@@ -39,6 +41,7 @@ typedef int(*PLUGIN_GET_MAX_COLUMN)(int device);
 typedef int(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int length);
 typedef int(*PLUGIN_GET_FRAME)(int animationId, int frameIndex, float* duration, int* colors, int length);
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
+typedef void(*PLUGIN_SET_KEY_COLOR)(int animationId, int frameId, int rzkey, int color);
 typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
 typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 typedef void(*PLUGIN_SET_KEY_NONZERO_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
@@ -55,6 +58,8 @@ typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_NAME)(const char* path, int frameId, 
 typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)(const char* path, float intensity);
+typedef bool(*PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM)(int animationId, bool flag);
+typedef bool(*PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM_NAME)(const char* path, bool flag);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
 typedef void(*PLUGIN_CLEAR_ALL)();
@@ -80,6 +85,7 @@ PLUGIN_OPEN_EDITOR_DIALOG _gMethodOpenDialog = nullptr;
 PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY _gMethodOpenDialogAndPlay = nullptr;
 PLUGIN_OPEN_ANIMATION _gMethodOpenAnimation = nullptr;
 PLUGIN_CLOSE_ANIMATION _gMethodCloseAnimation = nullptr;
+PLUGIN_PREVIEW_FRAME _gMethodPreviewFrame = nullptr;
 PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
 PLUGIN_PLAY_ANIMATION_NAME _gMethodPlayAnimationName = nullptr;
 PLUGIN_STOP_ANIMATION_NAME _gMethodStopAnimationName = nullptr;
@@ -93,6 +99,7 @@ PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
 PLUGIN_CLOSE_COMPOSITE _gMethodCloseComposite = nullptr;
 PLUGIN_CLOSE_ALL _gMethodCloseAll = nullptr;
 PLUGIN_CREATE_ANIMATION _gMethodCreateAnimation = nullptr;
+PLUGIN_CREATE_ANIMATION_IN_MEMORY _gMethodCreateAnimationInMemory = nullptr;
 PLUGIN_INIT _gMethodInit = nullptr;
 PLUGIN_UNINIT _gMethodUninit = nullptr;
 PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
@@ -103,6 +110,7 @@ PLUGIN_GET_MAX_COLUMN _gMethodGetMaxColumn = nullptr;
 PLUGIN_ADD_FRAME _gMethodAddFrame = nullptr;
 PLUGIN_GET_FRAME _gMethodGetFrame = nullptr;
 PLUGIN_GET_FRAME_COUNT_NAME _gMethodGetFrameCountName = nullptr;
+PLUGIN_SET_KEY_COLOR _gMethodSetKeyColor = nullptr;
 PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
 PLUGIN_SET_KEYS_COLOR_NAME _gMethodSetKeysColorName = nullptr;
 PLUGIN_SET_KEY_NONZERO_COLOR_NAME _gMethodSetKeyNonZeroColorName = nullptr;
@@ -119,6 +127,8 @@ PLUGIN_OFFSET_NONZERO_COLORS_NAME _gMethodOffsetNonZeroColorsName = nullptr;
 PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME _gMethodOffsetNonZeroColorsAllFramesName = nullptr;
 PLUGIN_MULTIPLY_INTENSITY_NAME _gMethodMultiplyIntensityName = nullptr;
 PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME _gMethodMultiplyIntensityAllFramesName = nullptr;
+PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM _gMethodKeyboardUseChromaCustom = nullptr;
+PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM_NAME _gMethodKeyboardUseChromaCustomName = nullptr;
 PLUGIN_GET_ANIMATION_NAME _gMethodGetAnimationName = nullptr;
 PLUGIN_STOP_ALL _gMethodStopAll = nullptr;
 PLUGIN_CLEAR_ANIMATION_TYPE _gMethodClearAnimationType = nullptr;
@@ -181,6 +191,13 @@ int Init()
 	if (_gMethodCloseAnimation == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginCloseAnimation!\r\n");
+		return -1;
+	}
+
+	_gMethodPreviewFrame = (PLUGIN_PREVIEW_FRAME)GetProcAddress(library, "PluginPreviewFrame");
+	if (_gMethodPreviewFrame == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginPreviewFrame!\r\n");
 		return -1;
 	}
 
@@ -275,6 +292,13 @@ int Init()
 		return -1;
 	}
 
+	_gMethodCreateAnimationInMemory = (PLUGIN_CREATE_ANIMATION_IN_MEMORY)GetProcAddress(library, "PluginCreateAnimationInMemory");
+	if (_gMethodCreateAnimationInMemory == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginCreateAnimationInMemory!\r\n");
+		return -1;
+	}
+
 	_gMethodInit = (PLUGIN_UNINIT)GetProcAddress(library, "PluginInit");
 	if (_gMethodInit == nullptr)
 	{
@@ -342,6 +366,13 @@ int Init()
 	if (_gMethodGetFrameCountName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginGetFrameCountName!\r\n");
+		return -1;
+	}
+
+	_gMethodSetKeyColor = (PLUGIN_SET_KEY_COLOR)GetProcAddress(library, "PluginSetKeyColor");
+	if (_gMethodSetKeyColor == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginSetKeyColor!\r\n");
 		return -1;
 	}
 
@@ -454,6 +485,20 @@ int Init()
 	if (_gMethodMultiplyIntensityAllFramesName == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginMultiplyIntensityAllFramesName!\r\n");
+		return -1;
+	}
+
+	_gMethodKeyboardUseChromaCustom = (PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM)GetProcAddress(library, "PluginKeyboardUseChromaCustom");
+	if (_gMethodKeyboardUseChromaCustom == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginKeyboardUseChromaCustom!\r\n");
+		return -1;
+	}
+
+	_gMethodKeyboardUseChromaCustomName = (PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM_NAME)GetProcAddress(library, "PluginKeyboardUseChromaCustomName");
+	if (_gMethodKeyboardUseChromaCustomName == nullptr)
+	{
+		fprintf(stderr, "Failed to find method PluginKeyboardUseChromaCustomName!\r\n");
 		return -1;
 	}
 
@@ -1351,9 +1396,58 @@ void DebugUnitTestsCreateAnimation()
 	}
 }
 
+void DebugUnitTestsKeyboardCustom()
+{
+	fprintf(stdout, "Clear all.\r\n");
+	_gMethodClearAll();
+	Sleep(3000);
+
+	fprintf(stdout, "Show custom keyboard keys Z N M LALT.\r\n");
+	int animationId = _gMethodCreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
+	_gMethodKeyboardUseChromaCustom(animationId, true);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_Z, 0x01FF0000);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_N, 0x0100FF00);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_M, 0x010000FF);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_LALT, 0x01FFFFFF);
+	fprintf(stdout, "Play animation with custom keys.\r\n");
+	_gMethodPlayAnimation(animationId);
+	Sleep(2000);
+	fprintf(stdout, "Preview frame with custom keys.\r\n");
+	_gMethodPreviewFrame(animationId, 0);
+	Sleep(2000);
+	_gMethodCloseAnimation(animationId);
+
+	fprintf(stdout, "Clear all.\r\n");
+	_gMethodClearAll();
+	Sleep(3000);
+
+	fprintf(stdout, "Show custom keyboard keys LCTRL X C V B.\r\n");
+	animationId = _gMethodCreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
+	_gMethodKeyboardUseChromaCustom(animationId, true);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_LCTRL, 0x01FF0000);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_X, 0x0100FF00);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_C, 0x010000FF);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_V, 0x01FFFFFF);
+	_gMethodSetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_B, 0x01FFFF00);
+	fprintf(stdout, "Play animation with custom keys.\r\n");
+	_gMethodPlayAnimation(animationId);
+	Sleep(2000);
+	fprintf(stdout, "Preview frame with custom keys.\r\n");
+	_gMethodPreviewFrame(animationId, 0);
+	Sleep(2000);
+	_gMethodCloseAnimation(animationId);
+
+	fprintf(stdout, "Clear all.\r\n");
+	_gMethodClearAll();
+	Sleep(3000);
+}
+
 void DebugUnitTests()
 {
-	DebugUnitTestsPlayComposite();
+	_gMethodInit();
+
+	DebugUnitTestsKeyboardCustom();
+	//DebugUnitTestsPlayComposite();
 	//DebugUnitTestsHDKIndividualLEDsGradient();
 	//DebugUnitTestsHDKIndividualLEDs();
 	//DebugUnitTestsOffset();

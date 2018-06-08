@@ -722,7 +722,7 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetMouseLEDColor(const EChromaS
 
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffect(RZDEVICEID deviceId, EFFECT_TYPE effect, const vector<FChromaSDKColors>& colors)
 {
-	LogDebug("ChromaSDKPlugin::CreateEffect Invoke.\r\n");
+	//LogDebug("ChromaSDKPlugin::CreateEffect Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -742,14 +742,17 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffect(RZDEVICEID deviceId, EFFECT
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
-	LogDebug("ChromaSDKPlugin::CreateEffect Result=%d.\r\n", data.Result);
+	if (data.Result != 0)
+	{
+		LogDebug("ChromaSDKPlugin::CreateEffect Result=%d.\r\n", data.Result);
+	}
 
 	return data;
 }
 
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevice1DEnum& device)
 {
-	LogDebug("ChromaSDKPlugin::CreateEffectNone1D Invoke.\r\n");
+	//LogDebug("ChromaSDKPlugin::CreateEffectNone1D Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -773,14 +776,17 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevic
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
-	LogDebug("ChromaSDKPlugin::CreateEffectNone1D Result=%d.\r\n", data.Result);
+	if (data.Result != 0)
+	{
+		LogDebug("ChromaSDKPlugin::CreateEffectNone1D Result=%d.\r\n", data.Result);
+	}
 
 	return data;
 }
 
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevice2DEnum& device)
 {
-	LogDebug("ChromaSDKPlugin::CreateEffectNone2D Invoke.\r\n");
+	//LogDebug("ChromaSDKPlugin::CreateEffectNone2D Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -804,7 +810,10 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevic
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
-	LogDebug("ChromaSDKPlugin::CreateEffectNone2D Result=%d.\r\n", data.Result);
+	if (data.Result != 0)
+	{
+		LogDebug("ChromaSDKPlugin::CreateEffectNone2D Result=%d.\r\n", data.Result);
+	}
 
 	return data;
 }
@@ -1056,6 +1065,45 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 		LogError("ChromaSDKPlugin::CreateEffectCustom2D Unsupported device used!\r\n");
 		break;
 	}
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	return data;
+}
+
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vector<FChromaSDKColors>& colors)
+{
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	RZRESULT result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	int maxRow = Keyboard::MAX_ROW;
+	int maxColumn = Keyboard::MAX_COLUMN;
+
+	if (maxRow != colors.size() ||
+		(colors.size() > 0 &&
+		maxColumn != colors[0].Colors.size()))
+	{
+		LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			maxRow,
+			colors.size(),
+			maxColumn,
+			colors.size() > 0 ? colors[0].Colors.size() : 0);
+	}
+	else
+	{
+		Keyboard::CUSTOM_KEY_EFFECT_TYPE pParam = {};
+		for (int i = 0; i < maxRow; i++)
+		{
+			const FChromaSDKColors& row = colors[i];
+			for (int j = 0; j < maxColumn; j++)
+			{
+				pParam.Key[i][j] = row.Colors[j];
+			}
+		}
+		result = ChromaSDKCreateKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, &pParam, &effectId);
+	}	
+	
 	data.EffectId.Data = effectId;
 	data.Result = result;
 

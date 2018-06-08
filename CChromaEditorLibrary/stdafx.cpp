@@ -1169,7 +1169,15 @@ extern "C"
 					}
 					FChromaSDKColorFrame2D frame = frames[frameIndex];
 					vector<FChromaSDKColors>& colors = frame.Colors;
-					FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(animation2D->GetDevice(), colors);
+					FChromaSDKEffectResult result;
+					if (animation2D->UseChromaCustom())
+					{
+						result = ChromaSDKPlugin::GetInstance()->CreateEffectKeyboardCustom2D(colors);
+					}
+					else
+					{
+						result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(animation2D->GetDevice(), colors);
+					}
 					if (result.Result == 0)
 					{
 						ChromaSDKPlugin::GetInstance()->SetEffect(result.EffectId);
@@ -1182,6 +1190,17 @@ extern "C"
 		}
 
 		return -1;
+	}
+
+	EXPORT_API void PluginPreviewFrameName(const char* path, int frameIndex)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginPreviewFrameName: Animation not found! %s", path);
+			return;
+		}
+		PluginPreviewFrame(animationId, frameIndex);
 	}
 
 	EXPORT_API double PluginPreviewFrameD(double animationId, double frameIndex)
@@ -3138,6 +3157,51 @@ extern "C"
 		}
 		return 0;
 	}
+
+
+	EXPORT_API void PluginKeyboardUseChromaCustom(int animationId, bool flag)
+	{
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		if (animation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			return;
+		}
+		if (animation->GetDeviceId() != EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+		animation2D->SetChromaCustom(flag);
+	}
+
+	EXPORT_API void PluginKeyboardUseChromaCustomName(const char* path, bool flag)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginKeyboardUseChromaCustomName: Animation not found! %s", path);
+			return;
+		}
+		PluginKeyboardUseChromaCustom(animationId, flag);
+	}
+
+	EXPORT_API double PluginKeyboardUseChromaCustomNameD(const char* path, double flag)
+	{
+		if (flag == 0)
+		{
+			PluginKeyboardUseChromaCustomName(path, false);
+		}
+		else
+		{
+			PluginKeyboardUseChromaCustomName(path, true);
+		}
+		return 0;
+	}
+
 
 	EXPORT_API RZRESULT PluginCreateEffect(RZDEVICEID deviceId, EFFECT_TYPE effect, int* colors, int size, FChromaSDKGuid* effectId)
 	{
