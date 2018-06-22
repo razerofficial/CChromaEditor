@@ -79,67 +79,77 @@ using namespace std;
 using namespace std::chrono;
 using namespace ChromaSDK;
 
-PLUGIN_IS_INITIALIZED _gMethodIsInitialized = nullptr;
-PLUGIN_IS_DIALOG_OPEN _gMethodIsDialogOpen = nullptr;
-PLUGIN_OPEN_EDITOR_DIALOG _gMethodOpenDialog = nullptr;
-PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY _gMethodOpenDialogAndPlay = nullptr;
-PLUGIN_OPEN_ANIMATION _gMethodOpenAnimation = nullptr;
-PLUGIN_CLOSE_ANIMATION _gMethodCloseAnimation = nullptr;
-PLUGIN_PREVIEW_FRAME _gMethodPreviewFrame = nullptr;
-PLUGIN_PLAY_ANIMATION _gMethodPlayAnimation = nullptr;
-PLUGIN_PLAY_ANIMATION_NAME _gMethodPlayAnimationName = nullptr;
-PLUGIN_STOP_ANIMATION_NAME _gMethodStopAnimationName = nullptr;
-PLUGIN_STOP_ANIMATION_TYPE _gMethodStopAnimationType = nullptr;
-PLUGIN_IS_PLAYING_NAME _gMethodIsPlayingName = nullptr;
-PLUGIN_IS_PLAYING_TYPE _gMethodIsPlayingType = nullptr;
-PLUGIN_LOAD_COMPOSITE _gMethodLoadComposite = nullptr;
-PLUGIN_UNLOAD_COMPOSITE _gMethodUnloadComposite = nullptr;
-PLUGIN_PLAY_COMPOSITE _gMethodPlayComposite = nullptr;
-PLUGIN_STOP_COMPOSITE _gMethodStopComposite = nullptr;
-PLUGIN_CLOSE_COMPOSITE _gMethodCloseComposite = nullptr;
-PLUGIN_CLOSE_ALL _gMethodCloseAll = nullptr;
-PLUGIN_CREATE_ANIMATION _gMethodCreateAnimation = nullptr;
-PLUGIN_CREATE_ANIMATION_IN_MEMORY _gMethodCreateAnimationInMemory = nullptr;
-PLUGIN_INIT _gMethodInit = nullptr;
-PLUGIN_UNINIT _gMethodUninit = nullptr;
-PLUGIN_CLOSE_ANIMATION_NAME _gMethodCloseAnimationName = nullptr;
-PLUGIN_LOAD_ANIMATION_NAME _gMethodLoadAnimationName = nullptr;
-PLUGIN_UNLOAD_ANIMATION_NAME _gMethodUnloadAnimationName = nullptr;
-PLUGIN_GET_MAX_ROW _gMethodGetMaxRow = nullptr;
-PLUGIN_GET_MAX_COLUMN _gMethodGetMaxColumn = nullptr;
-PLUGIN_ADD_FRAME _gMethodAddFrame = nullptr;
-PLUGIN_GET_FRAME _gMethodGetFrame = nullptr;
-PLUGIN_GET_FRAME_COUNT_NAME _gMethodGetFrameCountName = nullptr;
-PLUGIN_SET_KEY_COLOR _gMethodSetKeyColor = nullptr;
-PLUGIN_SET_KEY_COLOR_NAME _gMethodSetKeyColorName = nullptr;
-PLUGIN_SET_KEYS_COLOR_NAME _gMethodSetKeysColorName = nullptr;
-PLUGIN_SET_KEY_NONZERO_COLOR_NAME _gMethodSetKeyNonZeroColorName = nullptr;
-PLUGIN_SET_KEYS_NONZERO_COLOR_NAME _gMethodSetKeysNonZeroColorName = nullptr;
-PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME _gMethodCopyNonZeroAllKeysAllFramesName = nullptr;
-PLUGIN_COPY_KEY_COLOR_NAME _gMethodCopyKeyColorName = nullptr;
-PLUGIN_FILL_COLOR_NAME _gMethodFillColorName = nullptr;
-PLUGIN_FILL_COLOR_ALL_FRAMES_NAME _gMethodFillColorAllFramesName = nullptr;
-PLUGIN_FILL_NONZERO_COLOR_NAME _gMethodFillNonZeroColorName = nullptr;
-PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME _gMethodFillNonZeroColorAllFramesName = nullptr;
-PLUGIN_OFFSET_COLORS_NAME _gMethodOffsetColorsName = nullptr;
-PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME _gMethodOffsetColorsAllFramesName = nullptr;
-PLUGIN_OFFSET_NONZERO_COLORS_NAME _gMethodOffsetNonZeroColorsName = nullptr;
-PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME _gMethodOffsetNonZeroColorsAllFramesName = nullptr;
-PLUGIN_MULTIPLY_INTENSITY_NAME _gMethodMultiplyIntensityName = nullptr;
-PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME _gMethodMultiplyIntensityAllFramesName = nullptr;
-PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM _gMethodKeyboardUseChromaCustom = nullptr;
-PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM_NAME _gMethodKeyboardUseChromaCustomName = nullptr;
-PLUGIN_GET_ANIMATION_NAME _gMethodGetAnimationName = nullptr;
-PLUGIN_STOP_ALL _gMethodStopAll = nullptr;
-PLUGIN_CLEAR_ANIMATION_TYPE _gMethodClearAnimationType = nullptr;
-PLUGIN_CLEAR_ALL _gMethodClearAll = nullptr;
-PLUGIN_GET_ANIMATION_COUNT _gMethodGetAnimationCount = nullptr;
-PLUGIN_GET_ANIMATION_ID _gMethodGetAnimationId = nullptr;
-PLUGIN_GET_PLAYING_ANIMATION_COUNT _gMethodGetPlayingAnimationCount = nullptr;
-PLUGIN_GET_PLAYING_ANIMATION_ID _gMethodGetPlayingAnimationId = nullptr;
-PLUGIN_CREATE_EFFECT _gMethodCreateEffect = nullptr;
-PLUGIN_SET_EFFECT _gMethodSetEffect = nullptr;
-PLUGIN_DELETE_EFFECT _gMethodDeleteEffect = nullptr;
+#define CHROMASDK_DECLARE_METHOD(Signature, FieldName) Signature _gMethod ## FieldName = nullptr;
+
+CHROMASDK_DECLARE_METHOD(PLUGIN_IS_INITIALIZED, IsInitialized)
+CHROMASDK_DECLARE_METHOD(PLUGIN_IS_INITIALIZED, IsInitialized2)
+CHROMASDK_DECLARE_METHOD(PLUGIN_IS_DIALOG_OPEN, IsDialogOpen)
+CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG, OpenEditorDialog)
+CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY, OpenEditorDialogAndPlay)
+CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION, OpenAnimation)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION, CloseAnimation)
+CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame)
+CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION, PlayAnimation)
+CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_NAME, PlayAnimationName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_NAME, StopAnimationName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_TYPE, StopAnimationType)
+CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_NAME, IsPlayingName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_TYPE, IsPlayingType)
+CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_COMPOSITE, LoadComposite)
+CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_COMPOSITE, UnloadComposite)
+CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_COMPOSITE, PlayComposite)
+CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_COMPOSITE, StopComposite)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_COMPOSITE, CloseComposite)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ALL, CloseAll)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_ANIMATION, CreateAnimation)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_ANIMATION_IN_MEMORY, CreateAnimationInMemory)
+CHROMASDK_DECLARE_METHOD(PLUGIN_INIT, Init)
+CHROMASDK_DECLARE_METHOD(PLUGIN_UNINIT, Uninit)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION_NAME, CloseAnimationName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_ANIMATION_NAME, LoadAnimationName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_ANIMATION_NAME, UnloadAnimationName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_ROW, GetMaxRow)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_COLUMN, GetMaxColumn)
+CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_FRAME, AddFrame)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME, GetFrame)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME, GetFrameCountName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR, SetKeyColor)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_NAME, SetKeyColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_NAME, SetKeysColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NONZERO_COLOR_NAME, SetKeyNonZeroColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NONZERO_COLOR_NAME, SetKeysNonZeroColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroAllKeysAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_NAME, FillColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_NAME, FillColorAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NONZERO_COLOR_NAME, FillNonZeroColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME, FillNonZeroColorAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_NAME, OffsetColorsName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME, OffsetColorsAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NONZERO_COLORS_NAME, OffsetNonZeroColorsName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME, OffsetNonZeroColorsAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME, MultiplyIntensityAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM, KeyboardUseChromaCustom)
+CHROMASDK_DECLARE_METHOD(PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM_NAME, KeyboardUseChromaCustomName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_NAME, GetAnimationName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ALL, StopAll)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CLEAR_ANIMATION_TYPE, ClearAnimationType)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CLEAR_ALL, ClearAll)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_COUNT, GetAnimationCount)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_ID, GetAnimationId)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_PLAYING_ANIMATION_COUNT, GetPlayingAnimationCount)
+CHROMASDK_DECLARE_METHOD(PLUGIN_GET_PLAYING_ANIMATION_ID, GetPlayingAnimationId)
+CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_EFFECT, CreateEffect)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_EFFECT, SetEffect)
+CHROMASDK_DECLARE_METHOD(PLUGIN_DELETE_EFFECT, DeleteEffect)
+
+#define CHROMASDK_VALIDATE_METHOD(Signature, FieldName) _gMethod ## FieldName = (Signature) GetProcAddress(library, "Plugin" #FieldName); \
+if (_gMethod ## FieldName == nullptr) \
+{ \
+	fprintf(stderr, "Failed to find method: %s!\r\n", "Plugin" #FieldName); \
+	return -1; \
+}
 
 int Init()
 {
@@ -152,434 +162,69 @@ int Init()
 
 	fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
 
-	_gMethodIsInitialized = (PLUGIN_IS_INITIALIZED)GetProcAddress(library, "PluginIsInitialized");
-	if (_gMethodIsInitialized == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginIsInitialized!\r\n");
-		return -1;
-	}
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_IS_INITIALIZED, IsInitialized);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_IS_DIALOG_OPEN, IsDialogOpen);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG, OpenEditorDialog);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY, OpenEditorDialogAndPlay);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_OPEN_ANIMATION, OpenAnimation);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CLOSE_ANIMATION, CloseAnimation);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_PLAY_ANIMATION, PlayAnimation);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_PLAY_ANIMATION_NAME, PlayAnimationName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_STOP_ANIMATION_NAME, StopAnimationName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_STOP_ANIMATION_TYPE, StopAnimationType);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_IS_PLAYING_NAME, IsPlayingName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_IS_PLAYING_TYPE, IsPlayingType);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_LOAD_COMPOSITE, LoadComposite);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_UNLOAD_COMPOSITE, UnloadComposite);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_PLAY_COMPOSITE, PlayComposite);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_STOP_COMPOSITE, StopComposite);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CLOSE_COMPOSITE, CloseComposite);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CLOSE_ALL, CloseAll);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CREATE_ANIMATION, CreateAnimation);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CREATE_ANIMATION_IN_MEMORY, CreateAnimationInMemory);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_INIT, Init);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_UNINIT, Uninit);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CLOSE_ANIMATION_NAME, CloseAnimationName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_LOAD_ANIMATION_NAME, LoadAnimationName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_UNLOAD_ANIMATION_NAME, UnloadAnimationName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_MAX_ROW, GetMaxRow);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_MAX_COLUMN, GetMaxColumn);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_ADD_FRAME, AddFrame);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME, GetFrame);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME, GetFrameCountName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_COLOR, SetKeyColor);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_COLOR_NAME, SetKeyColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEYS_COLOR_NAME, SetKeysColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_NONZERO_COLOR_NAME, SetKeyNonZeroColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEYS_NONZERO_COLOR_NAME, SetKeysNonZeroColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroAllKeysAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_COLOR_NAME, FillColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_NAME, FillColorAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_NONZERO_COLOR_NAME, FillNonZeroColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME, FillNonZeroColorAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_OFFSET_COLORS_NAME, OffsetColorsName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME, OffsetColorsAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_OFFSET_NONZERO_COLORS_NAME, OffsetNonZeroColorsName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME, OffsetNonZeroColorsAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME, MultiplyIntensityAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM, KeyboardUseChromaCustom);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM_NAME, KeyboardUseChromaCustomName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_ANIMATION_NAME, GetAnimationName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_STOP_ALL, StopAll);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CLEAR_ANIMATION_TYPE, ClearAnimationType);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CLEAR_ALL, ClearAll);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_ANIMATION_COUNT, GetAnimationCount);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_ANIMATION_ID, GetAnimationId);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_PLAYING_ANIMATION_COUNT, GetPlayingAnimationCount);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_PLAYING_ANIMATION_ID, GetPlayingAnimationId);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_CREATE_EFFECT, CreateEffect);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_EFFECT, SetEffect);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_DELETE_EFFECT, DeleteEffect);	
 
-	_gMethodIsDialogOpen = (PLUGIN_IS_DIALOG_OPEN)GetProcAddress(library, "PluginIsDialogOpen");
-	if (_gMethodIsDialogOpen == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginIsDialogOpen!\r\n");
-		return -1;
-	}
-
-	_gMethodOpenDialog = (PLUGIN_OPEN_EDITOR_DIALOG)GetProcAddress(library, "PluginOpenEditorDialog");
-	if (_gMethodOpenDialog == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginOpenEditorDialog!\r\n");
-		return -1;
-	}
-
-	_gMethodOpenDialogAndPlay = (PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)GetProcAddress(library, "PluginOpenEditorDialogAndPlay");
-	if (_gMethodOpenDialogAndPlay == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginOpenEditorDialogAndPlay!\r\n");
-		return -1;
-	}
-
-	_gMethodOpenAnimation = (PLUGIN_OPEN_ANIMATION)GetProcAddress(library, "PluginOpenAnimation");
-	if (_gMethodOpenAnimation == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginOpenAnimation!\r\n");
-		return -1;
-	}
-
-	_gMethodCloseAnimation = (PLUGIN_CLOSE_ANIMATION)GetProcAddress(library, "PluginCloseAnimation");
-	if (_gMethodCloseAnimation == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCloseAnimation!\r\n");
-		return -1;
-	}
-
-	_gMethodPreviewFrame = (PLUGIN_PREVIEW_FRAME)GetProcAddress(library, "PluginPreviewFrame");
-	if (_gMethodPreviewFrame == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginPreviewFrame!\r\n");
-		return -1;
-	}
-
-	_gMethodPlayAnimation = (PLUGIN_PLAY_ANIMATION)GetProcAddress(library, "PluginPlayAnimation");
-	if (_gMethodPlayAnimation == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginPlayAnimation!\r\n");
-		return -1;
-	}
-
-	_gMethodPlayAnimationName = (PLUGIN_PLAY_ANIMATION_NAME)GetProcAddress(library, "PluginPlayAnimationName");
-	if (_gMethodPlayAnimationName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginPlayAnimationName!\r\n");
-		return -1;
-	}
-
-	_gMethodStopAnimationName = (PLUGIN_STOP_ANIMATION_NAME)GetProcAddress(library, "PluginStopAnimationName");
-	if (_gMethodStopAnimationName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginStopAnimationName!\r\n");
-		return -1;
-	}
-
-	_gMethodStopAnimationType = (PLUGIN_STOP_ANIMATION_TYPE)GetProcAddress(library, "PluginStopAnimationType");
-	if (_gMethodStopAnimationType == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginStopAnimationType!\r\n");
-		return -1;
-	}
-
-	_gMethodIsPlayingName = (PLUGIN_IS_PLAYING_NAME)GetProcAddress(library, "PluginIsPlayingName");
-	if (_gMethodIsPlayingName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginIsPlayingName!\r\n");
-		return -1;
-	}
-
-	_gMethodIsPlayingType = (PLUGIN_IS_PLAYING_TYPE)GetProcAddress(library, "PluginIsPlayingType");
-	if (_gMethodIsPlayingType == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginIsPlayingType!\r\n");
-		return -1;
-	}
-
-	_gMethodLoadComposite = (PLUGIN_LOAD_COMPOSITE)GetProcAddress(library, "PluginLoadComposite");
-	if (_gMethodLoadComposite == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginLoadComposite!\r\n");
-		return -1;
-	}
-
-	_gMethodUnloadComposite = (PLUGIN_UNLOAD_COMPOSITE)GetProcAddress(library, "PluginUnloadComposite");
-	if (_gMethodUnloadComposite == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginUnloadComposite!\r\n");
-		return -1;
-	}
-
-	_gMethodPlayComposite = (PLUGIN_PLAY_COMPOSITE)GetProcAddress(library, "PluginPlayComposite");
-	if (_gMethodPlayComposite == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginPlayComposite!\r\n");
-		return -1;
-	}
-
-	_gMethodStopComposite = (PLUGIN_STOP_COMPOSITE)GetProcAddress(library, "PluginStopComposite");
-	if (_gMethodStopComposite == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginStopComposite!\r\n");
-		return -1;
-	}
-
-	_gMethodCloseComposite = (PLUGIN_CLOSE_COMPOSITE)GetProcAddress(library, "PluginCloseComposite");
-	if (_gMethodCloseComposite == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCloseComposite!\r\n");
-		return -1;
-	}
-
-	_gMethodCloseAll = (PLUGIN_CLOSE_ALL)GetProcAddress(library, "PluginCloseAll");
-	if (_gMethodCloseAll == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCloseAll!\r\n");
-		return -1;
-	}
-
-	_gMethodCreateAnimation = (PLUGIN_CREATE_ANIMATION)GetProcAddress(library, "PluginCreateAnimation");
-	if (_gMethodCreateAnimation == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCreateAnimation!\r\n");
-		return -1;
-	}
-
-	_gMethodCreateAnimationInMemory = (PLUGIN_CREATE_ANIMATION_IN_MEMORY)GetProcAddress(library, "PluginCreateAnimationInMemory");
-	if (_gMethodCreateAnimationInMemory == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCreateAnimationInMemory!\r\n");
-		return -1;
-	}
-
-	_gMethodInit = (PLUGIN_UNINIT)GetProcAddress(library, "PluginInit");
-	if (_gMethodInit == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginInit!\r\n");
-		return -1;
-	}
-
-	_gMethodUninit = (PLUGIN_UNINIT)GetProcAddress(library, "PluginUninit");
-	if (_gMethodUninit == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginUninit!\r\n");
-		return -1;
-	}
-
-	_gMethodCloseAnimationName = (PLUGIN_CLOSE_ANIMATION_NAME)GetProcAddress(library, "PluginCloseAnimationName");
-	if (_gMethodCloseAnimationName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCloseAnimationName!\r\n");
-		return -1;
-	}
-
-	_gMethodLoadAnimationName = (PLUGIN_LOAD_ANIMATION_NAME)GetProcAddress(library, "PluginLoadAnimationName");
-	if (_gMethodLoadAnimationName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginLoadAnimationName!\r\n");
-		return -1;
-	}
-
-	_gMethodUnloadAnimationName = (PLUGIN_UNLOAD_ANIMATION_NAME)GetProcAddress(library, "PluginUnloadAnimationName");
-	if (_gMethodUnloadAnimationName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginUnloadAnimationName!\r\n");
-		return -1;
-	}
-
-	_gMethodGetMaxRow = (PLUGIN_GET_MAX_ROW)GetProcAddress(library, "PluginGetMaxRow");
-	if (_gMethodGetMaxRow == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetMaxRow!\r\n");
-		return -1;
-	}
-
-	_gMethodGetMaxColumn = (PLUGIN_GET_MAX_COLUMN)GetProcAddress(library, "PluginGetMaxColumn");
-	if (_gMethodGetMaxColumn == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetMaxColumn!\r\n");
-		return -1;
-	}
-
-	_gMethodAddFrame = (PLUGIN_ADD_FRAME)GetProcAddress(library, "PluginAddFrame");
-	if (_gMethodAddFrame == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginAddFrame!\r\n");
-		return -1;
-	}
-
-	_gMethodGetFrame = (PLUGIN_GET_FRAME)GetProcAddress(library, "PluginGetFrame");
-	if (_gMethodGetFrame == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetFrame!\r\n");
-		return -1;
-	}
-
-	_gMethodGetFrameCountName = (PLUGIN_GET_FRAME_COUNT_NAME)GetProcAddress(library, "PluginGetFrameCountName");
-	if (_gMethodGetFrameCountName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetFrameCountName!\r\n");
-		return -1;
-	}
-
-	_gMethodSetKeyColor = (PLUGIN_SET_KEY_COLOR)GetProcAddress(library, "PluginSetKeyColor");
-	if (_gMethodSetKeyColor == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginSetKeyColor!\r\n");
-		return -1;
-	}
-
-	_gMethodSetKeyColorName = (PLUGIN_SET_KEY_COLOR_NAME)GetProcAddress(library, "PluginSetKeyColorName");
-	if (_gMethodSetKeyColorName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginSetKeyColorName!\r\n");
-		return -1;
-	}
-
-	_gMethodSetKeysColorName = (PLUGIN_SET_KEYS_COLOR_NAME)GetProcAddress(library, "PluginSetKeysColorName");
-	if (_gMethodSetKeysColorName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginSetKeysColorName!\r\n");
-		return -1;
-	}
-
-	_gMethodSetKeyNonZeroColorName = (PLUGIN_SET_KEY_NONZERO_COLOR_NAME)GetProcAddress(library, "PluginSetKeyNonZeroColorName");
-	if (_gMethodSetKeyNonZeroColorName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginSetKeyNonZeroColorName!\r\n");
-		return -1;
-	}
-
-	_gMethodSetKeysNonZeroColorName = (PLUGIN_SET_KEYS_NONZERO_COLOR_NAME)GetProcAddress(library, "PluginSetKeysNonZeroColorName");
-	if (_gMethodSetKeysNonZeroColorName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginSetKeysNonZeroColorName!\r\n");
-		return -1;
-	}
-
-	_gMethodCopyNonZeroAllKeysAllFramesName = (PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)GetProcAddress(library, "PluginCopyNonZeroAllKeysAllFramesName");
-	if (_gMethodCopyNonZeroAllKeysAllFramesName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCopyNonZeroAllKeysAllFramesName!\r\n");
-		return -1;
-	}
-
-	_gMethodCopyKeyColorName = (PLUGIN_COPY_KEY_COLOR_NAME)GetProcAddress(library, "PluginCopyKeyColorName");
-	if (_gMethodCopyKeyColorName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCopyKeyColorName!\r\n");
-		return -1;
-	}
-
-	_gMethodFillColorName = (PLUGIN_FILL_COLOR_NAME)GetProcAddress(library, "PluginFillColorName");
-	if (_gMethodFillColorName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginFillColorName!\r\n");
-		return -1;
-	}
-
-	_gMethodFillColorAllFramesName = (PLUGIN_FILL_COLOR_ALL_FRAMES_NAME)GetProcAddress(library, "PluginFillColorAllFramesName");
-	if (_gMethodFillColorAllFramesName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginFillColorAllFramesName!\r\n");
-		return -1;
-	}
-
-	_gMethodFillNonZeroColorName = (PLUGIN_FILL_NONZERO_COLOR_NAME)GetProcAddress(library, "PluginFillNonZeroColorName");
-	if (_gMethodFillNonZeroColorName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginFillNonZeroColorName!\r\n");
-		return -1;
-	}
-
-	_gMethodFillNonZeroColorAllFramesName = (PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME)GetProcAddress(library, "PluginFillNonZeroColorAllFramesName");
-	if (_gMethodFillNonZeroColorAllFramesName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginFillNonZeroColorAllFramesName!\r\n");
-		return -1;
-	}
-
-	_gMethodOffsetColorsName = (PLUGIN_OFFSET_COLORS_NAME)GetProcAddress(library, "PluginOffsetColorsName");
-	if (_gMethodOffsetColorsName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginOffsetColorsName!\r\n");
-		return -1;
-	}
-
-	_gMethodOffsetColorsAllFramesName = (PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)GetProcAddress(library, "PluginOffsetColorsAllFramesName");
-	if (_gMethodOffsetColorsAllFramesName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginOffsetColorsAllFramesName!\r\n");
-		return -1;
-	}
-
-	_gMethodOffsetNonZeroColorsName = (PLUGIN_OFFSET_NONZERO_COLORS_NAME)GetProcAddress(library, "PluginOffsetNonZeroColorsName");
-	if (_gMethodOffsetNonZeroColorsName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginOffsetNonZeroColorsName!\r\n");
-		return -1;
-	}
-
-	_gMethodOffsetNonZeroColorsAllFramesName = (PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME)GetProcAddress(library, "PluginOffsetNonZeroColorsAllFramesName");
-	if (_gMethodOffsetNonZeroColorsAllFramesName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginOffsetNonZeroColorsAllFramesName!\r\n");
-		return -1;
-	}
-
-	_gMethodMultiplyIntensityName = (PLUGIN_MULTIPLY_INTENSITY_NAME)GetProcAddress(library, "PluginMultiplyIntensityName");
-	if (_gMethodMultiplyIntensityName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginMultiplyIntensityName!\r\n");
-		return -1;
-	}
-
-	_gMethodMultiplyIntensityAllFramesName = (PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)GetProcAddress(library, "PluginMultiplyIntensityAllFramesName");
-	if (_gMethodMultiplyIntensityAllFramesName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginMultiplyIntensityAllFramesName!\r\n");
-		return -1;
-	}
-
-	_gMethodKeyboardUseChromaCustom = (PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM)GetProcAddress(library, "PluginKeyboardUseChromaCustom");
-	if (_gMethodKeyboardUseChromaCustom == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginKeyboardUseChromaCustom!\r\n");
-		return -1;
-	}
-
-	_gMethodKeyboardUseChromaCustomName = (PLUGIN_KEYBOARD_USE_CHROMA_CUSTOM_NAME)GetProcAddress(library, "PluginKeyboardUseChromaCustomName");
-	if (_gMethodKeyboardUseChromaCustomName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginKeyboardUseChromaCustomName!\r\n");
-		return -1;
-	}
-
-	_gMethodGetAnimationName = (PLUGIN_GET_ANIMATION_NAME)GetProcAddress(library, "PluginGetAnimationName");
-	if (_gMethodGetAnimationName == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetAnimationName!\r\n");
-		return -1;
-	}
-
-	_gMethodStopAll = (PLUGIN_STOP_ALL)GetProcAddress(library, "PluginStopAll");
-	if (_gMethodStopAll == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginStopAll!\r\n");
-		return -1;
-	}
-
-	_gMethodClearAnimationType = (PLUGIN_CLEAR_ANIMATION_TYPE)GetProcAddress(library, "PluginClearAnimationType");
-	if (_gMethodClearAnimationType == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginClearAnimationType!\r\n");
-		return -1;
-	}
-
-	_gMethodClearAll = (PLUGIN_CLEAR_ALL)GetProcAddress(library, "PluginClearAll");
-	if (_gMethodClearAll == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginClearAll!\r\n");
-		return -1;
-	}
-
-	_gMethodGetAnimationCount = (PLUGIN_GET_ANIMATION_COUNT)GetProcAddress(library, "PluginGetAnimationCount");
-	if (_gMethodGetAnimationCount == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetAnimationCount!\r\n");
-		return -1;
-	}
-
-	_gMethodGetAnimationId = (PLUGIN_GET_ANIMATION_ID)GetProcAddress(library, "PluginGetAnimationId");
-	if (_gMethodGetAnimationId == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetAnimationId!\r\n");
-		return -1;
-	}
-
-	_gMethodGetPlayingAnimationCount = (PLUGIN_GET_PLAYING_ANIMATION_COUNT)GetProcAddress(library, "PluginGetPlayingAnimationCount");
-	if (_gMethodGetPlayingAnimationCount == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetPlayingAnimationCount!\r\n");
-		return -1;
-	}
-
-	_gMethodGetPlayingAnimationId = (PLUGIN_GET_PLAYING_ANIMATION_ID)GetProcAddress(library, "PluginGetPlayingAnimationId");
-	if (_gMethodGetPlayingAnimationId == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginGetPlayingAnimationId!\r\n");
-		return -1;
-	}
-
-	_gMethodCreateEffect = (PLUGIN_CREATE_EFFECT)GetProcAddress(library, "PluginCreateEffect");
-	if (_gMethodCreateEffect == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginCreateEffect!\r\n");
-		return -1;
-	}
-
-	_gMethodSetEffect = (PLUGIN_SET_EFFECT)GetProcAddress(library, "PluginSetEffect");
-	if (_gMethodSetEffect == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginSetEffect!\r\n");
-		return -1;
-	}
-	
-	_gMethodDeleteEffect = (PLUGIN_DELETE_EFFECT)GetProcAddress(library, "PluginDeleteEffect");
-	if (_gMethodDeleteEffect == nullptr)
-	{
-		fprintf(stderr, "Failed to find method PluginDeleteEffect!\r\n");
-		return -1;
-	}
-
-	fprintf(stderr, "Found DLL methods!\r\n");
+	fprintf(stderr, "Found all DLL methods!\r\n");
 	return 0;
 }
 
@@ -629,16 +274,16 @@ int main(int argc, char *argv[])
 			char path[256] = { 0 };
 			sprintf_s(path, "%s\\Desktop\\temp.chroma", buffer);		
 			free(buffer);
-			_gMethodOpenDialogAndPlay(path);
+			_gMethodOpenEditorDialogAndPlay(path);
 		}
 		else
 		{
-			_gMethodOpenDialogAndPlay("temp.chroma");
+			_gMethodOpenEditorDialogAndPlay("temp.chroma");
 		}
 	}
 	else
 	{
-		_gMethodOpenDialogAndPlay(argv[1]);
+		_gMethodOpenEditorDialogAndPlay(argv[1]);
 	}
 
 	while (_gMethodIsDialogOpen())
@@ -682,7 +327,7 @@ void DebugUnitTestsPlayComposite()
 
 void DebugUnitTestsOpenDialog()
 {
-	_gMethodOpenDialog("RandomKeyboardEffect.chroma");
+	_gMethodOpenEditorDialog("RandomKeyboardEffect.chroma");
 	while (_gMethodIsDialogOpen())
 	{
 		Sleep(0);
