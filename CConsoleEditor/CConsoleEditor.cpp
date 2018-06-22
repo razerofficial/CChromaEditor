@@ -10,20 +10,20 @@
 #include "..\CChromaEditorLibrary\ChromaSDKPluginTypes.h"
 
 typedef void(*PLUGIN_INIT)();
-typedef double(*PLUGIN_IS_INITIALIZED)();
+typedef bool(*PLUGIN_IS_INITIALIZED)();
 typedef void(*PLUGIN_UNINIT)();
-typedef double(*PLUGIN_IS_DIALOG_OPEN)();
-typedef double(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
-typedef double(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const char* path);
-typedef double(*PLUGIN_OPEN_ANIMATION)(const char* path);
-typedef double(*PLUGIN_CLOSE_ANIMATION)(double animationId);
+typedef bool(*PLUGIN_IS_DIALOG_OPEN)();
+typedef int(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
+typedef int(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const char* path);
+typedef int(*PLUGIN_OPEN_ANIMATION)(const char* path);
+typedef int(*PLUGIN_CLOSE_ANIMATION)(int animationId);
 typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_CLOSE_ALL)();
 typedef int(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int device);
 typedef int(*PLUGIN_CREATE_ANIMATION_IN_MEMORY)(int deviceType, int device);
 typedef int(*PLUGIN_PREVIEW_FRAME)(int animationId, int frameIndex);
-typedef double(*PLUGIN_PLAY_ANIMATION)(double animationId);
+typedef int(*PLUGIN_PLAY_ANIMATION)(int animationId);
 typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
 typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
@@ -152,42 +152,42 @@ int Init()
 
 	fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
 
-	_gMethodIsInitialized = (PLUGIN_IS_DIALOG_OPEN)GetProcAddress(library, "PluginIsInitializedD");
+	_gMethodIsInitialized = (PLUGIN_IS_INITIALIZED)GetProcAddress(library, "PluginIsInitialized");
 	if (_gMethodIsInitialized == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginIsInitialized!\r\n");
 		return -1;
 	}
 
-	_gMethodIsDialogOpen = (PLUGIN_IS_DIALOG_OPEN)GetProcAddress(library, "PluginIsDialogOpenD");
+	_gMethodIsDialogOpen = (PLUGIN_IS_DIALOG_OPEN)GetProcAddress(library, "PluginIsDialogOpen");
 	if (_gMethodIsDialogOpen == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginIsDialogOpen!\r\n");
 		return -1;
 	}
 
-	_gMethodOpenDialog = (PLUGIN_OPEN_EDITOR_DIALOG)GetProcAddress(library, "PluginOpenEditorDialogD");
+	_gMethodOpenDialog = (PLUGIN_OPEN_EDITOR_DIALOG)GetProcAddress(library, "PluginOpenEditorDialog");
 	if (_gMethodOpenDialog == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginOpenEditorDialog!\r\n");
 		return -1;
 	}
 
-	_gMethodOpenDialogAndPlay = (PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)GetProcAddress(library, "PluginOpenEditorDialogAndPlayD");
+	_gMethodOpenDialogAndPlay = (PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)GetProcAddress(library, "PluginOpenEditorDialogAndPlay");
 	if (_gMethodOpenDialogAndPlay == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginOpenEditorDialogAndPlay!\r\n");
 		return -1;
 	}
 
-	_gMethodOpenAnimation = (PLUGIN_OPEN_ANIMATION)GetProcAddress(library, "PluginOpenAnimationD");
+	_gMethodOpenAnimation = (PLUGIN_OPEN_ANIMATION)GetProcAddress(library, "PluginOpenAnimation");
 	if (_gMethodOpenAnimation == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginOpenAnimation!\r\n");
 		return -1;
 	}
 
-	_gMethodCloseAnimation = (PLUGIN_CLOSE_ANIMATION)GetProcAddress(library, "PluginCloseAnimationD");
+	_gMethodCloseAnimation = (PLUGIN_CLOSE_ANIMATION)GetProcAddress(library, "PluginCloseAnimation");
 	if (_gMethodCloseAnimation == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginCloseAnimation!\r\n");
@@ -201,7 +201,7 @@ int Init()
 		return -1;
 	}
 
-	_gMethodPlayAnimation = (PLUGIN_PLAY_ANIMATION)GetProcAddress(library, "PluginPlayAnimationD");
+	_gMethodPlayAnimation = (PLUGIN_PLAY_ANIMATION)GetProcAddress(library, "PluginPlayAnimation");
 	if (_gMethodPlayAnimation == nullptr)
 	{
 		fprintf(stderr, "Failed to find method PluginPlayAnimation!\r\n");
@@ -1446,8 +1446,8 @@ void DebugUnitTests()
 {
 	_gMethodInit();
 
-	DebugUnitTestsKeyboardCustom();
-	//DebugUnitTestsPlayComposite();
+	//DebugUnitTestsKeyboardCustom();
+	DebugUnitTestsPlayComposite();
 	//DebugUnitTestsHDKIndividualLEDsGradient();
 	//DebugUnitTestsHDKIndividualLEDs();
 	//DebugUnitTestsOffset();
