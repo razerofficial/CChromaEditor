@@ -39,7 +39,7 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 		LogError("ChromaSDKPlugin failed to load!\r\n");
 		return;
 	}
-	LogDebug("ChromaSDKPlugin loaded.\r\n");
+	//LogDebug("ChromaSDKPlugin loaded.\r\n");
 
 	_mMethodInit = (CHROMA_SDK_INIT)GetProcAddress(_mLibraryChroma, "Init");
 	if (ValidateGetProcAddress(_mMethodInit == nullptr, "Init"))
@@ -111,7 +111,7 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 
 	if (ChromaSDKInit() == 0)
 	{
-		LogDebug("ChromaSDKPlugin initialized.\r\n");
+		//LogDebug("ChromaSDKPlugin initialized.\r\n");
 	}
 	else
 	{
@@ -449,7 +449,10 @@ RZRESULT ChromaSDKPlugin::ChromaSDKInit()
 	}
 
 	int result = _mMethodInit();
-	LogDebug("ChromaSDKPlugin Init Result=%d\r\n", result);
+	if (result != 0)
+	{
+		LogDebug("ChromaSDKPlugin Init Result=%d\r\n", result);
+	}
 	_mInitialized = true;
 	return result;
 }
@@ -668,6 +671,38 @@ vector<FChromaSDKColors> ChromaSDKPlugin::CreateRandomColors2D(const EChromaSDKD
 			int green = rand() % 256;
 			int blue = rand() % 256;
 			COLORREF color = RGB(red, green, blue);
+			row.Colors.push_back(color);
+		}
+		result.push_back(row);
+	}
+	return result;
+}
+
+vector<COLORREF> ChromaSDKPlugin::CreateRandomColorsBlackAndWhite1D(const EChromaSDKDevice1DEnum& device)
+{
+	vector<COLORREF> colors = vector<COLORREF>();
+	int elements = GetMaxLeds(device);
+	for (int i = 0; i < elements; ++i)
+	{
+		int gray = rand() % 256;
+		COLORREF color = RGB(gray, gray, gray);
+		colors.push_back(color);
+	}
+	return colors;
+}
+
+vector<FChromaSDKColors> ChromaSDKPlugin::CreateRandomColorsBlackAndWhite2D(const EChromaSDKDevice2DEnum& device)
+{
+	vector<FChromaSDKColors> result = vector<FChromaSDKColors>();
+	int maxRows = GetMaxRow(device);
+	int maxColumns = GetMaxColumn(device);
+	for (int i = 0; i < maxRows; ++i)
+	{
+		FChromaSDKColors row = FChromaSDKColors();
+		for (int j = 0; j < maxColumns; ++j)
+		{
+			int gray = rand() % 256;
+			COLORREF color = RGB(gray, gray, gray);
 			row.Colors.push_back(color);
 		}
 		result.push_back(row);
@@ -1146,7 +1181,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 {
 	AnimationBase* animation = nullptr;
 
-	LogDebug("OpenAnimation: %s\r\n", path.c_str());
+	//LogDebug("OpenAnimation: %s\r\n", path.c_str());
 	FILE* stream = nullptr;
 	if (0 != fopen_s(&stream, path.c_str(), "rb") ||
 		stream == nullptr)
@@ -1176,7 +1211,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 			return nullptr;
 		}
 
-		LogDebug("OpenAnimation: Version: %d\r\n", version);
+		//LogDebug("OpenAnimation: Version: %d\r\n", version);
 
 		//device
 		byte device = 0;
@@ -1197,10 +1232,10 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 			switch ((EChromaSDKDeviceTypeEnum)deviceType)
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
-				LogDebug("OpenAnimation: DeviceType: 1D\r\n");
+				//LogDebug("OpenAnimation: DeviceType: 1D\r\n");
 				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
-				LogDebug("OpenAnimation: DeviceType: 2D\r\n");
+				//LogDebug("OpenAnimation: DeviceType: 2D\r\n");
 				break;
 			default:
 				LogError("OpenAnimation: Unexpected DeviceType!\r\n");
@@ -1223,13 +1258,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					switch ((EChromaSDKDevice1DEnum)device)
 					{
 					case EChromaSDKDevice1DEnum::DE_ChromaLink:
-						LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
+						//LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
 						break;
 					case EChromaSDKDevice1DEnum::DE_Headset:
-						LogDebug("OpenAnimation: Device: DE_Headset\r\n");
+						//LogDebug("OpenAnimation: Device: DE_Headset\r\n");
 						break;
 					case EChromaSDKDevice1DEnum::DE_Mousepad:
-						LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
+						//LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
 						break;
 					}
 
@@ -1325,13 +1360,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					switch ((EChromaSDKDevice2DEnum)device)
 					{
 					case EChromaSDKDevice2DEnum::DE_Keyboard:
-						LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
+						//LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
 						break;
 					case EChromaSDKDevice2DEnum::DE_Keypad:
-						LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
+						//LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
 						break;
 					case EChromaSDKDevice2DEnum::DE_Mouse:
-						LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
+						//LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
 						break;
 					}
 
@@ -1424,7 +1459,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 		}
 
 		std::fclose(stream);
-		LogDebug("OpenAnimation: Loaded %s\r\n", path.c_str());
+		//LogDebug("OpenAnimation: Loaded %s\r\n", path.c_str());
 	}
 
 	return animation;

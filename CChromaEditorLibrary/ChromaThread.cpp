@@ -25,7 +25,7 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 
 	// update animations
 	vector<AnimationBase*> doneList = vector<AnimationBase*>();
-	for (int i = 0; i < _mAnimations.size() && _mWaitForExit; ++i)
+	for (int i = 0; i < int(_mAnimations.size()) && _mWaitForExit; ++i)
 	{
 		AnimationBase* animation = _mAnimations[i];
 		if (animation != nullptr)
@@ -39,7 +39,7 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 		}
 	}
 
-	for (int i = 0; i < doneList.size() && _mWaitForExit; ++i)
+	for (int i = 0; i < int(doneList.size()) && _mWaitForExit; ++i)
 	{
 		AnimationBase* animation = doneList[i];
 		if (animation != nullptr)
@@ -139,7 +139,7 @@ int ChromaThread::GetAnimationId(int index)
 	{
 		return -1;
 	}
-	if (index < _mAnimations.size())
+	if (index < int(_mAnimations.size()))
 	{
 		AnimationBase* animation =_mAnimations[index];
 		if (animation != nullptr)
