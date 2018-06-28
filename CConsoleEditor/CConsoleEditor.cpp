@@ -9,89 +9,89 @@
 #include <Windows.h>
 #include "..\CChromaEditorLibrary\ChromaSDKPluginTypes.h"
 
-typedef void(*PLUGIN_INIT)();
-typedef bool(*PLUGIN_IS_INITIALIZED)();
-typedef void(*PLUGIN_UNINIT)();
 typedef bool(*PLUGIN_IS_DIALOG_OPEN)();
-typedef int(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
-typedef int(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const char* path);
-typedef int(*PLUGIN_OPEN_ANIMATION)(const char* path);
-typedef int(*PLUGIN_CLOSE_ANIMATION)(int animationId);
-typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
-typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
-typedef void(*PLUGIN_CLOSE_ALL)();
-typedef int(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int device);
-typedef int(*PLUGIN_CREATE_ANIMATION_IN_MEMORY)(int deviceType, int device);
-typedef int(*PLUGIN_PREVIEW_FRAME)(int animationId, int frameIndex);
-typedef int(*PLUGIN_PLAY_ANIMATION)(int animationId);
-typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
-typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
-typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
-typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
-typedef void(*PLUGIN_STOP_ALL)();
+typedef bool(*PLUGIN_IS_INITIALIZED)();
 typedef bool(*PLUGIN_IS_PLAYING_NAME)(const char* name);
 typedef bool(*PLUGIN_IS_PLAYING_TYPE)(int deviceType, int device);
-typedef void(*PLUGIN_LOAD_COMPOSITE)(const char* name);
-typedef void(*PLUGIN_UNLOAD_COMPOSITE)(const char* name);
-typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
-typedef void(*PLUGIN_LOAD_ANIMATION_NAME)(const char* path);
-typedef void(*PLUGIN_UNLOAD_ANIMATION_NAME)(const char* path);
-typedef int(*PLUGIN_GET_MAX_ROW)(int device);
-typedef int(*PLUGIN_GET_MAX_COLUMN)(int device);
+typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES)(int animationId);
+typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME)(const char* path);
+typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_FLAG)(int animationId, bool flag);
+typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME)(const char* path, bool flag);
+typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef int(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int length);
+typedef int(*PLUGIN_CLOSE_ANIMATION)(int animationId);
+typedef int(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int device);
+typedef int(*PLUGIN_CREATE_ANIMATION_IN_MEMORY)(int deviceType, int device);
+typedef int(*PLUGIN_GET_ANIMATION_COUNT)();
+typedef int(*PLUGIN_GET_ANIMATION_ID)(int index);
 typedef int(*PLUGIN_GET_FRAME)(int animationId, int frameIndex, float* duration, int* colors, int length);
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
-typedef void(*PLUGIN_SET_KEY_COLOR)(int animationId, int frameId, int rzkey, int color);
-typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
-typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES)(int animationId, int rzkey, int color);
-typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME)(const char* path, int rzkey, int color);
-typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
-typedef void(*PLUGIN_SET_KEYS_COLOR_ALL_FRAMES)(int animationId, const int* rzkeys, int keyCount, int color);
-typedef void(*PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_NAME)(const char* path, const int* rzkeys, int keyCount, int color);
-typedef void(*PLUGIN_SET_KEY_NONZERO_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
-typedef void(*PLUGIN_SET_KEY_ZERO_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
-typedef void(*PLUGIN_SET_KEYS_NONZERO_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
-typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+typedef int(*PLUGIN_GET_MAX_COLUMN)(int device);
+typedef int(*PLUGIN_GET_MAX_ROW)(int device);
+typedef int(*PLUGIN_GET_PLAYING_ANIMATION_COUNT)();
+typedef int(*PLUGIN_GET_PLAYING_ANIMATION_ID)(int index);
+typedef int(*PLUGIN_MAKE_BLANK_FRAMES)(int animationId, int frameCount, float duration, int color);
+typedef int(*PLUGIN_OPEN_ANIMATION)(const char* path);
+typedef int(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
+typedef int(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const char* path);
+typedef int(*PLUGIN_PLAY_ANIMATION)(int animationId);
+typedef int(*PLUGIN_PREVIEW_FRAME)(int animationId, int frameIndex);
+typedef long(*PLUGIN_CREATE_EFFECT)(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectGUID);
+typedef long(*PLUGIN_DELETE_EFFECT)(const ChromaSDK::FChromaSDKGuid& effectGUID);
+typedef long(*PLUGIN_SET_EFFECT)(const ChromaSDK::FChromaSDKGuid& effectGUID);
+typedef void(*PLUGIN_CLEAR_ALL)();
+typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
+typedef void(*PLUGIN_CLOSE_ALL)();
+typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
+typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 typedef void(*PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 typedef void(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
-typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
-typedef void(*PLUGIN_FILL_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
 typedef void(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
-typedef void(*PLUGIN_FILL_NONZERO_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
 typedef void(*PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
-typedef void(*PLUGIN_FILL_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
-typedef void(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
-typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
-typedef void(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
-typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
-typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
-typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
-typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)(const char* path, float intensity);
-typedef void(*PLUGIN_MULTIPLY_INTENSITY_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
-typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
-typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_FLAG)(int animationId, bool flag);
-typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME)(const char* path, bool flag);
-typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES)(int animationId);
-typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME)(const char* path);
-typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
-typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
-typedef void(*PLUGIN_CLEAR_ALL)();
-typedef int(*PLUGIN_GET_ANIMATION_COUNT)();
-typedef int(*PLUGIN_GET_ANIMATION_ID)(int index);
-typedef int(*PLUGIN_GET_PLAYING_ANIMATION_COUNT)();
-typedef int(*PLUGIN_GET_PLAYING_ANIMATION_ID)(int index);
-typedef long(*PLUGIN_CREATE_EFFECT)(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectGUID);
-typedef long(*PLUGIN_SET_EFFECT)(const ChromaSDK::FChromaSDKGuid& effectGUID);
-typedef long(*PLUGIN_DELETE_EFFECT)(const ChromaSDK::FChromaSDKGuid& effectGUID);
-typedef int(*PLUGIN_MAKE_BLANK_FRAMES)(int animationId, int frameCount, float duration, int color);
-typedef void(*PLUGIN_MAKE_BLANK_FRAMES_NAME)(const char* path, int frameCount, float duration, int color);
-typedef void(*PLUGIN_REVERSE_ALL_FRAMES_NAME)(const char* path);
+typedef void(*PLUGIN_FILL_NONZERO_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
 typedef void(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE)(int animationId, int frameId);
 typedef void(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME)(const char* path, int frameId);
+typedef void(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_INIT)();
+typedef void(*PLUGIN_LOAD_ANIMATION_NAME)(const char* path);
+typedef void(*PLUGIN_LOAD_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_MAKE_BLANK_FRAMES_NAME)(const char* path, int frameCount, float duration, int color);
+typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)(const char* path, float intensity);
+typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
+typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
+typedef void(*PLUGIN_MULTIPLY_INTENSITY_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
+typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
+typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
+typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
+typedef void(*PLUGIN_REVERSE_ALL_FRAMES_NAME)(const char* path);
+typedef void(*PLUGIN_SET_KEY_COLOR)(int animationId, int frameId, int rzkey, int color);
+typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES)(int animationId, int rzkey, int color);
+typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME)(const char* path, int rzkey, int color);
+typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
+typedef void(*PLUGIN_SET_KEY_NONZERO_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
+typedef void(*PLUGIN_SET_KEY_ZERO_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
+typedef void(*PLUGIN_SET_KEYS_COLOR_ALL_FRAMES)(int animationId, const int* rzkeys, int keyCount, int color);
+typedef void(*PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_NAME)(const char* path, const int* rzkeys, int keyCount, int color);
+typedef void(*PLUGIN_SET_KEYS_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+typedef void(*PLUGIN_SET_KEYS_NONZERO_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+typedef void(*PLUGIN_STOP_ALL)();
+typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
+typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
+typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_UNINIT)();
+typedef void(*PLUGIN_UNLOAD_ANIMATION_NAME)(const char* path);
+typedef void(*PLUGIN_UNLOAD_COMPOSITE)(const char* name);
 
 #if RUN_UNIT_TESTS
 void DebugUnitTests();
@@ -149,8 +149,8 @@ CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_COMPOSITE, LoadComposite)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES, MakeBlankFrames)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_NAME, MakeBlankFramesName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME, MultiplyIntensityAllFramesName)
-CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME, MultiplyIntensityAllFramesRGBName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_RGB_NAME, MultiplyIntensityRGBName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME, OffsetColorsAllFramesName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_NAME, OffsetColorsName)
@@ -164,20 +164,20 @@ CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_NAME, PlayAnimationName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_COMPOSITE, PlayComposite)
 CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame)
 CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE_ALL_FRAMES_NAME, ReverseAllFramesName)
-CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG, SetChromaCustomFlag);
-CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME, SetChromaCustomFlagName);
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES, SetChromaCustomColorAllFrames)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME, SetChromaCustomColorAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG, SetChromaCustomFlag);
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME, SetChromaCustomFlagName);
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_EFFECT, SetEffect)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR, SetKeyColor)
-CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_NAME, SetKeyColorName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES, SetKeyColorAllFrames)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME, SetKeyColorAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_NAME, SetKeyColorName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NONZERO_COLOR_NAME, SetKeyNonZeroColorName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_NAME, SetKeyZeroColorName)
-CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_NAME, SetKeysColorName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_ALL_FRAMES, SetKeysColorAllFrames)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_NAME, SetKeysColorAllFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_NAME, SetKeysColorName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NONZERO_COLOR_NAME, SetKeysNonZeroColorName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_NAME, SetKeysZeroColorName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ALL, StopAll)
@@ -252,8 +252,8 @@ int Init()
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MAKE_BLANK_FRAMES, MakeBlankFrames);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_NAME, MakeBlankFramesName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME, MultiplyIntensityAllFramesName);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME, MultiplyIntensityAllFramesRGBName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_RGB_NAME, MultiplyIntensityRGBName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME, OffsetColorsAllFramesName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_OFFSET_COLORS_NAME, OffsetColorsName);
@@ -267,20 +267,20 @@ int Init()
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_PLAY_COMPOSITE, PlayComposite);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_REVERSE_ALL_FRAMES_NAME, ReverseAllFramesName);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG, SetChromaCustomFlag);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME, SetChromaCustomFlagName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES, SetChromaCustomColorAllFrames);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME, SetChromaCustomColorAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG, SetChromaCustomFlag);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME, SetChromaCustomFlagName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_EFFECT, SetEffect);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_COLOR, SetKeyColor);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_COLOR_NAME, SetKeyColorName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES, SetKeyColorAllFrames);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME, SetKeyColorAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_COLOR_NAME, SetKeyColorName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_NONZERO_COLOR_NAME, SetKeyNonZeroColorName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_NAME, SetKeyZeroColorName);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEYS_COLOR_NAME, SetKeysColorName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEYS_COLOR_ALL_FRAMES, SetKeysColorAllFrames);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_NAME, SetKeysColorAllFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEYS_COLOR_NAME, SetKeysColorName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEYS_NONZERO_COLOR_NAME, SetKeysNonZeroColorName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_NAME, SetKeysZeroColorName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_STOP_ALL, StopAll);
