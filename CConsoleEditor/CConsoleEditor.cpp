@@ -59,12 +59,12 @@ typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnima
 typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 typedef void(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
-typedef void(*PLUGIN_FILL_COLOR_NAME)(const char* path, int frameId, int red, int green, int blue);
-typedef void(*PLUGIN_FILL_COLOR_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
-typedef void(*PLUGIN_FILL_NONZERO_COLOR_NAME)(const char* path, int frameId, int red, int green, int blue);
-typedef void(*PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
-typedef void(*PLUGIN_FILL_ZERO_COLOR_NAME)(const char* path, int frameId, int red, int green, int blue);
-typedef void(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_NONZERO_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
@@ -121,14 +121,14 @@ CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_ANIMATION, CreateAnimation)
 CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_ANIMATION_IN_MEMORY, CreateAnimationInMemory)
 CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_EFFECT, CreateEffect)
 CHROMASDK_DECLARE_METHOD(PLUGIN_DELETE_EFFECT, DeleteEffect)
-CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_NAME, FillColorAllFramesName)
-CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_NAME, FillColorName)
-CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME, FillNonZeroColorAllFramesName)
-CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NONZERO_COLOR_NAME, FillNonZeroColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME, FillColorAllFramesRGBName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_RGB_NAME, FillColorRGBName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_RGB_NAME, FillNonZeroColorAllFramesRGBName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NONZERO_COLOR_RGB_NAME, FillNonZeroColorRGBName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE, FillRandomColorsBlackAndWhite)
 CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME, FillRandomColorsBlackAndWhiteName)
-CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME, FillZeroColorAllFramesName)
-CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_NAME, FillZeroColorName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME, FillZeroColorAllFramesRGBName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB_NAME, FillZeroColorRGBName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_COUNT, GetAnimationCount)
 CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_ID, GetAnimationId)
 CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_NAME, GetAnimationName)
@@ -225,14 +225,14 @@ int Init()
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_CREATE_ANIMATION_IN_MEMORY, CreateAnimationInMemory);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_CREATE_EFFECT, CreateEffect);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_DELETE_EFFECT, DeleteEffect);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_NAME, FillColorAllFramesName);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_COLOR_NAME, FillColorName);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_NAME, FillNonZeroColorAllFramesName);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_NONZERO_COLOR_NAME, FillNonZeroColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME, FillColorAllFramesRGBName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_COLOR_RGB_NAME, FillColorRGBName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_NONZERO_COLOR_ALL_FRAMES_RGB_NAME, FillNonZeroColorAllFramesRGBName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_NONZERO_COLOR_RGB_NAME, FillNonZeroColorRGBName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE, FillRandomColorsBlackAndWhite);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME, FillRandomColorsBlackAndWhiteName);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME, FillZeroColorAllFramesName);
-	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_ZERO_COLOR_NAME, FillZeroColorName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME, FillZeroColorAllFramesRGBName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB_NAME, FillZeroColorRGBName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_ANIMATION_COUNT, GetAnimationCount);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_ANIMATION_ID, GetAnimationId);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_ANIMATION_NAME, GetAnimationName);
@@ -776,7 +776,7 @@ void DebugUnitTestsOffset()
 	int frameCount = _gMethodGetFrameCountName(animationName);
 
 	fprintf(stdout, "Set all frames white with FillColor.\r\n");
-	_gMethodFillColorAllFramesName(animationName, 255, 255, 255);
+	_gMethodFillColorAllFramesRGBName(animationName, 255, 255, 255);
 
 	fprintf(stdout, "Fade out black with MultiplyIntensity.\r\n");
 	for (int index = 0; index < frameCount; ++index)
@@ -794,13 +794,13 @@ void DebugUnitTestsOffset()
 
 	fprintf(stdout, "Set all frames black with FillColor.\r\n");
 	_gMethodUnloadAnimationName(animationName);
-	_gMethodFillColorAllFramesName(animationName, 0, 0, 0);
+	_gMethodFillColorAllFramesRGBName(animationName, 0, 0, 0);
 
 	fprintf(stdout, "Fade in red with FillColor.\r\n");
 	for (int index = 0; index < frameCount; ++index)
 	{
 		int ratio = (255 * index + 1) / frameCount;
-		_gMethodFillColorName(animationName, index, ratio, 0, 0);
+		_gMethodFillColorRGBName(animationName, index, ratio, 0, 0);
 	}
 	_gMethodUnloadAnimationName(animationName); //show changes
 	_gMethodPlayAnimationName(animationName, false);
@@ -810,7 +810,7 @@ void DebugUnitTestsOffset()
 	}
 
 	fprintf(stdout, "Set all frames red with FillColor.\r\n");
-	_gMethodFillColorAllFramesName(animationName, 255, 0, 0);
+	_gMethodFillColorAllFramesRGBName(animationName, 255, 0, 0);
 
 	fprintf(stdout, "Fade in green with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
@@ -826,7 +826,7 @@ void DebugUnitTestsOffset()
 	}
 
 	fprintf(stdout, "Set all frames yellow with FillColor.\r\n");
-	_gMethodFillColorAllFramesName(animationName, 255, 255, 0);
+	_gMethodFillColorAllFramesRGBName(animationName, 255, 255, 0);
 
 	fprintf(stdout, "Fade out red with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
@@ -842,7 +842,7 @@ void DebugUnitTestsOffset()
 	}
 
 	fprintf(stdout, "Set all frames green with FillColor.\r\n");
-	_gMethodFillColorAllFramesName(animationName, 0, 255, 0);
+	_gMethodFillColorAllFramesRGBName(animationName, 0, 255, 0);
 
 	fprintf(stdout, "Fade in white with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
@@ -935,7 +935,7 @@ void DebugUnitTestsNonZero()
 	for (int i = 0; i < frameCount; ++i)
 	{
 		float ratio = (i + 1) / (float)frameCount;
-		_gMethodFillNonZeroColorName(animationName, i, (int)(ratio * 255), (int)(ratio * 255), (int)(ratio * 255));
+		_gMethodFillNonZeroColorRGBName(animationName, i, (int)(ratio * 255), (int)(ratio * 255), (int)(ratio * 255));
 	}
 	_gMethodUnloadAnimationName(animationName); //show changes
 	_gMethodPlayAnimationName(animationName, false);

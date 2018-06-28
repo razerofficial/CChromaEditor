@@ -304,33 +304,64 @@ extern "C"
 	EXPORT_API double PluginCopyZeroKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 
 
-	EXPORT_API void PluginFillColor(int animationId, int frameId, int red, int green, int blue);
-	EXPORT_API void PluginFillColorName(const char* path, int frameId, int red, int green, int blue);
-	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double red, double green, double blue);
-
-	EXPORT_API void PluginFillColorAllFrames(int animationId, int red, int green, int blue);
-	EXPORT_API void PluginFillColorAllFramesName(const char* path, int red, int green, int blue);
-	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double red, double green, double blue);
+	EXPORT_API void PluginFillColor(int animationId, int frameId, int color);
+	EXPORT_API void PluginFillColorName(const char* path, int frameId, int color);
+	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double color);
 
 
-	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int red, int green, int blue);
-	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int red, int green, int blue);
-	EXPORT_API double PluginFillNonZeroColorNameD(const char* path, double frameId, double red, double green, double blue);
+	EXPORT_API void PluginFillColorRGB(int animationId, int frameId, int red, int green, int blue);
+	EXPORT_API void PluginFillColorRGBName(const char* path, int frameId, int red, int green, int blue);
+	EXPORT_API double PluginFillColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
 
 
-	EXPORT_API void PluginFillZeroColor(int animationId, int frameId, int red, int green, int blue);
-	EXPORT_API void PluginFillZeroColorName(const char* path, int frameId, int red, int green, int blue);
-	EXPORT_API double PluginFillZeroColorNameD(const char* path, double frameId, double red, double green, double blue);
+	EXPORT_API void PluginFillColorAllFrames(int animationId, int color);
+	EXPORT_API void PluginFillColorAllFramesName(const char* path, int color);
+	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double color);
 
 
-	EXPORT_API void PluginFillNonZeroColorAllFrames(int animationId, int red, int green, int blue);
-	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int red, int green, int blue);
-	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const char* path, double red, double green, double blue);
+	EXPORT_API void PluginFillColorAllFramesRGB(int animationId, int red, int green, int blue);
+	EXPORT_API void PluginFillColorAllFramesRGBName(const char* path, int red, int green, int blue);
+	EXPORT_API double PluginFillColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 
 
-	EXPORT_API void PluginFillZeroColorAllFrames(int animationId, int red, int green, int blue);
-	EXPORT_API void PluginFillZeroColorAllFramesName(const char* path, int red, int green, int blue);
-	EXPORT_API double PluginFillZeroColorAllFramesNameD(const char* path, double red, double green, double blue);
+	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int color);
+	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int color);
+	EXPORT_API double PluginFillNonZeroColorNameD(const char* path, double frameId, double color);
+
+
+	EXPORT_API void PluginFillNonZeroColorRGB(int animationId, int frameId, int red, int green, int blue);
+	EXPORT_API void PluginFillNonZeroColorRGBName(const char* path, int frameId, int red, int green, int blue);
+	EXPORT_API double PluginFillNonZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
+
+
+	EXPORT_API void PluginFillZeroColor(int animationId, int frameId, int color);
+	EXPORT_API void PluginFillZeroColorName(const char* path, int frameId, int color);
+	EXPORT_API double PluginFillZeroColorNameD(const char* path, double frameId, double color);
+
+
+	EXPORT_API void PluginFillZeroColorRGB(int animationId, int frameId, int red, int green, int blue);
+	EXPORT_API void PluginFillZeroColorRGBName(const char* path, int frameId, int red, int green, int blue);
+	EXPORT_API double PluginFillZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
+
+
+	EXPORT_API void PluginFillNonZeroColorAllFrames(int animationId, int color);
+	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int color);
+	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const char* path, double color);
+
+
+	EXPORT_API void PluginFillNonZeroColorAllFramesRGB(int animationId, int red, int green, int blue);
+	EXPORT_API void PluginFillNonZeroColorAllFramesRGBName(const char* path, int red, int green, int blue);
+	EXPORT_API double PluginFillNonZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
+
+
+	EXPORT_API void PluginFillZeroColorAllFrames(int animationId, int color);
+	EXPORT_API void PluginFillZeroColorAllFramesName(const char* path, int color);
+	EXPORT_API double PluginFillZeroColorAllFramesNameD(const char* path, double color);
+
+
+	EXPORT_API void PluginFillZeroColorAllFramesRGB(int animationId, int red, int green, int blue);
+	EXPORT_API void PluginFillZeroColorAllFramesRGBName(const char* path, int red, int green, int blue);
+	EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 
 
 	EXPORT_API void PluginFillRandomColorsBlackAndWhite(int animationId, int frameId);
@@ -338,9 +369,12 @@ extern "C"
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteNameD(const char* path, double frameId);
 
 
+	//offset doesn't follow the RGB convention since RGB can range from -255 to 255
+
 	EXPORT_API void PluginOffsetColors(int animationId, int frameId, int red, int green, int blue);
 	EXPORT_API void PluginOffsetColorsName(const char* path, int frameId, int red, int green, int blue);
 	EXPORT_API double PluginOffsetColorsNameD(const char* path, double frameId, double red, double green, double blue);
+
 
 	EXPORT_API void PluginOffsetColorsAllFrames(int animationId, int red, int green, int blue);
 	EXPORT_API void PluginOffsetColorsAllFramesName(const char* path, int red, int green, int blue);
@@ -350,6 +384,7 @@ extern "C"
 	EXPORT_API void PluginOffsetNonZeroColors(int animationId, int frameId, int red, int green, int blue);
 	EXPORT_API void PluginOffsetNonZeroColorsName(const char* path, int frameId, int red, int green, int blue);
 	EXPORT_API double PluginOffsetNonZeroColorsNameD(const char* path, double frameId, double red, double green, double blue);
+
 
 	EXPORT_API void PluginOffsetNonZeroColorsAllFrames(int animationId, int red, int green, int blue);
 	EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(const char* path, int red, int green, int blue);

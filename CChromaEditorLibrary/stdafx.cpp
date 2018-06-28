@@ -3151,14 +3151,8 @@ extern "C"
 	}
 
 
-	EXPORT_API void PluginFillColor(int animationId, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillColor(int animationId, int frameId, int color)
 	{
-		//clamp values
-		red = max(0, min(255, red));
-		green = max(0, min(255, green));
-		blue = max(0, min(255, blue));
-		int color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
-
 		PluginStopAnimation(animationId);
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
@@ -3208,7 +3202,7 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillColorName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillColorName(const char* path, int frameId, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
@@ -3216,17 +3210,45 @@ extern "C"
 			LogError("PluginFillColorName: Animation not found! %s", path);
 			return;
 		}
-		PluginFillColor(animationId, frameId, red, green, blue);
+		PluginFillColor(animationId, frameId, color);
 	}
 
-	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double color)
 	{
-		PluginFillColorName(path, (int)frameId, (int)red, (int)green, (int)blue);
+		PluginFillColorName(path, (int)frameId, (int)color);
 		return 0;
 	}
 
 
-	EXPORT_API void PluginFillColorAllFrames(int animationId, int red, int green, int blue)
+	EXPORT_API void PluginFillColorRGB(int animationId, int frameId, int red, int green, int blue)
+	{
+		//clamp values
+		red = max(0, min(255, red));
+		green = max(0, min(255, green));
+		blue = max(0, min(255, blue));
+		int color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+		PluginFillColor(animationId, frameId, color);
+	}
+
+	EXPORT_API void PluginFillColorRGBName(const char* path, int frameId, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillColorRGBName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillColorRGB(animationId, frameId, red, green, blue);
+	}
+
+	EXPORT_API double PluginFillColorRGBNameD(const char* path, double frameId, double red, double green, double blue)
+	{
+		PluginFillColorRGBName(path, (int)frameId, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillColorAllFrames(int animationId, int color)
 	{
 		PluginStopAnimation(animationId);
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -3237,11 +3259,11 @@ extern "C"
 		int frameCount = PluginGetFrameCount(animationId);
 		for (int frameId = 0; frameId < frameCount; ++frameId)
 		{
-			PluginFillColor(animationId, frameId, red, green, blue);
+			PluginFillColor(animationId, frameId, color);
 		}
 	}
 
-	EXPORT_API void PluginFillColorAllFramesName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginFillColorAllFramesName(const char* path, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
@@ -3249,17 +3271,125 @@ extern "C"
 			LogError("PluginFillColorAllFramesName: Animation not found! %s", path);
 			return;
 		}
-		PluginFillColorAllFrames(animationId, red, green, blue);
+		PluginFillColorAllFrames(animationId, color);
 	}
 
-	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double color)
 	{
-		PluginFillColorAllFramesName(path, (int)red, (int)green, (int)blue);
+		PluginFillColorAllFramesName(path, (int)color);
 		return 0;
 	}
 
 
-	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillColorAllFramesRGB(int animationId, int red, int green, int blue)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginFillColorRGB(animationId, frameId, red, green, blue);
+		}
+	}
+
+	EXPORT_API void PluginFillColorAllFramesRGBName(const char* path, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillColorAllFramesRGBName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillColorAllFramesRGB(animationId, red, green, blue);
+	}
+
+	EXPORT_API double PluginFillColorAllFramesRGBNameD(const char* path, double red, double green, double blue)
+	{
+		PluginFillColorAllFramesRGBName(path, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int color)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = (Animation1D*)(animation);
+			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[frameId];
+				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+				vector<COLORREF>& colors = frame.Colors;
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					if (colors[i] != 0)
+					{
+						colors[i] = color;
+					}
+				}
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[frameId];
+				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						if (row.Colors[j] != 0)
+						{
+							row.Colors[j] = color;
+						}
+					}
+				}
+			}
+		}
+		break;
+		}
+	}
+
+	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int color)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillNonZeroColorName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillNonZeroColor(animationId, frameId, color);
+	}
+
+	EXPORT_API double PluginFillNonZeroColorNameD(const char* path, double frameId, double color)
+	{
+		PluginFillNonZeroColorName(path, (int)frameId, (int)color);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillNonZeroColorRGB(int animationId, int frameId, int red, int green, int blue)
 	{
 		//clamp values
 		red = max(0, min(255, red));
@@ -3322,25 +3452,100 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillNonZeroColorRGBName(const char* path, int frameId, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorName: Animation not found! %s", path);
+			LogError("PluginFillNonZeroColorRGBName: Animation not found! %s", path);
 			return;
 		}
-		PluginFillNonZeroColor(animationId, frameId, red, green, blue);
+		PluginFillNonZeroColorRGB(animationId, frameId, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillNonZeroColorNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginFillNonZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue)
 	{
-		PluginFillNonZeroColorName(path, (int)frameId, (int)red, (int)green, (int)blue);
+		PluginFillNonZeroColorRGBName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
 	}
 
 
-	EXPORT_API void PluginFillZeroColor(int animationId, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillZeroColor(int animationId, int frameId, int color)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = (Animation1D*)(animation);
+			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[frameId];
+				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+				vector<COLORREF>& colors = frame.Colors;
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					if (colors[i] == 0)
+					{
+						colors[i] = color;
+					}
+				}
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[frameId];
+				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						if (row.Colors[j] == 0)
+						{
+							row.Colors[j] = color;
+						}
+					}
+				}
+			}
+		}
+		break;
+		}
+	}
+
+	EXPORT_API void PluginFillZeroColorName(const char* path, int frameId, int color)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillZeroColorName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillZeroColor(animationId, frameId, color);
+	}
+
+	EXPORT_API double PluginFillZeroColorNameD(const char* path, double frameId, double color)
+	{
+		PluginFillZeroColorName(path, (int)frameId, (int)color);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillZeroColorRGB(int animationId, int frameId, int red, int green, int blue)
 	{
 		//clamp values
 		red = max(0, min(255, red));
@@ -3403,25 +3608,25 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillZeroColorName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillZeroColorRGBName(const char* path, int frameId, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorName: Animation not found! %s", path);
+			LogError("PluginFillZeroColorRGBName: Animation not found! %s", path);
 			return;
 		}
-		PluginFillZeroColor(animationId, frameId, red, green, blue);
+		PluginFillZeroColorRGB(animationId, frameId, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillZeroColorNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginFillZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue)
 	{
-		PluginFillZeroColorName(path, (int)frameId, (int)red, (int)green, (int)blue);
+		PluginFillZeroColorRGBName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
 	}
 
 
-	EXPORT_API void PluginFillNonZeroColorAllFrames(int animationId, int red, int green, int blue)
+	EXPORT_API void PluginFillNonZeroColorAllFrames(int animationId, int color)
 	{
 		PluginStopAnimation(animationId);
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -3432,11 +3637,11 @@ extern "C"
 		int frameCount = PluginGetFrameCount(animationId);
 		for (int frameId = 0; frameId < frameCount; ++frameId)
 		{
-			PluginFillNonZeroColor(animationId, frameId, red, green, blue);
+			PluginFillNonZeroColor(animationId, frameId, color);
 		}
 	}
 
-	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
@@ -3444,17 +3649,17 @@ extern "C"
 			LogError("PluginFillNonZeroColorAllFramesName: Animation not found! %s", path);
 			return;
 		}
-		PluginFillNonZeroColorAllFrames(animationId, red, green, blue);
+		PluginFillNonZeroColorAllFrames(animationId, color);
 	}
 
-	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const char* path, double color)
 	{
-		PluginFillNonZeroColorAllFramesName(path, (int)red, (int)green, (int)blue);
+		PluginFillNonZeroColorAllFramesName(path, (int)color);
 		return 0;
 	}
 
 
-	EXPORT_API void PluginFillZeroColorAllFrames(int animationId, int red, int green, int blue)
+	EXPORT_API void PluginFillNonZeroColorAllFramesRGB(int animationId, int red, int green, int blue)
 	{
 		PluginStopAnimation(animationId);
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -3465,11 +3670,44 @@ extern "C"
 		int frameCount = PluginGetFrameCount(animationId);
 		for (int frameId = 0; frameId < frameCount; ++frameId)
 		{
-			PluginFillZeroColor(animationId, frameId, red, green, blue);
+			PluginFillNonZeroColorRGB(animationId, frameId, red, green, blue);
 		}
 	}
 
-	EXPORT_API void PluginFillZeroColorAllFramesName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginFillNonZeroColorAllFramesRGBName(const char* path, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillNonZeroColorAllFramesRGBName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillNonZeroColorAllFramesRGB(animationId, red, green, blue);
+	}
+
+	EXPORT_API double PluginFillNonZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue)
+	{
+		PluginFillNonZeroColorAllFramesRGBName(path, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillZeroColorAllFrames(int animationId, int color)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginFillZeroColor(animationId, frameId, color);
+		}
+	}
+
+	EXPORT_API void PluginFillZeroColorAllFramesName(const char* path, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
@@ -3477,12 +3715,45 @@ extern "C"
 			LogError("PluginFillZeroColorAllFramesName: Animation not found! %s", path);
 			return;
 		}
-		PluginFillZeroColorAllFrames(animationId, red, green, blue);
+		PluginFillZeroColorAllFrames(animationId, color);
 	}
 
-	EXPORT_API double PluginFillZeroColorAllFramesNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginFillZeroColorAllFramesNameD(const char* path, double color)
 	{
-		PluginFillZeroColorAllFramesName(path, (int)red, (int)green, (int)blue);
+		PluginFillZeroColorAllFramesName(path, (int)color);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillZeroColorAllFramesRGB(int animationId, int red, int green, int blue)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginFillZeroColorRGB(animationId, frameId, red, green, blue);
+		}
+	}
+
+	EXPORT_API void PluginFillZeroColorAllFramesRGBName(const char* path, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillZeroColorAllFramesRGBName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillZeroColorAllFramesRGB(animationId, red, green, blue);
+	}
+
+	EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue)
+	{
+		PluginFillZeroColorAllFramesRGBName(path, (int)red, (int)green, (int)blue);
 		return 0;
 	}
 
