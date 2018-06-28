@@ -2257,6 +2257,86 @@ extern "C"
 	}
 
 
+	EXPORT_API void PluginSetKeysNonZeroColorAllFrames(int animationId, const int* rzkeys, int keyCount, int color)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D &&
+			animation->GetDeviceId() == (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			for (int frameId = 0; frameId < int(frames.size()); ++frameId)
+			{
+				for (int index = 0; index < keyCount; ++index)
+				{
+					const int* rzkey = &rzkeys[index];
+					FChromaSDKColorFrame2D& frame = frames[frameId];
+					if (frame.Colors[HIBYTE(*rzkey)].Colors[LOBYTE(*rzkey)] != 0)
+					{
+						frame.Colors[HIBYTE(*rzkey)].Colors[LOBYTE(*rzkey)] = color;
+					}
+				}
+			}
+		}
+	}
+
+	EXPORT_API void PluginSetKeysNonZeroColorAllFramesName(const char* path, const int* rzkeys, int keyCount, int color)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginSetKeysNonZeroColorAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginSetKeysNonZeroColorAllFrames(animationId, rzkeys, keyCount, color);
+	}
+
+
+	EXPORT_API void PluginSetKeysZeroColorAllFrames(int animationId, const int* rzkeys, int keyCount, int color)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D &&
+			animation->GetDeviceId() == (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			for (int frameId = 0; frameId < int(frames.size()); ++frameId)
+			{
+				for (int index = 0; index < keyCount; ++index)
+				{
+					const int* rzkey = &rzkeys[index];
+					FChromaSDKColorFrame2D& frame = frames[frameId];
+					if (frame.Colors[HIBYTE(*rzkey)].Colors[LOBYTE(*rzkey)] == 0)
+					{
+						frame.Colors[HIBYTE(*rzkey)].Colors[LOBYTE(*rzkey)] = color;
+					}
+				}
+			}
+		}
+	}
+
+	EXPORT_API void PluginSetKeysZeroColorAllFramesName(const char* path, const int* rzkeys, int keyCount, int color)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginSetKeysZeroColorAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginSetKeysZeroColorAllFrames(animationId, rzkeys, keyCount, color);
+	}
+
+
 	EXPORT_API void PluginSet1DColor(int animationId, int frameId, int led, int color)
 	{
 		PluginStopAnimation(animationId);
