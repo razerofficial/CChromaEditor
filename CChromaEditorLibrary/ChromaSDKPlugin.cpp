@@ -14,6 +14,12 @@
 using namespace ChromaSDK;
 using namespace std;
 
+int g_seed;
+inline int fastrand() {
+	g_seed = (214013 * g_seed + 2531011);
+	return (g_seed >> 16) & 0x7FFF;
+}
+
 ChromaSDKPlugin* ChromaSDKPlugin::_sInstance = nullptr;
 
 bool ChromaSDKPlugin::ValidateGetProcAddress(bool condition, const char* methodName)
@@ -648,9 +654,9 @@ vector<COLORREF> ChromaSDKPlugin::CreateRandomColors1D(const EChromaSDKDevice1DE
 	int elements = GetMaxLeds(device);
 	for (int i = 0; i < elements; ++i)
 	{
-		int red = rand() % 256;
-		int green = rand() % 256;
-		int blue = rand() % 256;
+		int red = fastrand() % 256;
+		int green = fastrand() % 256;
+		int blue = fastrand() % 256;
 		COLORREF color = RGB(red, green, blue);
 		colors.push_back(color);
 	}
@@ -667,9 +673,9 @@ vector<FChromaSDKColors> ChromaSDKPlugin::CreateRandomColors2D(const EChromaSDKD
 		FChromaSDKColors row = FChromaSDKColors();
 		for (int j = 0; j < maxColumns; ++j)
 		{
-			int red = rand() % 256;
-			int green = rand() % 256;
-			int blue = rand() % 256;
+			int red = fastrand() % 256;
+			int green = fastrand() % 256;
+			int blue = fastrand() % 256;
 			COLORREF color = RGB(red, green, blue);
 			row.Colors.push_back(color);
 		}
@@ -684,7 +690,7 @@ vector<COLORREF> ChromaSDKPlugin::CreateRandomColorsBlackAndWhite1D(const EChrom
 	int elements = GetMaxLeds(device);
 	for (int i = 0; i < elements; ++i)
 	{
-		int gray = rand() % 256;
+		int gray = fastrand() % 256;
 		COLORREF color = RGB(gray, gray, gray);
 		colors.push_back(color);
 	}
@@ -701,7 +707,7 @@ vector<FChromaSDKColors> ChromaSDKPlugin::CreateRandomColorsBlackAndWhite2D(cons
 		FChromaSDKColors row = FChromaSDKColors();
 		for (int j = 0; j < maxColumns; ++j)
 		{
-			int gray = rand() % 256;
+			int gray = fastrand() % 256;
 			COLORREF color = RGB(gray, gray, gray);
 			row.Colors.push_back(color);
 		}

@@ -63,6 +63,7 @@ typedef void(*PLUGIN_INIT)();
 typedef void(*PLUGIN_LOAD_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_LOAD_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_MAKE_BLANK_FRAMES_NAME)(const char* path, int frameCount, float duration, int color);
+typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES)(int animationId, float intensity);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)(const char* path, float intensity);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
@@ -71,6 +72,7 @@ typedef void(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)(const char* path, int red, i
 typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_PLAY_ANIMATION_LOOP)(int animationId, bool loop);
 typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
 typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
 typedef void(*PLUGIN_REVERSE_ALL_FRAMES_NAME)(const char* path);
@@ -148,6 +150,7 @@ CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_ANIMATION_NAME, LoadAnimationName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_COMPOSITE, LoadComposite)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES, MakeBlankFrames)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_NAME, MakeBlankFramesName)
+CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES, MultiplyIntensityAllFrames)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME, MultiplyIntensityAllFramesName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME, MultiplyIntensityAllFramesRGBName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName)
@@ -160,6 +163,7 @@ CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION, OpenAnimation)
 CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG, OpenEditorDialog)
 CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY, OpenEditorDialogAndPlay)
 CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION, PlayAnimation)
+CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_LOOP, PlayAnimationLoop)
 CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_NAME, PlayAnimationName)
 CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_COMPOSITE, PlayComposite)
 CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame)
@@ -251,6 +255,7 @@ int Init()
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_LOAD_COMPOSITE, LoadComposite);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MAKE_BLANK_FRAMES, MakeBlankFrames);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_NAME, MakeBlankFramesName);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES, MultiplyIntensityAllFrames);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME, MultiplyIntensityAllFramesName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME, MultiplyIntensityAllFramesRGBName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName);
@@ -263,6 +268,7 @@ int Init()
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG, OpenEditorDialog);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY, OpenEditorDialogAndPlay);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_PLAY_ANIMATION, PlayAnimation);
+	CHROMASDK_VALIDATE_METHOD(PLUGIN_PLAY_ANIMATION_LOOP, PlayAnimationLoop);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_PLAY_ANIMATION_NAME, PlayAnimationName);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_PLAY_COMPOSITE, PlayComposite);
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame);
@@ -384,6 +390,8 @@ void IsPlaying(const char* name)
 void DebugUnitTestsInit()
 {
 	_gMethodInit();
+
+	Sleep(1000);
 }
 
 void DebugUnitTestsPlayComposite()
@@ -1159,8 +1167,6 @@ void DebugUnitTestsKeyboardCustom()
 	Sleep(3000);
 }
 
-
-
 float Lerp(float start, float end, float amt)
 {
 	return (1 - amt)*start + amt * end;
@@ -1174,9 +1180,42 @@ int LerpColor(int from, int to, float t) {
 	return color;
 }
 
+void DebugUnitTestsCreateRandomBlackAndWhite()
+{
+	// get current time
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+	int baseAnimation = _gMethodCreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
+	int frameCount = 100;
+	_gMethodMakeBlankFrames(baseAnimation, frameCount, 0.1, 0);
+	for (int i = 0; i < frameCount; ++i) {
+		_gMethodFillRandomColorsBlackAndWhite(baseAnimation, i);
+	}
+	_gMethodMultiplyIntensityAllFrames(baseAnimation, 0.25f);
+
+	_gMethodSetChromaCustomFlag(baseAnimation, true);
+	_gMethodSetChromaCustomColorAllFrames(baseAnimation);
+	_gMethodPlayAnimationLoop(baseAnimation, true);
+
+	// get time in seconds
+	duration<double, milli> time_span = high_resolution_clock::now() - timer;
+	float deltaTime = (float)(time_span.count() / 1000.0f);
+	fprintf(stdout, "Elapsed time: %f\r\n", deltaTime);
+
+	Sleep(3000);
+
+	_gMethodCloseAnimation(baseAnimation);
+
+	Sleep(1000);
+}
+
 void DebugUnitTests()
 {
-	DebugUnitTestsKeyboardCustom();
+	fprintf(stdout, "Start of unit tests...\r\n");
+	Sleep(500);
+	DebugUnitTestsCreateRandomBlackAndWhite();
+	DebugUnitTestsCreateRandomBlackAndWhite();
+	//DebugUnitTestsKeyboardCustom();
 	//DebugUnitTestsPlayComposite();
 	//DebugUnitTestsHDKIndividualLEDsGradient();
 	//DebugUnitTestsHDKIndividualLEDs();
