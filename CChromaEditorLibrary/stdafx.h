@@ -50,6 +50,8 @@ void LogError(const char* text, ...);
 
 #include "AnimationBase.h"
 
+inline int fastrand();
+
 extern "C"
 {
 	//GameMaker: Only has double and char* types
@@ -452,9 +454,16 @@ extern "C"
 	EXPORT_API void PluginSetChromaCustomColorAllFramesName(const char* path);
 	EXPORT_API double PluginSetChromaCustomColorAllFramesNameD(const char* path);
 
+
 	EXPORT_API void PluginMakeBlankFrames(int animationId, int frameCount, float duration, int color);
 	EXPORT_API void PluginMakeBlankFramesName(const char* path, int frameCount, float duration, int color);
 	EXPORT_API double PluginMakeBlankFramesNameD(const char* path, double frameCount, double duration, double color);
+
+
+	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhite(int animationId, int frameCount, float duration);
+	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhiteName(const char* path, int frameCount, float duration);
+	EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(const char* path, double frameCount, double duration);
+
 
 	EXPORT_API RZRESULT PluginCreateEffect(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectId);
 

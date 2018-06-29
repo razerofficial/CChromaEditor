@@ -4661,6 +4661,64 @@ extern "C"
 	}
 
 
+	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhite(int animationId, int frameCount, float duration)
+	{
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		if (animation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			return;
+		}
+		if (animation->GetDeviceId() != EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		PluginStopAnimation(animationId);
+		Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+		vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+		frames.clear();
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			FChromaSDKColorFrame2D& frame = FChromaSDKColorFrame2D();
+			frame.Duration = duration;
+			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
+			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+			for (int i = 0; i < maxRow; ++i)
+			{
+				FChromaSDKColors& row = frame.Colors[i];
+				for (int j = 0; j < maxColumn; ++j)
+				{
+					int gray = fastrand() % 256;
+					COLORREF color = RGB(gray, gray, gray);
+					row.Colors[j] = color;
+				}
+			}
+			frames.push_back(frame);
+		}
+	}
+
+	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhiteName(const char* path, int frameCount, float duration)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMakeBlankFramesRandomBlackAndWhiteName: Animation not found! %s", path);
+			return;
+		}
+		PluginMakeBlankFramesRandomBlackAndWhite(animationId, frameCount, duration);
+	}
+
+	EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(const char* path, double frameCount, double duration)
+	{
+		PluginMakeBlankFramesRandomBlackAndWhiteName(path, (int)frameCount, (int)duration);
+		return 0;
+	}
+
+
 	EXPORT_API RZRESULT PluginCreateEffect(RZDEVICEID deviceId, EFFECT_TYPE effect, int* colors, int size, FChromaSDKGuid* effectId)
 	{
 		// Chroma thread plays animations
