@@ -149,6 +149,16 @@ extern "C"
 		}
 	}
 
+	EXPORT_API int PluginGetRGB(int red, int green, int blue)
+	{
+		return (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+	}
+
+	EXPORT_API double PluginGetRGBD(double red, double green, double blue)
+	{
+		return (double)PluginGetRGB((int)red, (int)green, (int)blue);
+	}
+
 	EXPORT_API bool PluginIsDialogOpen()
 	{
 		return _gDialogIsOpen;
@@ -1259,6 +1269,17 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API void PluginOverrideFrameDurationName(const char* path, float duration)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginOverrideFrameDurationName: Animation not found! %s", path);
+			return;
+		}
+		PluginOverrideFrameDuration(animationId, duration);
+	}
+
 	EXPORT_API double PluginOverrideFrameDurationD(double animationId, double duration)
 	{
 		return (double)PluginOverrideFrameDuration((int)animationId, (float)duration);
@@ -2089,6 +2110,44 @@ extern "C"
 	}
 
 
+	EXPORT_API void PluginSetKeysColorAllFramesRGB(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue)
+	{
+		PluginStopAnimation(animationId);
+		int color = PluginGetRGB(red, green, blue);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D &&
+			animation->GetDeviceId() == (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			for (int frameId = 0; frameId < int(frames.size()); ++frameId)
+			{
+				for (int index = 0; index < keyCount; ++index)
+				{
+					const int* rzkey = &rzkeys[index];
+					FChromaSDKColorFrame2D& frame = frames[frameId];
+					frame.Colors[HIBYTE(*rzkey)].Colors[LOBYTE(*rzkey)] = color;
+				}
+			}
+		}
+	}
+
+	EXPORT_API void PluginSetKeysColorAllFramesRGBName(const char* path, const int* rzkeys, int keyCount, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginSetKeysColorAllFramesRGBName: Animation not found! %s", path);
+			return;
+		}
+		PluginSetKeysColorAllFramesRGB(animationId, rzkeys, keyCount, red, green, blue);
+	}
+
+
 	EXPORT_API void PluginSetKeyNonZeroColor(int animationId, int frameId, int rzkey, int color)
 	{
 		PluginStopAnimation(animationId);
@@ -2586,6 +2645,101 @@ extern "C"
 	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
 	{
 		PluginCopyNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginAddNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId)
+	{
+		PluginStopAnimation(targetAnimationId);
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
+			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
+			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+		if (sourceFrames.size() == 0)
+		{
+			return;
+		}
+		if (targetFrames.size() == 0)
+		{
+			return;
+		}
+		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
+		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
+		for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+		{
+			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+			FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
+			for (int i = 0; i < maxRow; ++i)
+			{
+				for (int j = 0; j < maxColumn; ++j)
+				{
+					int color = sourceFrame.Colors[i].Colors[j];
+					if (color != 0)
+					{
+						int sourceRed = color & 0xFF;
+						int sourceGreen = (color & 0xFF00) >> 8;
+						int sourceBlue = (color & 0xFF0000) >> 16;
+
+						int oldColor = targetFrame.Colors[i].Colors[j];
+						int oldRed = oldColor & 0xFF;
+						int oldGreen = (oldColor & 0xFF00) >> 8;
+						int oldBlue = (oldColor & 0xFF0000) >> 16;
+
+						int red = min(255, max(0, oldRed + sourceRed)) & 0xFF;
+						int green = min(255, max(0, oldGreen + sourceGreen)) & 0xFF;
+						int blue = min(255, max(0, oldBlue + sourceBlue)) & 0xFF;
+						int newColor = red | (green << 8) | (blue << 16);
+
+						targetFrame.Colors[i].Colors[j] = newColor;
+					}
+				}
+			}
+		}
+	}
+
+	EXPORT_API void PluginAddNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginAddNonZeroAllKeysAllFramesName: Source Animation not found! %s", sourceAnimation);
+			return;
+		}
+
+		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		if (targetAnimationId < 0)
+		{
+			LogError("PluginAddNonZeroAllKeysAllFramesName: Target Animation not found! %s", targetAnimation);
+			return;
+		}
+
+		PluginAddNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+	}
+
+	EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	{
+		PluginAddNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
 	}
 
@@ -3758,7 +3912,66 @@ extern "C"
 	}
 
 
-	EXPORT_API void PluginFillRandomColorsBlackAndWhite(int animationId, int frameId)
+	EXPORT_API void PluginFillRandomColors(int animationId, int frameId)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		if (frameId >= 0 && frameId < frameCount)
+		{
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+			{
+				Animation1D* animation1D = (Animation1D*)(animation);
+				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+				if (frameId >= 0 &&
+					frameId < frames.size())
+				{
+					FChromaSDKColorFrame1D& frame = frames[frameId];
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors1D(animation1D->GetDevice());
+				}
+			}
+			break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+			{
+				Animation2D* animation2D = (Animation2D*)(animation);
+				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+				if (frameId >= 0 &&
+					frameId < frames.size())
+				{
+					FChromaSDKColorFrame2D& frame = frames[frameId];
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors2D(animation2D->GetDevice());
+				}
+			}
+			break;
+			}
+		}
+	}
+
+	EXPORT_API void PluginFillRandomColorsName(const char* path, int frameId)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillRandomColorsName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillRandomColors(animationId, frameId);
+	}
+
+	EXPORT_API double PluginFillRandomColorsNameD(const char* path, double frameId)
+	{
+		PluginFillRandomColorsName(path, (int)frameId);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillRandomColorsAllFrames(int animationId)
 	{
 		PluginStopAnimation(animationId);
 		AnimationBase* animation = GetAnimationInstance(animationId);
@@ -3768,6 +3981,65 @@ extern "C"
 		}
 		int frameCount = PluginGetFrameCount(animationId);
 		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+			{
+				Animation1D* animation1D = (Animation1D*)(animation);
+				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+				if (frameId >= 0 &&
+					frameId < frames.size())
+				{
+					FChromaSDKColorFrame1D& frame = frames[frameId];
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors1D(animation1D->GetDevice());
+				}
+			}
+			break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+			{
+				Animation2D* animation2D = (Animation2D*)(animation);
+				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+				if (frameId >= 0 &&
+					frameId < frames.size())
+				{
+					FChromaSDKColorFrame2D& frame = frames[frameId];
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors2D(animation2D->GetDevice());
+				}
+			}
+			break;
+			}
+		}
+	}
+
+	EXPORT_API void PluginFillRandomColorsAllFramesName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillRandomColorsAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginFillRandomColorsAllFrames(animationId);
+	}
+
+	EXPORT_API double PluginFillRandomColorsAllFramesNameD(const char* path)
+	{
+		PluginFillRandomColorsAllFramesName(path);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillRandomColorsBlackAndWhite(int animationId, int frameId)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		if (frameId >= 0 && frameId < frameCount)
 		{
 			switch (animation->GetDeviceType())
 			{
@@ -3813,6 +4085,65 @@ extern "C"
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteNameD(const char* path, double frameId)
 	{
 		PluginFillRandomColorsBlackAndWhiteName(path, (int)frameId);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFrames(int animationId)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			switch (animation->GetDeviceType())
+			{
+			case EChromaSDKDeviceTypeEnum::DE_1D:
+			{
+				Animation1D* animation1D = (Animation1D*)(animation);
+				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+				if (frameId >= 0 &&
+					frameId < frames.size())
+				{
+					FChromaSDKColorFrame1D& frame = frames[frameId];
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColorsBlackAndWhite1D(animation1D->GetDevice());
+				}
+			}
+			break;
+			case EChromaSDKDeviceTypeEnum::DE_2D:
+			{
+				Animation2D* animation2D = (Animation2D*)(animation);
+				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+				if (frameId >= 0 &&
+					frameId < frames.size())
+				{
+					FChromaSDKColorFrame2D& frame = frames[frameId];
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColorsBlackAndWhite2D(animation2D->GetDevice());
+				}
+			}
+			break;
+			}
+		}
+	}
+
+	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillRandomColorsBlackAndWhiteNameAllFrames: Animation not found! %s", path);
+			return;
+		}
+		PluginFillRandomColorsBlackAndWhiteAllFrames(animationId);
+	}
+
+	EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const char* path)
+	{
+		PluginFillRandomColorsBlackAndWhiteAllFramesName(path);
 		return 0;
 	}
 
@@ -4140,6 +4471,98 @@ extern "C"
 	EXPORT_API double PluginMultiplyIntensityNameD(const char* path, double frameId, double intensity)
 	{
 		PluginMultiplyIntensityName(path, (int)frameId, (float)intensity);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginMultiplyIntensityColor(int animationId, int frameId, int color)
+	{
+		int red = (color & 0xFF);
+		int green = (color & 0xFF00) >> 8;
+		int blue = (color & 0xFF0000) >> 16;
+		float redIntensity = red / 255.0f;
+		float greenIntensity = green / 255.0f;
+		float blueIntensity = blue / 255.0f;
+
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = (Animation1D*)(animation);
+			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[frameId];
+				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+				vector<COLORREF>& colors = frame.Colors;
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					int color = colors[i];
+					int red = (color & 0xFF);
+					int green = (color & 0xFF00) >> 8;
+					int blue = (color & 0xFF0000) >> 16;
+					red = max(0, min(255, red * redIntensity));
+					green = max(0, min(255, green * greenIntensity));
+					blue = max(0, min(255, blue * blueIntensity));
+					color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+					colors[i] = color;
+				}
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[frameId];
+				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = row.Colors[j];
+						int red = (color & 0xFF);
+						int green = (color & 0xFF00) >> 8;
+						int blue = (color & 0xFF0000) >> 16;
+						red = max(0, min(255, red * redIntensity));
+						green = max(0, min(255, green * greenIntensity));
+						blue = max(0, min(255, blue * blueIntensity));
+						color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+						row.Colors[j] = color;
+					}
+				}
+			}
+		}
+		break;
+		}
+	}
+
+	EXPORT_API void PluginMultiplyIntensityColorName(const char* path, int frameId, int color)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMultiplyIntensityColorName: Animation not found! %s", path);
+			return;
+		}
+		PluginMultiplyIntensityColor(animationId, frameId, color);
+	}
+
+	EXPORT_API double PluginMultiplyIntensityColorNameD(const char* path, double frameId, double color)
+	{
+		PluginMultiplyIntensityColorName(path, (int)frameId, (int)color);
 		return 0;
 	}
 
@@ -4657,6 +5080,121 @@ extern "C"
 	EXPORT_API double PluginMakeBlankFramesNameD(const char* path, double frameCount, double duration, double color)
 	{
 		PluginMakeBlankFramesName(path, (int)frameCount, (int)duration, (int)color);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginMakeBlankFramesRGB(int animationId, int frameCount, float duration, int red, int green, int blue)
+	{
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		if (animation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			return;
+		}
+		if (animation->GetDeviceId() != EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		PluginStopAnimation(animationId);
+		int color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+		Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+		vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+		frames.clear();
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			FChromaSDKColorFrame2D& frame = FChromaSDKColorFrame2D();
+			frame.Duration = duration;
+			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
+			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+			for (int i = 0; i < maxRow; ++i)
+			{
+				FChromaSDKColors& row = frame.Colors[i];
+				for (int j = 0; j < maxColumn; ++j)
+				{
+					row.Colors[j] = color;
+				}
+			}
+			frames.push_back(frame);
+		}
+	}
+
+	EXPORT_API void PluginMakeBlankFramesRGBName(const char* path, int frameCount, float duration, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMakeBlankFramesRGBName: Animation not found! %s", path);
+			return;
+		}
+		PluginMakeBlankFramesRGB(animationId, frameCount, duration, red, green, blue);
+	}
+
+	EXPORT_API double PluginMakeBlankFramesRGBNameD(const char* path, double frameCount, double duration, double red, double green, double blue)
+	{
+		PluginMakeBlankFramesRGBName(path, (int)frameCount, (int)duration, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginMakeBlankFramesRandom(int animationId, int frameCount, float duration)
+	{
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		if (animation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			return;
+		}
+		if (animation->GetDeviceId() != EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		PluginStopAnimation(animationId);
+		Animation2D* animation2D = dynamic_cast<Animation2D*>(animation);
+		vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+		frames.clear();
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			FChromaSDKColorFrame2D& frame = FChromaSDKColorFrame2D();
+			frame.Duration = duration;
+			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
+			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+			for (int i = 0; i < maxRow; ++i)
+			{
+				FChromaSDKColors& row = frame.Colors[i];
+				for (int j = 0; j < maxColumn; ++j)
+				{
+					int gray = fastrand() % 256;
+					COLORREF color = RGB(gray, gray, gray);
+					row.Colors[j] = color;
+				}
+			}
+			frames.push_back(frame);
+		}
+	}
+
+	EXPORT_API void PluginMakeBlankFramesRandomName(const char* path, int frameCount, float duration)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMakeBlankFramesRandomName: Animation not found! %s", path);
+			return;
+		}
+		PluginMakeBlankFramesRandom(animationId, frameCount, duration);
+	}
+
+	EXPORT_API double PluginMakeBlankFramesRandomNameD(const char* path, double frameCount, double duration)
+	{
+		PluginMakeBlankFramesRandomName(path, (int)frameCount, (int)duration);
 		return 0;
 	}
 

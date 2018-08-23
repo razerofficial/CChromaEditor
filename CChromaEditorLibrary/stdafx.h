@@ -67,6 +67,9 @@ extern "C"
 	EXPORT_API bool PluginIsInitialized();
 	EXPORT_API double PluginIsInitializedD();
 
+	EXPORT_API int PluginGetRGB(int red, int green, int blue);
+	EXPORT_API double PluginGetRGBD(double red, double green, double blue);
+
 	EXPORT_API bool PluginIsDialogOpen();
 	EXPORT_API double PluginIsDialogOpenD();
 
@@ -153,6 +156,7 @@ extern "C"
 	EXPORT_API double PluginPreviewFrameD(double animationId, double frameIndex);
 	
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration);
+	EXPORT_API void PluginOverrideFrameDurationName(const char* path, float duration);
 	EXPORT_API double PluginOverrideFrameDurationD(double animationId, double duration);
 
 	EXPORT_API int PluginReverse(int animationId);
@@ -223,6 +227,11 @@ extern "C"
 	//D doesn't support array type
 
 
+	EXPORT_API void PluginSetKeysColorAllFramesRGB(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	EXPORT_API void PluginSetKeysColorAllFramesRGBName(const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
+	//D doesn't support array type
+
+
 	EXPORT_API void PluginSetKeyNonZeroColor(int animationId, int frameId, int rzkey, int color);
 	EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId, int rzkey, int color);
 	EXPORT_API double PluginSetKeyNonZeroColorNameD(const char* path, double frameId, double rzkey, double color);
@@ -269,6 +278,11 @@ extern "C"
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
+
+
+	EXPORT_API void PluginAddNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
+	EXPORT_API void PluginAddNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
+	EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 
 
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
@@ -366,9 +380,23 @@ extern "C"
 	EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 
 
+	EXPORT_API void PluginFillRandomColors(int animationId, int frameId);
+	EXPORT_API void PluginFillRandomColorsName(const char* path, int frameId);
+	EXPORT_API double PluginFillRandomColorsNameD(const char* path, double frameId);
+
+	EXPORT_API void PluginFillRandomColorsAllFrames(int animationId);
+	EXPORT_API void PluginFillRandomColorsAllFramesName(const char* path);
+	EXPORT_API double PluginFillRandomColorsAllFramesNameD(const char* path);
+
+
 	EXPORT_API void PluginFillRandomColorsBlackAndWhite(int animationId, int frameId);
 	EXPORT_API void PluginFillRandomColorsBlackAndWhiteName(const char* path, int frameId);
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteNameD(const char* path, double frameId);
+
+
+	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFrames(int animationId);
+	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(const char* path);
+	EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const char* path);
 
 
 	//offset doesn't follow the RGB convention since RGB can range from -255 to 255
@@ -396,6 +424,11 @@ extern "C"
 	EXPORT_API void PluginMultiplyIntensity(int animationId, int frameId, float intensity);
 	EXPORT_API void PluginMultiplyIntensityName(const char* path, int frameId, float intensity);
 	EXPORT_API double PluginMultiplyIntensityNameD(const char* path, double frameId, double intensity);
+
+
+	EXPORT_API void MultiplyIntensityColor(int animationId, int frameId, int color);
+	EXPORT_API void MultiplyIntensityColorName(const char* path, int frameId, int color);
+	EXPORT_API double MultiplyIntensityColorNameD(const char* path, double frameId, double color);
 
 	
 	EXPORT_API void PluginMultiplyIntensityRGB(int animationId, int frameId, int red, int green, int blue);
@@ -458,6 +491,16 @@ extern "C"
 	EXPORT_API void PluginMakeBlankFrames(int animationId, int frameCount, float duration, int color);
 	EXPORT_API void PluginMakeBlankFramesName(const char* path, int frameCount, float duration, int color);
 	EXPORT_API double PluginMakeBlankFramesNameD(const char* path, double frameCount, double duration, double color);
+
+
+	EXPORT_API void PluginMakeBlankFramesRGB(int animationId, int frameCount, float duration, int red, int green, int blue);
+	EXPORT_API void PluginMakeBlankFramesRGBName(const char* path, int frameCount, float duration, int red, int green, int blue);
+	EXPORT_API double PluginMakeBlankFramesRGBNameD(const char* path, double frameCount, double duration, double red, double green, double blue);
+
+
+	EXPORT_API void PluginMakeBlankFramesRandom(int animationId, int frameCount, float duration);
+	EXPORT_API void PluginMakeBlankFramesRandomName(const char* path, int frameCount, float duration);
+	EXPORT_API double PluginMakeBlankFramesRandomNameD(const char* path, double frameCount, double duration);
 
 
 	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhite(int animationId, int frameCount, float duration);
