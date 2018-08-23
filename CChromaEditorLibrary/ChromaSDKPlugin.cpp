@@ -472,7 +472,10 @@ RZRESULT ChromaSDKPlugin::ChromaSDKUnInit()
 	}
 
 	int result = _mMethodUnInit();
-	LogDebug("ChromaSDKPlugin UnInit Result=%d\r\n", result);
+	if (result != 0)
+	{
+		LogDebug("ChromaSDKPlugin UnInit Result=%d\r\n", result);
+	}
 	_mInitialized = false;
 	return result;
 }
