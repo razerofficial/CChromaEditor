@@ -518,6 +518,61 @@ extern "C"
 	EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(const char* path, double frameCount, double duration);
 
 
+	EXPORT_API void PluginDuplicateFrames(int animationId);
+	EXPORT_API void PluginDuplicateFramesName(const char* path);
+	EXPORT_API double PluginDuplicateFramesNameD(const char* path);
+
+
+	EXPORT_API void PluginDuplicateFirstFrame(int animationId, int frameCount);
+	EXPORT_API void PluginDuplicateFirstFrameName(const char* path, int frameCount);
+	EXPORT_API double PluginDuplicateFirstFrameNameD(const char* path, double frameCount);
+
+
+	EXPORT_API void PluginDuplicateMirrorFrames(int animationId);
+	EXPORT_API void PluginDuplicateMirrorFramesName(const char* path);
+	EXPORT_API double PluginDuplicateMirrorFramesNameD(const char* path);
+
+
+	EXPORT_API void PluginInsertFrame(int animationId, int sourceFrame, int targetFrame);
+	EXPORT_API void PluginInsertFrameName(const char* path, int sourceFrame, int targetFrame);
+	EXPORT_API double PluginInsertFrameNameD(const char* path, double sourceFrame, double targetFrame);
+
+
+	EXPORT_API void PluginInsertDelay(int animationId, int frameId, int delay);
+	EXPORT_API void PluginInsertDelayName(const char* path, int frameId, int delay);
+	EXPORT_API double PluginInsertDelayNameD(const char* path, double frameId, double delay);
+
+
+	EXPORT_API void PluginReduceFrames(int animationId, int n);
+	EXPORT_API void PluginReduceFramesName(const char* path, int n);
+	EXPORT_API double PluginReduceFramesNameD(const char* path, double n);
+
+
+	EXPORT_API void PluginTrimFrame(int animationId, int frameId);
+	EXPORT_API void PluginTrimFrameName(const char* path, int frameId);
+	EXPORT_API double PluginTrimFrameNameD(const char* path, double frameId);
+
+
+	EXPORT_API void PluginTrimStartFrames(int animationId, int numberOfFrames);
+	EXPORT_API void PluginTrimStartFramesName(const char* path, int numberOfFrames);
+	EXPORT_API double PluginTrimStartFramesNameD(const char* path, double numberOfFrames);
+
+
+	EXPORT_API void PluginTrimEndFrames(int animationId, int lastFrameId);
+	EXPORT_API void PluginTrimEndFramesName(const char* path, int lastFrameId);
+	EXPORT_API double PluginTrimEndFramesNameD(const char* path, double lastFrameId);
+
+
+	EXPORT_API void PluginFadeStartFrames(int animationId, int fade);
+	EXPORT_API void PluginFadeStartFramesName(const char* path, int fade);
+	EXPORT_API double PluginFadeStartFramesNameD(const char* path, double fade);
+
+
+	EXPORT_API void PluginFadeEndFrames(int animationId, int fade);
+	EXPORT_API void PluginFadeEndFramesName(const char* path, int fade);
+	EXPORT_API double PluginFadeEndFramesNameD(const char* path, double fade);
+
+
 	EXPORT_API RZRESULT PluginCreateEffect(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectId);
 
 	EXPORT_API RZRESULT PluginSetEffect(const ChromaSDK::FChromaSDKGuid& effectId);
