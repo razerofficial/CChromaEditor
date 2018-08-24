@@ -52,10 +52,7 @@ typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId);
-typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
-typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
-typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 typedef void(*PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
@@ -163,7 +160,30 @@ typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_RGB)(int animationId, int frameId, cons
 typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB)(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
 typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
-
+typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+typedef void(*PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+typedef void(*PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+typedef void(*PLUGIN_ADD_NONZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+typedef void(*PLUGIN_ADD_NONZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+typedef void(*PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+typedef void(*PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+typedef void(*PLUGIN_SUBTRACT_NONZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+typedef void(*PLUGIN_SUBTRACT_NONZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+typedef void(*PLUGIN_SUBTRACT_NONZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+typedef void(*PLUGIN_SUBTRACT_NONZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
+typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
+typedef void(*PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
+typedef void(*PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
+typedef void(*PLUGIN_ADD_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
+typedef void(*PLUGIN_ADD_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
+typedef void(*PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
+typedef void(*PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
+typedef void(*PLUGIN_SUBTRACT_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
+typedef void(*PLUGIN_SUBTRACT_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
+typedef void(*PLUGIN_SUBTRACT_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
+typedef void(*PLUGIN_SUBTRACT_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 
 #define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature FieldName;
 
@@ -184,10 +204,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS, CopyNonZeroAllKeys)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_NAME, CopyNonZeroAllKeysName)
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_OFFSET, CopyNonZeroAllKeysOffset)
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_OFFSET_NAME, CopyNonZeroAllKeysOffsetName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroAllKeysAllFramesName)
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyNonZeroAllKeysAllFramesOffsetName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroTargetAllKeysAllFramesName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyZeroAllKeysAllFramesName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyZeroAllKeysAllFramesOffsetName)
@@ -328,6 +345,30 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_RGB_NAME, SetKeysZeroColorRGBName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB, SetKeysZeroColorAllFramesRGB)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB_NAME, SetKeysZeroColorAllFramesRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_OFFSET, CopyNonZeroAllKeysOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_OFFSET_NAME, CopyNonZeroAllKeysOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_OFFSET, CopyNonZeroTargetAllKeysOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_OFFSET_NAME, CopyNonZeroTargetAllKeysOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_ALL_KEYS_OFFSET, AddNonZeroAllKeysOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_ALL_KEYS_OFFSET_NAME, AddNonZeroAllKeysOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_OFFSET, AddNonZeroTargetAllKeysOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_OFFSET_NAME, AddNonZeroTargetAllKeysOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NONZERO_ALL_KEYS_OFFSET, SubtractNonZeroAllKeysOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NONZERO_ALL_KEYS_OFFSET_NAME, SubtractNonZeroAllKeysOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NONZERO_TARGET_ALL_KEYS_OFFSET, SubtractNonZeroTargetAllKeysOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NONZERO_TARGET_ALL_KEYS_OFFSET_NAME, SubtractNonZeroTargetAllKeysOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET, CopyNonZeroAllKeysAllFramesOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyNonZeroAllKeysAllFramesOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET, CopyNonZeroTargetAllKeysAllFramesOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyNonZeroTargetAllKeysAllFramesOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET, AddNonZeroAllKeysAllFramesOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroAllKeysAllFramesOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET, AddNonZeroTargetAllKeysAllFramesOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroTargetAllKeysAllFramesOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET, SubtractNonZeroAllKeysAllFramesOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NONZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, SubtractNonZeroAllKeysAllFramesOffsetName);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET, SubtractNonZeroTargetAllKeysAllFramesOffset);
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, SubtractNonZeroTargetAllKeysAllFramesOffsetName);
 
 
 		static int InitAPI();
