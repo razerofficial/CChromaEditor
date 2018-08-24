@@ -5226,11 +5226,6 @@ extern "C"
 		{
 			return;
 		}
-		int frameCount = PluginGetFrameCount(animationId);
-		for (int frameId = 0; frameId < frameCount; ++frameId)
-		{
-			
-		}
 		switch (animation->GetDeviceType())
 		{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
