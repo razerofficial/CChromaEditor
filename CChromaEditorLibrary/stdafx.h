@@ -361,6 +361,11 @@ extern "C"
 	EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 
 
+	EXPORT_API void PluginSubtractNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
+	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
+	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
+
+
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
@@ -426,9 +431,24 @@ extern "C"
 	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double color);
 
 
+	EXPORT_API void PluginFillThresholdColors(int animationId, int frameId, int threshold, int color);
+	EXPORT_API void PluginFillThresholdColorsName(const char* path, int frameId, int threshold, int color);
+	EXPORT_API double PluginFillThresholdColorsNameD(const char* path, double frameId, double threshold, double color);
+
+
 	EXPORT_API void PluginFillColorRGB(int animationId, int frameId, int red, int green, int blue);
 	EXPORT_API void PluginFillColorRGBName(const char* path, int frameId, int red, int green, int blue);
 	EXPORT_API double PluginFillColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
+
+
+	EXPORT_API void PluginFillThresholdColorsRGB(int animationId, int frameId, int threshold, int red, int green, int blue);
+	EXPORT_API void PluginFillThresholdColorsRGBName(const char* path, int frameId, int threshold, int red, int green, int blue);
+	EXPORT_API double PluginFillThresholdColorsRGBNameD(const char* path, double frameId, double threshold, double red, double green, double blue);
+
+
+	EXPORT_API void PluginFillThresholdColorsMinMaxRGB(int animationId, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	EXPORT_API void PluginFillThresholdColorsMinMaxRGBName(const char* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	EXPORT_API double PluginFillThresholdColorsMinMaxRGBNameD(const char* path, double frameId, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 
 
 	EXPORT_API void PluginFillColorAllFrames(int animationId, int color);
@@ -436,9 +456,24 @@ extern "C"
 	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double color);
 
 
+	EXPORT_API void PluginFillThresholdColorsAllFrames(int animationId, int threshold, int color);
+	EXPORT_API void PluginFillThresholdColorsAllFramesName(const char* path, int threshold, int color);
+	EXPORT_API double PluginFillThresholdColorsAllFramesNameD(const char* path, double threshold, double color);
+
+
 	EXPORT_API void PluginFillColorAllFramesRGB(int animationId, int red, int green, int blue);
 	EXPORT_API void PluginFillColorAllFramesRGBName(const char* path, int red, int green, int blue);
 	EXPORT_API double PluginFillColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
+
+
+	EXPORT_API void PluginFillThresholdColorsAllFramesRGB(int animationId, int threshold, int red, int green, int blue);
+	EXPORT_API void PluginFillThresholdColorsAllFramesRGBName(const char* path, int threshold, int red, int green, int blue);
+	EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(const char* path, int threshold, double red, double green, double blue);
+
+
+	EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGB(int animationId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGBName(const char* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	EXPORT_API double PluginFillThresholdColorsMinMaxAllFramesRGBNameD(const char* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 
 
 	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int color);
