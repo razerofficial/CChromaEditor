@@ -300,7 +300,7 @@ namespace ChromaSDK
 
 		static int InitAPI();
 
-		float Lerp(float start, float end, float amt);
-		int LerpColor(int from, int to, float t);
+		static float Lerp(float start, float end, float amt);
+		static int LerpColor(int from, int to, float t);
 	};
 }
