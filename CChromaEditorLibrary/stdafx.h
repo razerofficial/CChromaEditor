@@ -207,9 +207,15 @@ extern "C"
 	EXPORT_API int PluginGet2DColorName(const char* path, int frameId, int row, int column);
 	EXPORT_API double PluginGet2DColorNameD(const char* path, double frameId, double row, double column);
 	
+
 	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
 	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
 	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color);
+
+
+	EXPORT_API void PluginSetKeyColorRGB(int animationId, int frameId, int rzkey, int red, int green, int blue);
+	EXPORT_API void PluginSetKeyColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue);
+	EXPORT_API double PluginSetKeyColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue);
 
 
 	EXPORT_API void PluginSetKeyColorAllFrames(int animationId, int rzkey, int color);
@@ -217,8 +223,18 @@ extern "C"
 	EXPORT_API double PluginSetKeyColorAllFramesNameD(const char* path, double rzkey, double color);
 
 
+	EXPORT_API void PluginSetKeyColorAllFramesRGB(int animationId, int rzkey, int red, int green, int blue);
+	EXPORT_API void PluginSetKeyColorAllFramesRGBName(const char* path, int rzkey, int red, int green, int blue);
+	EXPORT_API double PluginSetKeyColorAllFramesRGBNameD(const char* path, double rzkey, double red, double green, double blue);
+
+
 	EXPORT_API void PluginSetKeysColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 	EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	//D doesn't support array type
+
+
+	EXPORT_API void PluginSetKeysColorRGB(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	EXPORT_API void PluginSetKeysColorRGBName(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 	//D doesn't support array type
 
 
@@ -237,9 +253,19 @@ extern "C"
 	EXPORT_API double PluginSetKeyNonZeroColorNameD(const char* path, double frameId, double rzkey, double color);
 
 
+	EXPORT_API void PluginSetKeyNonZeroColorRGB(int animationId, int frameId, int rzkey, int red, int green, int blue);
+	EXPORT_API void PluginSetKeyNonZeroColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue);
+	EXPORT_API double PluginSetKeyNonZeroColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue);
+
+
 	EXPORT_API void PluginSetKeyZeroColor(int animationId, int frameId, int rzkey, int color);
 	EXPORT_API void PluginSetKeyZeroColorName(const char* path, int frameId, int rzkey, int color);
 	EXPORT_API double PluginSetKeyZeroColorNameD(const char* path, double frameId, double rzkey, double color);
+
+
+	EXPORT_API void PluginSetKeyZeroColorRGB(int animationId, int frameId, int rzkey, int red, int green, int blue);
+	EXPORT_API void PluginSetKeyZeroColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue);
+	EXPORT_API double PluginSetKeyZeroColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue);
 
 
 	EXPORT_API void PluginSetKeysNonZeroColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
@@ -247,8 +273,18 @@ extern "C"
 	//D doesn't support array type
 
 
+	EXPORT_API void PluginSetKeysNonZeroColorRGB(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	EXPORT_API void PluginSetKeysNonZeroColorRGBName(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	//D doesn't support array type
+
+
 	EXPORT_API void PluginSetKeysZeroColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 	EXPORT_API void PluginSetKeysZeroColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	//D doesn't support array type
+
+
+	EXPORT_API void PluginSetKeysZeroColorRGB(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	EXPORT_API void PluginSetKeysZeroColorRGBName(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 	//D doesn't support array type
 
 
@@ -259,6 +295,11 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysZeroColorAllFrames(int animationId, const int* rzkeys, int keyCount, int color);
 	EXPORT_API void PluginSetKeysZeroColorAllFramesName(const char* path, const int* rzkeys, int keyCount, int color);
+	//D doesn't support array type
+
+
+	EXPORT_API void PluginSetKeysZeroColorAllFramesRGB(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	EXPORT_API void PluginSetKeysZeroColorAllFramesRGBName(const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 	//D doesn't support array type
 
 

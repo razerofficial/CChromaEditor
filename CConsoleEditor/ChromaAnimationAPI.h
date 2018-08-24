@@ -147,6 +147,22 @@ typedef void(*PLUGIN_FADE_START_FRAMES)(int animationId, int fade);
 typedef void(*PLUGIN_FADE_START_FRAMES_NAME)(const char* path, int fade);
 typedef void(*PLUGIN_FADE_END_FRAMES)(int animationId, int fade);
 typedef void(*PLUGIN_FADE_END_FRAMES_NAME)(const char* path, int fade);
+typedef void(*PLUGIN_SET_KEY_COLOR_RGB)(int animationId, int frameId, int rzkey, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEY_COLOR_RGB_NAME)(const char* path, int frameId, int rzkey, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB)(int animationId, int rzkey, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int rzkey, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEYS_COLOR_RGB)(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEYS_COLOR_RGB_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEY_NONZERO_COLOR_RGB)(int animationId, int frameId, int rzkey, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEY_NONZERO_COLOR_RGB_NAME)(const char* path, int frameId, int rzkey, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEY_ZERO_COLOR_RGB)(int animationId, int frameId, int rzkey, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, int rzkey, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEYS_NONZERO_COLOR_RGB)(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEYS_NONZERO_COLOR_RGB_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_RGB)(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB)(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
+typedef void(*PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 
 
 #define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature FieldName;
@@ -296,6 +312,22 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_START_FRAMES_NAME, FadeStartFramesName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_END_FRAMES, FadeEndFrames)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_END_FRAMES_NAME, FadeEndFramesName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_RGB, SetKeyColorRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_RGB_NAME, SetKeyColorRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB, SetKeyColorAllFramesRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME, SetKeyColorAllFramesRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_RGB, SetKeysColorRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_RGB_NAME, SetKeysColorRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NONZERO_COLOR_RGB, SetKeyNonZeroColorRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NONZERO_COLOR_RGB_NAME, SetKeyNonZeroColorRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_RGB, SetKeyZeroColorRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME, SetKeyZeroColorRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NONZERO_COLOR_RGB, SetKeysNonZeroColorRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NONZERO_COLOR_RGB_NAME, SetKeysNonZeroColorRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_RGB, SetKeysZeroColorRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_RGB_NAME, SetKeysZeroColorRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB, SetKeysZeroColorAllFramesRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB_NAME, SetKeysZeroColorAllFramesRGBName)
 
 
 		static int InitAPI();
