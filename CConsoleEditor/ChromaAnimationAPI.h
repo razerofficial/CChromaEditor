@@ -21,6 +21,7 @@ typedef int(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int
 typedef int(*PLUGIN_CLOSE_ANIMATION)(int animationId);
 typedef int(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int device);
 typedef int(*PLUGIN_CREATE_ANIMATION_IN_MEMORY)(int deviceType, int device);
+typedef int(*PLUGIN_GET_ANIMATION)(const char* path);
 typedef int(*PLUGIN_GET_ANIMATION_COUNT)();
 typedef int(*PLUGIN_GET_ANIMATION_ID)(int index);
 typedef int(*PLUGIN_GET_FRAME)(int animationId, int frameIndex, float* duration, int* colors, int length);
@@ -287,6 +288,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_NAME, FillZeroColorName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB, FillZeroColorRGB)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB_NAME, FillZeroColorRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION, GetAnimation)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_COUNT, GetAnimationCount)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_ID, GetAnimationId)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_NAME, GetAnimationName)
