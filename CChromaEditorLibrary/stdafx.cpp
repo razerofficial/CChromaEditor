@@ -6994,7 +6994,7 @@ extern "C"
 		frames.clear();
 		for (int frameId = 0; frameId < frameCount; ++frameId)
 		{
-			FChromaSDKColorFrame2D& frame = FChromaSDKColorFrame2D();
+			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
 			frame.Duration = duration;
 			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
 			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7051,7 +7051,7 @@ extern "C"
 		frames.clear();
 		for (int frameId = 0; frameId < frameCount; ++frameId)
 		{
-			FChromaSDKColorFrame2D& frame = FChromaSDKColorFrame2D();
+			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
 			frame.Duration = duration;
 			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
 			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7107,7 +7107,7 @@ extern "C"
 		frames.clear();
 		for (int frameId = 0; frameId < frameCount; ++frameId)
 		{
-			FChromaSDKColorFrame2D& frame = FChromaSDKColorFrame2D();
+			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
 			frame.Duration = duration;
 			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
 			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7117,8 +7117,10 @@ extern "C"
 				FChromaSDKColors& row = frame.Colors[i];
 				for (int j = 0; j < maxColumn; ++j)
 				{
-					int gray = fastrand() % 256;
-					COLORREF color = RGB(gray, gray, gray);
+					int red = fastrand() % 256;
+					int green = fastrand() % 256;
+					int blue = fastrand() % 256;
+					COLORREF color = PluginGetRGB(red, green, blue);
 					row.Colors[j] = color;
 				}
 			}
@@ -7165,7 +7167,7 @@ extern "C"
 		frames.clear();
 		for (int frameId = 0; frameId < frameCount; ++frameId)
 		{
-			FChromaSDKColorFrame2D& frame = FChromaSDKColorFrame2D();
+			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
 			frame.Duration = duration;
 			frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
 			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
