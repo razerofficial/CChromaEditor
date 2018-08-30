@@ -7932,8 +7932,6 @@ extern "C"
 				{
 					float intensity = (frameId+1) / (float)fade;
 					FChromaSDKColorFrame2D& frame = frames[frameId];
-					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
-					int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
 					for (int i = 0; i < maxRow; ++i)
 					{
 						FChromaSDKColors& row = frame.Colors[i];
@@ -8029,8 +8027,6 @@ extern "C"
 				{
 					float intensity = (frameId + 1) / (float)fade;
 					FChromaSDKColorFrame2D& frame = frames[frameId];
-					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
-					int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
 					for (int i = 0; i < maxRow; ++i)
 					{
 						FChromaSDKColors& row = frame.Colors[i];
