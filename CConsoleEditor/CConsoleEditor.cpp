@@ -905,6 +905,53 @@ void DebugUnitTestsKeyboardCustom()
 	Sleep(3000);
 }
 
+void DebugUnitTestsSaveAnimation()
+{
+	// get current time
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+	int baseAnimation = ChromaAnimationAPI::CreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
+	int frameCount = 100;
+	ChromaAnimationAPI::MakeBlankFramesRandom(baseAnimation, frameCount, 0.1);
+
+	ChromaAnimationAPI::SetChromaCustomFlag(baseAnimation, true);
+	ChromaAnimationAPI::SetChromaCustomColorAllFrames(baseAnimation);
+
+	ChromaAnimationAPI::SaveAnimation(baseAnimation, "SaveAnimation.chroma");
+
+	// get time in seconds
+	duration<double, milli> time_span = high_resolution_clock::now() - timer;
+	float deltaTime = (float)(time_span.count() / 1000.0f);
+	fprintf(stdout, "Elapsed time: %f\r\n", deltaTime);
+
+	ChromaAnimationAPI::PlayAnimationLoop(baseAnimation, true);
+
+	Sleep(3000);
+
+	ChromaAnimationAPI::CloseAnimation(baseAnimation);
+
+	Sleep(1000);
+}
+
+void DebugUnitTestsSaveAnimation2()
+{
+	const char* baseLayer = "Fire_Keyboard.chroma";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+
+	ChromaAnimationAPI::MultiplyIntensityAllFramesRGBName(baseLayer, 255, 0, 0);
+	
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+
+	ChromaAnimationAPI::SaveAnimationName(baseLayer, "SaveAnimation.chroma");
+
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+
+	Sleep(1000);
+}
+
 void DebugUnitTestsCreateRandomBlackAndWhite()
 {
 	// get current time
@@ -954,7 +1001,9 @@ void DebugUnitTests()
 {
 	fprintf(stdout, "Start of unit tests...\r\n");
 	Sleep(500);
-	DebugUnitTestsDuplicateFirstFrame();
+	//DebugUnitTestsSaveAnimation();
+	DebugUnitTestsSaveAnimation2();
+	//DebugUnitTestsDuplicateFirstFrame();
 	//DebugUnitTestsCreateRandomBlackAndWhite();
 	//DebugUnitTestsCreateRandomBlackAndWhite();
 	//DebugUnitTestsKeyboardCustom();
