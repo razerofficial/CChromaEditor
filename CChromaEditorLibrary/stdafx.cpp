@@ -715,6 +715,17 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API int PluginSaveAnimationName(const char* sourceAnimation, const char* targetAnimation)
+	{
+		int animationId = PluginGetAnimation(sourceAnimation);
+		if (animationId < 0)
+		{
+			LogError("PluginSaveAnimationName: Animation not found! %s", sourceAnimation);
+			return -1;
+		}
+		return PluginSaveAnimation(animationId, targetAnimation);
+	}
+
 	EXPORT_API int PluginResetAnimation(int animationId)
 	{
 		PluginStopAnimation(animationId);

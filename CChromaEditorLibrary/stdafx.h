@@ -125,7 +125,10 @@ extern "C"
 
 	EXPORT_API int PluginCreateAnimationInMemory(int deviceType, int device);
 	EXPORT_API int PluginCreateAnimation(const char* path, int deviceType, int device);
+
 	EXPORT_API int PluginSaveAnimation(int animationId, const char* path);
+	EXPORT_API int PluginSaveAnimationName(const char* sourceAnimation, const char* targetAnimation);
+
 	EXPORT_API int PluginResetAnimation(int animationId);
 	
 	EXPORT_API int PluginGetDeviceType(int animationId);

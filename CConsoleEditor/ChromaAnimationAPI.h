@@ -147,6 +147,8 @@ typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
 typedef void(*PLUGIN_REDUCE_FRAMES)(int animationId, int n);
 typedef void(*PLUGIN_REDUCE_FRAMES_NAME)(const char* path, int n);
 typedef void(*PLUGIN_REVERSE_ALL_FRAMES_NAME)(const char* path);
+typedef void(*PLUGIN_SAVE_ANIMATION)(int animationId, const char* path);
+typedef void(*PLUGIN_SAVE_ANIMATION_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_SET_KEY_COLOR)(int animationId, int frameId, int rzkey, int color);
 typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES)(int animationId, int rzkey, int color);
 typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME)(const char* path, int rzkey, int color);
@@ -343,6 +345,8 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REDUCE_FRAMES, ReduceFrames)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REDUCE_FRAMES_NAME, ReduceFramesName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE_ALL_FRAMES_NAME, ReverseAllFramesName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SAVE_ANIMATION, SaveAnimation)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SAVE_ANIMATION_NAME, SaveAnimationName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES, SetChromaCustomColorAllFrames)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME, SetChromaCustomColorAllFramesName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG, SetChromaCustomFlag);
