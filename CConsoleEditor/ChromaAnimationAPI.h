@@ -64,6 +64,8 @@ typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
 typedef void(*PLUGIN_COPY_ANIMATION_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId, int rzkey);
 typedef void(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation, int rzkey);
+typedef void(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int rzkey, int offset);
+typedef void(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
@@ -247,6 +249,8 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ANIMATION_NAME, CopyAnimationName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES, CopyKeyColorAllFrames)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME, CopyKeyColorAllFramesName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET, CopyKeyColorAllFramesOffset)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME, CopyKeyColorAllFramesOffsetName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS, CopyNonZeroAllKeys)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroAllKeysAllFramesName)

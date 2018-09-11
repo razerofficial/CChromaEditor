@@ -2914,16 +2914,71 @@ extern "C"
 	}
 
 
-	EXPORT_API void PluginCopyKeyColorAllFrames(int sourceAnimationId, int targetAnimationId, int rzkey)
+	EXPORT_API void PluginCopyKeyColorOffset(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey, int offset)
 	{
 		PluginStopAnimation(targetAnimationId);
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
 		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
 		if (nullptr == targetAnimation)
 		{
 			return;
 		}
+		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
+			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
+			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		{
+			return;
+		}
+		if (frameId < 0)
+		{
+			return;
+		}
+		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+		if (sourceFrames.size() == 0)
+		{
+			return;
+		}
+		if (targetFrames.size() == 0)
+		{
+			return;
+		}
+		if (frameId < int(sourceFrames.size()) &&
+			(frameId + offset) < int(targetFrames.size()))
+		{
+			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId];
+			FChromaSDKColorFrame2D& targetFrame = targetFrames[(frameId+offset)];
+			targetFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = sourceFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)];
+		}
+	}
+
+
+	EXPORT_API void PluginCopyKeyColorAllFrames(int sourceAnimationId, int targetAnimationId, int rzkey)
+	{
+		PluginStopAnimation(targetAnimationId);
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		int sourceFrameCount = sourceAnimation->GetFrameCount();
 		int targetFrameCount = targetAnimation->GetFrameCount();
-		for (int frameId = 0; frameId < targetFrameCount; ++frameId)
+		for (int frameId = 0; frameId < sourceFrameCount && frameId < targetFrameCount; ++frameId)
 		{
 			PluginCopyKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
 		}		
@@ -2951,6 +3006,53 @@ extern "C"
 	EXPORT_API double PluginCopyKeyColorAllFramesNameD(const char* sourceAnimation, const char* targetAnimation, double rzkey)
 	{
 		PluginCopyKeyColorAllFramesName(sourceAnimation, targetAnimation, (int)rzkey);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginCopyKeyColorAllFramesOffset(int sourceAnimationId, int targetAnimationId, int rzkey, int offset)
+	{
+		PluginStopAnimation(targetAnimationId);
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		int sourceFrameCount = sourceAnimation->GetFrameCount();
+		int targetFrameCount = targetAnimation->GetFrameCount();
+		for (int frameId = 0; frameId < sourceFrameCount && (frameId+offset) < targetFrameCount; ++frameId)
+		{
+			PluginCopyKeyColorOffset(sourceAnimationId, targetAnimationId, frameId, rzkey, offset);
+		}
+	}
+
+	EXPORT_API void PluginCopyKeyColorAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginCopyKeyColorAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			return;
+		}
+
+		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		if (targetAnimationId < 0)
+		{
+			LogError("PluginCopyKeyColorAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			return;
+		}
+
+		PluginCopyKeyColorAllFramesOffset(sourceAnimationId, targetAnimationId, rzkey, offset);
+	}
+
+	EXPORT_API double PluginCopyKeyColorAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double rzkey, double offset)
+	{
+		PluginCopyKeyColorAllFramesOffsetName(sourceAnimation, targetAnimation, (int)rzkey, (int)offset);
 		return 0;
 	}
 
