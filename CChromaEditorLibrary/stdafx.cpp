@@ -2840,6 +2840,7 @@ extern "C"
 		return 0;
 	}
 
+
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey)
 	{
 		PluginStopAnimation(targetAnimationId);
@@ -2909,6 +2910,47 @@ extern "C"
 	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey)
 	{
 		PluginCopyKeyColorName(sourceAnimation, targetAnimation, (int)frameId, (int)rzkey);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginCopyKeyColorAllFrames(int sourceAnimationId, int targetAnimationId, int rzkey)
+	{
+		PluginStopAnimation(targetAnimationId);
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		int targetFrameCount = targetAnimation->GetFrameCount();
+		for (int frameId = 0; frameId < targetFrameCount; ++frameId)
+		{
+			PluginCopyKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
+		}		
+	}
+
+	EXPORT_API void PluginCopyKeyColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, int rzkey)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginCopyKeyColorAllFramesName: Source Animation not found! %s", sourceAnimation);
+			return;
+		}
+
+		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		if (targetAnimationId < 0)
+		{
+			LogError("PluginCopyKeyColorAllFramesName: Target Animation not found! %s", targetAnimation);
+			return;
+		}
+
+		PluginCopyKeyColorAllFrames(sourceAnimationId, targetAnimationId, rzkey);
+	}
+
+	EXPORT_API double PluginCopyKeyColorAllFramesNameD(const char* sourceAnimation, const char* targetAnimation, double rzkey)
+	{
+		PluginCopyKeyColorAllFramesName(sourceAnimation, targetAnimation, (int)rzkey);
 		return 0;
 	}
 
