@@ -365,7 +365,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginLoadAnimation: Animation is null! id=%d", animationId);
+					LogError("PluginLoadAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				animation->Load();
@@ -384,7 +384,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginLoadAnimationName: Animation not found! %s", path);
+			LogError("PluginLoadAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginLoadAnimation(animationId);
@@ -404,7 +404,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginUnloadAnimation: Animation is null! id=%d", animationId);
+					LogError("PluginUnloadAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				animation->Unload();
@@ -423,7 +423,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginUnloadAnimationName: Animation not found! %s", path);
+			LogError("PluginUnloadAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginUnloadAnimation(animationId);
@@ -452,7 +452,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginPlayAnimation: Animation is null! id=%d", animationId);
+					LogError("PluginPlayAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				PluginStopAnimationType(animation->GetDeviceTypeId(), animation->GetDeviceId());
@@ -490,7 +490,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginIsPlaying: Animation is null! id=%d", animationId);
+					LogError("PluginIsPlaying: Animation is null! id=%d\r\n", animationId);
 					return false;
 				}
 				return animation->IsPlaying();
@@ -524,7 +524,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginStopAnimation: Animation is null! id=%d", animationId);
+					LogError("PluginStopAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				animation->Stop();
@@ -552,7 +552,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginCloseAnimation: Animation is null! id=%d", animationId);
+					LogError("PluginCloseAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				animation->Stop();
@@ -706,7 +706,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginSaveAnimation: Animation is null! id=%d", animationId);
+				LogError("PluginSaveAnimation: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			animation->Save(path);
@@ -720,7 +720,7 @@ extern "C"
 		int animationId = PluginGetAnimation(sourceAnimation);
 		if (animationId < 0)
 		{
-			LogError("PluginSaveAnimationName: Animation not found! %s", sourceAnimation);
+			LogError("PluginSaveAnimationName: Animation not found! %s\r\n", sourceAnimation);
 			return -1;
 		}
 		return PluginSaveAnimation(animationId, targetAnimation);
@@ -735,7 +735,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginResetAnimation: Animation is null! id=%d", animationId);
+				LogError("PluginResetAnimation: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			animation->ResetFrames();
@@ -750,7 +750,7 @@ extern "C"
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
 		{
-			LogError("PluginGetFrameCount: Animation is null! id=%d", animationId);
+			LogError("PluginGetFrameCount: Animation is null! id=%d\r\n", animationId);
 			return -1;
 		}
 		return animation->GetFrameCount();
@@ -761,7 +761,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetFrameCountName: Animation not found! %s", path);
+			LogError("PluginGetFrameCountName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginGetFrameCount(animationId);
@@ -788,7 +788,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetCurrentFrameName: Animation not found! %s", path);
+			LogError("PluginGetCurrentFrameName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginGetCurrentFrame(animationId);
@@ -806,7 +806,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginGetDeviceType: Animation is null! id=%d", animationId);
+				LogError("PluginGetDeviceType: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			return (int)animation->GetDeviceType();
@@ -820,7 +820,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetDeviceTypeName: Animation not found! %s", path);
+			LogError("PluginGetDeviceTypeName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginGetDeviceType(animationId);
@@ -838,7 +838,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginGetDevice: Animation is null! id=%d", animationId);
+				LogError("PluginGetDevice: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -866,7 +866,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetDeviceName: Animation not found! %s", path);
+			LogError("PluginGetDeviceName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginGetDevice(animationId);
@@ -884,7 +884,7 @@ extern "C"
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
 		{
-			LogError("PluginSetDevice: Animation is null! id=%d", animationId);
+			LogError("PluginSetDevice: Animation is null! id=%d\r\n", animationId);
 			return -1;
 		}
 		string path = animation->GetName();
@@ -931,7 +931,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginAddFrame: Animation is null! id=%d", animationId);
+				LogError("PluginAddFrame: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -999,7 +999,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginUpdateFrame: Animation is null! id=%d", animationId);
+				LogError("PluginUpdateFrame: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1011,7 +1011,7 @@ extern "C"
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginUpdateFrame: frame index is invalid! %d of %d", frameIndex, int(frames.size()));
+						LogError("PluginUpdateFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame1D& frame = frames[frameIndex];
@@ -1036,7 +1036,7 @@ extern "C"
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginUpdateFrame: frame index is invalid! %d of %d", frameIndex, int(frames.size()));
+						LogError("PluginUpdateFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame2D& frame = frames[frameIndex];
@@ -1075,7 +1075,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginGetFrame: Animation is null! id=%d", animationId);
+				LogError("PluginGetFrame: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1087,7 +1087,7 @@ extern "C"
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginGetFrame: frame index is invalid! %d of %d", frameIndex, int(frames.size()));
+						LogError("PluginGetFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame1D& frame = frames[frameIndex];
@@ -1107,7 +1107,7 @@ extern "C"
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginGetFrame: frame index is invalid! %d of %d", frameIndex, int(frames.size()));
+						LogError("PluginGetFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame2D& frame = frames[frameIndex];
@@ -1152,7 +1152,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginPreviewFrame: Animation is null! id=%d", animationId);
+				LogError("PluginPreviewFrame: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1164,7 +1164,7 @@ extern "C"
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginPreviewFrame: frame index is invalid! %d of %d", frameIndex, int(frames.size()));
+						LogError("PluginPreviewFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame1D frame = frames[frameIndex];
@@ -1185,7 +1185,7 @@ extern "C"
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginPreviewFrame: frame index is invalid! %d of %d", frameIndex, int(frames.size()));
+						LogError("PluginPreviewFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame2D frame = frames[frameIndex];
@@ -1218,7 +1218,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPreviewFrameName: Animation not found! %s", path);
+			LogError("PluginPreviewFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPreviewFrame(animationId, frameIndex);
@@ -1238,7 +1238,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginOverrideFrameDuration: Animation is null! id=%d", animationId);
+				LogError("PluginOverrideFrameDuration: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1285,7 +1285,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOverrideFrameDurationName: Animation not found! %s", path);
+			LogError("PluginOverrideFrameDurationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOverrideFrameDuration(animationId, duration);
@@ -1305,7 +1305,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginReverse: Animation is null! id=%d", animationId);
+				LogError("PluginReverse: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1362,7 +1362,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginMirrorHorizontally: Animation is null! id=%d", animationId);
+				LogError("PluginMirrorHorizontally: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1427,7 +1427,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginMirrorVertically: Animation is null! id=%d", animationId);
+				LogError("PluginMirrorVertically: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1509,7 +1509,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			//LogError("PluginCloseAnimationName: Animation not found! %s", path);
+			//LogError("PluginCloseAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginCloseAnimation(animationId);
@@ -1570,7 +1570,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPlayAnimationName: Animation not found! %s", path);
+			LogError("PluginPlayAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPlayAnimationLoop(animationId, loop);
@@ -1620,7 +1620,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPlayAnimationFrameName: Animation not found! %s", path);
+			LogError("PluginPlayAnimationFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPlayAnimationFrame(animationId, frameId, loop);
@@ -1644,7 +1644,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginStopAnimationName: Animation not found! %s", path);
+			LogError("PluginStopAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginStopAnimation(animationId);
@@ -1700,7 +1700,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginIsPlayingName: Animation not found! %s", path);
+			LogError("PluginIsPlayingName: Animation not found! %s\r\n", path);
 			return false;
 		}
 		return PluginIsPlaying(animationId);
@@ -1869,7 +1869,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetKeyColorName: Animation not found! %s", path);
+			LogError("PluginGetKeyColorName: Animation not found! %s\r\n", path);
 			return 0;
 		}
 		return PluginGetKeyColor(animationId, frameId, rzkey);
@@ -1910,7 +1910,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGet1DColorName: Animation not found! %s", path);
+			LogError("PluginGet1DColorName: Animation not found! %s\r\n", path);
 			return 0;
 		}
 		return PluginGet1DColor(animationId, frameId, index);
@@ -1956,7 +1956,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGet2DColorName: Animation not found! %s", path);
+			LogError("PluginGet2DColorName: Animation not found! %s\r\n", path);
 			return 0;
 		}
 		return PluginGet2DColor(animationId, frameId, row, column);
@@ -1995,7 +1995,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorName: Animation not found! %s", path);
+			LogError("PluginSetKeyColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyColor(animationId, frameId, rzkey, color);
@@ -2036,7 +2036,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorRGBName: Animation not found! %s", path);
+			LogError("PluginSetKeyColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyColorRGB(animationId, frameId, rzkey, red, green, blue);
@@ -2075,7 +2075,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorAllFramesName: Animation not found! %s", path);
+			LogError("PluginSetKeyColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyColorAllFrames(animationId, rzkey, color);
@@ -2115,7 +2115,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginSetKeyColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyColorAllFramesRGB(animationId, rzkey, red, green, blue);
@@ -2159,7 +2159,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorName: Animation not found! %s", path);
+			LogError("PluginSetKeyColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysColor(animationId, frameId, rzkeys, keyCount, color);
@@ -2198,7 +2198,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorRGBName: Animation not found! %s", path);
+			LogError("PluginSetKeyColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysColorRGB(animationId, frameId, rzkeys, keyCount, red, green, blue);
@@ -2235,7 +2235,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysColorAllFramesName: Animation not found! %s", path);
+			LogError("PluginSetKeysColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysColorAllFrames(animationId, rzkeys, keyCount, color);
@@ -2273,7 +2273,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysColorAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginSetKeysColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysColorAllFramesRGB(animationId, rzkeys, keyCount, red, green, blue);
@@ -2310,7 +2310,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyNonZeroColorName: Animation not found! %s", path);
+			LogError("PluginSetKeyNonZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyNonZeroColor(animationId, frameId, rzkey, color);
@@ -2354,7 +2354,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyNonZeroColorRGBName: Animation not found! %s", path);
+			LogError("PluginSetKeyNonZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyNonZeroColorRGB(animationId, frameId, rzkey, red, green, blue);
@@ -2397,7 +2397,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyZeroColorName: Animation not found! %s", path);
+			LogError("PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyZeroColor(animationId, frameId, rzkey, color);
@@ -2441,7 +2441,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyZeroColorRGBName: Animation not found! %s", path);
+			LogError("PluginSetKeyZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyZeroColorRGB(animationId, frameId, rzkey, red, green, blue);
@@ -2488,7 +2488,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyNonZeroColorName: Animation not found! %s", path);
+			LogError("PluginSetKeyNonZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysNonZeroColor(animationId, frameId, rzkeys, keyCount, color);
@@ -2530,7 +2530,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyNonZeroColorRGBName: Animation not found! %s", path);
+			LogError("PluginSetKeyNonZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysNonZeroColorRGB(animationId, frameId, rzkeys, keyCount, red, green, blue);
@@ -2571,7 +2571,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyZeroColorName: Animation not found! %s", path);
+			LogError("PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysZeroColor(animationId, frameId, rzkeys, keyCount, color);
@@ -2613,7 +2613,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyZeroColorName: Animation not found! %s", path);
+			LogError("PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysZeroColorRGB(animationId, frameId, rzkeys, keyCount, red, green, blue);
@@ -2653,7 +2653,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysNonZeroColorAllFramesName: Animation not found! %s", path);
+			LogError("PluginSetKeysNonZeroColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysNonZeroColorAllFrames(animationId, rzkeys, keyCount, color);
@@ -2693,7 +2693,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysZeroColorAllFramesName: Animation not found! %s", path);
+			LogError("PluginSetKeysZeroColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysZeroColorAllFrames(animationId, rzkeys, keyCount, color);
@@ -2734,7 +2734,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysZeroColorAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginSetKeysZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysZeroColorAllFramesRGB(animationId, rzkeys, keyCount, red, green, blue);
@@ -2771,7 +2771,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSet1DColorName: Animation not found! %s", path);
+			LogError("PluginSet1DColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSet1DColor(animationId, frameId, index, color);
@@ -2818,7 +2818,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSet2DColorName: Animation not found! %s", path);
+			LogError("PluginSet2DColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSet2DColor(animationId, frameId, row, column, color);
@@ -2893,14 +2893,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -2989,14 +2989,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorAllFramesName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyKeyColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorAllFramesName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyKeyColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3036,14 +3036,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyKeyColorAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyKeyColorAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3117,14 +3117,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3198,14 +3198,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3280,14 +3280,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3375,14 +3375,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginAddNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginAddNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3471,14 +3471,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginAddNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginAddNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3566,14 +3566,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginSubtractNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginSubtractNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3662,14 +3662,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginSubtractNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginSubtractNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3743,14 +3743,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysAllFramesName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysAllFramesName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3838,14 +3838,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysAllFramesName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginAddNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysAllFramesName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginAddNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3933,14 +3933,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysAllFramesName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginSubtractNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysAllFramesName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginSubtractNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4014,14 +4014,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4096,14 +4096,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4191,14 +4191,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginAddNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginAddNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4287,14 +4287,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4382,14 +4382,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginSubtractNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginSubtractNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4478,14 +4478,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4559,14 +4559,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyZeroAllKeysAllFramesName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyZeroAllKeysAllFramesName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4640,14 +4640,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyZeroAllKeysAllFramesOffsetName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyZeroAllKeysAllFramesOffsetName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4722,14 +4722,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4804,14 +4804,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyZeroTargetAllKeysAllFramesName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyZeroTargetAllKeysAllFramesName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4881,14 +4881,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroKeyColorName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyNonZeroKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroKeyColorName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyNonZeroKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -4958,14 +4958,14 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyZeroKeyColorName: Source Animation not found! %s", sourceAnimation);
+			LogError("PluginCopyZeroKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyZeroKeyColorName: Target Animation not found! %s", targetAnimation);
+			LogError("PluginCopyZeroKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -5035,7 +5035,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillColorName: Animation not found! %s", path);
+			LogError("PluginFillColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillColor(animationId, frameId, color);
@@ -5126,7 +5126,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsName: Animation not found! %s", path);
+			LogError("PluginFillThresholdColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColors(animationId, frameId, threshold, color);
@@ -5196,7 +5196,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillColorRGBName: Animation not found! %s", path);
+			LogError("PluginFillColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillColorRGB(animationId, frameId, red, green, blue);
@@ -5288,7 +5288,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsRGBName: Animation not found! %s", path);
+			LogError("PluginFillThresholdColorsRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsRGB(animationId, frameId, threshold, red, green, blue);
@@ -5395,7 +5395,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsMinMaxRGBName: Animation not found! %s", path);
+			LogError("PluginFillThresholdColorsMinMaxRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsMinMaxRGB(animationId, frameId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
@@ -5428,7 +5428,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillColorAllFramesName: Animation not found! %s", path);
+			LogError("PluginFillColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillColorAllFrames(animationId, color);
@@ -5461,7 +5461,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsAllFramesName: Animation not found! %s", path);
+			LogError("PluginFillThresholdColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsAllFrames(animationId, threshold, color);
@@ -5494,7 +5494,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillColorAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginFillColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillColorAllFramesRGB(animationId, red, green, blue);
@@ -5527,7 +5527,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsAllFramesRGB(animationId, threshold, red, green, blue);
@@ -5560,7 +5560,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsMinMaxAllFramesRGB(animationId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
@@ -5635,7 +5635,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorName: Animation not found! %s", path);
+			LogError("PluginFillNonZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillNonZeroColor(animationId, frameId, color);
@@ -5716,7 +5716,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorRGBName: Animation not found! %s", path);
+			LogError("PluginFillNonZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillNonZeroColorRGB(animationId, frameId, red, green, blue);
@@ -5791,7 +5791,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorName: Animation not found! %s", path);
+			LogError("PluginFillZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillZeroColor(animationId, frameId, color);
@@ -5872,7 +5872,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorRGBName: Animation not found! %s", path);
+			LogError("PluginFillZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillZeroColorRGB(animationId, frameId, red, green, blue);
@@ -5905,7 +5905,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorAllFramesName: Animation not found! %s", path);
+			LogError("PluginFillNonZeroColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillNonZeroColorAllFrames(animationId, color);
@@ -5938,7 +5938,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginFillNonZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillNonZeroColorAllFramesRGB(animationId, red, green, blue);
@@ -5971,7 +5971,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorAllFramesName: Animation not found! %s", path);
+			LogError("PluginFillZeroColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillZeroColorAllFrames(animationId, color);
@@ -6004,7 +6004,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginFillZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillZeroColorAllFramesRGB(animationId, red, green, blue);
@@ -6063,7 +6063,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillRandomColorsName: Animation not found! %s", path);
+			LogError("PluginFillRandomColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillRandomColors(animationId, frameId);
@@ -6122,7 +6122,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillRandomColorsAllFramesName: Animation not found! %s", path);
+			LogError("PluginFillRandomColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillRandomColorsAllFrames(animationId);
@@ -6181,7 +6181,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillRandomColorsBlackAndWhiteName: Animation not found! %s", path);
+			LogError("PluginFillRandomColorsBlackAndWhiteName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillRandomColorsBlackAndWhite(animationId, frameId);
@@ -6240,7 +6240,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillRandomColorsBlackAndWhiteNameAllFrames: Animation not found! %s", path);
+			LogError("PluginFillRandomColorsBlackAndWhiteNameAllFrames: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillRandomColorsBlackAndWhiteAllFrames(animationId);
@@ -6325,7 +6325,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOffsetColorsName: Animation not found! %s", path);
+			LogError("PluginOffsetColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOffsetColors(animationId, frameId, red, green, blue);
@@ -6358,7 +6358,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOffsetColorsAllFramesName: Animation not found! %s", path);
+			LogError("PluginOffsetColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOffsetColorsAllFrames(animationId, red, green, blue);
@@ -6449,7 +6449,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOffsetNonZeroColorsName: Animation not found! %s", path);
+			LogError("PluginOffsetNonZeroColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOffsetNonZeroColors(animationId, frameId, red, green, blue);
@@ -6482,7 +6482,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOffsetNonZeroColorsAllFramesName: Animation not found! %s", path);
+			LogError("PluginOffsetNonZeroColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOffsetNonZeroColorsAllFrames(animationId, red, green, blue);
@@ -6567,7 +6567,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityName: Animation not found! %s", path);
+			LogError("PluginMultiplyIntensityName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensity(animationId, frameId, intensity);
@@ -6659,7 +6659,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityColorName: Animation not found! %s", path);
+			LogError("PluginMultiplyIntensityColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityColor(animationId, frameId, color);
@@ -6748,7 +6748,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityRGBName: Animation not found! %s", path);
+			LogError("PluginMultiplyIntensityRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityRGB(animationId, frameId, red, green, blue);
@@ -6781,7 +6781,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityAllFramesName: Animation not found! %s", path);
+			LogError("PluginMultiplyIntensityAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityAllFrames(animationId, intensity);
@@ -6814,7 +6814,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginMultiplyIntensityAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityAllFramesRGB(animationId, red, green, blue);
@@ -6989,7 +6989,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyTargetColorLerpAllFramesName: Animation not found! %s", path);
+			LogError("PluginMultiplyTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyTargetColorLerpAllFrames(animationId, color1, color2);
@@ -7022,7 +7022,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyTargetColorLerpAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginMultiplyTargetColorLerpAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyTargetColorLerpAllFramesRGB(animationId, red1, green1, blue1, red2, green2, blue2);
@@ -7053,7 +7053,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyNonZeroTargetColorLerpAllFramesName: Animation not found! %s", path);
+			LogError("PluginMultiplyNonZeroTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyNonZeroTargetColorLerpAllFrames(animationId, color1, color2);
@@ -7086,7 +7086,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName: Animation not found! %s", path);
+			LogError("PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyNonZeroTargetColorLerpAllFramesRGB(animationId, red1, green1, blue1, red2, green2, blue2);
@@ -7130,7 +7130,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginReverseAllFramesName: Animation not found! %s", path);
+			LogError("PluginReverseAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginReverseAllFrames(animationId);
@@ -7158,7 +7158,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetCurrentFrameName: Animation not found! %s", path);
+			LogError("PluginSetCurrentFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetCurrentFrame(animationId, frameId);
@@ -7185,7 +7185,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPauseAnimationName: Animation not found! %s", path);
+			LogError("PluginPauseAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPauseAnimation(animationId);
@@ -7212,7 +7212,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginIsAnimationPausedName: Animation not found! %s", path);
+			LogError("PluginIsAnimationPausedName: Animation not found! %s\r\n", path);
 			return false;
 		}
 		return PluginIsAnimationPaused(animationId);
@@ -7245,7 +7245,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginHasAnimationLoopName: Animation not found! %s", path);
+			LogError("PluginHasAnimationLoopName: Animation not found! %s\r\n", path);
 			return false;
 		}
 		return PluginHasAnimationLoop(animationId);
@@ -7278,7 +7278,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginResumeAnimationName: Animation not found! %s", path);
+			LogError("PluginResumeAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginResumeAnimation(animationId, loop);
@@ -7322,7 +7322,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginKeyboardUseChromaCustomName: Animation not found! %s", path);
+			LogError("PluginKeyboardUseChromaCustomName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetChromaCustomFlag(animationId, flag);
@@ -7386,7 +7386,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetChromaCustomColorAllFramesName: Animation not found! %s", path);
+			LogError("PluginSetChromaCustomColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetChromaCustomColorAllFrames(animationId);
@@ -7442,7 +7442,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMakeBlankFramesName: Animation not found! %s", path);
+			LogError("PluginMakeBlankFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMakeBlankFrames(animationId, frameCount, duration, color);
@@ -7499,7 +7499,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMakeBlankFramesRGBName: Animation not found! %s", path);
+			LogError("PluginMakeBlankFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMakeBlankFramesRGB(animationId, frameCount, duration, red, green, blue);
@@ -7559,7 +7559,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMakeBlankFramesRandomName: Animation not found! %s", path);
+			LogError("PluginMakeBlankFramesRandomName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMakeBlankFramesRandom(animationId, frameCount, duration);
@@ -7617,7 +7617,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMakeBlankFramesRandomBlackAndWhiteName: Animation not found! %s", path);
+			LogError("PluginMakeBlankFramesRandomBlackAndWhiteName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMakeBlankFramesRandomBlackAndWhite(animationId, frameCount, duration);
@@ -7639,7 +7639,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginDuplicateFrames: Animation is null! id=%d", animationId);
+				LogError("PluginDuplicateFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -7691,7 +7691,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginDuplicateFramesName: Animation not found! %s", path);
+			LogError("PluginDuplicateFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginDuplicateFrames(animationId);
@@ -7712,12 +7712,12 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginDuplicateFirstFrame: Animation is null! id=%d", animationId);
+				LogError("PluginDuplicateFirstFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (PluginGetFrameCount(animationId) == 0)
 			{
-				LogError("PluginDuplicateFirstFrame: Animation has no frames! id=%d", animationId);
+				LogError("PluginDuplicateFirstFrame: Animation has no frames! id=%d\r\n", animationId);
 				return;
 			}
 			switch (animation->GetDeviceType())
@@ -7754,7 +7754,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginDuplicateFirstFrameName: Animation not found! %s", path);
+			LogError("PluginDuplicateFirstFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginDuplicateFirstFrame(animationId, frameCount);
@@ -7775,13 +7775,13 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginDuplicateMirrorFrames: Animation is null! id=%d", animationId);
+				LogError("PluginDuplicateMirrorFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
 			if (frameCount == 0)
 			{
-				LogError("PluginDuplicateMirrorFrames: Animation has no frames! id=%d", animationId);
+				LogError("PluginDuplicateMirrorFrames: Animation has no frames! id=%d\r\n", animationId);
 				return;
 			}
 			switch (animation->GetDeviceType())
@@ -7816,7 +7816,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginDuplicateMirrorFramesName: Animation not found! %s", path);
+			LogError("PluginDuplicateMirrorFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginDuplicateMirrorFrames(animationId);
@@ -7837,7 +7837,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginInsertFrame: Animation is null! id=%d", animationId);
+				LogError("PluginInsertFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -7909,7 +7909,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginInsertFrameName: Animation not found! %s", path);
+			LogError("PluginInsertFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginInsertFrame(animationId, sourceFrame, targetFrame);
@@ -7930,7 +7930,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginInsertFrame: Animation is null! id=%d", animationId);
+				LogError("PluginInsertFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -7999,7 +7999,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginInsertDelayName: Animation not found! %s", path);
+			LogError("PluginInsertDelayName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginInsertDelay(animationId, frameId, delay);
@@ -8020,7 +8020,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginReduceFrames: Animation is null! id=%d", animationId);
+				LogError("PluginReduceFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (n <= 0)
@@ -8080,7 +8080,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginReduceFramesName: Animation not found! %s", path);
+			LogError("PluginReduceFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginReduceFrames(animationId, n);
@@ -8101,7 +8101,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginTrimFrame: Animation is null! id=%d", animationId);
+				LogError("PluginTrimFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -8157,7 +8157,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginTrimFrameName: Animation not found! %s", path);
+			LogError("PluginTrimFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginTrimFrame(animationId, frameId);
@@ -8178,7 +8178,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginTrimStartFrames: Animation is null! id=%d", animationId);
+				LogError("PluginTrimStartFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (numberOfFrames < 0)
@@ -8232,7 +8232,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginTrimStartFramesName: Animation not found! %s", path);
+			LogError("PluginTrimStartFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginTrimStartFrames(animationId, numberOfFrames);
@@ -8253,7 +8253,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginTrimEndFrames: Animation is null! id=%d", animationId);
+				LogError("PluginTrimEndFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (lastFrameId <= 0)
@@ -8291,7 +8291,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginTrimEndFramesName: Animation not found! %s", path);
+			LogError("PluginTrimEndFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginTrimEndFrames(animationId, lastFrameId);
@@ -8312,7 +8312,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginTrimStartFrames: Animation is null! id=%d", animationId);
+				LogError("PluginTrimStartFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -8385,7 +8385,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFadeStartFramesName: Animation not found! %s", path);
+			LogError("PluginFadeStartFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFadeStartFrames(animationId, fade);
@@ -8406,7 +8406,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginFadeEndFrames: Animation is null! id=%d", animationId);
+				LogError("PluginFadeEndFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -8480,7 +8480,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFadeEndFramesName: Animation not found! %s", path);
+			LogError("PluginFadeEndFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFadeEndFrames(animationId, fade);
@@ -8561,7 +8561,7 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyAnimationName: Source animation not found! %s", sourceAnimation);
+			LogError("PluginCopyAnimationName: Source animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 		PluginCopyAnimation(sourceAnimationId, targetAnimation);
@@ -8622,13 +8622,13 @@ extern "C"
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAppendAllFramesName: Source animation not found! %s", sourceAnimation);
+			LogError("PluginAppendAllFramesName: Source animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAppendAllFramesName: Target animation not found! %s", targetAnimation);
+			LogError("PluginAppendAllFramesName: Target animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 		PluginAppendAllFrames(sourceAnimationId, targetAnimationId);
