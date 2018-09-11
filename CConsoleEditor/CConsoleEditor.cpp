@@ -905,6 +905,26 @@ void DebugUnitTestsKeyboardCustom()
 	Sleep(3000);
 }
 
+void DebugUnitTestsCopyAnimation()
+{
+	const char* baseLayer = "Fire_Keyboard.chroma";
+	const char* layerTemp = "TempLayer";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+
+	ChromaAnimationAPI::MultiplyIntensityAllFramesRGBName(baseLayer, 255, 0, 0);
+
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+
+	ChromaAnimationAPI::CopyAnimationName(baseLayer, layerTemp);
+
+	ChromaAnimationAPI::PlayAnimationName(layerTemp, true);
+
+	Sleep(1000);
+}
+
 void DebugUnitTestsSaveAnimation()
 {
 	// get current time
@@ -1002,7 +1022,8 @@ void DebugUnitTests()
 	fprintf(stdout, "Start of unit tests...\r\n");
 	Sleep(500);
 	//DebugUnitTestsSaveAnimation();
-	DebugUnitTestsSaveAnimation2();
+	//DebugUnitTestsSaveAnimation2();
+	DebugUnitTestsCopyAnimation();
 	//DebugUnitTestsDuplicateFirstFrame();
 	//DebugUnitTestsCreateRandomBlackAndWhite();
 	//DebugUnitTestsCreateRandomBlackAndWhite();

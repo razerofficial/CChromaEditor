@@ -1195,7 +1195,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 	if (0 != fopen_s(&stream, path.c_str(), "rb") ||
 		stream == nullptr)
 	{
-		LogError("OpenAnimation: Failed to open animation! %s\r\n", path.c_str());
+		//LogError("OpenAnimation: Failed to open animation! %s\r\n", path.c_str());
 	}
 	else
 	{

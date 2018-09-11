@@ -18,6 +18,7 @@ typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_FLAG)(int animationId, bool flag);
 typedef bool(*PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME)(const char* path, bool flag);
 typedef const char*(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
 typedef int(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int length);
+typedef int(*PLUGIN_COPY_ANIMATION)(int sourceAnimationId, const char* targetAnimation);
 typedef int(*PLUGIN_CLOSE_ANIMATION)(int animationId);
 typedef int(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int device);
 typedef int(*PLUGIN_CREATE_ANIMATION_IN_MEMORY)(int deviceType, int device);
@@ -53,11 +54,14 @@ typedef void(*PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAn
 typedef void(*PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 typedef void(*PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 typedef void(*PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+typedef void(*PLUGIN_APPEND_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
+typedef void(*PLUGIN_APPEND_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_CLEAR_ALL)();
 typedef void(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
 typedef void(*PLUGIN_CLOSE_ALL)();
 typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_COPY_ANIMATION_NAME)(const char* sourceAnimation, const char* targetAnimation);
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
 typedef void(*PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
@@ -135,6 +139,14 @@ typedef void(*PLUGIN_MULTIPLY_INTENSITY_COLOR)(int animationId, int frameId, int
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME)(const char* path, int frameId, int color);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
+typedef void(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES)(int animationId, int color1, int color2);
+typedef void(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME)(const char* path, int color1, int color2);
+typedef void(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB)(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
+typedef void(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME)(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
+typedef void(*PLUGIN_MULTIPLY_NONZERO_TARGET_COLOR_LERP_ALL_FRAMES)(int animationId, int color1, int color2);
+typedef void(*PLUGIN_MULTIPLY_NONZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME)(const char* path, int color1, int color2);
+typedef void(*PLUGIN_MULTIPLY_NONZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB)(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
+typedef void(*PLUGIN_MULTIPLY_NONZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME)(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
 typedef void(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
 typedef void(*PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
@@ -221,12 +233,16 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroTargetAllKeysAllFramesOffsetName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_OFFSET, AddNonZeroTargetAllKeysOffset)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NONZERO_TARGET_ALL_KEYS_OFFSET_NAME, AddNonZeroTargetAllKeysOffsetName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES, AppendAllFrames)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES_NAME, AppendAllFramesName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLEAR_ALL, ClearAll)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLEAR_ANIMATION_TYPE, ClearAnimationType)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ALL, CloseAll)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION, CloseAnimation)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION_NAME, CloseAnimationName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_COMPOSITE, CloseComposite)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ANIMATION, CopyAnimation)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ANIMATION_NAME, CopyAnimationName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS, CopyNonZeroAllKeys)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NONZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroAllKeysAllFramesName)
@@ -328,6 +344,14 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME, MultiplyIntensityColorName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_RGB_NAME, MultiplyIntensityRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES, MultiplyTargetColorLerpAllFrames)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME, MultiplyTargetColorLerpAllFramesName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB, MultiplyTargetColorLerpAllFramesRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME, MultiplyTargetColorLerpAllFramesRGBName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NONZERO_TARGET_COLOR_LERP_ALL_FRAMES, MultiplyNonZeroTargetColorLerpAllFrames)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NONZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME, MultiplyNonZeroTargetColorLerpAllFramesName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NONZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB, MultiplyNonZeroTargetColorLerpAllFramesRGB)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NONZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME, MultiplyNonZeroTargetColorLerpAllFramesRGBName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME, OffsetColorsAllFramesName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_NAME, OffsetColorsName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NONZERO_COLORS_ALL_FRAMES_NAME, OffsetNonZeroColorsAllFramesName)

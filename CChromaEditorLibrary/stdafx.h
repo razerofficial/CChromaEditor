@@ -209,6 +209,16 @@ extern "C"
 	EXPORT_API int PluginGet2DColor(int animationId, int frameId, int row, int column);
 	EXPORT_API int PluginGet2DColorName(const char* path, int frameId, int row, int column);
 	EXPORT_API double PluginGet2DColorNameD(const char* path, double frameId, double row, double column);
+
+
+	EXPORT_API int PluginCopyAnimation(int sourceAnimationId, const char* targetAnimation);
+	EXPORT_API void PluginCopyAnimationName(const char* sourceAnimation, const char* targetAnimation);
+	EXPORT_API double PluginCopyAnimationNameD(const char* sourceAnimation, const char* targetAnimation);
+
+
+	EXPORT_API void PluginAppendAllFrames(int sourceAnimationId, int targetAnimationId);
+	EXPORT_API void PluginAppendAllFramesName(const char* sourceAnimation, const char* targetAnimation);
+	EXPORT_API double PluginAppendAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	
 
 	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
@@ -583,6 +593,34 @@ extern "C"
 	EXPORT_API void PluginMultiplyIntensityAllFramesRGB(int animationId, int red, int green, int blue);
 	EXPORT_API void PluginMultiplyIntensityAllFramesRGBName(const char* path, int red, int green, int blue);
 	EXPORT_API double PluginMultiplyIntensityAllFramesRGBNameD(const char* path, double red, double green, double blue);
+
+
+	EXPORT_API float PluginLerp(float start, float end, float amt);
+	EXPORT_API int PluginLerpColor(int from, int to, float t);
+
+
+	EXPORT_API void PluginMultiplyTargetColorLerp(int animationId, int frameId, int color1, int color2);
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerp(int animationId, int frameId, int color1, int color2);
+
+
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFrames(int animationId, int color1, int color2);
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesName(const char* path, int color1, int color2);
+	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(const char* path, double color1, double color2);
+
+
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGB(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
+
+
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFrames(int animationId, int color1, int color2);
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesName(const char* path, int color1, int color2);
+	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesNameD(const char* path, double color1, double color2);
+
+
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGB(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 
 
 	EXPORT_API void PluginReverseAllFrames(int animationId);

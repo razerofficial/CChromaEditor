@@ -331,7 +331,7 @@ extern "C"
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
 			if (animation == nullptr)
 			{
-				LogError("PluginOpenAnimation: Animation is null! name=%s\r\n", path);
+				//LogError("PluginOpenAnimation: Animation is null! name=%s\r\n", path);
 				return -1;
 			}
 			else
@@ -1509,7 +1509,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginCloseAnimationName: Animation not found! %s", path);
+			//LogError("PluginCloseAnimationName: Animation not found! %s", path);
 			return;
 		}
 		PluginCloseAnimation(animationId);
@@ -6683,6 +6683,277 @@ extern "C"
 	}
 
 
+	EXPORT_API float PluginLerp(float start, float end, float amt)
+	{
+		return (1 - amt)*start + amt * end;
+	}
+
+	EXPORT_API int PluginLerpColor(int from, int to, float t) {
+		int red = floor(PluginLerp((from & 0xFF), (to & 0xFF), t));
+		int green = floor(PluginLerp((from & 0xFF00) >> 8, (to & 0xFF00) >> 8, t));
+		int blue = floor(PluginLerp((from & 0xFF0000) >> 16, (to & 0xFF0000) >> 16, t));
+		int color = red | (green << 8) | (blue << 16);
+		return color;
+	}
+
+
+	EXPORT_API void PluginMultiplyTargetColorLerp(int animationId, int frameId, int color1, int color2)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = (Animation1D*)(animation);
+			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[frameId];
+				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+				vector<COLORREF>& colors = frame.Colors;
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					int color = colors[i];
+					float red = (color & 0xFF) / 255.0f;
+					float green = ((color & 0xFF00) >> 8) / 255.0f;
+					float blue = ((color & 0xFF0000) >> 16) / 255.0f;
+					float t = (red + green + blue) / 3.0f;
+					colors[i] = PluginLerpColor(color1, color2, t);
+				}
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[frameId];
+				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = row.Colors[j];
+						float red = (color & 0xFF) / 255.0f;
+						float green = ((color & 0xFF00) >> 8) / 255.0f;
+						float blue = ((color & 0xFF0000) >> 16) / 255.0f;
+						float t = (red + green + blue) / 3.0f;
+						row.Colors[j] = PluginLerpColor(color1, color2, t);
+					}
+				}
+			}
+		}
+		break;
+		}
+	}
+
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerp(int animationId, int frameId, int color1, int color2)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = (Animation1D*)(animation);
+			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[frameId];
+				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+				vector<COLORREF>& colors = frame.Colors;
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					int color = colors[i];
+					if (color != 0)
+					{
+						float red = (color & 0xFF) / 255.0f;
+						float green = ((color & 0xFF00) >> 8) / 255.0f;
+						float blue = ((color & 0xFF0000) >> 16) / 255.0f;
+						float t = (red + green + blue) / 3.0f;
+						colors[i] = PluginLerpColor(color1, color2, t);
+					}
+				}
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[frameId];
+				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = row.Colors[j];
+						if (color != 0)
+						{
+							float red = (color & 0xFF) / 255.0f;
+							float green = ((color & 0xFF00) >> 8) / 255.0f;
+							float blue = ((color & 0xFF0000) >> 16) / 255.0f;
+							float t = (red + green + blue) / 3.0f;
+							row.Colors[j] = PluginLerpColor(color1, color2, t);
+						}
+					}
+				}
+			}
+		}
+		break;
+		}
+	}
+
+
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFrames(int animationId, int color1, int color2)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = animation->GetFrameCount();
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginMultiplyTargetColorLerp(animationId, frameId, color1, color2);
+		}
+	}
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesName(const char* path, int color1, int color2)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMultiplyTargetColorLerpAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginMultiplyTargetColorLerpAllFrames(animationId, color1, color2);
+	}
+	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(const char* path, double color1, double color2)
+	{
+		PluginMultiplyTargetColorLerpAllFramesName(path, (int)color1, (int)color2);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGB(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int color1 = PluginGetRGB(red1, green1, blue1);
+		int color2 = PluginGetRGB(red2, green2, blue2);
+		int frameCount = animation->GetFrameCount();
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginMultiplyTargetColorLerp(animationId, frameId, color1, color2);
+		}
+	}
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMultiplyTargetColorLerpAllFramesRGBName: Animation not found! %s", path);
+			return;
+		}
+		PluginMultiplyTargetColorLerpAllFramesRGB(animationId, red1, green1, blue1, red2, green2, blue2);
+	}
+	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2)
+	{
+		PluginMultiplyTargetColorLerpAllFramesRGBName(path, (int)red1, (int)green1, (int)blue1, (int)red2, (int)green2, (int)blue2);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFrames(int animationId, int color1, int color2)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = animation->GetFrameCount();
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginMultiplyNonZeroTargetColorLerp(animationId, frameId, color1, color2);
+		}
+	}
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesName(const char* path, int color1, int color2)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMultiplyNonZeroTargetColorLerpAllFramesName: Animation not found! %s", path);
+			return;
+		}
+		PluginMultiplyNonZeroTargetColorLerpAllFrames(animationId, color1, color2);
+	}
+	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesNameD(const char* path, double color1, double color2)
+	{
+		PluginMultiplyNonZeroTargetColorLerpAllFramesName(path, (int)color1, (int)color2);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGB(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int color1 = PluginGetRGB(red1, green1, blue1);
+		int color2 = PluginGetRGB(red2, green2, blue2);
+		int frameCount = animation->GetFrameCount();
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginMultiplyNonZeroTargetColorLerp(animationId, frameId, color1, color2);
+		}
+	}
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName: Animation not found! %s", path);
+			return;
+		}
+		PluginMultiplyNonZeroTargetColorLerpAllFramesRGB(animationId, red1, green1, blue1, red2, green2, blue2);
+	}
+	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2)
+	{
+		PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(path, (int)red1, (int)green1, (int)blue1, (int)red2, (int)green2, (int)blue2);
+		return 0;
+	}
+
+
 	EXPORT_API void PluginReverseAllFrames(int animationId)
 	{
 		PluginStopAnimation(animationId);
@@ -8073,6 +8344,154 @@ extern "C"
 	EXPORT_API double PluginFadeEndFramesNameD(const char* path, double fade)
 	{
 		PluginFadeEndFramesName(path, (int)fade);
+		return 0;
+	}
+
+
+	EXPORT_API int PluginCopyAnimation(int sourceAnimationId, const char* targetAnimation)
+	{
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return -1;
+		}
+		PluginCloseAnimationName(targetAnimation);
+		int deviceType = sourceAnimation->GetDeviceTypeId();
+		int device = sourceAnimation->GetDeviceId();
+		int targetAnimationId = PluginCreateAnimationInMemory(deviceType, device);
+		if (targetAnimationId < 0)
+		{
+			return -1;
+		}
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* targetAnimation1D = new Animation1D();
+			targetAnimation1D->SetDevice((EChromaSDKDevice1DEnum)device);
+			targetAnimation1D->SetName(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			targetFrames.clear();
+			Animation1D* sourceAnimation1D = (Animation1D*)sourceAnimation;
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			{
+				FChromaSDKColorFrame1D frame = sourceFrames[frameId];
+				targetFrames.push_back(frame);
+			}
+
+			int id = _gAnimationId;
+			_gAnimations[id] = targetAnimation1D;
+			++_gAnimationId;
+			_gAnimationMapID[targetAnimation] = id;
+			return id;
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* targetAnimation2D = new Animation2D();
+			targetAnimation2D->SetDevice((EChromaSDKDevice2DEnum)device);
+			targetAnimation2D->SetName(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			targetFrames.clear();
+			Animation2D* sourceAnimation2D = (Animation2D*)sourceAnimation;
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			{
+				FChromaSDKColorFrame2D frame = sourceFrames[frameId];
+				targetFrames.push_back(frame);
+			}
+
+			int id = _gAnimationId;
+			_gAnimations[id] = targetAnimation2D;
+			++_gAnimationId;
+			_gAnimationMapID[targetAnimation] = id;
+			return id;
+		}
+		break;
+		}
+		return -1;
+	}
+	EXPORT_API void PluginCopyAnimationName(const char* sourceAnimation, const char* targetAnimation)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginCopyAnimationName: Source animation not found! %s", sourceAnimation);
+			return;
+		}
+		PluginCopyAnimation(sourceAnimationId, targetAnimation);
+	}
+	EXPORT_API double PluginCopyAnimationNameD(const char* sourceAnimation, const char* targetAnimation)
+	{
+		PluginCopyAnimationName(sourceAnimation, targetAnimation);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginAppendAllFrames(int sourceAnimationId, int targetAnimationId)
+	{
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		PluginStopAnimation(targetAnimationId);
+		int deviceType = sourceAnimation->GetDeviceTypeId();
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* sourceAnimation1D = (Animation1D*)sourceAnimation;
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			Animation1D* targetAnimation1D = (Animation1D*)targetAnimation;
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			{
+				FChromaSDKColorFrame1D frame = sourceFrames[frameId];
+				targetFrames.push_back(frame);
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)sourceAnimation;
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			Animation2D* targetAnimation2D = (Animation2D*)targetAnimation;
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			{
+				FChromaSDKColorFrame2D frame = sourceFrames[frameId];
+				targetFrames.push_back(frame);
+			}
+		}
+		break;
+		}
+	}
+	EXPORT_API void PluginAppendAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginAppendAllFramesName: Source animation not found! %s", sourceAnimation);
+			return;
+		}
+		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		if (targetAnimationId < 0)
+		{
+			LogError("PluginAppendAllFramesName: Target animation not found! %s", targetAnimation);
+			return;
+		}
+		PluginAppendAllFrames(sourceAnimationId, targetAnimationId);
+	}
+	EXPORT_API double PluginAppendAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	{
+		PluginAppendAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
 	}
 
