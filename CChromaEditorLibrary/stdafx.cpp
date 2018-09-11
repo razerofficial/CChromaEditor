@@ -5301,6 +5301,96 @@ extern "C"
 	}
 
 
+	EXPORT_API void PluginFillThresholdRGBColorsRGB(int animationId, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
+	{
+		PluginStopAnimation(animationId);
+		int color = PluginGetRGB(red, green, blue);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = (Animation1D*)(animation);
+			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[frameId];
+				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+				vector<COLORREF>& colors = frame.Colors;
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					int oldColor = colors[i];
+					int red = oldColor & 0xFF;
+					int green = (oldColor & 0xFF00) >> 8;
+					int blue = (oldColor & 0xFF0000) >> 16;
+					if (red != 0 &&
+						green != 0 &&
+						blue != 0 &&
+						red <= redThreshold &&
+						green <= greenThreshold &&
+						blue <= blueThreshold) {
+						colors[i] = color;
+					}
+				}
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[frameId];
+				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int oldColor = row.Colors[j];
+						int red = oldColor & 0xFF;
+						int green = (oldColor & 0xFF00) >> 8;
+						int blue = (oldColor & 0xFF0000) >> 16;
+						if (red != 0 &&
+							green != 0 &&
+							blue != 0 &&
+							red <= redThreshold &&
+							green <= greenThreshold &&
+							blue <= blueThreshold) {
+							row.Colors[j] = color;
+						}
+					}
+				}
+			}
+		}
+		break;
+		}
+	}
+	EXPORT_API void PluginFillThresholdRGBColorsRGBName(const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillThresholdRGBColorsRGBName: Animation not found! %s\r\n", path);
+			return;
+		}
+		PluginFillThresholdRGBColorsRGB(animationId, frameId, redThreshold, greenThreshold, blueThreshold, red, green, blue);
+	}
+	EXPORT_API double PluginFillThresholdRGBColorsRGBNameD(const char* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue)
+	{
+		PluginFillThresholdRGBColorsRGBName(path, (int)frameId, (int)redThreshold, (int)greenThreshold, (int)blueThreshold, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
+
 	EXPORT_API void PluginFillThresholdColorsMinMaxRGB(int animationId, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
 	{
 		PluginStopAnimation(animationId);
@@ -5533,9 +5623,42 @@ extern "C"
 		PluginFillThresholdColorsAllFramesRGB(animationId, threshold, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(const char* path, int threshold, double red, double green, double blue)
+	EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(const char* path, double threshold, double red, double green, double blue)
 	{
 		PluginFillThresholdColorsAllFramesRGBName(path, (int)threshold, (int)red, (int)green, (int)blue);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGB(int animationId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginFillThresholdRGBColorsRGB(animationId, frameId, redThreshold, greenThreshold, blueThreshold, red, green, blue);
+		}
+	}
+
+	EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGBName(const char* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginFillThresholdRGBColorsAllFramesRGBName: Animation not found! %s\r\n", path);
+			return;
+		}
+		PluginFillThresholdRGBColorsAllFramesRGB(animationId, redThreshold, greenThreshold, blueThreshold, red, green, blue);
+	}
+
+	EXPORT_API double PluginFillThresholdRGBColorsAllFramesRGBNameD(const char* path, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue)
+	{
+		PluginFillThresholdRGBColorsAllFramesRGBName(path, (int)redThreshold, (int)greenThreshold, (int)blueThreshold, (int)red, (int)green, (int)blue);
 		return 0;
 	}
 
