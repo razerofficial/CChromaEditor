@@ -7775,14 +7775,15 @@ extern "C"
 					vector<FChromaSDKColorFrame1D> newFrames = vector<FChromaSDKColorFrame1D>();
 					for (int frameId = 0; frameId < frameCount; ++frameId)
 					{
-						FChromaSDKColorFrame1D& frame = frames[frameId];
+						FChromaSDKColorFrame1D frame = frames[frameId];
 						newFrames.push_back(frame);
-						newFrames.push_back(frame);
+						FChromaSDKColorFrame1D frame2 = frames[frameId];
+						newFrames.push_back(frame2);
 					}
 					frames.clear();
 					for (int frameId = 0; frameId < newFrames.size(); ++frameId)
 					{
-						FChromaSDKColorFrame1D& frame = newFrames[frameId];
+						FChromaSDKColorFrame1D frame = newFrames[frameId];
 						frames.push_back(frame);
 					}
 				}
@@ -7794,14 +7795,15 @@ extern "C"
 					vector<FChromaSDKColorFrame2D> newFrames = vector<FChromaSDKColorFrame2D>();
 					for (int frameId = 0; frameId < frameCount; ++frameId)
 					{
-						FChromaSDKColorFrame2D& frame = frames[frameId];
+						FChromaSDKColorFrame2D frame = frames[frameId];
 						newFrames.push_back(frame);
-						newFrames.push_back(frame);
+						FChromaSDKColorFrame2D frame2 = frames[frameId];
+						newFrames.push_back(frame2);
 					}
 					frames.clear();
 					for (int frameId = 0; frameId < newFrames.size(); ++frameId)
 					{
-						FChromaSDKColorFrame2D& frame = newFrames[frameId];
+						FChromaSDKColorFrame2D frame = newFrames[frameId];
 						frames.push_back(frame);
 					}
 				}
@@ -7849,7 +7851,7 @@ extern "C"
 			{
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
-				FChromaSDKColorFrame1D firstFrame = frames[0];
+				FChromaSDKColorFrame1D firstFrame = frames[0]; //copy
 				frames.clear();
 				for (int frameId = 0; frameId < frameCount; ++frameId)
 				{
@@ -7915,7 +7917,7 @@ extern "C"
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 				for (int frameId = frameCount - 1; frameId >= 0; --frameId)
 				{
-					FChromaSDKColorFrame1D frame = frames[frameId];
+					FChromaSDKColorFrame1D frame = frames[frameId]; //copy
 					frames.push_back(frame);
 				}
 			}
@@ -7926,7 +7928,7 @@ extern "C"
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 				for (int frameId = frameCount - 1; frameId >= 0; --frameId)
 				{
-					FChromaSDKColorFrame2D frame = frames[frameId];
+					FChromaSDKColorFrame2D frame = frames[frameId]; //copy
 					frames.push_back(frame);
 				}
 			}
@@ -8172,6 +8174,12 @@ extern "C"
 					FChromaSDKColorFrame1D& frame = newFrames[frameId];
 					frames.push_back(frame);
 				}
+				if (frames.size() == 0) //always keep one frame
+				{
+					FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(animation1D->GetDevice());
+					frames.push_back(frame);
+				}
 			}
 			break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
@@ -8191,6 +8199,12 @@ extern "C"
 				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame2D& frame = newFrames[frameId];
+					frames.push_back(frame);
+				}
+				if (frames.size() == 0) //always keep one frame
+				{
+					FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
 					frames.push_back(frame);
 				}
 			}
@@ -8390,7 +8404,7 @@ extern "C"
 			{
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
-				while (lastFrameId > frames.size())
+				while (lastFrameId < frames.size())
 				{
 					frames.pop_back();
 				}				
@@ -8400,7 +8414,7 @@ extern "C"
 			{
 				Animation2D* animation2D = (Animation2D*)(animation);
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-				while (lastFrameId > frames.size())
+				while (lastFrameId < frames.size())
 				{
 					frames.pop_back();
 				}
