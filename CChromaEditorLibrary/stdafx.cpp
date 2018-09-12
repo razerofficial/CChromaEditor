@@ -3991,7 +3991,7 @@ extern "C"
 		}
 		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
 		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
-		for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
+		for (int frameId = 0; frameId < int(sourceFrames.size()) && (frameId+offset) < int(targetFrames.size()); ++frameId)
 		{
 			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId];
 			FChromaSDKColorFrame2D& targetFrame = targetFrames[(frameId+offset) % targetFrames.size()];

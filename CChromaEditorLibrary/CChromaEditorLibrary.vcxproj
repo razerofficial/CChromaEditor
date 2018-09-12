@@ -171,6 +171,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>.\CChromaEditorLibrary.def</ModuleDefinitionFile>
+      <OutputFile>$(OutDir)$(TargetName)64$(TargetExt)</OutputFile>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
