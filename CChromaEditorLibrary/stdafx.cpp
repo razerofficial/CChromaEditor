@@ -8164,9 +8164,10 @@ extern "C"
 				{
 					if (frameId % n == 0)
 					{
-						FChromaSDKColorFrame1D& frame = frames[frameId];
-						newFrames.push_back(frame);
+						continue;
 					}
+					FChromaSDKColorFrame1D& frame = frames[frameId];
+					newFrames.push_back(frame);
 				}
 				frames.clear();
 				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
@@ -8191,9 +8192,10 @@ extern "C"
 				{
 					if (frameId % n == 0)
 					{
-						FChromaSDKColorFrame2D& frame = frames[frameId];
-						newFrames.push_back(frame);
+						continue;
 					}
+					FChromaSDKColorFrame2D& frame = frames[frameId];
+					newFrames.push_back(frame);
 				}
 				frames.clear();
 				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
