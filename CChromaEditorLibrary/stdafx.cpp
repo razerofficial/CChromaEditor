@@ -5074,9 +5074,9 @@ extern "C"
 					int red = oldColor & 0xFF;
 					int green = (oldColor & 0xFF00) >> 8;
 					int blue = (oldColor & 0xFF0000) >> 16;
-					if (red != 0 &&
-						green != 0 &&
-						blue != 0 &&
+					if ((red != 0 ||
+						green != 0 ||
+						blue != 0) &&
 						red <= threshold &&
 						green <= threshold &&
 						blue <= threshold) {
@@ -5105,9 +5105,9 @@ extern "C"
 						int red = oldColor & 0xFF;
 						int green = (oldColor & 0xFF00) >> 8;
 						int blue = (oldColor & 0xFF0000) >> 16;
-						if (red != 0 &&
-							green != 0 &&
-							blue != 0 &&
+						if ((red != 0 ||
+							green != 0 ||
+							blue != 0) &&
 							red <= threshold &&
 							green <= threshold &&
 							blue <= threshold) {
@@ -8452,67 +8452,15 @@ extern "C"
 				LogError("PluginTrimStartFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
-			int frameCount = PluginGetFrameCount(animationId);
 			if (fade <= 0)
 			{
 				return;
 			}
-			switch (animation->GetDeviceType())
+			int frameCount = PluginGetFrameCount(animationId);
+			for (int frameId = 0; frameId < fade; ++frameId)
 			{
-			case EChromaSDKDeviceTypeEnum::DE_1D:
-			{
-				Animation1D* animation1D = (Animation1D*)(animation);
-				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
-				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
-				for (int frameId = 0; frameId < fade; ++frameId)
-				{
-					float intensity = (frameId + 1) / (float)fade;
-					FChromaSDKColorFrame1D& frame = frames[frameId];
-					vector<COLORREF>& colors = frame.Colors;
-					for (int i = 0; i < maxLeds; ++i)
-					{
-						int color = colors[i];
-						int red = (color & 0xFF);
-						int green = (color & 0xFF00) >> 8;
-						int blue = (color & 0xFF0000) >> 16;
-						red = max(0, min(255, red * intensity));
-						green = max(0, min(255, green * intensity));
-						blue = max(0, min(255, blue * intensity));
-						color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
-						colors[i] = color;
-					}
-				}
-			}
-			break;
-			case EChromaSDKDeviceTypeEnum::DE_2D:
-			{
-				Animation2D* animation2D = (Animation2D*)(animation);
-				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
-				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
-				for (int frameId = 0; frameId < fade; ++frameId)
-				{
-					float intensity = (frameId+1) / (float)fade;
-					FChromaSDKColorFrame2D& frame = frames[frameId];
-					for (int i = 0; i < maxRow; ++i)
-					{
-						FChromaSDKColors& row = frame.Colors[i];
-						for (int j = 0; j < maxColumn; ++j)
-						{
-							int color = row.Colors[j];
-							int red = (color & 0xFF);
-							int green = (color & 0xFF00) >> 8;
-							int blue = (color & 0xFF0000) >> 16;
-							red = max(0, min(255, red * intensity));
-							green = max(0, min(255, green * intensity));
-							blue = max(0, min(255, blue * intensity));
-							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
-							row.Colors[j] = color;
-						}
-					}
-				}
-			}
-			break;
+				float t = (frameId + 1) / (float)fade;
+				PluginMultiplyIntensity(animationId, frameId, t);
 			}
 		}
 	}
@@ -8545,69 +8493,16 @@ extern "C"
 				LogError("PluginFadeEndFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
-			int frameCount = PluginGetFrameCount(animationId);
 			if (fade <= 0)
 			{
 				return;
 			}
-			switch (animation->GetDeviceType())
+			int frameCount = PluginGetFrameCount(animationId);
+			for (int offset = 0; offset < fade; ++offset)
 			{
-			case EChromaSDKDeviceTypeEnum::DE_1D:
-			{
-				Animation1D* animation1D = (Animation1D*)(animation);
-				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
-				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
-				for (int offset = 0; offset < fade; ++offset)
-				{
-					int frameId = frameCount - 1 - offset;
-					float intensity = (offset + 1) / (float)fade;
-					FChromaSDKColorFrame1D& frame = frames[frameId];
-					vector<COLORREF>& colors = frame.Colors;
-					for (int i = 0; i < maxLeds; ++i)
-					{
-						int color = colors[i];
-						int red = (color & 0xFF);
-						int green = (color & 0xFF00) >> 8;
-						int blue = (color & 0xFF0000) >> 16;
-						red = max(0, min(255, red * intensity));
-						green = max(0, min(255, green * intensity));
-						blue = max(0, min(255, blue * intensity));
-						color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
-						colors[i] = color;
-					}
-				}
-			}
-			break;
-			case EChromaSDKDeviceTypeEnum::DE_2D:
-			{
-				Animation2D* animation2D = (Animation2D*)(animation);
-				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
-				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
-				for (int offset = 0; offset < fade; ++offset)
-				{
-					int frameId = frameCount - 1 - offset;
-					float intensity = (offset + 1) / (float)fade;
-					FChromaSDKColorFrame2D& frame = frames[frameId];
-					for (int i = 0; i < maxRow; ++i)
-					{
-						FChromaSDKColors& row = frame.Colors[i];
-						for (int j = 0; j < maxColumn; ++j)
-						{
-							int color = row.Colors[j];
-							int red = (color & 0xFF);
-							int green = (color & 0xFF00) >> 8;
-							int blue = (color & 0xFF0000) >> 16;
-							red = max(0, min(255, red * intensity));
-							green = max(0, min(255, green * intensity));
-							blue = max(0, min(255, blue * intensity));
-							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
-							row.Colors[j] = color;
-						}
-					}
-				}
-			}
-			break;
+				int frameId = frameCount - 1 - offset;
+				float t = (offset + 1) / (float)fade;
+				PluginMultiplyIntensity(animationId, frameId, t);
 			}
 		}
 	}
