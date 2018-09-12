@@ -8453,8 +8453,7 @@ extern "C"
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
-			if (fade <= 0 ||
-				fade >= frameCount)
+			if (fade <= 0)
 			{
 				return;
 			}
@@ -8547,8 +8546,7 @@ extern "C"
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
-			if (fade <= 0 ||
-				fade >= frameCount)
+			if (fade <= 0)
 			{
 				return;
 			}
@@ -8562,7 +8560,7 @@ extern "C"
 				for (int offset = 0; offset < fade; ++offset)
 				{
 					int frameId = frameCount - 1 - offset;
-					float intensity = (frameId + 1) / (float)fade;
+					float intensity = (offset + 1) / (float)fade;
 					FChromaSDKColorFrame1D& frame = frames[frameId];
 					vector<COLORREF>& colors = frame.Colors;
 					for (int i = 0; i < maxLeds; ++i)
@@ -8586,9 +8584,10 @@ extern "C"
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
 				int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
-				for (int frameId = 0; frameId < fade; ++frameId)
+				for (int offset = 0; offset < fade; ++offset)
 				{
-					float intensity = (frameId + 1) / (float)fade;
+					int frameId = frameCount - 1 - offset;
+					float intensity = (offset + 1) / (float)fade;
 					FChromaSDKColorFrame2D& frame = frames[frameId];
 					for (int i = 0; i < maxRow; ++i)
 					{

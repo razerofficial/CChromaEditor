@@ -905,6 +905,42 @@ void DebugUnitTestsKeyboardCustom()
 	Sleep(3000);
 }
 
+void DebugUnitTestsFadeStart()
+{
+	const char* baseLayer = "Blank_Keyboard.chroma";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+
+	int frameCount = 100;
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.1f, 255, 255, 255);
+	ChromaAnimationAPI::FadeStartFramesName(baseLayer, frameCount);
+
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+
+	Sleep(1000);
+}
+
+void DebugUnitTestsFadeEnd()
+{
+	const char* baseLayer = "Blank_Keyboard.chroma";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+
+	int frameCount = 100;
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.1f, 255, 255, 255);
+	ChromaAnimationAPI::FadeEndFramesName(baseLayer, frameCount);
+
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+
+	Sleep(1000);
+}
+
 void DebugUnitTestsCopyAnimation()
 {
 	const char* baseLayer = "Fire_Keyboard.chroma";
@@ -1021,9 +1057,11 @@ void DebugUnitTests()
 {
 	fprintf(stdout, "Start of unit tests...\r\n");
 	Sleep(500);
+	//DebugUnitTestsFadeStart();
+	DebugUnitTestsFadeEnd();
+	//DebugUnitTestsCopyAnimation();
 	//DebugUnitTestsSaveAnimation();
 	//DebugUnitTestsSaveAnimation2();
-	DebugUnitTestsCopyAnimation();
 	//DebugUnitTestsDuplicateFirstFrame();
 	//DebugUnitTestsCreateRandomBlackAndWhite();
 	//DebugUnitTestsCreateRandomBlackAndWhite();
