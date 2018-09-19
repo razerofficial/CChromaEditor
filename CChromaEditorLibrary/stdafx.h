@@ -599,6 +599,11 @@ extern "C"
 	EXPORT_API void PluginMultiplyIntensityColorName(const char* path, int frameId, int color);
 	EXPORT_API double PluginMultiplyIntensityColorNameD(const char* path, double frameId, double color);
 
+
+	EXPORT_API void PluginMultiplyIntensityColorAllFrames(int animationId, int color);
+	EXPORT_API void PluginMultiplyIntensityColorAllFramesName(const char* path, int color);
+	EXPORT_API double PluginMultiplyIntensityColorAllFramesNameD(const char* path, double color);
+
 	
 	EXPORT_API void PluginMultiplyIntensityRGB(int animationId, int frameId, int red, int green, int blue);
 	EXPORT_API void PluginMultiplyIntensityRGBName(const char* path, int frameId, int red, int green, int blue);

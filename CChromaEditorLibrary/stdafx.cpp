@@ -6822,6 +6822,39 @@ extern "C"
 	}
 
 
+	EXPORT_API void PluginMultiplyIntensityColorAllFrames(int animationId, int color)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = PluginGetFrameCount(animationId);
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginMultiplyIntensityColor(animationId, frameId, color);
+		}		
+	}
+
+	EXPORT_API void PluginMultiplyIntensityColorAllFramesName(const char* path, int color)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginMultiplyIntensityColorAllFramesName: Animation not found! %s\r\n", path);
+			return;
+		}
+		PluginMultiplyIntensityColorAllFrames(animationId, color);
+	}
+
+	EXPORT_API double PluginMultiplyIntensityColorAllFramesNameD(const char* path, double color)
+	{
+		PluginMultiplyIntensityColorAllFramesName(path, (int)color);
+		return 0;
+	}
+
+
 	EXPORT_API void PluginMultiplyIntensityRGB(int animationId, int frameId, int red, int green, int blue)
 	{
 		float redIntensity = red / 255.0f;
