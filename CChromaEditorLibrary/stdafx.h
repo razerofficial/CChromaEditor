@@ -404,6 +404,11 @@ extern "C"
 	EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 
 
+	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
+	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
+	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
+
+
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
@@ -412,6 +417,11 @@ extern "C"
 	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
+
+
+	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
+	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
+	EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 
 
 	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
@@ -568,6 +578,16 @@ extern "C"
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const char* path);
 
 
+	EXPORT_API void PluginInvertColors(int animationId, int frameId);
+	EXPORT_API void PluginInvertColorsName(const char* path, int frameId);
+	EXPORT_API double PluginInvertColorsNameD(const char* path, double frameId);
+
+
+	EXPORT_API void PluginInvertColorsAllFrames(int animationId);
+	EXPORT_API void PluginInvertColorsAllFramesName(const char* path);
+	EXPORT_API double PluginInvertColorsAllFramesNameD(const char* path);
+
+
 	//offset doesn't follow the RGB convention since RGB can range from -255 to 255
 
 	EXPORT_API void PluginOffsetColors(int animationId, int frameId, int red, int green, int blue);
@@ -631,6 +651,11 @@ extern "C"
 	EXPORT_API void PluginMultiplyTargetColorLerpAllFrames(int animationId, int color1, int color2);
 	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesName(const char* path, int color1, int color2);
 	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(const char* path, double color1, double color2);
+
+
+	EXPORT_API void PluginMultiplyColorLerpAllFrames(int animationId, int color1, int color2);
+	EXPORT_API void PluginMultiplyColorLerpAllFramesName(const char* path, int color1, int color2);
+	EXPORT_API double PluginMultiplyColorLerpAllFramesNameD(const char* path, double color1, double color2);
 
 
 	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGB(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
