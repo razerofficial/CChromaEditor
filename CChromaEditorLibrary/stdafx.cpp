@@ -4075,43 +4075,71 @@ extern "C"
 		{
 			return;
 		}
-		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
 		{
 			return;
 		}
-		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_1D)
 		{
-			return;
-		}
-		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
-		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
-		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
-		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
-		if (sourceFrames.size() == 0)
-		{
-			return;
-		}
-		if (targetFrames.size() == 0)
-		{
-			return;
-		}
-		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
-		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
-		for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
-		{
-			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId];
-			FChromaSDKColorFrame2D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
-			for (int i = 0; i < maxRow; ++i)
+			Animation1D* sourceAnimation1D = (Animation1D*)(sourceAnimation);
+			Animation1D* targetAnimation1D = (Animation1D*)(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			if (sourceFrames.size() == 0)
 			{
-				for (int j = 0; j < maxColumn; ++j)
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxLeds = PluginGetMaxLeds(sourceAnimation1D->GetDevice());
+			for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame1D& sourceFrame = sourceFrames[frameId];
+				FChromaSDKColorFrame1D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
+				for (int i = 0; i < maxLeds; ++i)
 				{
-					int color = sourceFrame.Colors[i].Colors[j];
+					int color = sourceFrame.Colors[i];
 					if (color != 0 &&
-						targetFrame.Colors[i].Colors[j] != 0)
+						targetFrame.Colors[i] != 0)
 					{
-						targetFrame.Colors[i].Colors[j] = color;
+						targetFrame.Colors[i] = color;
+					}
+				}
+			}
+		}
+		else if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+			Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxRow = PluginGetMaxRow(sourceAnimation2D->GetDevice());
+			int maxColumn = PluginGetMaxColumn(sourceAnimation2D->GetDevice());
+			for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId];
+				FChromaSDKColorFrame2D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = sourceFrame.Colors[i].Colors[j];
+						if (color != 0 &&
+							targetFrame.Colors[i].Colors[j] != 0)
+						{
+							targetFrame.Colors[i].Colors[j] = color;
+						}
 					}
 				}
 			}
@@ -4252,47 +4280,41 @@ extern "C"
 		{
 			return;
 		}
-		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
 		{
 			return;
 		}
-		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_1D)
 		{
-			return;
-		}
-		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
-		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
-		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
-		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
-		if (sourceFrames.size() == 0)
-		{
-			return;
-		}
-		if (targetFrames.size() == 0)
-		{
-			return;
-		}
-		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
-		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
-		for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
-		{
-			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
-			FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
-			for (int i = 0; i < maxRow; ++i)
+			Animation1D* sourceAnimation1D = (Animation1D*)(sourceAnimation);
+			Animation1D* targetAnimation1D = (Animation1D*)(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			if (sourceFrames.size() == 0)
 			{
-				for (int j = 0; j < maxColumn; ++j)
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxLeds = PluginGetMaxLeds(sourceAnimation1D->GetDevice());
+			for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame1D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame1D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxLeds; ++i)
 				{
-					int color = sourceFrame.Colors[i].Colors[j];
+					int color = sourceFrame.Colors[i];
 					if (color != 0 &&
-						targetFrame.Colors[i].Colors[j] != 0)
+						targetFrame.Colors[i] != 0)
 					{
 						int sourceRed = color & 0xFF;
 						int sourceGreen = (color & 0xFF00) >> 8;
 						int sourceBlue = (color & 0xFF0000) >> 16;
 
-						int oldColor = targetFrame.Colors[i].Colors[j];
+						int oldColor = targetFrame.Colors[i];
 						int oldRed = oldColor & 0xFF;
 						int oldGreen = (oldColor & 0xFF00) >> 8;
 						int oldBlue = (oldColor & 0xFF0000) >> 16;
@@ -4302,7 +4324,55 @@ extern "C"
 						int blue = min(255, max(0, oldBlue + sourceBlue)) & 0xFF;
 						int newColor = red | (green << 8) | (blue << 16);
 
-						targetFrame.Colors[i].Colors[j] = newColor;
+						targetFrame.Colors[i] = newColor;
+					}
+				}
+			}
+		}
+		else if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+			Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxRow = PluginGetMaxRow(sourceAnimation2D->GetDevice());
+			int maxColumn = PluginGetMaxColumn(sourceAnimation2D->GetDevice());
+			for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = sourceFrame.Colors[i].Colors[j];
+						if (color != 0 &&
+							targetFrame.Colors[i].Colors[j] != 0)
+						{
+							int sourceRed = color & 0xFF;
+							int sourceGreen = (color & 0xFF00) >> 8;
+							int sourceBlue = (color & 0xFF0000) >> 16;
+
+							int oldColor = targetFrame.Colors[i].Colors[j];
+							int oldRed = oldColor & 0xFF;
+							int oldGreen = (oldColor & 0xFF00) >> 8;
+							int oldBlue = (oldColor & 0xFF0000) >> 16;
+
+							int red = min(255, max(0, oldRed + sourceRed)) & 0xFF;
+							int green = min(255, max(0, oldGreen + sourceGreen)) & 0xFF;
+							int blue = min(255, max(0, oldBlue + sourceBlue)) & 0xFF;
+							int newColor = red | (green << 8) | (blue << 16);
+
+							targetFrame.Colors[i].Colors[j] = newColor;
+						}
 					}
 				}
 			}
@@ -4348,47 +4418,41 @@ extern "C"
 		{
 			return;
 		}
-		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
 		{
 			return;
 		}
-		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_1D)
 		{
-			return;
-		}
-		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
-		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
-		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
-		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
-		if (sourceFrames.size() == 0)
-		{
-			return;
-		}
-		if (targetFrames.size() == 0)
-		{
-			return;
-		}
-		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
-		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
-		for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
-		{
-			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId];
-			FChromaSDKColorFrame2D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
-			for (int i = 0; i < maxRow; ++i)
+			Animation1D* sourceAnimation1D = (Animation1D*)(sourceAnimation);
+			Animation1D* targetAnimation1D = (Animation1D*)(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			if (sourceFrames.size() == 0)
 			{
-				for (int j = 0; j < maxColumn; ++j)
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxLeds = PluginGetMaxLeds(sourceAnimation->GetDeviceId());
+			for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame1D& sourceFrame = sourceFrames[frameId];
+				FChromaSDKColorFrame1D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
+				for (int i = 0; i < maxLeds; ++i)
 				{
-					int color = sourceFrame.Colors[i].Colors[j];
+					int color = sourceFrame.Colors[i];
 					if (color != 0 &&
-						targetFrame.Colors[i].Colors[j] != 0)
+						targetFrame.Colors[i] != 0)
 					{
 						int sourceRed = color & 0xFF;
 						int sourceGreen = (color & 0xFF00) >> 8;
 						int sourceBlue = (color & 0xFF0000) >> 16;
 
-						int oldColor = targetFrame.Colors[i].Colors[j];
+						int oldColor = targetFrame.Colors[i];
 						int oldRed = oldColor & 0xFF;
 						int oldGreen = (oldColor & 0xFF00) >> 8;
 						int oldBlue = (oldColor & 0xFF0000) >> 16;
@@ -4398,7 +4462,55 @@ extern "C"
 						int blue = min(255, max(0, oldBlue + sourceBlue)) & 0xFF;
 						int newColor = red | (green << 8) | (blue << 16);
 
-						targetFrame.Colors[i].Colors[j] = newColor;
+						targetFrame.Colors[i] = newColor;
+					}
+				}
+			}
+		}
+		else if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+			Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxRow = PluginGetMaxRow(sourceAnimation->GetDeviceId());
+			int maxColumn = PluginGetMaxColumn(sourceAnimation->GetDeviceId());
+			for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId];
+				FChromaSDKColorFrame2D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = sourceFrame.Colors[i].Colors[j];
+						if (color != 0 &&
+							targetFrame.Colors[i].Colors[j] != 0)
+						{
+							int sourceRed = color & 0xFF;
+							int sourceGreen = (color & 0xFF00) >> 8;
+							int sourceBlue = (color & 0xFF0000) >> 16;
+
+							int oldColor = targetFrame.Colors[i].Colors[j];
+							int oldRed = oldColor & 0xFF;
+							int oldGreen = (oldColor & 0xFF00) >> 8;
+							int oldBlue = (oldColor & 0xFF0000) >> 16;
+
+							int red = min(255, max(0, oldRed + sourceRed)) & 0xFF;
+							int green = min(255, max(0, oldGreen + sourceGreen)) & 0xFF;
+							int blue = min(255, max(0, oldBlue + sourceBlue)) & 0xFF;
+							int newColor = red | (green << 8) | (blue << 16);
+
+							targetFrame.Colors[i].Colors[j] = newColor;
+						}
 					}
 				}
 			}
@@ -4539,47 +4651,41 @@ extern "C"
 		{
 			return;
 		}
-		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
 		{
 			return;
 		}
-		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_1D)
 		{
-			return;
-		}
-		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
-		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
-		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
-		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
-		if (sourceFrames.size() == 0)
-		{
-			return;
-		}
-		if (targetFrames.size() == 0)
-		{
-			return;
-		}
-		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
-		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
-		for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
-		{
-			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
-			FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
-			for (int i = 0; i < maxRow; ++i)
+			Animation1D* sourceAnimation1D = (Animation1D*)(sourceAnimation);
+			Animation1D* targetAnimation1D = (Animation1D*)(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			if (sourceFrames.size() == 0)
 			{
-				for (int j = 0; j < maxColumn; ++j)
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxLeds = PluginGetMaxLeds(sourceAnimation1D->GetDevice());
+			for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame1D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame1D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxLeds; ++i)
 				{
-					int color = sourceFrame.Colors[i].Colors[j];
+					int color = sourceFrame.Colors[i];
 					if (color != 0 &&
-						targetFrame.Colors[i].Colors[j] != 0)
+						targetFrame.Colors[i] != 0)
 					{
 						int sourceRed = color & 0xFF;
 						int sourceGreen = (color & 0xFF00) >> 8;
 						int sourceBlue = (color & 0xFF0000) >> 16;
 
-						int oldColor = targetFrame.Colors[i].Colors[j];
+						int oldColor = targetFrame.Colors[i];
 						int oldRed = oldColor & 0xFF;
 						int oldGreen = (oldColor & 0xFF00) >> 8;
 						int oldBlue = (oldColor & 0xFF0000) >> 16;
@@ -4589,7 +4695,55 @@ extern "C"
 						int blue = min(255, max(0, oldBlue - sourceBlue)) & 0xFF;
 						int newColor = red | (green << 8) | (blue << 16);
 
-						targetFrame.Colors[i].Colors[j] = newColor;
+						targetFrame.Colors[i] = newColor;
+					}
+				}
+			}
+		}
+		else if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+			Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxRow = PluginGetMaxRow(sourceAnimation2D->GetDevice());
+			int maxColumn = PluginGetMaxColumn(sourceAnimation2D->GetDevice());
+			for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = sourceFrame.Colors[i].Colors[j];
+						if (color != 0 &&
+							targetFrame.Colors[i].Colors[j] != 0)
+						{
+							int sourceRed = color & 0xFF;
+							int sourceGreen = (color & 0xFF00) >> 8;
+							int sourceBlue = (color & 0xFF0000) >> 16;
+
+							int oldColor = targetFrame.Colors[i].Colors[j];
+							int oldRed = oldColor & 0xFF;
+							int oldGreen = (oldColor & 0xFF00) >> 8;
+							int oldBlue = (oldColor & 0xFF0000) >> 16;
+
+							int red = min(255, max(0, oldRed - sourceRed)) & 0xFF;
+							int green = min(255, max(0, oldGreen - sourceGreen)) & 0xFF;
+							int blue = min(255, max(0, oldBlue - sourceBlue)) & 0xFF;
+							int newColor = red | (green << 8) | (blue << 16);
+
+							targetFrame.Colors[i].Colors[j] = newColor;
+						}
 					}
 				}
 			}
@@ -4635,47 +4789,41 @@ extern "C"
 		{
 			return;
 		}
-		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
 		{
 			return;
 		}
-		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_1D)
 		{
-			return;
-		}
-		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
-		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
-		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
-		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
-		if (sourceFrames.size() == 0)
-		{
-			return;
-		}
-		if (targetFrames.size() == 0)
-		{
-			return;
-		}
-		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
-		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
-		for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
-		{
-			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId];
-			FChromaSDKColorFrame2D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
-			for (int i = 0; i < maxRow; ++i)
+			Animation1D* sourceAnimation1D = (Animation1D*)(sourceAnimation);
+			Animation1D* targetAnimation1D = (Animation1D*)(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			if (sourceFrames.size() == 0)
 			{
-				for (int j = 0; j < maxColumn; ++j)
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxLeds = PluginGetMaxLeds(sourceAnimation1D->GetDevice());
+			for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame1D& sourceFrame = sourceFrames[frameId];
+				FChromaSDKColorFrame1D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
+				for (int i = 0; i < maxLeds; ++i)
 				{
-					int color = sourceFrame.Colors[i].Colors[j];
+					int color = sourceFrame.Colors[i];
 					if (color != 0 &&
-						targetFrame.Colors[i].Colors[j] != 0)
+						targetFrame.Colors[i] != 0)
 					{
 						int sourceRed = color & 0xFF;
 						int sourceGreen = (color & 0xFF00) >> 8;
 						int sourceBlue = (color & 0xFF0000) >> 16;
 
-						int oldColor = targetFrame.Colors[i].Colors[j];
+						int oldColor = targetFrame.Colors[i];
 						int oldRed = oldColor & 0xFF;
 						int oldGreen = (oldColor & 0xFF00) >> 8;
 						int oldBlue = (oldColor & 0xFF0000) >> 16;
@@ -4685,7 +4833,55 @@ extern "C"
 						int blue = min(255, max(0, oldBlue - sourceBlue)) & 0xFF;
 						int newColor = red | (green << 8) | (blue << 16);
 
-						targetFrame.Colors[i].Colors[j] = newColor;
+						targetFrame.Colors[i] = newColor;
+					}
+				}
+			}
+		}
+		else if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+			Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxRow = PluginGetMaxRow(sourceAnimation2D->GetDevice());
+			int maxColumn = PluginGetMaxColumn(sourceAnimation2D->GetDevice());
+			for (int frameId = 0; frameId < int(sourceFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId];
+				FChromaSDKColorFrame2D& targetFrame = targetFrames[(frameId + offset) % targetFrames.size()];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = sourceFrame.Colors[i].Colors[j];
+						if (color != 0 &&
+							targetFrame.Colors[i].Colors[j] != 0)
+						{
+							int sourceRed = color & 0xFF;
+							int sourceGreen = (color & 0xFF00) >> 8;
+							int sourceBlue = (color & 0xFF0000) >> 16;
+
+							int oldColor = targetFrame.Colors[i].Colors[j];
+							int oldRed = oldColor & 0xFF;
+							int oldGreen = (oldColor & 0xFF00) >> 8;
+							int oldBlue = (oldColor & 0xFF0000) >> 16;
+
+							int red = min(255, max(0, oldRed - sourceRed)) & 0xFF;
+							int green = min(255, max(0, oldGreen - sourceGreen)) & 0xFF;
+							int blue = min(255, max(0, oldBlue - sourceBlue)) & 0xFF;
+							int newColor = red | (green << 8) | (blue << 16);
+
+							targetFrame.Colors[i].Colors[j] = newColor;
+						}
 					}
 				}
 			}
@@ -4880,6 +5076,114 @@ extern "C"
 	}
 
 
+	EXPORT_API void PluginCopyNonZeroTargetAllKeys(int sourceAnimationId, int targetAnimationId, int frameId)
+	{
+		PluginStopAnimation(targetAnimationId);
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
+		{
+			return;
+		}
+		if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_1D)
+		{
+			Animation1D* sourceAnimation1D = (Animation1D*)(sourceAnimation);
+			Animation1D* targetAnimation1D = (Animation1D*)(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxLeds = PluginGetMaxLeds(sourceAnimation1D->GetDevice());
+			if (frameId >= 0 && frameId < int(targetFrames.size()))
+			{
+				FChromaSDKColorFrame1D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame1D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					int color = sourceFrame.Colors[i];
+					if (color != 0 &&
+						targetFrame.Colors[i] != 0)
+					{
+						targetFrame.Colors[i] = color;
+					}
+				}
+			}
+		}
+		else if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+			Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxRow = PluginGetMaxRow(sourceAnimation2D->GetDevice());
+			int maxColumn = PluginGetMaxColumn(sourceAnimation2D->GetDevice());
+			if (frameId >= 0 && frameId < int(targetFrames.size()))
+			{
+				FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = sourceFrame.Colors[i].Colors[j];
+						if (color != 0 &&
+							targetFrame.Colors[i].Colors[j] != 0)
+						{
+							targetFrame.Colors[i].Colors[j] = color;
+						}
+					}
+				}
+			}
+		}
+	}
+	EXPORT_API void PluginCopyNonZeroTargetAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginCopyNonZeroTargetAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
+			return;
+		}
+
+		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		if (targetAnimationId < 0)
+		{
+			LogError("PluginCopyNonZeroTargetAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
+			return;
+		}
+
+		PluginCopyNonZeroTargetAllKeys(sourceAnimationId, targetAnimationId, frameId);
+	}
+	EXPORT_API double PluginCopyNonZeroTargetAllKeysNameD(const char* sourceAnimation, const char* targetAnimation, double frameId)
+	{
+		PluginCopyNonZeroTargetAllKeysName(sourceAnimation, targetAnimation, (int)frameId);
+		return 0;
+	}
+
+
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId)
 	{
 		PluginStopAnimation(targetAnimationId);
@@ -4893,43 +5197,71 @@ extern "C"
 		{
 			return;
 		}
-		if (sourceAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			sourceAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
 		{
 			return;
 		}
-		if (targetAnimation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D ||
-			targetAnimation->GetDeviceId() != (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_1D)
 		{
-			return;
-		}
-		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
-		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
-		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
-		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
-		if (sourceFrames.size() == 0)
-		{
-			return;
-		}
-		if (targetFrames.size() == 0)
-		{
-			return;
-		}
-		int maxRow = PluginGetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
-		int maxColumn = PluginGetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
-		for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
-		{
-			FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
-			FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
-			for (int i = 0; i < maxRow; ++i)
+			Animation1D* sourceAnimation1D = (Animation1D*)(sourceAnimation);
+			Animation1D* targetAnimation1D = (Animation1D*)(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			if (sourceFrames.size() == 0)
 			{
-				for (int j = 0; j < maxColumn; ++j)
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxLeds = PluginGetMaxLeds(sourceAnimation1D->GetDevice());
+			for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame1D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame1D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxLeds; ++i)
 				{
-					int color = sourceFrame.Colors[i].Colors[j];
+					int color = sourceFrame.Colors[i];
 					if (color != 0 &&
-						targetFrame.Colors[i].Colors[j] != 0)
+						targetFrame.Colors[i] != 0)
 					{
-						targetFrame.Colors[i].Colors[j] = color;
+						targetFrame.Colors[i] = color;
+					}
+				}
+			}
+		}
+		else if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+			Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxRow = PluginGetMaxRow(sourceAnimation2D->GetDevice());
+			int maxColumn = PluginGetMaxColumn(sourceAnimation2D->GetDevice());
+			for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = sourceFrame.Colors[i].Colors[j];
+						if (color != 0 &&
+							targetFrame.Colors[i].Colors[j] != 0)
+						{
+							targetFrame.Colors[i].Colors[j] = color;
+						}
 					}
 				}
 			}
@@ -6622,8 +6954,8 @@ extern "C"
 					{
 						int color = colors[i];
 						int red = 255 - (color & 0xFF);
-						int green = 255 - (color & 0xFF00) >> 8;
-						int blue = 255 - (color & 0xFF0000) >> 16;
+						int green = 255 - ((color & 0xFF00) >> 8);
+						int blue = 255 - ((color & 0xFF0000) >> 16);
 						color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 						colors[i] = color;
 					}
@@ -6647,8 +6979,8 @@ extern "C"
 						{
 							int color = row.Colors[j];
 							int red = 255 - (color & 0xFF);
-							int green = 255 - (color & 0xFF00) >> 8;
-							int blue = 255 - (color & 0xFF0000) >> 16;
+							int green = 255 - ((color & 0xFF00) >> 8);
+							int blue = 255 - ((color & 0xFF0000) >> 16);
 							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 							row.Colors[j] = color;
 						}
@@ -6705,8 +7037,8 @@ extern "C"
 					{
 						int color = colors[i];
 						int red = 255 - (color & 0xFF);
-						int green = 255 - (color & 0xFF00) >> 8;
-						int blue = 255 - (color & 0xFF0000) >> 16;
+						int green = 255 - ((color & 0xFF00) >> 8);
+						int blue = 255 - ((color & 0xFF0000) >> 16);
 						color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 						colors[i] = color;
 					}
@@ -6730,8 +7062,8 @@ extern "C"
 						{
 							int color = row.Colors[j];
 							int red = 255 - (color & 0xFF);
-							int green = 255 - (color & 0xFF00) >> 8;
-							int blue = 255 - (color & 0xFF0000) >> 16;
+							int green = 255 - ((color & 0xFF00) >> 8);
+							int blue = 255 - ((color & 0xFF0000) >> 16);
 							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 							row.Colors[j] = color;
 						}
@@ -9095,9 +9427,13 @@ extern "C"
 		{
 			return;
 		}
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
+		{
+			return;
+		}
 		PluginStopAnimation(targetAnimationId);
-		int deviceType = sourceAnimation->GetDeviceTypeId();
-		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		switch (sourceAnimation->GetDeviceType())
 		{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
