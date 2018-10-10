@@ -5982,7 +5982,7 @@ extern "C"
 						else if (red >= maxThreshold &&
 							green >= maxThreshold &&
 							blue >= maxThreshold) {
-							colors[i] = minColor;
+							colors[i] = maxColor;
 						}
 					}
 				}
@@ -6020,7 +6020,7 @@ extern "C"
 							else if (red >= maxThreshold &&
 								green >= maxThreshold &&
 								blue >= maxThreshold) {
-								row.Colors[j] = minColor;
+								row.Colors[j] = maxColor;
 							}
 						}
 					}
