@@ -9441,7 +9441,8 @@ extern "C"
 			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
 			Animation1D* targetAnimation1D = (Animation1D*)targetAnimation;
 			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
-			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			int sourceSize = sourceFrames.size();
+			for (int frameId = 0; frameId < sourceSize; ++frameId)
 			{
 				FChromaSDKColorFrame1D frame = sourceFrames[frameId];
 				targetFrames.push_back(frame);
@@ -9454,7 +9455,8 @@ extern "C"
 			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
 			Animation2D* targetAnimation2D = (Animation2D*)targetAnimation;
 			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
-			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			int sourceSize = sourceFrames.size();
+			for (int frameId = 0; frameId < sourceSize; ++frameId)
 			{
 				FChromaSDKColorFrame2D frame = sourceFrames[frameId];
 				targetFrames.push_back(frame);
