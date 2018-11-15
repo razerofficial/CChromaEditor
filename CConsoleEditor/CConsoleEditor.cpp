@@ -132,6 +132,13 @@ void DebugUnitTestsInit()
 	Sleep(1000);
 }
 
+void DebugUnitTestsUninit()
+{
+	ChromaAnimationAPI::Uninit();
+
+	Sleep(1000);
+}
+
 void DebugUnitTestsPlayComposite()
 {
 	while (true)
@@ -1057,8 +1064,9 @@ void DebugUnitTests()
 {
 	fprintf(stdout, "Start of unit tests...\r\n");
 	Sleep(500);
+	DebugUnitTestsInit();
 	//DebugUnitTestsFadeStart();
-	DebugUnitTestsFadeEnd();
+	//DebugUnitTestsFadeEnd();
 	//DebugUnitTestsCopyAnimation();
 	//DebugUnitTestsSaveAnimation();
 	//DebugUnitTestsSaveAnimation2();
@@ -1067,11 +1075,13 @@ void DebugUnitTests()
 	//DebugUnitTestsCreateRandomBlackAndWhite();
 	//DebugUnitTestsKeyboardCustom();
 	//DebugUnitTestsPlayComposite();
-	//DebugUnitTestsHDKIndividualLEDsGradient();
+	DebugUnitTestsHDKIndividualLEDsGradient();
 	//DebugUnitTestsHDKIndividualLEDs();
 	//DebugUnitTestsOffset();
 	//DebugUnitTestsNonZero();
 	//DebugUnitTestsCreateAnimation();
+
+	DebugUnitTestsUninit();
 
 	while (true)
 	{
