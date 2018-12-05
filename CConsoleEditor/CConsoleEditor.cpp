@@ -257,7 +257,8 @@ void DebugUnitTestsLoadedAnimations()
 	ChromaAnimationAPI::PlayAnimationName(animationName, false);
 	while (ChromaAnimationAPI::IsPlayingName(animationName))
 	{
-		Sleep(0);
+		fprintf(stdout, "Animation is playing... %s.\r\n", animationName);
+		Sleep(1000);
 	}
 	fprintf(stdout, "Animation complete %s.\r\n", animationName);
 }
@@ -1065,6 +1066,7 @@ void DebugUnitTests()
 	fprintf(stdout, "Start of unit tests...\r\n");
 	Sleep(500);
 	DebugUnitTestsInit();
+	DebugUnitTestsLoadedAnimations();
 	//DebugUnitTestsFadeStart();
 	//DebugUnitTestsFadeEnd();
 	//DebugUnitTestsCopyAnimation();
@@ -1075,7 +1077,7 @@ void DebugUnitTests()
 	//DebugUnitTestsCreateRandomBlackAndWhite();
 	//DebugUnitTestsKeyboardCustom();
 	//DebugUnitTestsPlayComposite();
-	DebugUnitTestsHDKIndividualLEDsGradient();
+	//DebugUnitTestsHDKIndividualLEDsGradient();
 	//DebugUnitTestsHDKIndividualLEDs();
 	//DebugUnitTestsOffset();
 	//DebugUnitTestsNonZero();
