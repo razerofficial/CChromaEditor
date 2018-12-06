@@ -9334,6 +9334,264 @@ extern "C"
 	}
 
 
+	EXPORT_API void PluginCopyRedChannelAllFrames(int animationId, float greenIntensity, float blueIntensity)
+	{
+		PluginStopAnimation(animationId);
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginCopyRedChannelAllFrames: Animation is null! id=%d\r\n", animationId);
+				return;
+			}
+			int frameCount = PluginGetFrameCount(animationId);
+			for (int frameId = 0; frameId < frameCount; ++frameId)
+			{
+				switch (animation->GetDeviceType())
+				{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = (Animation1D*)(animation);
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					if (frameId >= 0 &&
+						frameId < frames.size())
+					{
+						FChromaSDKColorFrame1D& frame = frames[frameId];
+						int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+						vector<COLORREF>& colors = frame.Colors;
+						for (int i = 0; i < maxLeds; ++i)
+						{
+							int color = colors[i];
+							int red = (color & 0xFF);
+							int green = max(0, min(255, red * greenIntensity));
+							int blue = max(0, min(255, red * blueIntensity));
+							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+							colors[i] = color;
+						}
+					}
+				}
+				break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = (Animation2D*)(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					if (frameId >= 0 &&
+						frameId < frames.size())
+					{
+						FChromaSDKColorFrame2D& frame = frames[frameId];
+						int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+						int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+						for (int i = 0; i < maxRow; ++i)
+						{
+							FChromaSDKColors& row = frame.Colors[i];
+							for (int j = 0; j < maxColumn; ++j)
+							{
+								int color = row.Colors[j];
+								int red = (color & 0xFF);
+								int green = max(0, min(255, red * greenIntensity));
+								int blue = max(0, min(255, red * blueIntensity));
+								color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+								row.Colors[j] = color;
+							}
+						}
+					}
+				}
+				break;
+				}
+			}
+		}
+	}
+	EXPORT_API void PluginCopyRedChannelAllFramesName(const char* path, float greenIntensity, float blueIntensity)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginCopyRedChannelAllFramesName: Animation not found! %s\r\n", path);
+			return;
+		}
+		PluginCopyRedChannelAllFrames(animationId, greenIntensity, blueIntensity);
+	}
+	EXPORT_API double PluginCopyRedChannelAllFramesNameD(const char* path, double greenIntensity, double blueIntensity)
+	{
+		PluginCopyRedChannelAllFramesName(path, (float)greenIntensity, (float)blueIntensity);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginCopyGreenChannelAllFrames(int animationId, float redIntensity, float blueIntensity)
+	{
+		PluginStopAnimation(animationId);
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginCopyGreenChannelAllFrames: Animation is null! id=%d\r\n", animationId);
+				return;
+			}
+			int frameCount = PluginGetFrameCount(animationId);
+			for (int frameId = 0; frameId < frameCount; ++frameId)
+			{
+				switch (animation->GetDeviceType())
+				{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = (Animation1D*)(animation);
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					if (frameId >= 0 &&
+						frameId < frames.size())
+					{
+						FChromaSDKColorFrame1D& frame = frames[frameId];
+						int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+						vector<COLORREF>& colors = frame.Colors;
+						for (int i = 0; i < maxLeds; ++i)
+						{
+							int color = colors[i];
+							int green = (color & 0xFF0000) >> 16;
+							int red = max(0, min(255, green * redIntensity));
+							int blue = max(0, min(255, green * blueIntensity));
+							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+							colors[i] = color;
+						}
+					}
+				}
+				break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = (Animation2D*)(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					if (frameId >= 0 &&
+						frameId < frames.size())
+					{
+						FChromaSDKColorFrame2D& frame = frames[frameId];
+						int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+						int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+						for (int i = 0; i < maxRow; ++i)
+						{
+							FChromaSDKColors& row = frame.Colors[i];
+							for (int j = 0; j < maxColumn; ++j)
+							{
+								int color = row.Colors[j];
+								int green = (color & 0xFF0000) >> 16;
+								int red = max(0, min(255, green * redIntensity));
+								int blue = max(0, min(255, green * blueIntensity));
+								color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+								row.Colors[j] = color;
+							}
+						}
+					}
+				}
+				break;
+				}
+			}
+		}
+	}
+	EXPORT_API void PluginCopyGreenChannelAllFramesName(const char* path, float redIntensity, float blueIntensity)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginCopyGreenChannelAllFramesName: Animation not found! %s\r\n", path);
+			return;
+		}
+		PluginCopyGreenChannelAllFrames(animationId, redIntensity, blueIntensity);
+	}
+	EXPORT_API double PluginCopyGreenChannelAllFramesNameD(const char* path, double redIntensity, double blueIntensity)
+	{
+		PluginCopyGreenChannelAllFramesName(path, (float)redIntensity, (float)blueIntensity);
+		return 0;
+	}
+
+
+	EXPORT_API void PluginCopyBlueChannelAllFrames(int animationId, float redIntensity, float greenIntensity)
+	{
+		PluginStopAnimation(animationId);
+
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError("PluginCopyBlueChannelAllFrames: Animation is null! id=%d\r\n", animationId);
+				return;
+			}
+			int frameCount = PluginGetFrameCount(animationId);
+			for (int frameId = 0; frameId < frameCount; ++frameId)
+			{
+				switch (animation->GetDeviceType())
+				{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+				{
+					Animation1D* animation1D = (Animation1D*)(animation);
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+					if (frameId >= 0 &&
+						frameId < frames.size())
+					{
+						FChromaSDKColorFrame1D& frame = frames[frameId];
+						int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
+						vector<COLORREF>& colors = frame.Colors;
+						for (int i = 0; i < maxLeds; ++i)
+						{
+							int color = colors[i];
+							int green = (color & 0xFF00) >> 8;
+							int red = max(0, min(255, green * redIntensity));
+							int blue = max(0, min(255, green * greenIntensity));
+							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+							colors[i] = color;
+						}
+					}
+				}
+				break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+				{
+					Animation2D* animation2D = (Animation2D*)(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					if (frameId >= 0 &&
+						frameId < frames.size())
+					{
+						FChromaSDKColorFrame2D& frame = frames[frameId];
+						int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
+						int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(animation2D->GetDevice());
+						for (int i = 0; i < maxRow; ++i)
+						{
+							FChromaSDKColors& row = frame.Colors[i];
+							for (int j = 0; j < maxColumn; ++j)
+							{
+								int color = row.Colors[j];
+								int green = (color & 0xFF00) >> 8;
+								int red = max(0, min(255, green * redIntensity));
+								int blue = max(0, min(255, green * greenIntensity));
+								color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
+								row.Colors[j] = color;
+							}
+						}
+					}
+				}
+				break;
+				}
+			}
+		}
+	}
+	EXPORT_API void PluginCopyBlueChannelAllFramesName(const char* path, float redIntensity, float greenIntensity)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginCopyBlueChannelAllFramesName: Animation not found! %s\r\n", path);
+			return;
+		}
+		PluginCopyBlueChannelAllFrames(animationId, redIntensity, greenIntensity);
+	}
+	EXPORT_API double PluginCopyBlueChannelAllFramesNameD(const char* path, double redIntensity, double greenIntensity)
+	{
+		PluginCopyBlueChannelAllFramesName(path, (float)redIntensity, (float)greenIntensity);
+		return 0;
+	}
+
+
 	EXPORT_API int PluginCopyAnimation(int sourceAnimationId, const char* targetAnimation)
 	{
 		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);

@@ -233,6 +233,9 @@ typedef void(*PLUGIN_TRIM_START_FRAMES_NAME)(const char* path, int numberOfFrame
 typedef void(*PLUGIN_UNINIT)();
 typedef void(*PLUGIN_UNLOAD_ANIMATION_NAME)(const char* path);
 typedef void(*PLUGIN_UNLOAD_COMPOSITE)(const char* name);
+typedef void(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME)(const char* name, float greenIntensity, float blueIntensity);
+typedef void(*PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME)(const char* name, float redIntensity, float blueIntensity);
+typedef void(*PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME)(const char* name, float redIntensity, float greenIntensity);
 
 
 #define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature FieldName;
@@ -468,7 +471,9 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNINIT, Uninit)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_ANIMATION_NAME, UnloadAnimationName)
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_COMPOSITE, UnloadComposite)
-
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME, CopyRedChannelAllFramesName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME, CopyGreenChannelAllFramesName)
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME, CopyBlueChannelAllFramesName)
 
 		static int InitAPI();
 
