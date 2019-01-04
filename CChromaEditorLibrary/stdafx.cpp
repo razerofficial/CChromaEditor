@@ -642,7 +642,8 @@ extern "C"
 		_gPlayMap1D.clear();
 		_gPlayMap2D.clear();
 
-		return ChromaSDKPlugin::GetInstance()->ChromaSDKInit();
+		ChromaSDKPlugin::GetInstance();
+		return RzChromaSDK::Init();
 	}
 
 	EXPORT_API double PluginInitD()
@@ -655,7 +656,7 @@ extern "C"
 		// Chroma thread plays animations
 		StopChromaThread();
 
-		int result = ChromaSDKPlugin::GetInstance()->ChromaSDKUnInit();
+		int result = RzChromaSDK::UnInit();
 		if (PluginIsInitialized())
 		{
 			for (auto iter = _gAnimations.begin(); iter != _gAnimations.end(); ++iter)

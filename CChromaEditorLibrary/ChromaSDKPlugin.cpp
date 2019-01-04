@@ -2,12 +2,7 @@
 #include "Animation1D.h"
 #include "Animation2D.h"
 #include "ChromaSDKPlugin.h"
-
-#ifdef _WIN64
-#define CHROMASDKDLL        _T("RzChromaSDK64.dll")
-#else
-#define CHROMASDKDLL        _T("RzChromaSDK.dll")
-#endif
+#include "RzChromaSDK.h"
 
 #define ANIMATION_VERSION 1
 
@@ -22,95 +17,16 @@ inline int fastrand() {
 
 ChromaSDKPlugin* ChromaSDKPlugin::_sInstance = nullptr;
 
-bool ChromaSDKPlugin::ValidateGetProcAddress(bool condition, const char* methodName)
-{
-	if (condition)
-	{
-		LogError("ChromaSDKPlugin failed to load %s!\r\n", methodName);
-	}
-	else
-	{
-		//LogDebug("ChromaSDKPlugin loaded %s.\r\n", *methodName);
-	}
-	return condition;
-}
-
 ChromaSDKPlugin::ChromaSDKPlugin()
 {
-	_mInitialized = false;
-
-	_mLibraryChroma = LoadLibrary(CHROMASDKDLL);
-	if (_mLibraryChroma == NULL)
+	if (!RzChromaSDK::IsLibraryLoaded())
 	{
 		LogError("ChromaSDKPlugin failed to load!\r\n");
 		return;
 	}
-	//LogDebug("ChromaSDKPlugin loaded.\r\n");
+	//LogDebug("ChromaSDKPlugin loaded.\r\n");	
 
-	_mMethodInit = (CHROMA_SDK_INIT)GetProcAddress(_mLibraryChroma, "Init");
-	if (ValidateGetProcAddress(_mMethodInit == nullptr, "Init"))
-	{
-		return;
-	}
-	_mMethodUnInit = (CHROMA_SDK_UNINIT)GetProcAddress(_mLibraryChroma, "UnInit");
-	if (ValidateGetProcAddress(_mMethodUnInit == nullptr, "UnInit"))
-	{
-		return;
-	}
-	_mMethodQueryDevice = (CHROMA_SDK_QUERY_DEVICE)GetProcAddress(_mLibraryChroma, "QueryDevice");
-	if (ValidateGetProcAddress(_mMethodQueryDevice == nullptr, "QueryDevice"))
-	{
-		return;
-	}
-
-	_mMethodCreateChromaLinkEffect = (CHROMA_SDK_CREATE_CHROMA_LINK_EFFECT)GetProcAddress(_mLibraryChroma, "CreateChromaLinkEffect");
-	if (ValidateGetProcAddress(_mMethodCreateChromaLinkEffect == nullptr, "CreateChromaLinkEffect"))
-	{
-		return;
-	}
-	_mMethodCreateHeadsetEffect = (CHROMA_SDK_CREATE_HEADSET_EFFECT)GetProcAddress(_mLibraryChroma, "CreateHeadsetEffect");
-	if (ValidateGetProcAddress(_mMethodCreateHeadsetEffect == nullptr, "CreateHeadsetEffect"))
-	{
-		return;
-	}
-	_mMethodCreateKeyboardEffect = (CHROMA_SDK_CREATE_KEYBOARD_EFFECT)GetProcAddress(_mLibraryChroma, "CreateKeyboardEffect");
-	if (ValidateGetProcAddress(_mMethodCreateKeyboardEffect == nullptr, "CreateKeyboardEffect"))
-	{
-		return;
-	}
-	_mMethodCreateMouseEffect = (CHROMA_SDK_CREATE_MOUSE_EFFECT)GetProcAddress(_mLibraryChroma, "CreateMouseEffect");
-	if (ValidateGetProcAddress(_mMethodCreateMouseEffect == nullptr, "CreateMouseEffect"))
-	{
-		return;
-	}
-	_mMethodCreateMousepadEffect = (CHROMA_SDK_CREATE_MOUSEPAD_EFFECT)GetProcAddress(_mLibraryChroma, "CreateMousepadEffect");
-	if (ValidateGetProcAddress(_mMethodCreateMousepadEffect == nullptr, "CreateMousepadEffect"))
-	{
-		return;
-	}
-	_mMethodCreateKeypadEffect = (CHROMA_SDK_CREATE_KEYPAD_EFFECT)GetProcAddress(_mLibraryChroma, "CreateKeypadEffect");
-	if (ValidateGetProcAddress(_mMethodCreateKeypadEffect == nullptr, "CreateKeypadEffect"))
-	{
-		return;
-	}
-
-	_mMethodCreateEffect = (CHROMA_SDK_CREATE_EFFECT)GetProcAddress(_mLibraryChroma, "CreateEffect");
-	if (ValidateGetProcAddress(_mMethodCreateEffect == nullptr, "CreateEffect"))
-	{
-		return;
-	}
-	_mMethodSetEffect = (CHROMA_SDK_SET_EFFECT)GetProcAddress(_mLibraryChroma, "SetEffect");
-	if (ValidateGetProcAddress(_mMethodSetEffect == nullptr, "SetEffect"))
-	{
-		return;
-	}
-	_mMethodDeleteEffect = (CHROMA_SDK_DELETE_EFFECT)GetProcAddress(_mLibraryChroma, "DeleteEffect");
-	if (ValidateGetProcAddress(_mMethodDeleteEffect == nullptr, "DeleteEffect"))
-	{
-		return;
-	}
-
-	if (ChromaSDKInit() == 0)
+	if (RzChromaSDK::Init() == 0)
 	{
 		//LogDebug("ChromaSDKPlugin initialized.\r\n");
 	}
@@ -424,7 +340,7 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 
 ChromaSDKPlugin::~ChromaSDKPlugin()
 {
-	ChromaSDKUnInit();
+	RzChromaSDK::UnInit();
 }
 
 ChromaSDKPlugin* ChromaSDKPlugin::GetInstance()
@@ -438,140 +354,7 @@ ChromaSDKPlugin* ChromaSDKPlugin::GetInstance()
 
 bool ChromaSDKPlugin::IsInitialized()
 {
-	return _mInitialized;
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKInit()
-{
-	if (_mMethodInit == nullptr)
-	{
-		LogError("ChromaSDKPlugin Init method is not set!\r\n");
-		return -1;
-	}
-
-	int result = _mMethodInit();
-	if (result != 0)
-	{
-		LogDebug("ChromaSDKPlugin Init Result=%d\r\n", result);
-	}
-	_mInitialized = true;
-	return result;
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKUnInit()
-{
-	if (_mMethodUnInit == nullptr)
-	{
-		LogError("ChromaSDKPlugin UnInit method is not set!\r\n");
-		return -1;
-	}
-
-	int result = _mMethodUnInit();
-	if (result != 0)
-	{
-		LogDebug("ChromaSDKPlugin UnInit Result=%d\r\n", result);
-	}
-	_mInitialized = false;
-	return result;
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKCreateEffect(RZDEVICEID deviceId, EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId)
-{
-	if (_mMethodCreateEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin CreateEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodCreateEffect(deviceId, effect, pParam, pEffectId);
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKCreateChromaLinkEffect(ChromaLink::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId)
-{
-	if (_mMethodCreateChromaLinkEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin CreateChromaLinkEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodCreateChromaLinkEffect(effect, pParam, pEffectId);
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKCreateHeadsetEffect(Headset::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId)
-{
-	if (_mMethodCreateHeadsetEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin CreateHeadsetEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodCreateHeadsetEffect(effect, pParam, pEffectId);
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKCreateKeyboardEffect(Keyboard::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId)
-{
-	if (_mMethodCreateKeyboardEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin CreateKeyboardEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodCreateKeyboardEffect(effect, pParam, pEffectId);
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKCreateKeypadEffect(Keypad::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId)
-{
-	if (_mMethodCreateKeypadEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin CreateKeypadEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodCreateKeypadEffect(effect, pParam, pEffectId);
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKCreateMouseEffect(Mouse::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId)
-{
-	if (_mMethodCreateMouseEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin CreateMouseEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodCreateMouseEffect(effect, pParam, pEffectId);
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKCreateMousepadEffect(Mousepad::EFFECT_TYPE effect, PRZPARAM pParam, RZEFFECTID* pEffectId)
-{
-	if (_mMethodCreateMousepadEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin CreateMousepadEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodCreateMousepadEffect(effect, pParam, pEffectId);
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKSetEffect(RZEFFECTID effectId)
-{
-	if (_mMethodSetEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin SetEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodSetEffect(effectId);
-}
-
-RZRESULT ChromaSDKPlugin::ChromaSDKDeleteEffect(RZEFFECTID effectId)
-{
-	if (_mMethodDeleteEffect == nullptr)
-	{
-		LogError("ChromaSDKPlugin DeleteEffect method is not set!\r\n");
-		return -1;
-	}
-
-	return _mMethodDeleteEffect(effectId);
+	return RzChromaSDK::IsLibraryLoaded();
 }
 
 int ChromaSDKPlugin::GetMaxLeds(const EChromaSDKDevice1DEnum& device)
@@ -777,7 +560,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffect(RZDEVICEID deviceId, EFFECT
 
 	RZRESULT result = 0;
 	RZEFFECTID effectId = RZEFFECTID();
-	result = ChromaSDKCreateEffect(deviceId, EFFECT_TYPE::CHROMA_CUSTOM, &pParam, &effectId);
+	result = RzChromaSDK::CreateEffect(deviceId, EFFECT_TYPE::CHROMA_CUSTOM, &pParam, &effectId);
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
@@ -800,13 +583,13 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevic
 	switch (device)
 	{
 	case EChromaSDKDevice1DEnum::DE_ChromaLink:
-		result = ChromaSDKCreateChromaLinkEffect(ChromaLink::CHROMA_NONE, NULL, &effectId);
+		result = RzChromaSDK::CreateChromaLinkEffect(ChromaLink::CHROMA_NONE, NULL, &effectId);
 		break;
 	case EChromaSDKDevice1DEnum::DE_Headset:
-		result = ChromaSDKCreateHeadsetEffect(Headset::CHROMA_NONE, NULL, &effectId);
+		result = RzChromaSDK::CreateHeadsetEffect(Headset::CHROMA_NONE, NULL, &effectId);
 		break;
 	case EChromaSDKDevice1DEnum::DE_Mousepad:
-		result = ChromaSDKCreateMousepadEffect(Mousepad::CHROMA_NONE, NULL, &effectId);
+		result = RzChromaSDK::CreateMousepadEffect(Mousepad::CHROMA_NONE, NULL, &effectId);
 		break;
 	default:
 		LogError("ChromaSDKPlugin::CreateEffectNone1D Unsupported device used!\r\n");
@@ -834,13 +617,13 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevic
 	switch (device)
 	{
 	case EChromaSDKDevice2DEnum::DE_Keyboard:
-		result = ChromaSDKCreateKeyboardEffect(Keyboard::CHROMA_NONE, NULL, &effectId);
+		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_NONE, NULL, &effectId);
 		break;
 	case EChromaSDKDevice2DEnum::DE_Keypad:
-		result = ChromaSDKCreateKeypadEffect(Keypad::CHROMA_NONE, NULL, &effectId);
+		result = RzChromaSDK::CreateKeypadEffect(Keypad::CHROMA_NONE, NULL, &effectId);
 		break;
 	case EChromaSDKDevice2DEnum::DE_Mouse:
-		result = ChromaSDKCreateMouseEffect(Mouse::CHROMA_NONE, NULL, &effectId);
+		result = RzChromaSDK::CreateMouseEffect(Mouse::CHROMA_NONE, NULL, &effectId);
 		break;
 	default:
 		LogError("ChromaSDKPlugin::CreateEffectNone2D Unsupported device used!\r\n");
@@ -869,21 +652,21 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic1D(const EChromaSDKDev
 	{
 		ChromaLink::STATIC_EFFECT_TYPE pParam = {};
 		pParam.Color = color;
-		result = ChromaSDKCreateChromaLinkEffect(ChromaLink::CHROMA_STATIC, &pParam, &effectId);
+		result = RzChromaSDK::CreateChromaLinkEffect(ChromaLink::CHROMA_STATIC, &pParam, &effectId);
 	}
 	break;
 	case EChromaSDKDevice1DEnum::DE_Headset:
 	{
 		Headset::STATIC_EFFECT_TYPE pParam = {};
 		pParam.Color = color;
-		result = ChromaSDKCreateHeadsetEffect(Headset::CHROMA_STATIC, &pParam, &effectId);
+		result = RzChromaSDK::CreateHeadsetEffect(Headset::CHROMA_STATIC, &pParam, &effectId);
 	}
 	break;
 	case EChromaSDKDevice1DEnum::DE_Mousepad:
 	{
 		Mousepad::STATIC_EFFECT_TYPE pParam = {};
 		pParam.Color = color;
-		result = ChromaSDKCreateMousepadEffect(Mousepad::CHROMA_STATIC, &pParam, &effectId);
+		result = RzChromaSDK::CreateMousepadEffect(Mousepad::CHROMA_STATIC, &pParam, &effectId);
 	}
 	break;
 	default:
@@ -908,14 +691,14 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic2D(const EChromaSDKDev
 	{
 		Keyboard::STATIC_EFFECT_TYPE pParam = {};
 		pParam.Color = color;
-		result = ChromaSDKCreateKeyboardEffect(Keyboard::CHROMA_STATIC, &pParam, &effectId);
+		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_STATIC, &pParam, &effectId);
 	}
 	break;
 	case EChromaSDKDevice2DEnum::DE_Keypad:
 	{
 		Keypad::STATIC_EFFECT_TYPE pParam = {};
 		pParam.Color = color;
-		result = ChromaSDKCreateKeypadEffect(Keypad::CHROMA_STATIC, &pParam, &effectId);
+		result = RzChromaSDK::CreateKeypadEffect(Keypad::CHROMA_STATIC, &pParam, &effectId);
 	}
 	break;
 	case EChromaSDKDevice2DEnum::DE_Mouse:
@@ -923,7 +706,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic2D(const EChromaSDKDev
 		Mouse::STATIC_EFFECT_TYPE pParam = {};
 		pParam.Color = color;
 		pParam.LEDId = Mouse::RZLED_ALL;
-		result = ChromaSDKCreateMouseEffect(Mouse::CHROMA_STATIC, &pParam, &effectId);
+		result = RzChromaSDK::CreateMouseEffect(Mouse::CHROMA_STATIC, &pParam, &effectId);
 	}
 	break;
 	default:
@@ -960,7 +743,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		{
 			pParam.Color[i] = colors[i];
 		}
-		result = ChromaSDKCreateChromaLinkEffect(ChromaLink::CHROMA_CUSTOM, &pParam, &effectId);
+		result = RzChromaSDK::CreateChromaLinkEffect(ChromaLink::CHROMA_CUSTOM, &pParam, &effectId);
 	}
 	break;
 	case EChromaSDKDevice1DEnum::DE_Headset:
@@ -978,7 +761,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		{
 			pParam.Color[i] = colors[i];
 		}
-		result = ChromaSDKCreateHeadsetEffect(Headset::CHROMA_CUSTOM, &pParam, &effectId);
+		result = RzChromaSDK::CreateHeadsetEffect(Headset::CHROMA_CUSTOM, &pParam, &effectId);
 	}
 	break;
 	case EChromaSDKDevice1DEnum::DE_Mousepad:
@@ -996,7 +779,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		{
 			pParam.Color[i] = colors[i];
 		}
-		result = ChromaSDKCreateMousepadEffect(Mousepad::CHROMA_CUSTOM, &pParam, &effectId);
+		result = RzChromaSDK::CreateMousepadEffect(Mousepad::CHROMA_CUSTOM, &pParam, &effectId);
 	}
 	break;
 	default:
@@ -1043,7 +826,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 				pParam.Color[i][j] = row.Colors[j];
 			}
 		}
-		result = ChromaSDKCreateKeyboardEffect(Keyboard::CHROMA_CUSTOM, &pParam, &effectId);
+		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM, &pParam, &effectId);
 	}
 	break;
 	case EChromaSDKDevice2DEnum::DE_Keypad:
@@ -1070,7 +853,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 				pParam.Color[i][j] = row.Colors[j];
 			}
 		}
-		result = ChromaSDKCreateKeypadEffect(Keypad::CHROMA_CUSTOM, &pParam, &effectId);
+		result = RzChromaSDK::CreateKeypadEffect(Keypad::CHROMA_CUSTOM, &pParam, &effectId);
 	}
 	break;
 	case EChromaSDKDevice2DEnum::DE_Mouse:
@@ -1097,7 +880,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 				pParam.Color[i][j] = row.Colors[j];
 			}
 		}
-		result = ChromaSDKCreateMouseEffect(Mouse::CHROMA_CUSTOM2, &pParam, &effectId);
+		result = RzChromaSDK::CreateMouseEffect(Mouse::CHROMA_CUSTOM2, &pParam, &effectId);
 	}
 	break;
 	default:
@@ -1140,7 +923,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vecto
 				pParam.Key[i][j] = row.Colors[j];
 			}
 		}
-		result = ChromaSDKCreateKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, &pParam, &effectId);
+		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, &pParam, &effectId);
 	}	
 	
 	data.EffectId.Data = effectId;
@@ -1152,7 +935,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vecto
 RZRESULT ChromaSDKPlugin::SetEffect(const FChromaSDKGuid& effectId)
 {
 	//LogDebug("ChromaSDKPlugin::SetEffect Invoke.\r\n");
-	RZRESULT result = ChromaSDKSetEffect(effectId.Data);
+	RZRESULT result = RzChromaSDK::SetEffect(effectId.Data);
 	if (result != 0)
 	{
 		LogError("ChromaSDKPlugin::SetEffect Result=%d.\r\n", result);
@@ -1163,7 +946,7 @@ RZRESULT ChromaSDKPlugin::SetEffect(const FChromaSDKGuid& effectId)
 RZRESULT ChromaSDKPlugin::DeleteEffect(const FChromaSDKGuid& effectId)
 {
 	//LogDebug("ChromaSDKPlugin::DeleteEffect Invoke.\r\n");
-	RZRESULT result = ChromaSDKDeleteEffect(effectId.Data);
+	RZRESULT result = RzChromaSDK::DeleteEffect(effectId.Data);
 	if (result != 0)
 	{
 		LogError("ChromaSDKPlugin::DeleteEffect Result=%d.\r\n", result);

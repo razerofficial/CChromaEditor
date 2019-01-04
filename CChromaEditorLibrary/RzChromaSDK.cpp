@@ -3,6 +3,14 @@
 #include "RzErrors.h"
 #include <tchar.h>
 
+
+#ifdef _WIN64
+#define CHROMASDKDLL        _T("RzChromaSDK64.dll")
+#else
+#define CHROMASDKDLL        _T("RzChromaSDK.dll")
+#endif
+
+
 HMODULE RzChromaSDK::_sLibraryChroma = NULL;
 
 // assign static methods
@@ -170,8 +178,7 @@ bool RzChromaSDK::IsLibraryLoaded()
 {
 	if (_sLibraryChroma == NULL)
 	{
-		LPCWSTR CHROMA_CORE_DLL = _T("RzChromaSDK64.dll");
-		_sLibraryChroma = LoadLibrary(CHROMA_CORE_DLL);
+		_sLibraryChroma = LoadLibrary(CHROMASDKDLL);
 		if (_sLibraryChroma == NULL)
 		{
 			return false;
