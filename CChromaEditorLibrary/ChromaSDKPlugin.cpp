@@ -62,11 +62,6 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	{
 		return;
 	}
-	_mMethodUnInit = (CHROMA_SDK_UNINIT)GetProcAddress(_mLibraryChroma, "UnInit");
-	if (ValidateGetProcAddress(_mMethodUnInit == nullptr, "UnInit"))
-	{
-		return;
-	}
 
 	_mMethodCreateChromaLinkEffect = (CHROMA_SDK_CREATE_CHROMA_LINK_EFFECT)GetProcAddress(_mLibraryChroma, "CreateChromaLinkEffect");
 	if (ValidateGetProcAddress(_mMethodCreateChromaLinkEffect == nullptr, "CreateChromaLinkEffect"))
