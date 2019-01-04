@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "CChromaEditorLibrary.h"
 #include "ChromaThread.h"
+#include "RzChromaSDK.h"
 #include <map>
 #include <sstream>
 #include <thread>
@@ -106,6 +107,58 @@ void ThreadOpenEditorDialog(bool playOnOpen)
 
 extern "C"
 {
+
+#pragma region Core API
+	EXPORT_API RZRESULT PluginCoreInit()
+	{
+		return RzChromaSDK::Init();
+	}
+	EXPORT_API RZRESULT PluginCoreUnInit()
+	{
+		return RzChromaSDK::UnInit();
+	}
+	EXPORT_API RZRESULT PluginCoreCreateEffect(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
+	{
+		return RzChromaSDK::CreateEffect(DeviceId, Effect, pParam, pEffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreCreateChromaLinkEffect(ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
+	{
+		return RzChromaSDK::CreateChromaLinkEffect(Effect, pParam, pEffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreCreateKeyboardEffect(ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
+	{
+		return RzChromaSDK::CreateKeyboardEffect(Effect, pParam, pEffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreCreateKeypadEffect(ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
+	{
+		return RzChromaSDK::CreateKeypadEffect(Effect, pParam, pEffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreCreateHeadsetEffect(ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
+	{
+		return RzChromaSDK::CreateHeadsetEffect(Effect, pParam, pEffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreCreateMouseEffect(ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
+	{
+		return RzChromaSDK::CreateMouseEffect(Effect, pParam, pEffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreCreateMousepadEffect(ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
+	{
+		return RzChromaSDK::CreateMousepadEffect(Effect, pParam, pEffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreSetEffect(RZEFFECTID EffectId)
+	{
+		return RzChromaSDK::SetEffect(EffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreDeleteEffect(RZEFFECTID EffectId)
+	{
+		return RzChromaSDK::DeleteEffect(EffectId);
+	}
+	EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo)
+	{
+		return RzChromaSDK::QueryDevice(DeviceId, DeviceInfo);
+	}
+#pragma endregion
+
 	EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp)
 	{
 		_gDebugLogPtr = fp;

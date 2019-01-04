@@ -54,6 +54,9 @@
     <ClCompile Include="ChromaThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RzChromaSDK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CChromaEditorLibrary.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChromaThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RzChromaSDK.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
