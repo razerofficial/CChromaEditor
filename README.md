@@ -782,8 +782,7 @@ EXPORT_API double PluginAppendAllFramesNameD(
 **PluginClearAll**
 
 ```C++
-EXPORT_API void PluginClearAll(
-	);
+EXPORT_API void PluginClearAll();
 ```
 
 <a name="PluginClearAnimationType"></a>
@@ -798,56 +797,49 @@ EXPORT_API void PluginClearAnimationType(
 **PluginCloseAll**
 
 ```C++
-EXPORT_API void PluginCloseAll(
-	);
+EXPORT_API void PluginCloseAll();
 ```
 
 <a name="PluginCloseAnimation"></a>
 **PluginCloseAnimation**
 
 ```C++
-EXPORT_API int PluginCloseAnimation(
-	int animationId);
+EXPORT_API int PluginCloseAnimation(int animationId);
 ```
 
 <a name="PluginCloseAnimationD"></a>
 **PluginCloseAnimationD**
 
 ```C++
-EXPORT_API double PluginCloseAnimationD(
-	double animationId);
+EXPORT_API double PluginCloseAnimationD(double animationId);
 ```
 
 <a name="PluginCloseAnimationName"></a>
 **PluginCloseAnimationName**
 
 ```C++
-EXPORT_API void PluginCloseAnimationName(
-	const char* path);
+EXPORT_API void PluginCloseAnimationName(const char* path);
 ```
 
 <a name="PluginCloseAnimationNameD"></a>
 **PluginCloseAnimationNameD**
 
 ```C++
-EXPORT_API double PluginCloseAnimationNameD(
-	const char* path);
+EXPORT_API double PluginCloseAnimationNameD(const char* path);
 ```
 
 <a name="PluginCloseComposite"></a>
 **PluginCloseComposite**
 
 ```C++
-EXPORT_API void PluginCloseComposite(
-	const char* name);
+EXPORT_API void PluginCloseComposite(const char* name);
 ```
 
 <a name="PluginCloseCompositeD"></a>
 **PluginCloseCompositeD**
 
 ```C++
-EXPORT_API double PluginCloseCompositeD(
-	const char* name);
+EXPORT_API double PluginCloseCompositeD(const char* name);
 ```
 
 <a name="PluginCopyAnimation"></a>
@@ -1390,16 +1382,14 @@ EXPORT_API RZRESULT PluginCoreCreateMousepadEffect(
 **PluginCoreDeleteEffect**
 
 ```C++
-EXPORT_API RZRESULT PluginCoreDeleteEffect(
-	RZEFFECTID EffectId);
+EXPORT_API RZRESULT PluginCoreDeleteEffect(RZEFFECTID EffectId);
 ```
 
 <a name="PluginCoreInit"></a>
 **PluginCoreInit**
 
 ```C++
-EXPORT_API RZRESULT PluginCoreInit(
-	);
+EXPORT_API RZRESULT PluginCoreInit();
 ```
 
 <a name="PluginCoreQueryDevice"></a>
@@ -1414,16 +1404,14 @@ EXPORT_API RZRESULT PluginCoreQueryDevice(
 **PluginCoreSetEffect**
 
 ```C++
-EXPORT_API RZRESULT PluginCoreSetEffect(
-	RZEFFECTID EffectId);
+EXPORT_API RZRESULT PluginCoreSetEffect(RZEFFECTID EffectId);
 ```
 
 <a name="PluginCoreUnInit"></a>
 **PluginCoreUnInit**
 
 ```C++
-EXPORT_API RZRESULT PluginCoreUnInit(
-	);
+EXPORT_API RZRESULT PluginCoreUnInit();
 ```
 
 <a name="PluginCreateAnimation"></a>
@@ -1486,48 +1474,42 @@ EXPORT_API double PluginDuplicateFirstFrameNameD(
 **PluginDuplicateFrames**
 
 ```C++
-EXPORT_API void PluginDuplicateFrames(
-	int animationId);
+EXPORT_API void PluginDuplicateFrames(int animationId);
 ```
 
 <a name="PluginDuplicateFramesName"></a>
 **PluginDuplicateFramesName**
 
 ```C++
-EXPORT_API void PluginDuplicateFramesName(
-	const char* path);
+EXPORT_API void PluginDuplicateFramesName(const char* path);
 ```
 
 <a name="PluginDuplicateFramesNameD"></a>
 **PluginDuplicateFramesNameD**
 
 ```C++
-EXPORT_API double PluginDuplicateFramesNameD(
-	const char* path);
+EXPORT_API double PluginDuplicateFramesNameD(const char* path);
 ```
 
 <a name="PluginDuplicateMirrorFrames"></a>
 **PluginDuplicateMirrorFrames**
 
 ```C++
-EXPORT_API void PluginDuplicateMirrorFrames(
-	int animationId);
+EXPORT_API void PluginDuplicateMirrorFrames(int animationId);
 ```
 
 <a name="PluginDuplicateMirrorFramesName"></a>
 **PluginDuplicateMirrorFramesName**
 
 ```C++
-EXPORT_API void PluginDuplicateMirrorFramesName(
-	const char* path);
+EXPORT_API void PluginDuplicateMirrorFramesName(const char* path);
 ```
 
 <a name="PluginDuplicateMirrorFramesNameD"></a>
 **PluginDuplicateMirrorFramesNameD**
 
 ```C++
-EXPORT_API double PluginDuplicateMirrorFramesNameD(
-	const char* path);
+EXPORT_API double PluginDuplicateMirrorFramesNameD(const char* path);
 ```
 
 <a name="PluginFadeEndFrames"></a>
@@ -1782,24 +1764,21 @@ EXPORT_API void PluginFillRandomColors(
 **PluginFillRandomColorsAllFrames**
 
 ```C++
-EXPORT_API void PluginFillRandomColorsAllFrames(
-	int animationId);
+EXPORT_API void PluginFillRandomColorsAllFrames(int animationId);
 ```
 
 <a name="PluginFillRandomColorsAllFramesName"></a>
 **PluginFillRandomColorsAllFramesName**
 
 ```C++
-EXPORT_API void PluginFillRandomColorsAllFramesName(
-	const char* path);
+EXPORT_API void PluginFillRandomColorsAllFramesName(const char* path);
 ```
 
 <a name="PluginFillRandomColorsAllFramesNameD"></a>
 **PluginFillRandomColorsAllFramesNameD**
 
 ```C++
-EXPORT_API double PluginFillRandomColorsAllFramesNameD(
-	const char* path);
+EXPORT_API double PluginFillRandomColorsAllFramesNameD(const char* path);
 ```
 
 <a name="PluginFillRandomColorsBlackAndWhite"></a>
@@ -1814,24 +1793,21 @@ EXPORT_API void PluginFillRandomColorsBlackAndWhite(
 **PluginFillRandomColorsBlackAndWhiteAllFrames**
 
 ```C++
-EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFrames(
-	int animationId);
+EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFrames(int animationId);
 ```
 
 <a name="PluginFillRandomColorsBlackAndWhiteAllFramesName"></a>
 **PluginFillRandomColorsBlackAndWhiteAllFramesName**
 
 ```C++
-EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(
-	const char* path);
+EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(const char* path);
 ```
 
 <a name="PluginFillRandomColorsBlackAndWhiteAllFramesNameD"></a>
 **PluginFillRandomColorsBlackAndWhiteAllFramesNameD**
 
 ```C++
-EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(
-	const char* path);
+EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const char* path);
 ```
 
 <a name="PluginFillRandomColorsBlackAndWhiteName"></a>
@@ -2218,112 +2194,98 @@ EXPORT_API double PluginGet2DColorNameD(
 **PluginGetAnimation**
 
 ```C++
-EXPORT_API int PluginGetAnimation(
-	const char* name);
+EXPORT_API int PluginGetAnimation(const char* name);
 ```
 
 <a name="PluginGetAnimationCount"></a>
 **PluginGetAnimationCount**
 
 ```C++
-EXPORT_API int PluginGetAnimationCount(
-	);
+EXPORT_API int PluginGetAnimationCount();
 ```
 
 <a name="PluginGetAnimationD"></a>
 **PluginGetAnimationD**
 
 ```C++
-EXPORT_API double PluginGetAnimationD(
-	const char* name);
+EXPORT_API double PluginGetAnimationD(const char* name);
 ```
 
 <a name="PluginGetAnimationId"></a>
 **PluginGetAnimationId**
 
 ```C++
-EXPORT_API int PluginGetAnimationId(
-	int index);
+EXPORT_API int PluginGetAnimationId(int index);
 ```
 
 <a name="PluginGetAnimationName"></a>
 **PluginGetAnimationName**
 
 ```C++
-EXPORT_API const char* PluginGetAnimationName(
-	int animationId);
+EXPORT_API const char* PluginGetAnimationName(int animationId);
 ```
 
 <a name="PluginGetCurrentFrame"></a>
 **PluginGetCurrentFrame**
 
 ```C++
-EXPORT_API int PluginGetCurrentFrame(
-	int animationId);
+EXPORT_API int PluginGetCurrentFrame(int animationId);
 ```
 
 <a name="PluginGetCurrentFrameName"></a>
 **PluginGetCurrentFrameName**
 
 ```C++
-EXPORT_API int PluginGetCurrentFrameName(
-	const char* path);
+EXPORT_API int PluginGetCurrentFrameName(const char* path);
 ```
 
 <a name="PluginGetCurrentFrameNameD"></a>
 **PluginGetCurrentFrameNameD**
 
 ```C++
-EXPORT_API double PluginGetCurrentFrameNameD(
-	const char* path);
+EXPORT_API double PluginGetCurrentFrameNameD(const char* path);
 ```
 
 <a name="PluginGetDevice"></a>
 **PluginGetDevice**
 
 ```C++
-EXPORT_API int PluginGetDevice(
-	int animationId);
+EXPORT_API int PluginGetDevice(int animationId);
 ```
 
 <a name="PluginGetDeviceName"></a>
 **PluginGetDeviceName**
 
 ```C++
-EXPORT_API int PluginGetDeviceName(
-	const char* path);
+EXPORT_API int PluginGetDeviceName(const char* path);
 ```
 
 <a name="PluginGetDeviceNameD"></a>
 **PluginGetDeviceNameD**
 
 ```C++
-EXPORT_API double PluginGetDeviceNameD(
-	const char* path);
+EXPORT_API double PluginGetDeviceNameD(const char* path);
 ```
 
 <a name="PluginGetDeviceType"></a>
 **PluginGetDeviceType**
 
 ```C++
-EXPORT_API int PluginGetDeviceType(
-	int animationId);
+EXPORT_API int PluginGetDeviceType(int animationId);
 ```
 
 <a name="PluginGetDeviceTypeName"></a>
 **PluginGetDeviceTypeName**
 
 ```C++
-EXPORT_API int PluginGetDeviceTypeName(
-	const char* path);
+EXPORT_API int PluginGetDeviceTypeName(const char* path);
 ```
 
 <a name="PluginGetDeviceTypeNameD"></a>
 **PluginGetDeviceTypeNameD**
 
 ```C++
-EXPORT_API double PluginGetDeviceTypeNameD(
-	const char* path);
+EXPORT_API double PluginGetDeviceTypeNameD(const char* path);
 ```
 
 <a name="PluginGetFrame"></a>
@@ -2338,24 +2300,21 @@ EXPORT_API int PluginGetFrame(
 **PluginGetFrameCount**
 
 ```C++
-EXPORT_API int PluginGetFrameCount(
-	int animationId);
+EXPORT_API int PluginGetFrameCount(int animationId);
 ```
 
 <a name="PluginGetFrameCountName"></a>
 **PluginGetFrameCountName**
 
 ```C++
-EXPORT_API int PluginGetFrameCountName(
-	const char* path);
+EXPORT_API int PluginGetFrameCountName(const char* path);
 ```
 
 <a name="PluginGetFrameCountNameD"></a>
 **PluginGetFrameCountNameD**
 
 ```C++
-EXPORT_API double PluginGetFrameCountNameD(
-	const char* path);
+EXPORT_API double PluginGetFrameCountNameD(const char* path);
 ```
 
 <a name="PluginGetKeyColor"></a>
@@ -2386,64 +2345,56 @@ EXPORT_API int PluginGetKeyColorName(
 **PluginGetMaxColumn**
 
 ```C++
-EXPORT_API int PluginGetMaxColumn(
-	int device);
+EXPORT_API int PluginGetMaxColumn(int device);
 ```
 
 <a name="PluginGetMaxColumnD"></a>
 **PluginGetMaxColumnD**
 
 ```C++
-EXPORT_API double PluginGetMaxColumnD(
-	double device);
+EXPORT_API double PluginGetMaxColumnD(double device);
 ```
 
 <a name="PluginGetMaxLeds"></a>
 **PluginGetMaxLeds**
 
 ```C++
-EXPORT_API int PluginGetMaxLeds(
-	int device);
+EXPORT_API int PluginGetMaxLeds(int device);
 ```
 
 <a name="PluginGetMaxLedsD"></a>
 **PluginGetMaxLedsD**
 
 ```C++
-EXPORT_API double PluginGetMaxLedsD(
-	double device);
+EXPORT_API double PluginGetMaxLedsD(double device);
 ```
 
 <a name="PluginGetMaxRow"></a>
 **PluginGetMaxRow**
 
 ```C++
-EXPORT_API int PluginGetMaxRow(
-	int device);
+EXPORT_API int PluginGetMaxRow(int device);
 ```
 
 <a name="PluginGetMaxRowD"></a>
 **PluginGetMaxRowD**
 
 ```C++
-EXPORT_API double PluginGetMaxRowD(
-	double device);
+EXPORT_API double PluginGetMaxRowD(double device);
 ```
 
 <a name="PluginGetPlayingAnimationCount"></a>
 **PluginGetPlayingAnimationCount**
 
 ```C++
-EXPORT_API int PluginGetPlayingAnimationCount(
-	);
+EXPORT_API int PluginGetPlayingAnimationCount();
 ```
 
 <a name="PluginGetPlayingAnimationId"></a>
 **PluginGetPlayingAnimationId**
 
 ```C++
-EXPORT_API int PluginGetPlayingAnimationId(
-	int index);
+EXPORT_API int PluginGetPlayingAnimationId(int index);
 ```
 
 <a name="PluginGetRGB"></a>
@@ -2466,40 +2417,35 @@ EXPORT_API double PluginGetRGBD(
 **PluginHasAnimationLoop**
 
 ```C++
-EXPORT_API bool PluginHasAnimationLoop(
-	int animationId);
+EXPORT_API bool PluginHasAnimationLoop(int animationId);
 ```
 
 <a name="PluginHasAnimationLoopName"></a>
 **PluginHasAnimationLoopName**
 
 ```C++
-EXPORT_API bool PluginHasAnimationLoopName(
-	const char* path);
+EXPORT_API bool PluginHasAnimationLoopName(const char* path);
 ```
 
 <a name="PluginHasAnimationLoopNameD"></a>
 **PluginHasAnimationLoopNameD**
 
 ```C++
-EXPORT_API double PluginHasAnimationLoopNameD(
-	const char* path);
+EXPORT_API double PluginHasAnimationLoopNameD(const char* path);
 ```
 
 <a name="PluginInit"></a>
 **PluginInit**
 
 ```C++
-EXPORT_API int PluginInit(
-	);
+EXPORT_API int PluginInit();
 ```
 
 <a name="PluginInitD"></a>
 **PluginInitD**
 
 ```C++
-EXPORT_API double PluginInitD(
-	);
+EXPORT_API double PluginInitD();
 ```
 
 <a name="PluginInsertDelay"></a>
@@ -2562,24 +2508,21 @@ EXPORT_API void PluginInvertColors(
 **PluginInvertColorsAllFrames**
 
 ```C++
-EXPORT_API void PluginInvertColorsAllFrames(
-	int animationId);
+EXPORT_API void PluginInvertColorsAllFrames(int animationId);
 ```
 
 <a name="PluginInvertColorsAllFramesName"></a>
 **PluginInvertColorsAllFramesName**
 
 ```C++
-EXPORT_API void PluginInvertColorsAllFramesName(
-	const char* path);
+EXPORT_API void PluginInvertColorsAllFramesName(const char* path);
 ```
 
 <a name="PluginInvertColorsAllFramesNameD"></a>
 **PluginInvertColorsAllFramesNameD**
 
 ```C++
-EXPORT_API double PluginInvertColorsAllFramesNameD(
-	const char* path);
+EXPORT_API double PluginInvertColorsAllFramesNameD(const char* path);
 ```
 
 <a name="PluginInvertColorsName"></a>
@@ -2602,104 +2545,91 @@ EXPORT_API double PluginInvertColorsNameD(
 **PluginIsAnimationPaused**
 
 ```C++
-EXPORT_API bool PluginIsAnimationPaused(
-	int animationId);
+EXPORT_API bool PluginIsAnimationPaused(int animationId);
 ```
 
 <a name="PluginIsAnimationPausedName"></a>
 **PluginIsAnimationPausedName**
 
 ```C++
-EXPORT_API bool PluginIsAnimationPausedName(
-	const char* path);
+EXPORT_API bool PluginIsAnimationPausedName(const char* path);
 ```
 
 <a name="PluginIsAnimationPausedNameD"></a>
 **PluginIsAnimationPausedNameD**
 
 ```C++
-EXPORT_API double PluginIsAnimationPausedNameD(
-	const char* path);
+EXPORT_API double PluginIsAnimationPausedNameD(const char* path);
 ```
 
 <a name="PluginIsDialogOpen"></a>
 **PluginIsDialogOpen**
 
 ```C++
-EXPORT_API bool PluginIsDialogOpen(
-	);
+EXPORT_API bool PluginIsDialogOpen();
 ```
 
 <a name="PluginIsDialogOpenD"></a>
 **PluginIsDialogOpenD**
 
 ```C++
-EXPORT_API double PluginIsDialogOpenD(
-	);
+EXPORT_API double PluginIsDialogOpenD();
 ```
 
 <a name="PluginIsInitialized"></a>
 **PluginIsInitialized**
 
 ```C++
-EXPORT_API bool PluginIsInitialized(
-	);
+EXPORT_API bool PluginIsInitialized();
 ```
 
 <a name="PluginIsInitializedD"></a>
 **PluginIsInitializedD**
 
 ```C++
-EXPORT_API double PluginIsInitializedD(
-	);
+EXPORT_API double PluginIsInitializedD();
 ```
 
 <a name="PluginIsPlatformSupported"></a>
 **PluginIsPlatformSupported**
 
 ```C++
-EXPORT_API bool PluginIsPlatformSupported(
-	);
+EXPORT_API bool PluginIsPlatformSupported();
 ```
 
 <a name="PluginIsPlatformSupportedD"></a>
 **PluginIsPlatformSupportedD**
 
 ```C++
-EXPORT_API double PluginIsPlatformSupportedD(
-	);
+EXPORT_API double PluginIsPlatformSupportedD();
 ```
 
 <a name="PluginIsPlaying"></a>
 **PluginIsPlaying**
 
 ```C++
-EXPORT_API bool PluginIsPlaying(
-	int animationId);
+EXPORT_API bool PluginIsPlaying(int animationId);
 ```
 
 <a name="PluginIsPlayingD"></a>
 **PluginIsPlayingD**
 
 ```C++
-EXPORT_API double PluginIsPlayingD(
-	double animationId);
+EXPORT_API double PluginIsPlayingD(double animationId);
 ```
 
 <a name="PluginIsPlayingName"></a>
 **PluginIsPlayingName**
 
 ```C++
-EXPORT_API bool PluginIsPlayingName(
-	const char* path);
+EXPORT_API bool PluginIsPlayingName(const char* path);
 ```
 
 <a name="PluginIsPlayingNameD"></a>
 **PluginIsPlayingNameD**
 
 ```C++
-EXPORT_API double PluginIsPlayingNameD(
-	const char* path);
+EXPORT_API double PluginIsPlayingNameD(const char* path);
 ```
 
 <a name="PluginIsPlayingType"></a>
@@ -2738,32 +2668,28 @@ EXPORT_API int PluginLerpColor(
 **PluginLoadAnimation**
 
 ```C++
-EXPORT_API int PluginLoadAnimation(
-	int animationId);
+EXPORT_API int PluginLoadAnimation(int animationId);
 ```
 
 <a name="PluginLoadAnimationD"></a>
 **PluginLoadAnimationD**
 
 ```C++
-EXPORT_API double PluginLoadAnimationD(
-	double animationId);
+EXPORT_API double PluginLoadAnimationD(double animationId);
 ```
 
 <a name="PluginLoadAnimationName"></a>
 **PluginLoadAnimationName**
 
 ```C++
-EXPORT_API void PluginLoadAnimationName(
-	const char* path);
+EXPORT_API void PluginLoadAnimationName(const char* path);
 ```
 
 <a name="PluginLoadComposite"></a>
 **PluginLoadComposite**
 
 ```C++
-EXPORT_API void PluginLoadComposite(
-	const char* name);
+EXPORT_API void PluginLoadComposite(const char* name);
 ```
 
 <a name="PluginMakeBlankFrames"></a>
@@ -2866,16 +2792,14 @@ EXPORT_API double PluginMakeBlankFramesRGBNameD(
 **PluginMirrorHorizontally**
 
 ```C++
-EXPORT_API int PluginMirrorHorizontally(
-	int animationId);
+EXPORT_API int PluginMirrorHorizontally(int animationId);
 ```
 
 <a name="PluginMirrorVertically"></a>
 **PluginMirrorVertically**
 
 ```C++
-EXPORT_API int PluginMirrorVertically(
-	int animationId);
+EXPORT_API int PluginMirrorVertically(int animationId);
 ```
 
 <a name="PluginMultiplyColorLerpAllFrames"></a>
@@ -3260,48 +3184,42 @@ EXPORT_API double PluginOffsetNonZeroColorsNameD(
 **PluginOpenAnimation**
 
 ```C++
-EXPORT_API int PluginOpenAnimation(
-	const char* path);
+EXPORT_API int PluginOpenAnimation(const char* path);
 ```
 
 <a name="PluginOpenAnimationD"></a>
 **PluginOpenAnimationD**
 
 ```C++
-EXPORT_API double PluginOpenAnimationD(
-	const char* path);
+EXPORT_API double PluginOpenAnimationD(const char* path);
 ```
 
 <a name="PluginOpenEditorDialog"></a>
 **PluginOpenEditorDialog**
 
 ```C++
-EXPORT_API int PluginOpenEditorDialog(
-	const char* path);
+EXPORT_API int PluginOpenEditorDialog(const char* path);
 ```
 
 <a name="PluginOpenEditorDialogAndPlay"></a>
 **PluginOpenEditorDialogAndPlay**
 
 ```C++
-EXPORT_API int PluginOpenEditorDialogAndPlay(
-	const char* path);
+EXPORT_API int PluginOpenEditorDialogAndPlay(const char* path);
 ```
 
 <a name="PluginOpenEditorDialogAndPlayD"></a>
 **PluginOpenEditorDialogAndPlayD**
 
 ```C++
-EXPORT_API double PluginOpenEditorDialogAndPlayD(
-	const char* path);
+EXPORT_API double PluginOpenEditorDialogAndPlayD(const char* path);
 ```
 
 <a name="PluginOpenEditorDialogD"></a>
 **PluginOpenEditorDialogD**
 
 ```C++
-EXPORT_API double PluginOpenEditorDialogD(
-	const char* path);
+EXPORT_API double PluginOpenEditorDialogD(const char* path);
 ```
 
 <a name="PluginOverrideFrameDuration"></a>
@@ -3332,40 +3250,35 @@ EXPORT_API void PluginOverrideFrameDurationName(
 **PluginPauseAnimation**
 
 ```C++
-EXPORT_API void PluginPauseAnimation(
-	int animationId);
+EXPORT_API void PluginPauseAnimation(int animationId);
 ```
 
 <a name="PluginPauseAnimationName"></a>
 **PluginPauseAnimationName**
 
 ```C++
-EXPORT_API void PluginPauseAnimationName(
-	const char* path);
+EXPORT_API void PluginPauseAnimationName(const char* path);
 ```
 
 <a name="PluginPauseAnimationNameD"></a>
 **PluginPauseAnimationNameD**
 
 ```C++
-EXPORT_API double PluginPauseAnimationNameD(
-	const char* path);
+EXPORT_API double PluginPauseAnimationNameD(const char* path);
 ```
 
 <a name="PluginPlayAnimation"></a>
 **PluginPlayAnimation**
 
 ```C++
-EXPORT_API int PluginPlayAnimation(
-	int animationId);
+EXPORT_API int PluginPlayAnimation(int animationId);
 ```
 
 <a name="PluginPlayAnimationD"></a>
 **PluginPlayAnimationD**
 
 ```C++
-EXPORT_API double PluginPlayAnimationD(
-	double animationId);
+EXPORT_API double PluginPlayAnimationD(double animationId);
 ```
 
 <a name="PluginPlayAnimationFrame"></a>
@@ -3484,8 +3397,7 @@ EXPORT_API double PluginReduceFramesNameD(
 **PluginResetAnimation**
 
 ```C++
-EXPORT_API int PluginResetAnimation(
-	int animationId);
+EXPORT_API int PluginResetAnimation(int animationId);
 ```
 
 <a name="PluginResumeAnimation"></a>
@@ -3516,32 +3428,28 @@ EXPORT_API double PluginResumeAnimationNameD(
 **PluginReverse**
 
 ```C++
-EXPORT_API int PluginReverse(
-	int animationId);
+EXPORT_API int PluginReverse(int animationId);
 ```
 
 <a name="PluginReverseAllFrames"></a>
 **PluginReverseAllFrames**
 
 ```C++
-EXPORT_API void PluginReverseAllFrames(
-	int animationId);
+EXPORT_API void PluginReverseAllFrames(int animationId);
 ```
 
 <a name="PluginReverseAllFramesName"></a>
 **PluginReverseAllFramesName**
 
 ```C++
-EXPORT_API void PluginReverseAllFramesName(
-	const char* path);
+EXPORT_API void PluginReverseAllFramesName(const char* path);
 ```
 
 <a name="PluginReverseAllFramesNameD"></a>
 **PluginReverseAllFramesNameD**
 
 ```C++
-EXPORT_API double PluginReverseAllFramesNameD(
-	const char* path);
+EXPORT_API double PluginReverseAllFramesNameD(const char* path);
 ```
 
 <a name="PluginSaveAnimation"></a>
@@ -3612,24 +3520,21 @@ EXPORT_API double PluginSet2DColorNameD(
 **PluginSetChromaCustomColorAllFrames**
 
 ```C++
-EXPORT_API void PluginSetChromaCustomColorAllFrames(
-	int animationId);
+EXPORT_API void PluginSetChromaCustomColorAllFrames(int animationId);
 ```
 
 <a name="PluginSetChromaCustomColorAllFramesName"></a>
 **PluginSetChromaCustomColorAllFramesName**
 
 ```C++
-EXPORT_API void PluginSetChromaCustomColorAllFramesName(
-	const char* path);
+EXPORT_API void PluginSetChromaCustomColorAllFramesName(const char* path);
 ```
 
 <a name="PluginSetChromaCustomColorAllFramesNameD"></a>
 **PluginSetChromaCustomColorAllFramesNameD**
 
 ```C++
-EXPORT_API double PluginSetChromaCustomColorAllFramesNameD(
-	const char* path);
+EXPORT_API double PluginSetChromaCustomColorAllFramesNameD(const char* path);
 ```
 
 <a name="PluginSetChromaCustomFlag"></a>
@@ -4074,48 +3979,42 @@ EXPORT_API double PluginSetKeyZeroColorRGBNameD(
 **PluginSetLogDelegate**
 
 ```C++
-EXPORT_API void PluginSetLogDelegate(
-	DebugLogPtr fp);
+EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 ```
 
 <a name="PluginStopAll"></a>
 **PluginStopAll**
 
 ```C++
-EXPORT_API void PluginStopAll(
-	);
+EXPORT_API void PluginStopAll();
 ```
 
 <a name="PluginStopAnimation"></a>
 **PluginStopAnimation**
 
 ```C++
-EXPORT_API int PluginStopAnimation(
-	int animationId);
+EXPORT_API int PluginStopAnimation(int animationId);
 ```
 
 <a name="PluginStopAnimationD"></a>
 **PluginStopAnimationD**
 
 ```C++
-EXPORT_API double PluginStopAnimationD(
-	double animationId);
+EXPORT_API double PluginStopAnimationD(double animationId);
 ```
 
 <a name="PluginStopAnimationName"></a>
 **PluginStopAnimationName**
 
 ```C++
-EXPORT_API void PluginStopAnimationName(
-	const char* path);
+EXPORT_API void PluginStopAnimationName(const char* path);
 ```
 
 <a name="PluginStopAnimationNameD"></a>
 **PluginStopAnimationNameD**
 
 ```C++
-EXPORT_API double PluginStopAnimationNameD(
-	const char* path);
+EXPORT_API double PluginStopAnimationNameD(const char* path);
 ```
 
 <a name="PluginStopAnimationType"></a>
@@ -4138,16 +4037,14 @@ EXPORT_API double PluginStopAnimationTypeD(
 **PluginStopComposite**
 
 ```C++
-EXPORT_API void PluginStopComposite(
-	const char* name);
+EXPORT_API void PluginStopComposite(const char* name);
 ```
 
 <a name="PluginStopCompositeD"></a>
 **PluginStopCompositeD**
 
 ```C++
-EXPORT_API double PluginStopCompositeD(
-	const char* name);
+EXPORT_API double PluginStopCompositeD(const char* name);
 ```
 
 <a name="PluginSubtractNonZeroAllKeysAllFrames"></a>
@@ -4370,48 +4267,42 @@ EXPORT_API double PluginTrimStartFramesNameD(
 **PluginUninit**
 
 ```C++
-EXPORT_API int PluginUninit(
-	);
+EXPORT_API int PluginUninit();
 ```
 
 <a name="PluginUninitD"></a>
 **PluginUninitD**
 
 ```C++
-EXPORT_API double PluginUninitD(
-	);
+EXPORT_API double PluginUninitD();
 ```
 
 <a name="PluginUnloadAnimation"></a>
 **PluginUnloadAnimation**
 
 ```C++
-EXPORT_API int PluginUnloadAnimation(
-	int animationId);
+EXPORT_API int PluginUnloadAnimation(int animationId);
 ```
 
 <a name="PluginUnloadAnimationD"></a>
 **PluginUnloadAnimationD**
 
 ```C++
-EXPORT_API double PluginUnloadAnimationD(
-	double animationId);
+EXPORT_API double PluginUnloadAnimationD(double animationId);
 ```
 
 <a name="PluginUnloadAnimationName"></a>
 **PluginUnloadAnimationName**
 
 ```C++
-EXPORT_API void PluginUnloadAnimationName(
-	const char* path);
+EXPORT_API void PluginUnloadAnimationName(const char* path);
 ```
 
 <a name="PluginUnloadComposite"></a>
 **PluginUnloadComposite**
 
 ```C++
-EXPORT_API void PluginUnloadComposite(
-	const char* name);
+EXPORT_API void PluginUnloadComposite(const char* name);
 ```
 
 <a name="PluginUpdateFrame"></a>
