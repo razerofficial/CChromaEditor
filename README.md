@@ -679,7 +679,8 @@ EXPORT_API void PluginAddNonZeroAllKeysOffsetName(
 
 ```C++
 EXPORT_API double PluginAddNonZeroAllKeysOffsetNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 <a name="PluginAddNonZeroTargetAllKeysAllFrames"></a>
@@ -751,7 +752,8 @@ EXPORT_API void PluginAddNonZeroTargetAllKeysOffsetName(
 
 ```C++
 EXPORT_API double PluginAddNonZeroTargetAllKeysOffsetNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 <a name="PluginAppendAllFrames"></a>
@@ -983,7 +985,8 @@ EXPORT_API void PluginCopyKeyColorName(
 
 ```C++
 EXPORT_API double PluginCopyKeyColorNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
 ```
 
 <a name="PluginCopyNonZeroAllKeys"></a>
@@ -1079,7 +1082,8 @@ EXPORT_API void PluginCopyNonZeroAllKeysOffsetName(
 
 ```C++
 EXPORT_API double PluginCopyNonZeroAllKeysOffsetNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 <a name="PluginCopyNonZeroKeyColor"></a>
@@ -1103,7 +1107,8 @@ EXPORT_API void PluginCopyNonZeroKeyColorName(
 
 ```C++
 EXPORT_API double PluginCopyNonZeroKeyColorNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
 ```
 
 <a name="PluginCopyNonZeroTargetAllKeys"></a>
@@ -1199,7 +1204,8 @@ EXPORT_API void PluginCopyNonZeroTargetAllKeysOffsetName(
 
 ```C++
 EXPORT_API double PluginCopyNonZeroTargetAllKeysOffsetNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 <a name="PluginCopyRedChannelAllFrames"></a>
@@ -1295,7 +1301,8 @@ EXPORT_API void PluginCopyZeroKeyColorName(
 
 ```C++
 EXPORT_API double PluginCopyZeroKeyColorNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
 ```
 
 <a name="PluginCopyZeroTargetAllKeysAllFrames"></a>
@@ -1435,7 +1442,8 @@ EXPORT_API int PluginCreateAnimationInMemory(
 
 ```C++
 EXPORT_API RZRESULT PluginCreateEffect(
-	RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectId);
+	RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size,
+	ChromaSDK::FChromaSDKGuid* effectId);
 ```
 
 <a name="PluginDeleteEffect"></a>
@@ -1903,8 +1911,8 @@ EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(
 
 ```C++
 EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGB(
-	int animationId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold,
-	int maxRed, int maxGreen, int maxBlue);
+	int animationId, int minThreshold, int minRed, int minGreen, int minBlue,
+	int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 ```
 
 <a name="PluginFillThresholdColorsMinMaxAllFramesRGBName"></a>
@@ -1912,8 +1920,8 @@ EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGB(
 
 ```C++
 EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGBName(
-	const char* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold,
-	int maxRed, int maxGreen, int maxBlue);
+	const char* path, int minThreshold, int minRed, int minGreen, int minBlue,
+	int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 ```
 
 <a name="PluginFillThresholdColorsMinMaxAllFramesRGBNameD"></a>
@@ -1930,8 +1938,8 @@ EXPORT_API double PluginFillThresholdColorsMinMaxAllFramesRGBNameD(
 
 ```C++
 EXPORT_API void PluginFillThresholdColorsMinMaxRGB(
-	int animationId, int frameId, int minThreshold, int minRed, int minGreen, int minBlue,
-	int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	int animationId, int frameId, int minThreshold, int minRed, int minGreen,
+	int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 ```
 
 <a name="PluginFillThresholdColorsMinMaxRGBName"></a>
@@ -1939,8 +1947,8 @@ EXPORT_API void PluginFillThresholdColorsMinMaxRGB(
 
 ```C++
 EXPORT_API void PluginFillThresholdColorsMinMaxRGBName(
-	const char* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue,
-	int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	const char* path, int frameId, int minThreshold, int minRed, int minGreen,
+	int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 ```
 
 <a name="PluginFillThresholdColorsMinMaxRGBNameD"></a>
@@ -1989,7 +1997,8 @@ EXPORT_API void PluginFillThresholdColorsRGBName(
 
 ```C++
 EXPORT_API double PluginFillThresholdColorsRGBNameD(
-	const char* path, double frameId, double threshold, double red, double green, double blue);
+	const char* path, double frameId, double threshold, double red, double green,
+	double blue);
 ```
 
 <a name="PluginFillThresholdRGBColorsAllFramesRGB"></a>
@@ -1997,8 +2006,8 @@ EXPORT_API double PluginFillThresholdColorsRGBNameD(
 
 ```C++
 EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGB(
-	int animationId, int redThreshold, int greenThreshold, int blueThreshold, int red,
-	int green, int blue);
+	int animationId, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 ```
 
 <a name="PluginFillThresholdRGBColorsAllFramesRGBName"></a>
@@ -2006,8 +2015,8 @@ EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGB(
 
 ```C++
 EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGBName(
-	const char* path, int redThreshold, int greenThreshold, int blueThreshold, int red,
-	int green, int blue);
+	const char* path, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 ```
 
 <a name="PluginFillThresholdRGBColorsAllFramesRGBNameD"></a>
@@ -2042,8 +2051,8 @@ EXPORT_API void PluginFillThresholdRGBColorsRGBName(
 
 ```C++
 EXPORT_API double PluginFillThresholdRGBColorsRGBNameD(
-	const char* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold,
-	double red, double green, double blue);
+	const char* path, double frameId, double redThreshold, double greenThreshold,
+	double blueThreshold, double red, double green, double blue);
 ```
 
 <a name="PluginFillZeroColor"></a>
@@ -2785,7 +2794,8 @@ EXPORT_API void PluginMakeBlankFramesRGBName(
 
 ```C++
 EXPORT_API double PluginMakeBlankFramesRGBNameD(
-	const char* path, double frameCount, double duration, double red, double green, double blue);
+	const char* path, double frameCount, double duration, double red, double green,
+	double blue);
 ```
 
 <a name="PluginMirrorHorizontally"></a>
@@ -3015,7 +3025,8 @@ EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGB(
 
 ```C++
 EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(
-	const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	const char* path, int red1, int green1, int blue1, int red2, int green2,
+	int blue2);
 ```
 
 <a name="PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD"></a>
@@ -3023,8 +3034,8 @@ EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(
 
 ```C++
 EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD(
-	const char* path, double red1, double green1, double blue1, double red2, double green2,
-	double blue2);
+	const char* path, double red1, double green1, double blue1, double red2,
+	double green2, double blue2);
 ```
 
 <a name="PluginMultiplyTargetColorLerp"></a>
@@ -3072,7 +3083,8 @@ EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGB(
 
 ```C++
 EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(
-	const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	const char* path, int red1, int green1, int blue1, int red2, int green2,
+	int blue2);
 ```
 
 <a name="PluginMultiplyTargetColorLerpAllFramesRGBNameD"></a>
@@ -3080,8 +3092,8 @@ EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(
 
 ```C++
 EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(
-	const char* path, double red1, double green1, double blue1, double red2, double green2,
-	double blue2);
+	const char* path, double red1, double green1, double blue1, double red2,
+	double green2, double blue2);
 ```
 
 <a name="PluginOffsetColors"></a>
@@ -3694,7 +3706,8 @@ EXPORT_API void PluginSetKeyColorRGBName(
 
 ```C++
 EXPORT_API double PluginSetKeyColorRGBNameD(
-	const char* path, double frameId, double rzkey, double red, double green, double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 ```
 
 <a name="PluginSetKeyNonZeroColor"></a>
@@ -3742,7 +3755,8 @@ EXPORT_API void PluginSetKeyNonZeroColorRGBName(
 
 ```C++
 EXPORT_API double PluginSetKeyNonZeroColorRGBNameD(
-	const char* path, double frameId, double rzkey, double red, double green, double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 ```
 
 <a name="PluginSetKeysColor"></a>
@@ -3807,8 +3821,8 @@ EXPORT_API void PluginSetKeysColorRGB(
 
 ```C++
 EXPORT_API void PluginSetKeysColorRGBName(
-	const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green,
-	int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 ```
 
 <a name="PluginSetKeysNonZeroColor"></a>
@@ -3857,8 +3871,8 @@ EXPORT_API void PluginSetKeysNonZeroColorRGB(
 
 ```C++
 EXPORT_API void PluginSetKeysNonZeroColorRGBName(
-	const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green,
-	int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 ```
 
 <a name="PluginSetKeysZeroColor"></a>
@@ -3923,8 +3937,8 @@ EXPORT_API void PluginSetKeysZeroColorRGB(
 
 ```C++
 EXPORT_API void PluginSetKeysZeroColorRGBName(
-	const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green,
-	int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 ```
 
 <a name="PluginSetKeyZeroColor"></a>
@@ -3972,7 +3986,8 @@ EXPORT_API void PluginSetKeyZeroColorRGBName(
 
 ```C++
 EXPORT_API double PluginSetKeyZeroColorRGBNameD(
-	const char* path, double frameId, double rzkey, double red, double green, double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 ```
 
 <a name="PluginSetLogDelegate"></a>
@@ -4116,7 +4131,8 @@ EXPORT_API void PluginSubtractNonZeroAllKeysOffsetName(
 
 ```C++
 EXPORT_API double PluginSubtractNonZeroAllKeysOffsetNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 <a name="PluginSubtractNonZeroTargetAllKeysAllFrames"></a>
@@ -4188,7 +4204,8 @@ EXPORT_API void PluginSubtractNonZeroTargetAllKeysOffsetName(
 
 ```C++
 EXPORT_API double PluginSubtractNonZeroTargetAllKeysOffsetNameD(
-	const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 <a name="PluginTrimEndFrames"></a>
