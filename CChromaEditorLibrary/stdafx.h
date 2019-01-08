@@ -400,9 +400,22 @@ extern "C"
 	*/
 	EXPORT_API RZRESULT PluginCoreUnInit();
 	/*
+		Creates a `Chroma` animation at the given path. The `deviceType` parameter
+		uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses
+		`EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective
+		to the `deviceType`. Returns the animation id upon success. Returns -1
+		upon failure. Saves a `Chroma` animation file with the `.chroma` extension
+		at the given path. Returns the animation id upon success. Returns -1 upon
+		failure.
 	*/
 	EXPORT_API int PluginCreateAnimation(const char* path, int deviceType, int device);
 	/*
+		Creates a `Chroma` animation in memory without creating a file. The `deviceType`
+		parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter
+		uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer,
+		respective to the `deviceType`. Returns the animation id upon success.
+		Returns -1 upon failure. Returns the animation id upon success. Returns
+		-1 upon failure.
 	*/
 	EXPORT_API int PluginCreateAnimationInMemory(int deviceType, int device);
 	/*
@@ -457,18 +470,23 @@ extern "C"
 	*/
 	EXPORT_API double PluginFadeStartFramesNameD(const char* path, double fade);
 	/*
+		Set the RGB value for all colors in the specified frame. Use the range of
+		0 to 255 for red, green, and blue parameters.
 	*/
 	EXPORT_API void PluginFillColor(int animationId, int frameId, int color);
 	/*
 	*/
 	EXPORT_API void PluginFillColorAllFrames(int animationId, int color);
 	/*
+		Set the RGB value for all colors for all frames.
 	*/
 	EXPORT_API void PluginFillColorAllFramesName(const char* path, int color);
 	/*
 	*/
 	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double color);
 	/*
+		Set the RGB value for all colors for all frames. Use the range of 0 to 255
+		for red, green, and blue parameters.
 	*/
 	EXPORT_API void PluginFillColorAllFramesRGB(int animationId, int red, int green, int blue);
 	/*
@@ -478,12 +496,16 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 	/*
+		Set the RGB value for all colors in the specified frame. Use a BGR integer
+		for the color parameter. 0xFF0000 (blue) 0x00FF00 (green) 0x0000FF (red)
 	*/
 	EXPORT_API void PluginFillColorName(const char* path, int frameId, int color);
 	/*
 	*/
 	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double color);
 	/*
+		Set the RGB value for all colors in the specified frame. Use the range of
+		0 to 255 for red, green, and blue parameters.
 	*/
 	EXPORT_API void PluginFillColorRGB(int animationId, int frameId, int red, int green, int blue);
 	/*
@@ -493,18 +515,28 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Set the RGB value for a subset of colors in the specified
+		frame.
 	*/
 	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int color);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Set the RGB value for a subset of colors for all frames.
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFrames(int animationId, int color);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Set the RGB value for a subset of colors for all frames.
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int color);
 	/*
 	*/
 	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const char* path, double color);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Set the RGB value for a subset of colors for all frames.
+		Use the range of 0 to 255 for red, green, and blue parameters.
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFramesRGB(int animationId, int red, int green, int blue);
 	/*
@@ -514,12 +546,18 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillNonZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Set the RGB value for a subset of colors in the specified
+		frame.
 	*/
 	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int color);
 	/*
 	*/
 	EXPORT_API double PluginFillNonZeroColorNameD(const char* path, double frameId, double color);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Set the RGB value for a subset of colors in the specified
+		frame. Use the range of 0 to 255 for red, green, and blue parameters.
 	*/
 	EXPORT_API void PluginFillNonZeroColorRGB(int animationId, int frameId, int red, int green, int blue);
 	/*
@@ -758,6 +796,12 @@ extern "C"
 	*/
 	EXPORT_API double PluginGetDeviceTypeNameD(const char* path);
 	/*
+		Gets the frame colors and duration (in seconds) for a `Chroma` animation.
+		The `color` is expected to be an array of the expected dimensions for the
+		`deviceType/device`. The `length` parameter is the size of the `color`
+		array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`.
+		For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX
+		COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
 	*/
 	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length);
 	/*
@@ -995,9 +1039,14 @@ extern "C"
 	*/
 	EXPORT_API double PluginMakeBlankFramesRGBNameD(const char* path, double frameCount, double duration, double red, double green, double blue);
 	/*
+		Flips the color grid horizontally for all `Chroma` animation frames. Returns
+		the animation id upon success. Returns -1 upon failure.
 	*/
 	EXPORT_API int PluginMirrorHorizontally(int animationId);
 	/*
+		Flips the color grid vertically for all `Chroma` animation frames. This
+		method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the
+		animation id upon success. Returns -1 upon failure.
 	*/
 	EXPORT_API int PluginMirrorVertically(int animationId);
 	/*
@@ -1010,12 +1059,24 @@ extern "C"
 	*/
 	EXPORT_API double PluginMultiplyColorLerpAllFramesNameD(const char* path, double color1, double color2);
 	/*
+		Multiply all the colors in the frame by the intensity value. The valid the
+		intensity range is from 0.0 to 255.0. RGB components are multiplied equally.
+		An intensity of 0.5 would half the color value. Black colors in the frame
+		will not be affected by this method.
 	*/
 	EXPORT_API void PluginMultiplyIntensity(int animationId, int frameId, float intensity);
 	/*
+		Multiply all the colors for all frames by the intensity value. The valid
+		the intensity range is from 0.0 to 255.0. RGB components are multiplied
+		equally. An intensity of 0.5 would half the color value. Black colors in
+		the frame will not be affected by this method.
 	*/
 	EXPORT_API void PluginMultiplyIntensityAllFrames(int animationId, float intensity);
 	/*
+		Multiply all the colors for all frames by the intensity value. The valid
+		the intensity range is from 0.0 to 255.0. RGB components are multiplied
+		equally. An intensity of 0.5 would half the color value. Black colors in
+		the frame will not be affected by this method.
 	*/
 	EXPORT_API void PluginMultiplyIntensityAllFramesName(const char* path, float intensity);
 	/*
@@ -1049,6 +1110,10 @@ extern "C"
 	*/
 	EXPORT_API double PluginMultiplyIntensityColorNameD(const char* path, double frameId, double color);
 	/*
+		Multiply all the colors in the frame by the intensity value. The valid the
+		intensity range is from 0.0 to 255.0. RGB components are multiplied equally.
+		An intensity of 0.5 would half the color value. Black colors in the frame
+		will not be affected by this method.
 	*/
 	EXPORT_API void PluginMultiplyIntensityName(const char* path, int frameId, float intensity);
 	/*
@@ -1106,36 +1171,64 @@ extern "C"
 	*/
 	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 	/*
+		Offset all colors in the frame using the RGB offset. Use the range of -255
+		to 255 for red, green, and blue parameters. Negative values remove color.
+		Positive values add color.
 	*/
 	EXPORT_API void PluginOffsetColors(int animationId, int frameId, int red, int green, int blue);
 	/*
+		Offset all colors for all frames using the RGB offset. Use the range of
+		-255 to 255 for red, green, and blue parameters. Negative values remove
+		color. Positive values add color.
 	*/
 	EXPORT_API void PluginOffsetColorsAllFrames(int animationId, int red, int green, int blue);
 	/*
+		Offset all colors for all frames using the RGB offset. Use the range of
+		-255 to 255 for red, green, and blue parameters. Negative values remove
+		color. Positive values add color.
 	*/
 	EXPORT_API void PluginOffsetColorsAllFramesName(const char* path, int red, int green, int blue);
 	/*
 	*/
 	EXPORT_API double PluginOffsetColorsAllFramesNameD(const char* path, double red, double green, double blue);
 	/*
+		Offset all colors in the frame using the RGB offset. Use the range of -255
+		to 255 for red, green, and blue parameters. Negative values remove color.
+		Positive values add color.
 	*/
 	EXPORT_API void PluginOffsetColorsName(const char* path, int frameId, int red, int green, int blue);
 	/*
 	*/
 	EXPORT_API double PluginOffsetColorsNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Offset a subset of colors in the frame using the RGB offset.
+		Use the range of -255 to 255 for red, green, and blue parameters. Negative
+		values remove color. Positive values add color.
 	*/
 	EXPORT_API void PluginOffsetNonZeroColors(int animationId, int frameId, int red, int green, int blue);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Offset a subset of colors for all frames using the RGB offset.
+		Use the range of -255 to 255 for red, green, and blue parameters. Negative
+		values remove color. Positive values add color.
 	*/
 	EXPORT_API void PluginOffsetNonZeroColorsAllFrames(int animationId, int red, int green, int blue);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Offset a subset of colors for all frames using the RGB offset.
+		Use the range of -255 to 255 for red, green, and blue parameters. Negative
+		values remove color. Positive values add color.
 	*/
 	EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(const char* path, int red, int green, int blue);
 	/*
 	*/
 	EXPORT_API double PluginOffsetNonZeroColorsAllFramesNameD(const char* path, double red, double green, double blue);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Offset a subset of colors in the frame using the RGB offset.
+		Use the range of -255 to 255 for red, green, and blue parameters. Negative
+		values remove color. Positive values add color.
 	*/
 	EXPORT_API void PluginOffsetNonZeroColorsName(const char* path, int frameId, int red, int green, int blue);
 	/*
@@ -1165,6 +1258,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginOpenEditorDialogD(const char* path);
 	/*
+		Sets the `duration` for all grames in the `Chroma` animation to the `duration`
+		parameter. Returns the animation id upon success. Returns -1 upon failure.
 	*/
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration);
 	/*
@@ -1232,6 +1327,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginPlayCompositeD(const char* name, double loop);
 	/*
+		Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`.
+		Returns the animation id upon success. Returns -1 upon failure.
 	*/
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
 	/*
@@ -1250,6 +1347,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginReduceFramesNameD(const char* path, double n);
 	/*
+		Resets the `Chroma` animation to 1 blank frame. Returns the animation id
+		upon success. Returns -1 upon failure.
 	*/
 	EXPORT_API int PluginResetAnimation(int animationId);
 	/*
@@ -1264,6 +1363,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginResumeAnimationNameD(const char* path, double loop);
 	/*
+		Reverse the animation frame order of the `Chroma` animation. Returns the
+		animation id upon success. Returns -1 upon failure.
 	*/
 	EXPORT_API int PluginReverse(int animationId);
 	/*
@@ -1334,6 +1435,9 @@ extern "C"
 	*/
 	EXPORT_API double PluginSetCurrentFrameNameD(const char* path, double frameId);
 	/*
+		Changes the `deviceType` and `device` of a `Chroma` animation. If the device
+		is changed, the `Chroma` animation will be reset with 1 blank frame. Returns
+		the animation id upon success. Returns -1 upon failure.
 	*/
 	EXPORT_API int PluginSetDevice(int animationId, int deviceType, int device);
 	/*
@@ -1637,8 +1741,16 @@ extern "C"
 	*/
 	EXPORT_API void PluginUnloadComposite(const char* name);
 	/*
+		Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
+		(in seconds). The `color` is expected to be an array of the dimensions
+		for the `deviceType/device`. The `length` parameter is the size of the
+		`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
+		LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
+		* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
+		failure.
 	*/
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 #pragma endregion
+
 	
 }
