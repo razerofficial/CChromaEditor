@@ -605,6 +605,13 @@ Methods:
 <a name="PluginAddFrame"></a>
 **PluginAddFrame**
 
+Adds a frame to the `Chroma` animation and sets the `duration` (in seconds).
+The `color` is expected to be an array of the dimensions for the `deviceType/device`.
+The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum`
+the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array
+size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon
+success. Returns -1 upon failure.
+
 ```C++
 EXPORT_API int PluginAddFrame(
 	int animationId, float duration, int* colors, int length);
@@ -783,12 +790,16 @@ EXPORT_API double PluginAppendAllFramesNameD(
 <a name="PluginClearAll"></a>
 **PluginClearAll**
 
+`PluginClearAll` will issue a `CLEAR` effect for all devices.
+
 ```C++
 EXPORT_API void PluginClearAll();
 ```
 
 <a name="PluginClearAnimationType"></a>
 **PluginClearAnimationType**
+
+`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
 
 ```C++
 EXPORT_API void PluginClearAnimationType(
@@ -798,12 +809,20 @@ EXPORT_API void PluginClearAnimationType(
 <a name="PluginCloseAll"></a>
 **PluginCloseAll**
 
+`PluginCloseAll` closes all open animations so they can be reloaded from
+disk. The set of animations will be stopped if playing.
+
 ```C++
 EXPORT_API void PluginCloseAll();
 ```
 
 <a name="PluginCloseAnimation"></a>
 **PluginCloseAnimation**
+
+Closes the `Chroma` animation to free up resources referenced by id. Returns
+the animation id upon success. Returns -1 upon failure. This might be used
+while authoring effects if there was a change necessitating re-opening
+the animation. The animation id can no longer be used once closed.
 
 ```C++
 EXPORT_API int PluginCloseAnimation(int animationId);
@@ -819,6 +838,9 @@ EXPORT_API double PluginCloseAnimationD(double animationId);
 <a name="PluginCloseAnimationName"></a>
 **PluginCloseAnimationName**
 
+Closes the `Chroma` animation referenced by name so that the animation can
+be reloaded from disk.
+
 ```C++
 EXPORT_API void PluginCloseAnimationName(const char* path);
 ```
@@ -832,6 +854,9 @@ EXPORT_API double PluginCloseAnimationNameD(const char* path);
 
 <a name="PluginCloseComposite"></a>
 **PluginCloseComposite**
+
+`PluginCloseComposite` closes a set of animations so they can be reloaded
+from disk. The set of animations will be stopped if playing.
 
 ```C++
 EXPORT_API void PluginCloseComposite(const char* name);
@@ -919,6 +944,9 @@ EXPORT_API double PluginCopyGreenChannelAllFramesNameD(
 <a name="PluginCopyKeyColor"></a>
 **PluginCopyKeyColor**
 
+Copy animation key color from the source animation to the target animation
+for the given frame.
+
 ```C++
 EXPORT_API void PluginCopyKeyColor(
 	int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
@@ -975,6 +1003,9 @@ EXPORT_API double PluginCopyKeyColorAllFramesOffsetNameD(
 <a name="PluginCopyKeyColorName"></a>
 **PluginCopyKeyColorName**
 
+Copy animation key color from the source animation to the target animation
+for the given frame.
+
 ```C++
 EXPORT_API void PluginCopyKeyColorName(
 	const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
@@ -1000,6 +1031,9 @@ EXPORT_API void PluginCopyNonZeroAllKeys(
 <a name="PluginCopyNonZeroAllKeysAllFrames"></a>
 **PluginCopyNonZeroAllKeysAllFrames**
 
+Copy nonzero colors from a source animation to a target animation for all
+keys.
+
 ```C++
 EXPORT_API void PluginCopyNonZeroAllKeysAllFrames(
 	int sourceAnimationId, int targetAnimationId);
@@ -1007,6 +1041,9 @@ EXPORT_API void PluginCopyNonZeroAllKeysAllFrames(
 
 <a name="PluginCopyNonZeroAllKeysAllFramesName"></a>
 **PluginCopyNonZeroAllKeysAllFramesName**
+
+Copy nonzero colors from a source animation to a target animation for all
+keys.
 
 ```C++
 EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(
@@ -1089,6 +1126,9 @@ EXPORT_API double PluginCopyNonZeroAllKeysOffsetNameD(
 <a name="PluginCopyNonZeroKeyColor"></a>
 **PluginCopyNonZeroKeyColor**
 
+Copy animation key color from the source animation to the target animation
+for the given frame where color is not zero.
+
 ```C++
 EXPORT_API void PluginCopyNonZeroKeyColor(
 	int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
@@ -1096,6 +1136,9 @@ EXPORT_API void PluginCopyNonZeroKeyColor(
 
 <a name="PluginCopyNonZeroKeyColorName"></a>
 **PluginCopyNonZeroKeyColorName**
+
+Copy animation key color from the source animation to the target animation
+for the given frame where color is not zero.
 
 ```C++
 EXPORT_API void PluginCopyNonZeroKeyColorName(
@@ -2162,6 +2205,9 @@ EXPORT_API int PluginGet1DColor(
 <a name="PluginGet1DColorName"></a>
 **PluginGet1DColorName**
 
+Get the animation color for a frame given the `1D` `led`. The `led` should
+be greater than or equal to 0 and less than the `MaxLeds`.
+
 ```C++
 EXPORT_API int PluginGet1DColorName(
 	const char* path, int frameId, int led);
@@ -2186,6 +2232,10 @@ EXPORT_API int PluginGet2DColor(
 <a name="PluginGet2DColorName"></a>
 **PluginGet2DColorName**
 
+Get the animation color for a frame given the `2D` `row` and `column`. The
+`row` should be greater than or equal to 0 and less than the `MaxRow`.
+The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
+
 ```C++
 EXPORT_API int PluginGet2DColorName(
 	const char* path, int frameId, int row, int column);
@@ -2209,6 +2259,8 @@ EXPORT_API int PluginGetAnimation(const char* name);
 <a name="PluginGetAnimationCount"></a>
 **PluginGetAnimationCount**
 
+`PluginGetAnimationCount` will return the number of loaded animations.
+
 ```C++
 EXPORT_API int PluginGetAnimationCount();
 ```
@@ -2223,12 +2275,21 @@ EXPORT_API double PluginGetAnimationD(const char* name);
 <a name="PluginGetAnimationId"></a>
 **PluginGetAnimationId**
 
+`PluginGetAnimationId` will return the `animationId` given the `index` of
+the loaded animation. The `index` is zero-based and less than the number
+returned by `PluginGetAnimationCount`. Use `PluginGetAnimationName` to
+get the name of the animation.
+
 ```C++
 EXPORT_API int PluginGetAnimationId(int index);
 ```
 
 <a name="PluginGetAnimationName"></a>
 **PluginGetAnimationName**
+
+`PluginGetAnimationName` takes an `animationId` and returns the name of
+the animation of the `.chroma` animation file. If a name is not available
+then an empty string will be returned.
 
 ```C++
 EXPORT_API const char* PluginGetAnimationName(int animationId);
@@ -2237,12 +2298,16 @@ EXPORT_API const char* PluginGetAnimationName(int animationId);
 <a name="PluginGetCurrentFrame"></a>
 **PluginGetCurrentFrame**
 
+Get the current frame of the animation referenced by id.
+
 ```C++
 EXPORT_API int PluginGetCurrentFrame(int animationId);
 ```
 
 <a name="PluginGetCurrentFrameName"></a>
 **PluginGetCurrentFrameName**
+
+Get the current frame of the animation referenced by name.
 
 ```C++
 EXPORT_API int PluginGetCurrentFrameName(const char* path);
@@ -2258,12 +2323,20 @@ EXPORT_API double PluginGetCurrentFrameNameD(const char* path);
 <a name="PluginGetDevice"></a>
 **PluginGetDevice**
 
+Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma`
+animation respective to the `deviceType`, as an integer upon success. Returns
+-1 upon failure.
+
 ```C++
 EXPORT_API int PluginGetDevice(int animationId);
 ```
 
 <a name="PluginGetDeviceName"></a>
 **PluginGetDeviceName**
+
+Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma`
+animation respective to the `deviceType`, as an integer upon success. Returns
+-1 upon failure.
 
 ```C++
 EXPORT_API int PluginGetDeviceName(const char* path);
@@ -2279,12 +2352,18 @@ EXPORT_API double PluginGetDeviceNameD(const char* path);
 <a name="PluginGetDeviceType"></a>
 **PluginGetDeviceType**
 
+Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer
+upon success. Returns -1 upon failure.
+
 ```C++
 EXPORT_API int PluginGetDeviceType(int animationId);
 ```
 
 <a name="PluginGetDeviceTypeName"></a>
 **PluginGetDeviceTypeName**
+
+Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer
+upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginGetDeviceTypeName(const char* path);
@@ -2308,12 +2387,18 @@ EXPORT_API int PluginGetFrame(
 <a name="PluginGetFrameCount"></a>
 **PluginGetFrameCount**
 
+Returns the frame count of a `Chroma` animation upon success. Returns -1
+upon failure.
+
 ```C++
 EXPORT_API int PluginGetFrameCount(int animationId);
 ```
 
 <a name="PluginGetFrameCountName"></a>
 **PluginGetFrameCountName**
+
+Returns the frame count of a `Chroma` animation upon success. Returns -1
+upon failure.
 
 ```C++
 EXPORT_API int PluginGetFrameCountName(const char* path);
@@ -2328,6 +2413,8 @@ EXPORT_API double PluginGetFrameCountNameD(const char* path);
 
 <a name="PluginGetKeyColor"></a>
 **PluginGetKeyColor**
+
+Get the color of an animation key for the given frame referenced by id.
 
 ```C++
 EXPORT_API int PluginGetKeyColor(
@@ -2345,6 +2432,8 @@ EXPORT_API double PluginGetKeyColorD(
 <a name="PluginGetKeyColorName"></a>
 **PluginGetKeyColorName**
 
+Get the color of an animation key for the given frame referenced by name.
+
 ```C++
 EXPORT_API int PluginGetKeyColorName(
 	const char* path, int frameId, int rzkey);
@@ -2352,6 +2441,9 @@ EXPORT_API int PluginGetKeyColorName(
 
 <a name="PluginGetMaxColumn"></a>
 **PluginGetMaxColumn**
+
+Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an
+integer upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginGetMaxColumn(int device);
@@ -2367,6 +2459,9 @@ EXPORT_API double PluginGetMaxColumnD(double device);
 <a name="PluginGetMaxLeds"></a>
 **PluginGetMaxLeds**
 
+Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer
+upon success. Returns -1 upon failure.
+
 ```C++
 EXPORT_API int PluginGetMaxLeds(int device);
 ```
@@ -2380,6 +2475,9 @@ EXPORT_API double PluginGetMaxLedsD(double device);
 
 <a name="PluginGetMaxRow"></a>
 **PluginGetMaxRow**
+
+Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer
+upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginGetMaxRow(int device);
@@ -2395,6 +2493,8 @@ EXPORT_API double PluginGetMaxRowD(double device);
 <a name="PluginGetPlayingAnimationCount"></a>
 **PluginGetPlayingAnimationCount**
 
+`PluginGetPlayingAnimationCount` will return the number of playing animations.
+
 ```C++
 EXPORT_API int PluginGetPlayingAnimationCount();
 ```
@@ -2408,6 +2508,11 @@ EXPORT_API int PluginGetPlayingAnimationId(int index);
 
 <a name="PluginGetRGB"></a>
 **PluginGetRGB**
+
+`PluginGetPlayingAnimationId` will return the `animationId` given the `index`
+of the playing animation. The `index` is zero-based and less than the number
+returned by `PluginGetPlayingAnimationCount`. Use `PluginGetAnimationName`
+to get the name of the animation.
 
 ```C++
 EXPORT_API int PluginGetRGB(
@@ -2425,12 +2530,16 @@ EXPORT_API double PluginGetRGBD(
 <a name="PluginHasAnimationLoop"></a>
 **PluginHasAnimationLoop**
 
+Check if the animation has loop enabled referenced by id.
+
 ```C++
 EXPORT_API bool PluginHasAnimationLoop(int animationId);
 ```
 
 <a name="PluginHasAnimationLoopName"></a>
 **PluginHasAnimationLoopName**
+
+Check if the animation has loop enabled referenced by name.
 
 ```C++
 EXPORT_API bool PluginHasAnimationLoopName(const char* path);
@@ -2445,6 +2554,9 @@ EXPORT_API double PluginHasAnimationLoopNameD(const char* path);
 
 <a name="PluginInit"></a>
 **PluginInit**
+
+Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many
+API methods auto initialize the ChromaSDK if not already initialized.
 
 ```C++
 EXPORT_API int PluginInit();
@@ -2553,12 +2665,16 @@ EXPORT_API double PluginInvertColorsNameD(
 <a name="PluginIsAnimationPaused"></a>
 **PluginIsAnimationPaused**
 
+Check if the animation is paused referenced by id.
+
 ```C++
 EXPORT_API bool PluginIsAnimationPaused(int animationId);
 ```
 
 <a name="PluginIsAnimationPausedName"></a>
 **PluginIsAnimationPausedName**
+
+Check if the animation is paused referenced by name.
 
 ```C++
 EXPORT_API bool PluginIsAnimationPausedName(const char* path);
@@ -2574,6 +2690,9 @@ EXPORT_API double PluginIsAnimationPausedNameD(const char* path);
 <a name="PluginIsDialogOpen"></a>
 **PluginIsDialogOpen**
 
+The editor dialog is a non-blocking modal window, this method returns true
+if the modal window is open, otherwise false.
+
 ```C++
 EXPORT_API bool PluginIsDialogOpen();
 ```
@@ -2588,6 +2707,9 @@ EXPORT_API double PluginIsDialogOpenD();
 <a name="PluginIsInitialized"></a>
 **PluginIsInitialized**
 
+Returns true if the plugin has been initialized. Returns false if the plugin
+is uninitialized.
+
 ```C++
 EXPORT_API bool PluginIsInitialized();
 ```
@@ -2601,6 +2723,8 @@ EXPORT_API double PluginIsInitializedD();
 
 <a name="PluginIsPlatformSupported"></a>
 **PluginIsPlatformSupported**
+
+If the method can be invoked the method returns true.
 
 ```C++
 EXPORT_API bool PluginIsPlatformSupported();
@@ -2630,6 +2754,10 @@ EXPORT_API double PluginIsPlayingD(double animationId);
 <a name="PluginIsPlayingName"></a>
 **PluginIsPlayingName**
 
+`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`.
+The named `.chroma` animation file will be automatically opened. The method
+will return whether the animation is playing or not.
+
 ```C++
 EXPORT_API bool PluginIsPlayingName(const char* path);
 ```
@@ -2643,6 +2771,10 @@ EXPORT_API double PluginIsPlayingNameD(const char* path);
 
 <a name="PluginIsPlayingType"></a>
 **PluginIsPlayingType**
+
+`PluginIsPlayingType` automatically handles initializing the `ChromaSDK`.
+If any animation is playing for the `deviceType` and `device` combination,
+the method will return true, otherwise false.
 
 ```C++
 EXPORT_API bool PluginIsPlayingType(
@@ -2675,6 +2807,9 @@ EXPORT_API int PluginLerpColor(
 
 <a name="PluginLoadAnimation"></a>
 **PluginLoadAnimation**
+
+Loads `Chroma` effects so that the animation can be played immediately.
+Returns the animation id upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginLoadAnimation(int animationId);
@@ -3195,6 +3330,10 @@ EXPORT_API double PluginOffsetNonZeroColorsNameD(
 <a name="PluginOpenAnimation"></a>
 **PluginOpenAnimation**
 
+Opens a `Chroma` animation file so that it can be played. Returns an animation
+id >= 0 upon success. Returns -1 if there was a failure. The animation
+id is used in most of the API methods.
+
 ```C++
 EXPORT_API int PluginOpenAnimation(const char* path);
 ```
@@ -3208,6 +3347,9 @@ EXPORT_API double PluginOpenAnimationD(const char* path);
 
 <a name="PluginOpenEditorDialog"></a>
 **PluginOpenEditorDialog**
+
+Opens a `Chroma` animation file with the `.chroma` extension. Returns zero
+upon success. Returns -1 if there was a failure.
 
 ```C++
 EXPORT_API int PluginOpenEditorDialog(const char* path);
@@ -3261,12 +3403,16 @@ EXPORT_API void PluginOverrideFrameDurationName(
 <a name="PluginPauseAnimation"></a>
 **PluginPauseAnimation**
 
+Pause the current animation referenced by id.
+
 ```C++
 EXPORT_API void PluginPauseAnimation(int animationId);
 ```
 
 <a name="PluginPauseAnimationName"></a>
 **PluginPauseAnimationName**
+
+Pause the current animation referenced by name.
 
 ```C++
 EXPORT_API void PluginPauseAnimationName(const char* path);
@@ -3282,6 +3428,9 @@ EXPORT_API double PluginPauseAnimationNameD(const char* path);
 <a name="PluginPlayAnimation"></a>
 **PluginPlayAnimation**
 
+Plays the `Chroma` animation. This will load the animation, if not loaded
+previously. Returns the animation id upon success. Returns -1 upon failure.
+
 ```C++
 EXPORT_API int PluginPlayAnimation(int animationId);
 ```
@@ -3296,6 +3445,10 @@ EXPORT_API double PluginPlayAnimationD(double animationId);
 <a name="PluginPlayAnimationFrame"></a>
 **PluginPlayAnimationFrame**
 
+`PluginPlayAnimationFrame` automatically handles initializing the `ChromaSDK`.
+The method will play the animation given the `animationId` with looping
+`on` or `off` starting at the `frameId`.
+
 ```C++
 EXPORT_API void PluginPlayAnimationFrame(
 	int animationId, int frameId, bool loop);
@@ -3303,6 +3456,10 @@ EXPORT_API void PluginPlayAnimationFrame(
 
 <a name="PluginPlayAnimationFrameName"></a>
 **PluginPlayAnimationFrameName**
+
+`PluginPlayAnimationFrameName` automatically handles initializing the `ChromaSDK`.
+The named `.chroma` animation file will be automatically opened. The animation
+will play with looping `on` or `off` starting at the `frameId`.
 
 ```C++
 EXPORT_API void PluginPlayAnimationFrameName(
@@ -3320,6 +3477,10 @@ EXPORT_API double PluginPlayAnimationFrameNameD(
 <a name="PluginPlayAnimationLoop"></a>
 **PluginPlayAnimationLoop**
 
+`PluginPlayAnimationLoop` automatically handles initializing the `ChromaSDK`.
+The method will play the animation given the `animationId` with looping
+`on` or `off`.
+
 ```C++
 EXPORT_API void PluginPlayAnimationLoop(
 	int animationId, bool loop);
@@ -3327,6 +3488,10 @@ EXPORT_API void PluginPlayAnimationLoop(
 
 <a name="PluginPlayAnimationName"></a>
 **PluginPlayAnimationName**
+
+`PluginPlayAnimationName` automatically handles initializing the `ChromaSDK`.
+The named `.chroma` animation file will be automatically opened. The animation
+will play with looping `on` or `off`.
 
 ```C++
 EXPORT_API void PluginPlayAnimationName(
@@ -3343,6 +3508,10 @@ EXPORT_API double PluginPlayAnimationNameD(
 
 <a name="PluginPlayComposite"></a>
 **PluginPlayComposite**
+
+`PluginPlayComposite` automatically handles initializing the `ChromaSDK`.
+The named animation files for the `.chroma` set will be automatically opened.
+The set of animations will play with looping `on` or `off`.
 
 ```C++
 EXPORT_API void PluginPlayComposite(
@@ -3415,6 +3584,8 @@ EXPORT_API int PluginResetAnimation(int animationId);
 <a name="PluginResumeAnimation"></a>
 **PluginResumeAnimation**
 
+Resume the animation with loop `ON` or `OFF` referenced by id.
+
 ```C++
 EXPORT_API void PluginResumeAnimation(
 	int animationId, bool loop);
@@ -3422,6 +3593,8 @@ EXPORT_API void PluginResumeAnimation(
 
 <a name="PluginResumeAnimationName"></a>
 **PluginResumeAnimationName**
+
+Resume the animation with loop `ON` or `OFF` referenced by name.
 
 ```C++
 EXPORT_API void PluginResumeAnimationName(
@@ -3491,6 +3664,9 @@ EXPORT_API void PluginSet1DColor(
 <a name="PluginSet1DColorName"></a>
 **PluginSet1DColorName**
 
+Set the animation color for a frame given the `1D` `led`. The `led` should
+be greater than or equal to 0 and less than the `MaxLeds`.
+
 ```C++
 EXPORT_API void PluginSet1DColorName(
 	const char* path, int frameId, int led, int color);
@@ -3514,6 +3690,10 @@ EXPORT_API void PluginSet2DColor(
 
 <a name="PluginSet2DColorName"></a>
 **PluginSet2DColorName**
+
+Set the animation color for a frame given the `2D` `row` and `column`. The
+`row` should be greater than or equal to 0 and less than the `MaxRow`.
+The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
 
 ```C++
 EXPORT_API void PluginSet2DColorName(
@@ -3576,6 +3756,8 @@ EXPORT_API double PluginSetChromaCustomFlagNameD(
 <a name="PluginSetCurrentFrame"></a>
 **PluginSetCurrentFrame**
 
+Set the current frame of the animation referenced by id.
+
 ```C++
 EXPORT_API void PluginSetCurrentFrame(
 	int animationId, int frameId);
@@ -3583,6 +3765,8 @@ EXPORT_API void PluginSetCurrentFrame(
 
 <a name="PluginSetCurrentFrameName"></a>
 **PluginSetCurrentFrameName**
+
+Set the current frame of the animation referenced by name.
 
 ```C++
 EXPORT_API void PluginSetCurrentFrameName(
@@ -3615,6 +3799,8 @@ EXPORT_API RZRESULT PluginSetEffect(
 
 <a name="PluginSetKeyColor"></a>
 **PluginSetKeyColor**
+
+Set animation key to a static color for the given frame.
 
 ```C++
 EXPORT_API void PluginSetKeyColor(
@@ -3672,6 +3858,8 @@ EXPORT_API double PluginSetKeyColorAllFramesRGBNameD(
 <a name="PluginSetKeyColorName"></a>
 **PluginSetKeyColorName**
 
+Set animation key to a static color for the given frame.
+
 ```C++
 EXPORT_API void PluginSetKeyColorName(
 	const char* path, int frameId, int rzkey, int color);
@@ -3713,6 +3901,9 @@ EXPORT_API double PluginSetKeyColorRGBNameD(
 <a name="PluginSetKeyNonZeroColor"></a>
 **PluginSetKeyNonZeroColor**
 
+Set animation key to a static color for the given frame if the existing
+color is not already black.
+
 ```C++
 EXPORT_API void PluginSetKeyNonZeroColor(
 	int animationId, int frameId, int rzkey, int color);
@@ -3720,6 +3911,9 @@ EXPORT_API void PluginSetKeyNonZeroColor(
 
 <a name="PluginSetKeyNonZeroColorName"></a>
 **PluginSetKeyNonZeroColorName**
+
+Set animation key to a static color for the given frame if the existing
+color is not already black.
 
 ```C++
 EXPORT_API void PluginSetKeyNonZeroColorName(
@@ -3762,6 +3956,8 @@ EXPORT_API double PluginSetKeyNonZeroColorRGBNameD(
 <a name="PluginSetKeysColor"></a>
 **PluginSetKeysColor**
 
+Set an array of animation keys to a static color for the given frame.
+
 ```C++
 EXPORT_API void PluginSetKeysColor(
 	int animationId, int frameId, const int* rzkeys, int keyCount, int color);
@@ -3802,6 +3998,8 @@ EXPORT_API void PluginSetKeysColorAllFramesRGBName(
 <a name="PluginSetKeysColorName"></a>
 **PluginSetKeysColorName**
 
+Set an array of animation keys to a static color for the given frame.
+
 ```C++
 EXPORT_API void PluginSetKeysColorName(
 	const char* path, int frameId, const int* rzkeys, int keyCount, int color);
@@ -3828,6 +4026,9 @@ EXPORT_API void PluginSetKeysColorRGBName(
 <a name="PluginSetKeysNonZeroColor"></a>
 **PluginSetKeysNonZeroColor**
 
+Set an array of animation keys to a static color for the given frame if
+the existing color is not already black.
+
 ```C++
 EXPORT_API void PluginSetKeysNonZeroColor(
 	int animationId, int frameId, const int* rzkeys, int keyCount, int color);
@@ -3851,6 +4052,9 @@ EXPORT_API void PluginSetKeysNonZeroColorAllFramesName(
 
 <a name="PluginSetKeysNonZeroColorName"></a>
 **PluginSetKeysNonZeroColorName**
+
+Set an array of animation keys to a static color for the given frame if
+the existing color is not already black.
 
 ```C++
 EXPORT_API void PluginSetKeysNonZeroColorName(
@@ -3993,6 +4197,10 @@ EXPORT_API double PluginSetKeyZeroColorRGBNameD(
 <a name="PluginSetLogDelegate"></a>
 **PluginSetLogDelegate**
 
+Invokes the setup for a debug logging callback so that `stdout` is redirected
+to the callback. This is used by `Unity` so that debug messages can appear
+in the console window.
+
 ```C++
 EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 ```
@@ -4000,12 +4208,17 @@ EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 <a name="PluginStopAll"></a>
 **PluginStopAll**
 
+`PluginStopAll` will automatically stop all animations that are playing.
+
 ```C++
 EXPORT_API void PluginStopAll();
 ```
 
 <a name="PluginStopAnimation"></a>
 **PluginStopAnimation**
+
+Stops animation playback if in progress. Returns the animation id upon success.
+Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginStopAnimation(int animationId);
@@ -4021,6 +4234,10 @@ EXPORT_API double PluginStopAnimationD(double animationId);
 <a name="PluginStopAnimationName"></a>
 **PluginStopAnimationName**
 
+`PluginStopAnimationName` automatically handles initializing the `ChromaSDK`.
+The named `.chroma` animation file will be automatically opened. The animation
+will stop if playing.
+
 ```C++
 EXPORT_API void PluginStopAnimationName(const char* path);
 ```
@@ -4034,6 +4251,10 @@ EXPORT_API double PluginStopAnimationNameD(const char* path);
 
 <a name="PluginStopAnimationType"></a>
 **PluginStopAnimationType**
+
+`PluginStopAnimationType` automatically handles initializing the `ChromaSDK`.
+If any animation is playing for the `deviceType` and `device` combination,
+it will be stopped.
 
 ```C++
 EXPORT_API void PluginStopAnimationType(
@@ -4050,6 +4271,10 @@ EXPORT_API double PluginStopAnimationTypeD(
 
 <a name="PluginStopComposite"></a>
 **PluginStopComposite**
+
+`PluginStopComposite` automatically handles initializing the `ChromaSDK`.
+The named animation files for the `.chroma` set will be automatically opened.
+The set of animations will be stopped if playing.
 
 ```C++
 EXPORT_API void PluginStopComposite(const char* name);
@@ -4283,6 +4508,8 @@ EXPORT_API double PluginTrimStartFramesNameD(
 <a name="PluginUninit"></a>
 **PluginUninit**
 
+Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
+
 ```C++
 EXPORT_API int PluginUninit();
 ```
@@ -4296,6 +4523,9 @@ EXPORT_API double PluginUninitD();
 
 <a name="PluginUnloadAnimation"></a>
 **PluginUnloadAnimation**
+
+Unloads `Chroma` effects to free up resources. Returns the animation id
+upon success. Returns -1 upon failure.
 
 ```C++
 EXPORT_API int PluginUnloadAnimation(int animationId);
@@ -4330,6 +4560,8 @@ EXPORT_API int PluginUpdateFrame(
 	int animationId, int frameIndex, float duration, int* colors, int length);
 ```
 
+
+
 <br/><br/>
 
 <hr/>
@@ -4340,177 +4572,6 @@ EXPORT_API int PluginUpdateFrame(
 
 
 
-
-
-
-
-
-<a name="PluginGetAnimation"></a>
-**PluginGetAnimation**
-
-`PluginGetAnimation` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. This method returns the `animationId` of the opened animation.
-
-```C++
-EXPORT_API int PluginGetAnimation(const char* name);
-```
-
-<a name="PluginGetAnimationName"></a>
-**PluginGetAnimationName**
-
-`PluginGetAnimationName` takes an `animationId` and returns the name of the animation of the `.chroma` animation file. If a name is not available then an empty string will be returned.
-
-```C++
-EXPORT_API const char* PluginGetAnimationName(int animationId);
-```
-
-<a name="PluginPlayAnimationLoop"></a>
-**PluginPlayAnimationLoop**
-
-`PluginPlayAnimationLoop` automatically handles initializing the `ChromaSDK`. The method will play the animation given the `animationId` with looping `on` or `off`.
-
-```C++
-EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop);
-```
-
-
-<a name="PluginPlayAnimationName"></a>
-**PluginPlayAnimationName**
-
-`PluginPlayAnimationName` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. The animation will play with looping `on` or `off`.
-
-```C++
-EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
-```
-
-
-<a name="PluginPlayAnimationFrame"></a>
-**PluginPlayAnimationFrame**
-
-`PluginPlayAnimationFrame` automatically handles initializing the `ChromaSDK`. The method will play the animation given the `animationId` with looping `on` or `off` starting at the `frameId`.
-
-```C++
-EXPORT_API void PluginPlayAnimationFrame(int animationId, int frameId, bool loop);
-```
-
-
-<a name="PluginPlayAnimationFrameName"></a>
-**PluginPlayAnimationFrameName**
-
-`PluginPlayAnimationFrameName` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. The animation will play with looping `on` or `off` starting at the `frameId`.
-
-```C++
-EXPORT_API void PluginPlayAnimationFrameName(const char* path, int frameId, bool loop);
-```
-
-
-<a name="PluginStopAnimationName"></a>
-**PluginStopAnimationName**
-
-`PluginStopAnimationName` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. The animation will stop if playing.
-
-```C++
-EXPORT_API void PluginStopAnimationName(const char* path);
-```
-
-
-<a name="PluginStopAnimationType"></a>
-**PluginStopAnimationType**
-
-`PluginStopAnimationType` automatically handles initializing the `ChromaSDK`. If any animation is playing for the `deviceType` and `device` combination, it will be stopped.
-
-```C++
-EXPORT_API void PluginStopAnimationType(int deviceType, int device);
-```
-
-
-<a name="PluginStopAll"></a>
-**PluginStopAll**
-
-`PluginStopAll` will automatically stop all animations that are playing.
-
-```C++
-EXPORT_API void PluginStopAll();
-```
-
-
-<a name="PluginClearAll"></a>
-**PluginClearAll**
-
-`PluginClearAll` will issue a `CLEAR` effect for all devices.
-
-```C++
-EXPORT_API void PluginClearAll();
-```
-
-
-<a name="PluginClearAnimationType"></a>
-**PluginClearAnimationType**
-
-`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
-
-```C++
-EXPORT_API void PluginClearAnimationType(int deviceType, int device);
-```
-
-
-<a name="PluginGetAnimationCount"></a>
-**PluginGetAnimationCount**
-
-`PluginGetAnimationCount` will return the number of loaded animations.
-
-```C++
-EXPORT_API int PluginGetAnimationCount();
-```
-
-
-<a name="PluginGetAnimationId"></a>
-**PluginGetAnimationId**
-
-`PluginGetAnimationId` will return the `animationId` given the `index` of the loaded animation. The `index` is zero-based and less than the number returned by `PluginGetAnimationCount`. Use `PluginGetAnimationName` to get the name of the animation.
-
-```C++
-EXPORT_API int PluginGetAnimationId(int index);
-```
-
-
-<a name="PluginGetPlayingAnimationCount"></a>
-**PluginGetPlayingAnimationCount**
-
-`PluginGetPlayingAnimationCount` will return the number of playing animations.
-
-```C++
-EXPORT_API int PluginGetPlayingAnimationCount();
-```
-
-
-<a name="PluginGetPlayingAnimationId"></a>
-**PluginGetPlayingAnimationId**
-
-`PluginGetPlayingAnimationId` will return the `animationId` given the `index` of the playing animation. The `index` is zero-based and less than the number returned by `PluginGetPlayingAnimationCount`. Use `PluginGetAnimationName` to get the name of the animation.
-
-```C++
-EXPORT_API int PluginGetPlayingAnimationId(int index);
-```
-
-
-<a name="PluginIsPlayingName"></a>
-**PluginIsPlayingName**
-
-`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`. The named `.chroma` animation file will be automatically opened. The method will return whether the animation is playing or not.
-
-```C++
-EXPORT_API bool PluginIsPlayingName(const char* path);
-```
-
-
-<a name="PluginIsPlayingType"></a>
-**PluginIsPlayingType**
-
-`PluginIsPlayingType` automatically handles initializing the `ChromaSDK`. If any animation is playing for the `deviceType` and `device` combination, the method will return true, otherwise false.
-
-```C++
-EXPORT_API bool PluginIsPlayingType(int deviceType, int device);
-```
 
 
 <a name="PluginPlayComposite"></a>
@@ -4567,167 +4628,6 @@ EXPORT_API void PluginCloseComposite(const char* name);
 ```
 
 
-<a name="PluginCloseAll"></a>
-**PluginCloseAll**
-
-`PluginCloseAll` closes all open animations so they can be reloaded from disk. The set of animations will be stopped if playing.
-
-```C++
-EXPORT_API void PluginCloseAll();
-```
-
-
-<a name="PluginSetLogDelegate"></a>
-**PluginSetLogDelegate**
-
-Invokes the setup for a debug logging callback so that `stdout` is redirected to the callback. This is used by `Unity` so that debug messages can appear in the console window.
-
-```C++
-EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
-```
-
-
-<a name="PluginInit"></a>
-**PluginInit**
-
-Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many API methods auto initialize the ChromaSDK if not already initialized.
-
-```C++
-EXPORT_API int PluginInit();
-EXPORT_API double PluginInitD();
-```
-
-
-<a name="PluginIsPlatformSupported"></a>
-**PluginIsPlatformSupported**
-
-If the method can be invoked the method returns true.
-
-```C++
-EXPORT_API bool PluginIsPlatformSupported();
-EXPORT_API double PluginIsPlatformSupportedD();
-```
-
-
-<a name="PluginIsInitialized"></a>
-**PluginIsInitialized**
-
-Returns true if the plugin has been initialized. Returns false if the plugin is uninitialized.
-
-```C++
-EXPORT_API bool PluginIsInitialized();
-EXPORT_API double PluginIsInitializedD();
-```
-
-
-<a name="PluginIsDialogOpen"></a>
-**PluginIsDialogOpen**
-
-The editor dialog is a non-blocking modal window, this method returns true if the modal window is open, otherwise false.
-
-```C++
-EXPORT_API bool PluginIsDialogOpen();
-EXPORT_API double PluginIsDialogOpenD();
-```
-
-
-<a name="PluginOpenEditorDialog"></a>
-**PluginOpenEditorDialog**
-
-Opens a `Chroma` animation file with the `.chroma` extension. Returns zero upon success. Returns -1 if there was a failure.
-
-```C++
-EXPORT_API int PluginOpenEditorDialog(const char* path);
-EXPORT_API double PluginOpenEditorDialogD(const char* path);
-```
-
-
-<a name="PluginOpenAnimation"></a>
-**PluginOpenAnimation**
-
-Opens a `Chroma` animation file so that it can be played. Returns an animation id >= 0 upon success. Returns -1 if there was a failure. The animation id is used in most of the API methods.
-
-```C++
-EXPORT_API int PluginOpenAnimation(const char* path);
-EXPORT_API double PluginOpenAnimationD(const char* path);
-```
-
-
-<a name="PluginLoadAnimation"></a>
-**PluginLoadAnimation**
-
-Loads `Chroma` effects so that the animation can be played immediately. Returns the animation id upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginLoadAnimation(int animationId);
-EXPORT_API double PluginLoadAnimationD(double animationId);
-```
-
-
-<a name="PluginUnloadAnimation"></a>
-**PluginUnloadAnimation**
-
-Unloads `Chroma` effects to free up resources. Returns the animation id upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginUnloadAnimation(int animationId);
-EXPORT_API double PluginUnloadAnimationD(double animationId);
-```
-
-
-<a name="PluginPlayAnimation"></a>
-**PluginPlayAnimation**
-Plays the `Chroma` animation. This will load the animation, if not loaded previously. Returns the animation id upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginPlayAnimation(int animationId);
-EXPORT_API double PluginPlayAnimationD(double animationId);
-```
-
-
-<a name="PluginStopAnimation"></a>
-**PluginStopAnimation**
-
-Stops animation playback if in progress. Returns the animation id upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginStopAnimation(int animationId);
-EXPORT_API double PluginStopAnimationD(double animationId);
-```
-
-
-<a name="PluginCloseAnimation"></a>
-**PluginCloseAnimation**
-
-Closes the `Chroma` animation to free up resources referenced by id. Returns the animation id upon success. Returns -1 upon failure. This might be used while authoring effects if there was a change necessitating re-opening the animation. The animation id can no longer be used once closed.
-
-```C++
-EXPORT_API int PluginCloseAnimation(int animationId);
-EXPORT_API double PluginCloseAnimationD(double animationId);
-```
-
-
-<a name="PluginCloseAnimationName"></a>
-**PluginCloseAnimationName**
-
-Closes the `Chroma` animation referenced by name so that the animation can be reloaded from disk.
-
-```C++
-EXPORT_API void PluginCloseAnimationName(const char* path);
-EXPORT_API double PluginCloseAnimationNameD(const char* path);
-```
-
-
-<a name="PluginUninit"></a>
-**PluginUninit**
-
-Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginUninit();
-EXPORT_API double PluginUninitD();
-```
-
 
 <a name="EChromaSDKDeviceTypeEnum"></a>
 **EChromaSDKDeviceTypeEnum**
@@ -4772,245 +4672,7 @@ enum EChromaSDKDevice2DEnum
 };
 ```
 
-
-<a name="PluginGetDeviceType"></a>
-**PluginGetDeviceType**
-
-Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetDeviceType(int animationId);
-```
-
-
-<a name="PluginGetDeviceTypeName"></a>
-**PluginGetDeviceTypeName**
-
-Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetDeviceTypeName(const char* path);
-```
-
-
-<a name="PluginGetDevice"></a>
-**PluginGetDevice**
-
-Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` animation respective to the `deviceType`, as an integer upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetDevice(int animationId);
-```
-
-
-<a name="PluginGetDeviceName"></a>
-**PluginGetDeviceName**
-
-Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` animation respective to the `deviceType`, as an integer upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetDeviceName(const char* path);
-```
-
-
-<a name="PluginGetMaxLeds"></a>
-**PluginGetMaxLeds**
-
-Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetMaxLeds(int device);
-```
-
-
-<a name="PluginGetMaxRow"></a>
-**PluginGetMaxRow**
-
-Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetMaxRow(int device);
-```
-
-
-<a name="PluginGetMaxColumn"></a>
-**PluginGetMaxColumn**
-
-Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an integer upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetMaxColumn(int device);
-```
-
-
-<a name="PluginGetFrameCount"></a>
-**PluginGetFrameCount**
-
-Returns the frame count of a `Chroma` animation upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetFrameCount(int animationId);
-```
-
-
-<a name="PluginGetFrameCountName"></a>
-**PluginGetFrameCountName**
-
-Returns the frame count of a `Chroma` animation upon success. Returns -1 upon failure.
-
-```C++
-EXPORT_API int PluginGetFrameCountName(const char* path);
-```
-
-
-<a name="PluginGetCurrentFrame"></a>
-**PluginGetCurrentFrame**
-
-Get the current frame of the animation referenced by id.
-
-```C++
-EXPORT_API int PluginGetCurrentFrame(int animationId);
-```
-
-
-<a name="PluginGetCurrentFrameName"></a>
-**PluginGetCurrentFrameName**
-
-Get the current frame of the animation referenced by name.
-
-```C++
-EXPORT_API int PluginGetCurrentFrameName(const char* path);
-```
-
-
-<a name="PluginSetCurrentFrame"></a>
-**PluginSetCurrentFrame**
-
-Set the current frame of the animation referenced by id.
-
-```C++
-EXPORT_API void PluginSetCurrentFrame(int animationId, int frameId);
-```
-
-
-<a name="PluginSetCurrentFrameName"></a>
-**PluginSetCurrentFrameName**
-
-Set the current frame of the animation referenced by name.
-
-```C++
-EXPORT_API void PluginSetCurrentFrameName(const char* path, int frameId);
-```
-
-
-<a name="PluginPauseAnimation"></a>
-**PluginPauseAnimation**
-
-Pause the current animation referenced by id.
-
-```C++
-EXPORT_API void PluginPauseAnimation(int animationId);
-```
-
-
-<a name="PluginPauseAnimationName"></a>
-**PluginPauseAnimationName**
-
-Pause the current animation referenced by name.
-
-```C++
-EXPORT_API void PluginPauseAnimationName(const char* path);
-```
-
-
-<a name="PluginIsAnimationPaused"></a>
-**PluginIsAnimationPaused**
-
-Check if the animation is paused referenced by id.
-
-```C++
-EXPORT_API bool PluginIsAnimationPaused(int animationId);
-```
-
-
-<a name="PluginIsAnimationPausedName"></a>
-**PluginIsAnimationPausedName**
-
-Check if the animation is paused referenced by name.
-
-```C++
-EXPORT_API bool PluginIsAnimationPausedName(const char* path);
-```
-
-
-<a name="PluginHasAnimationLoop"></a>
-**PluginHasAnimationLoop**
-
-Check if the animation has loop enabled referenced by id.
-
-```C++
-EXPORT_API bool PluginHasAnimationLoop(int animationId);
-```
-
-
-<a name="PluginHasAnimationLoopName"></a>
-**PluginHasAnimationLoopName**
-
-Check if the animation has loop enabled referenced by name.
-
-```C++
-EXPORT_API bool PluginHasAnimationLoopName(const char* path);
-```
-
-
-<a name="PluginResumeAnimation"></a>
-**PluginResumeAnimation**
-
-Resume the animation with loop `ON` or `OFF` referenced by id.
-
-```C++
-EXPORT_API void PluginResumeAnimation(int animationId, bool loop);
-```
-
-
-<a name="PluginResumeAnimationName"></a>
-**PluginResumeAnimationName**
-
-Resume the animation with loop `ON` or `OFF` referenced by name.
-
-```C++
-EXPORT_API void PluginResumeAnimationName(const char* path, bool loop);
-```
-
-
-<a name="PluginSetKeyColor"></a>
-**PluginSetKeyColor**
-
-Set animation key to a static color for the given frame.
-
-```C++
-EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
-```
-
-
-<a name="PluginSetKeyColorName"></a>
-**PluginSetKeyColorName**
-
-Set animation key to a static color for the given frame.
-
-```C++
-EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
-```
-
-
-<a name="PluginSetKeysColor"></a>
-**PluginSetKeysColor**
-
-Set an array of animation keys to a static color for the given frame.
-
-```C++
-EXPORT_API void PluginSetKeysColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
-```
+(Auto-documentation needs sample snippet section)
 
 
 <a name="PluginSetKeysColorName"></a>
@@ -5043,39 +4705,6 @@ _gMethodPlayAnimationName(animationName, false);
 ```
 
 
-<a name="PluginSetKeyNonZeroColor"></a>
-**PluginSetKeyNonZeroColor**
-
-Set animation key to a static color for the given frame if the existing color is not already black.
-
-```C++
-EXPORT_API void PluginSetKeyNonZeroColor(int animationId, int frameId,
-  int rzkey, int color);
-```
-
-
-<a name="PluginSetKeyNonZeroColorName"></a>
-**PluginSetKeyNonZeroColorName**
-
-Set animation key to a static color for the given frame if the existing color is not already black.
-
-```C++
-EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId,
-  int rzkey, int color);
-```
-
-
-<a name="PluginSetKeysNonZeroColor"></a>
-**PluginSetKeysNonZeroColor**
-
-Set an array of animation keys to a static color for the given frame if the existing color is not already black.
-
-```C++
-EXPORT_API void PluginSetKeysNonZeroColor(int animationId, int frameId,
-    const int* rzkeys, int keyCount, int color);
-```
-
-
 <a name="PluginSetKeysNonZeroColorName"></a>
 **PluginSetKeysNonZeroColorName**
 
@@ -5104,132 +4733,6 @@ for (int i = 0; i < frameCount; ++i)
   _gMethodSetKeysNonZeroColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
 }
 _gMethodPlayAnimationName(animationName, false);
-```
-
-
-<a name="PluginGetKeyColor"></a>
-**PluginGetKeyColor**
-
-Get the color of an animation key for the given frame referenced by id.
-
-```C++
-EXPORT_API int PluginGetKeyColor(int animationId, int frameId, int rzkey);
-```
-
-
-<a name="PluginGetKeyColorName"></a>
-**PluginGetKeyColorName**
-
-Get the color of an animation key for the given frame referenced by name.
-
-```C++
-EXPORT_API int PluginGetKeyColorName(const char* path, int frameId, int rzkey);
-```
-
-
-<a name="PluginCopyKeyColor"></a>
-**PluginCopyKeyColor**
-
-Copy animation key color from the source animation to the target animation for the given frame.
-
-```C++
-EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
-```
-
-
-<a name="PluginCopyKeyColorName"></a>
-**PluginCopyKeyColorName**
-
-Copy animation key color from the source animation to the target animation for the given frame.
-
-```C++
-EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation,
-    int frameId, int rzkey);
-```
-
-
-<a name="PluginCopyNonZeroAllKeysAllFrames"></a>
-**PluginCopyNonZeroAllKeysAllFrames**
-
-Copy nonzero colors from a source animation to a target animation for all keys.
-
-```C++
-EXPORT_API void PluginCopyNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
-```
-
-
-<a name="PluginCopyNonZeroAllKeysAllFramesName"></a>
-**PluginCopyNonZeroAllKeysAllFramesName**
-
-Copy nonzero colors from a source animation to a target animation for all keys.
-
-```C++
-EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
-```
-
-
-<a name="PluginCopyNonZeroKeyColor"></a>
-**PluginCopyNonZeroKeyColor**
-
-Copy animation key color from the source animation to the target animation for the given frame where color is not zero.
-
-```C++
-EXPORT_API void PluginCopyNonZeroKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
-```
-
-
-<a name="PluginCopyNonZeroKeyColorName"></a>
-**PluginCopyNonZeroKeyColorName**
-
-Copy animation key color from the source animation to the target animation for the given frame where color is not zero.
-
-```C++
-EXPORT_API void PluginCopyNonZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation,
-    int frameId, int rzkey);
-```
-
-
-<a name="PluginGet1DColorName"></a>
-**PluginGet1DColorName**
-
-Get the animation color for a frame given the `1D` `led`. The `led` should be greater than or equal to 0 and less than the `MaxLeds`.
-
-```C++
-EXPORT_API int PluginGet1DColorName(const char* path, int frameId,
-    int led);
-```
-
-
-<a name="PluginGet2DColorName"></a>
-**PluginGet2DColorName**
-
-Get the animation color for a frame given the `2D` `row` and `column`. The `row` should be greater than or equal to 0 and less than the `MaxRow`. The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
-
-```C++
-EXPORT_API int PluginGet2DColorName(const char* path, int frameId,
-    int row, int column);
-```
-
-
-<a name="PluginSet1DColorName"></a>
-**PluginSet1DColorName**
-
-Set the animation color for a frame given the `1D` `led`. The `led` should be greater than or equal to 0 and less than the `MaxLeds`.
-
-```C++
-EXPORT_API void PluginSet1DColorName(const char* path, int frameId,
-    int led, int color);
-```
-
-
-<a name="PluginSet2DColorName"></a>
-**PluginSet2DColorName**
-
-Set the animation color for a frame given the `2D` `row` and `column`. The `row` should be greater than or equal to 0 and less than the `MaxRow`. The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
-
-```C++
-EXPORT_API void PluginSet2DColorName(const char* path, int frameId,
-    int row, int column, int color);
 ```
 
 
