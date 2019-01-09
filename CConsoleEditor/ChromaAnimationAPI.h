@@ -39,9 +39,15 @@ typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAn
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	Add source color to target where color is not black for all frames starting
+	at offset for the length of the source, reference source and target by
+	id.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
 /*
+	Add source color to target where color is not black for all frames starting
+	at offset for the length of the source, reference source and target by
+	name.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
@@ -49,9 +55,13 @@ typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* s
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
+	Add source color to target where color is not black for the source frame
+	and target offset frame, reference source and target by id.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 /*
+	Add source color to target where color is not black for the source frame
+	and target offset frame, reference source and target by name.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 /*
@@ -59,9 +69,13 @@ typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimat
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 /*
+	Add source color to target where the target color is not black for all frames,
+	reference source and target by id.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
 /*
+	Add source color to target where the target color is not black for all frames,
+	reference source and target by name.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -69,9 +83,15 @@ typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* s
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	Add source color to target where the target color is not black for all frames
+	starting at offset for the length of the source, reference source and target
+	by id.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
 /*
+	Add source color to target where the target color is not black for all frames
+	starting at offset for the length of the source, reference source and target
+	by name.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
@@ -79,9 +99,13 @@ typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const 
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
+	Add source color to target where target color is not blank from the source
+	frame to the target offset frame, reference source and target by id.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 /*
+	Add source color to target where target color is not blank from the source
+	frame to the target offset frame, reference source and target by name.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 /*
@@ -89,9 +113,13 @@ typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourc
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 /*
+	Append all source frames to the target animation, reference source and target
+	by id.
 */
 typedef void(*PLUGIN_APPEND_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
 /*
+	Append all source frames to the target animation, reference source and target
+	by name.
 */
 typedef void(*PLUGIN_APPEND_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -1901,9 +1929,15 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, AddNonZeroAllKeysAllFramesNameD);
 		/*
+			Add source color to target where color is not black for all frames starting
+			at offset for the length of the source, reference source and target by
+			id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET, AddNonZeroAllKeysAllFramesOffset);
 		/*
+			Add source color to target where color is not black for all frames starting
+			at offset for the length of the source, reference source and target by
+			name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroAllKeysAllFramesOffsetName);
 		/*
@@ -1911,9 +1945,13 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, AddNonZeroAllKeysAllFramesOffsetNameD);
 		/*
+			Add source color to target where color is not black for the source frame
+			and target offset frame, reference source and target by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET, AddNonZeroAllKeysOffset);
 		/*
+			Add source color to target where color is not black for the source frame
+			and target offset frame, reference source and target by name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME, AddNonZeroAllKeysOffsetName);
 		/*
@@ -1921,9 +1959,13 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME_D, AddNonZeroAllKeysOffsetNameD);
 		/*
+			Add source color to target where the target color is not black for all frames,
+			reference source and target by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES, AddNonZeroTargetAllKeysAllFrames);
 		/*
+			Add source color to target where the target color is not black for all frames,
+			reference source and target by name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, AddNonZeroTargetAllKeysAllFramesName);
 		/*
@@ -1931,9 +1973,15 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, AddNonZeroTargetAllKeysAllFramesNameD);
 		/*
+			Add source color to target where the target color is not black for all frames
+			starting at offset for the length of the source, reference source and target
+			by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET, AddNonZeroTargetAllKeysAllFramesOffset);
 		/*
+			Add source color to target where the target color is not black for all frames
+			starting at offset for the length of the source, reference source and target
+			by name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroTargetAllKeysAllFramesOffsetName);
 		/*
@@ -1941,9 +1989,13 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, AddNonZeroTargetAllKeysAllFramesOffsetNameD);
 		/*
+			Add source color to target where target color is not blank from the source
+			frame to the target offset frame, reference source and target by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET, AddNonZeroTargetAllKeysOffset);
 		/*
+			Add source color to target where target color is not blank from the source
+			frame to the target offset frame, reference source and target by name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME, AddNonZeroTargetAllKeysOffsetName);
 		/*
@@ -1951,9 +2003,13 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D, AddNonZeroTargetAllKeysOffsetNameD);
 		/*
+			Append all source frames to the target animation, reference source and target
+			by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES, AppendAllFrames);
 		/*
+			Append all source frames to the target animation, reference source and target
+			by name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES_NAME, AppendAllFramesName);
 		/*

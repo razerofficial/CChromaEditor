@@ -84,9 +84,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		Add source color to target where color is not black for all frames starting
+		at offset for the length of the source, reference source and target by
+		id.
 	*/
 	EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 	/*
+		Add source color to target where color is not black for all frames starting
+		at offset for the length of the source, reference source and target by
+		name.
 	*/
 	EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
@@ -94,9 +100,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
+		Add source color to target where color is not black for the source frame
+		and target offset frame, reference source and target by id.
 	*/
 	EXPORT_API void PluginAddNonZeroAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 	/*
+		Add source color to target where color is not black for the source frame
+		and target offset frame, reference source and target by name.
 	*/
 	EXPORT_API void PluginAddNonZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
@@ -104,9 +114,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginAddNonZeroAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
+		Add source color to target where the target color is not black for all frames,
+		reference source and target by id.
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 	/*
+		Add source color to target where the target color is not black for all frames,
+		reference source and target by name.
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -114,9 +128,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		Add source color to target where the target color is not black for all frames
+		starting at offset for the length of the source, reference source and target
+		by id.
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 	/*
+		Add source color to target where the target color is not black for all frames
+		starting at offset for the length of the source, reference source and target
+		by name.
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
@@ -124,9 +144,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
+		Add source color to target where target color is not blank from the source
+		frame to the target offset frame, reference source and target by id.
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 	/*
+		Add source color to target where target color is not blank from the source
+		frame to the target offset frame, reference source and target by name.
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
@@ -134,9 +158,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginAddNonZeroTargetAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
+		Append all source frames to the target animation, reference source and target
+		by id.
 	*/
 	EXPORT_API void PluginAppendAllFrames(int sourceAnimationId, int targetAnimationId);
 	/*
+		Append all source frames to the target animation, reference source and target
+		by name.
 	*/
 	EXPORT_API void PluginAppendAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
