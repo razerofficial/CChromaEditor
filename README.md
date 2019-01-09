@@ -676,6 +676,10 @@ double result = ChromaAnimationAPI::AddNonZeroAllKeysAllFramesNameD(
 <a name="PluginAddNonZeroAllKeysAllFramesOffset"></a>
 **PluginAddNonZeroAllKeysAllFramesOffset**
 
+Add source color to target where color is not black for all frames starting
+at offset for the length of the source, reference source and target by
+id.
+
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffset(
@@ -689,6 +693,10 @@ ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffset(
 ---
 <a name="PluginAddNonZeroAllKeysAllFramesOffsetName"></a>
 **PluginAddNonZeroAllKeysAllFramesOffsetName**
+
+Add source color to target where color is not black for all frames starting
+at offset for the length of the source, reference source and target by
+name.
 
 ```C++
 // DLL Interface
@@ -720,6 +728,9 @@ double result = ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffsetNameD(
 <a name="PluginAddNonZeroAllKeysOffset"></a>
 **PluginAddNonZeroAllKeysOffset**
 
+Add source color to target where color is not black for the source frame
+and target offset frame, reference source and target by id.
+
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysOffset(
@@ -733,6 +744,9 @@ ChromaAnimationAPI::AddNonZeroAllKeysOffset(
 ---
 <a name="PluginAddNonZeroAllKeysOffsetName"></a>
 **PluginAddNonZeroAllKeysOffsetName**
+
+Add source color to target where color is not black for the source frame
+and target offset frame, reference source and target by name.
 
 ```C++
 // DLL Interface
@@ -766,6 +780,9 @@ double result = ChromaAnimationAPI::AddNonZeroAllKeysOffsetNameD(
 <a name="PluginAddNonZeroTargetAllKeysAllFrames"></a>
 **PluginAddNonZeroTargetAllKeysAllFrames**
 
+Add source color to target where the target color is not black for all frames,
+reference source and target by id.
+
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysAllFrames(
@@ -779,6 +796,9 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFrames(
 ---
 <a name="PluginAddNonZeroTargetAllKeysAllFramesName"></a>
 **PluginAddNonZeroTargetAllKeysAllFramesName**
+
+Add source color to target where the target color is not black for all frames,
+reference source and target by name.
 
 ```C++
 // DLL Interface
@@ -810,6 +830,10 @@ double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesNameD(
 <a name="PluginAddNonZeroTargetAllKeysAllFramesOffset"></a>
 **PluginAddNonZeroTargetAllKeysAllFramesOffset**
 
+Add source color to target where the target color is not black for all frames
+starting at offset for the length of the source, reference source and target
+by id.
+
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffset(
@@ -823,6 +847,10 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesOffset(
 ---
 <a name="PluginAddNonZeroTargetAllKeysAllFramesOffsetName"></a>
 **PluginAddNonZeroTargetAllKeysAllFramesOffsetName**
+
+Add source color to target where the target color is not black for all frames
+starting at offset for the length of the source, reference source and target
+by name.
 
 ```C++
 // DLL Interface
@@ -854,6 +882,9 @@ double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesOffsetNameD(
 <a name="PluginAddNonZeroTargetAllKeysOffset"></a>
 **PluginAddNonZeroTargetAllKeysOffset**
 
+Add source color to target where target color is not blank from the source
+frame to the target offset frame, reference source and target by id.
+
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysOffset(
@@ -867,6 +898,9 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysOffset(
 ---
 <a name="PluginAddNonZeroTargetAllKeysOffsetName"></a>
 **PluginAddNonZeroTargetAllKeysOffsetName**
+
+Add source color to target where target color is not blank from the source
+frame to the target offset frame, reference source and target by name.
 
 ```C++
 // DLL Interface
@@ -900,6 +934,9 @@ double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysOffsetNameD(
 <a name="PluginAppendAllFrames"></a>
 **PluginAppendAllFrames**
 
+Append all source frames to the target animation, reference source and target
+by id.
+
 ```C++
 // DLL Interface
 EXPORT_API void PluginAppendAllFrames(
@@ -913,6 +950,9 @@ ChromaAnimationAPI::AppendAllFrames(
 ---
 <a name="PluginAppendAllFramesName"></a>
 **PluginAppendAllFramesName**
+
+Append all source frames to the target animation, reference source and target
+by name.
 
 ```C++
 // DLL Interface
