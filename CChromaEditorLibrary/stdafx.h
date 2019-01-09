@@ -214,9 +214,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginCloseCompositeD(const char* name);
 	/*
+		Copy animation to named target animation in memory. If target animation
+		exists, close first. Source is referenced by id.
 	*/
 	EXPORT_API int PluginCopyAnimation(int sourceAnimationId, const char* targetAnimation);
 	/*
+		Copy animation to named target animation in memory. If target animation
+		exists, close first. Source is referenced by name.
 	*/
 	EXPORT_API void PluginCopyAnimationName(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -224,9 +228,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyAnimationNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		Copy blue channel to other channels for all frames. Intensity range is 0.0
+		to 1.0. Reference the animation by id.
 	*/
 	EXPORT_API void PluginCopyBlueChannelAllFrames(int animationId, float redIntensity, float greenIntensity);
 	/*
+		Copy blue channel to other channels for all frames. Intensity range is 0.0
+		to 1.0. Reference the animation by name.
 	*/
 	EXPORT_API void PluginCopyBlueChannelAllFramesName(const char* path, float redIntensity, float greenIntensity);
 	/*
@@ -234,9 +242,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyBlueChannelAllFramesNameD(const char* path, double redIntensity, double greenIntensity);
 	/*
+		Copy green channel to other channels for all frames. Intensity range is
+		0.0 to 1.0. Reference the animation by id.
 	*/
 	EXPORT_API void PluginCopyGreenChannelAllFrames(int animationId, float redIntensity, float blueIntensity);
 	/*
+		Copy green channel to other channels for all frames. Intensity range is
+		0.0 to 1.0. Reference the animation by name.
 	*/
 	EXPORT_API void PluginCopyGreenChannelAllFramesName(const char* path, float redIntensity, float blueIntensity);
 	/*
@@ -245,13 +257,17 @@ extern "C"
 	EXPORT_API double PluginCopyGreenChannelAllFramesNameD(const char* path, double redIntensity, double blueIntensity);
 	/*
 		Copy animation key color from the source animation to the target animation
-		for the given frame.
+		for the given frame. Reference the source and target by id.
 	*/
 	EXPORT_API void PluginCopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 	/*
+		Copy animation key color from the source animation to the target animation
+		for all frames. Reference the source and target by id.
 	*/
 	EXPORT_API void PluginCopyKeyColorAllFrames(int sourceAnimationId, int targetAnimationId, int rzkey);
 	/*
+		Copy animation key color from the source animation to the target animation
+		for all frames. Reference the source and target by name.
 	*/
 	EXPORT_API void PluginCopyKeyColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, int rzkey);
 	/*
@@ -259,9 +275,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyKeyColorAllFramesNameD(const char* sourceAnimation, const char* targetAnimation, double rzkey);
 	/*
+		Copy animation key color from the source animation to the target animation
+		for all frames, starting at the offset for the length of the source animation.
+		Source and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyKeyColorAllFramesOffset(int sourceAnimationId, int targetAnimationId, int rzkey, int offset);
 	/*
+		Copy animation key color from the source animation to the target animation
+		for all frames, starting at the offset for the length of the source animation.
+		Source and target are referenced by name.
 	*/
 	EXPORT_API void PluginCopyKeyColorAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset);
 	/*
@@ -278,16 +300,18 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 	/*
+		Copy source animation to target animation for the given frame. Source and
+		target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 	/*
 		Copy nonzero colors from a source animation to a target animation for all
-		keys.
+		frames. Reference source and target by id.
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 	/*
 		Copy nonzero colors from a source animation to a target animation for all
-		keys.
+		frames. Reference source and target by name.
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -295,9 +319,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		Copy nonzero colors from a source animation to a target animation for all
+		frames starting at the offset for the length of the source animation. The
+		source and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 	/*
+		Copy nonzero colors from a source animation to a target animation for all
+		frames starting at the offset for the length of the source animation. The
+		source and target are referenced by name.
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
@@ -305,6 +335,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
+		Copy nonzero colors from source animation to target animation for the specified
+		frame. Source and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
 	/*
@@ -312,9 +344,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyNonZeroAllKeysNameD(const char* sourceAnimation, const char* targetAnimation, double frameId);
 	/*
+		Copy nonzero colors from the source animation to the target animation from
+		the source frame to the target offset frame. Source and target are referenced
+		by id.
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 	/*
+		Copy nonzero colors from the source animation to the target animation from
+		the source frame to the target offset frame. Source and target are referenced
+		by name.
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
@@ -336,12 +374,21 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyNonZeroKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 	/*
+		Copy nonzero colors from the source animation to the target animation where
+		the target color is nonzero for the specified frame. Source and target
+		are referenced by id.
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 	/*
+		Copy nonzero colors from the source animation to the target animation where
+		the target color is nonzero for all frames. Source and target are referenced
+		by id.
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 	/*
+		Copy nonzero colors from the source animation to the target animation where
+		the target color is nonzero for all frames. Source and target are referenced
+		by name.
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -349,9 +396,16 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		Copy nonzero colors from the source animation to the target animation where
+		the target color is nonzero for all frames. Source and target are referenced
+		by name.
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 	/*
+		Copy nonzero colors from the source animation to the target animation where
+		the target color is nonzero for all frames starting at the target offset
+		for the length of the source animation. Source and target animations are
+		referenced by name.
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
@@ -359,6 +413,9 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
+		Copy nonzero colors from the source animation to the target animation where
+		the target color is nonzero for the specified frame. The source and target
+		are referenced by name.
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
 	/*
@@ -366,9 +423,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysNameD(const char* sourceAnimation, const char* targetAnimation, double frameId);
 	/*
+		Copy nonzero colors from the source animation to the target animation where
+		the target color is nonzero for the specified source frame and target offset
+		frame. The source and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 	/*
+		Copy nonzero colors from the source animation to the target animation where
+		the target color is nonzero for the specified source frame and target offset
+		frame. The source and target are referenced by name.
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
@@ -376,9 +439,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
+		Copy red channel to other channels for all frames. Intensity range is 0.0
+		to 1.0. Reference the animation by id.
 	*/
 	EXPORT_API void PluginCopyRedChannelAllFrames(int animationId, float greenIntensity, float blueIntensity);
 	/*
+		Copy green channel to other channels for all frames. Intensity range is
+		0.0 to 1.0. Reference the animation by name.
 	*/
 	EXPORT_API void PluginCopyRedChannelAllFramesName(const char* path, float greenIntensity, float blueIntensity);
 	/*
@@ -386,9 +453,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyRedChannelAllFramesNameD(const char* path, double greenIntensity, double blueIntensity);
 	/*
+		Copy zero colors from source animation to target animation for all frames.
+		Source and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 	/*
+		Copy zero colors from source animation to target animation for all frames.
+		Source and target are referenced by name.
 	*/
 	EXPORT_API void PluginCopyZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -396,9 +467,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		Copy zero colors from source animation to target animation for all frames
+		starting at the target offset for the length of the source animation. Source
+		and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 	/*
+		Copy zero colors from source animation to target animation for all frames
+		starting at the target offset for the length of the source animation. Source
+		and target are referenced by name.
 	*/
 	EXPORT_API void PluginCopyZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
@@ -406,9 +483,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
+		Copy zero key color from source animation to target animation for the specified
+		frame. Source and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyZeroKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 	/*
+		Copy zero key color from source animation to target animation for the specified
+		frame. Source and target are referenced by name.
 	*/
 	EXPORT_API void PluginCopyZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 	/*
@@ -416,9 +497,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyZeroKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 	/*
+		Copy nonzero color from source animation to target animation where target
+		is zero for all frames. Source and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 	/*
+		Copy nonzero color from source animation to target animation where target
+		is zero for all frames. Source and target are referenced by name.
 	*/
 	EXPORT_API void PluginCopyZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -493,15 +578,21 @@ extern "C"
 	*/
 	EXPORT_API int PluginCreateAnimationInMemory(int deviceType, int device);
 	/*
+		Create a device specific effect.
 	*/
 	EXPORT_API RZRESULT PluginCreateEffect(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectId);
 	/*
+		Delete an effect given the effect id.
 	*/
 	EXPORT_API RZRESULT PluginDeleteEffect(const ChromaSDK::FChromaSDKGuid& effectId);
 	/*
+		Duplicate the first animation frame so that the animation length matches
+		the frame count. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginDuplicateFirstFrame(int animationId, int frameCount);
 	/*
+		Duplicate the first animation frame so that the animation length matches
+		the frame count. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginDuplicateFirstFrameName(const char* path, int frameCount);
 	/*
@@ -509,9 +600,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginDuplicateFirstFrameNameD(const char* path, double frameCount);
 	/*
+		Duplicate all the frames of the animation to double the animation length.
+		Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on.
+		The animation is referenced by id.
 	*/
 	EXPORT_API void PluginDuplicateFrames(int animationId);
 	/*
+		Duplicate all the frames of the animation to double the animation length.
+		Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on.
+		The animation is referenced by name.
 	*/
 	EXPORT_API void PluginDuplicateFramesName(const char* path);
 	/*
@@ -519,9 +616,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginDuplicateFramesNameD(const char* path);
 	/*
+		Duplicate all the animation frames in reverse so that the animation plays
+		forwards and backwards. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginDuplicateMirrorFrames(int animationId);
 	/*
+		Duplicate all the animation frames in reverse so that the animation plays
+		forwards and backwards. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginDuplicateMirrorFramesName(const char* path);
 	/*
@@ -529,9 +630,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginDuplicateMirrorFramesNameD(const char* path);
 	/*
+		Fade the animation to black starting at the fade frame index to the end
+		of the animation. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFadeEndFrames(int animationId, int fade);
 	/*
+		Fade the animation to black starting at the fade frame index to the end
+		of the animation. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFadeEndFramesName(const char* path, int fade);
 	/*
@@ -539,9 +644,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginFadeEndFramesNameD(const char* path, double fade);
 	/*
+		Fade the animation from black to full color starting at 0 to the fade frame
+		index. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFadeStartFrames(int animationId, int fade);
 	/*
+		Fade the animation from black to full color starting at 0 to the fade frame
+		index. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFadeStartFramesName(const char* path, int fade);
 	/*
@@ -549,15 +658,18 @@ extern "C"
 	*/
 	EXPORT_API double PluginFadeStartFramesNameD(const char* path, double fade);
 	/*
-		Set the RGB value for all colors in the specified frame. Use the range of
-		0 to 255 for red, green, and blue parameters.
+		Set the RGB value for all colors in the specified frame. Animation is referenced
+		by id.
 	*/
 	EXPORT_API void PluginFillColor(int animationId, int frameId, int color);
 	/*
+		Set the RGB value for all colors for all frames. Animation is referenced
+		by id.
 	*/
 	EXPORT_API void PluginFillColorAllFrames(int animationId, int color);
 	/*
-		Set the RGB value for all colors for all frames.
+		Set the RGB value for all colors for all frames. Animation is referenced
+		by name.
 	*/
 	EXPORT_API void PluginFillColorAllFramesName(const char* path, int color);
 	/*
@@ -566,10 +678,12 @@ extern "C"
 	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double color);
 	/*
 		Set the RGB value for all colors for all frames. Use the range of 0 to 255
-		for red, green, and blue parameters.
+		for red, green, and blue parameters. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillColorAllFramesRGB(int animationId, int red, int green, int blue);
 	/*
+		Set the RGB value for all colors for all frames. Use the range of 0 to 255
+		for red, green, and blue parameters. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillColorAllFramesRGBName(const char* path, int red, int green, int blue);
 	/*
@@ -577,8 +691,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 	/*
-		Set the RGB value for all colors in the specified frame. Use a BGR integer
-		for the color parameter. 0xFF0000 (blue) 0x00FF00 (green) 0x0000FF (red)
+		Set the RGB value for all colors in the specified frame. Animation is referenced
+		by name.
 	*/
 	EXPORT_API void PluginFillColorName(const char* path, int frameId, int color);
 	/*
@@ -586,11 +700,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double color);
 	/*
-		Set the RGB value for all colors in the specified frame. Use the range of
-		0 to 255 for red, green, and blue parameters.
+		Set the RGB value for all colors in the specified frame. Animation is referenced
+		by id.
 	*/
 	EXPORT_API void PluginFillColorRGB(int animationId, int frameId, int red, int green, int blue);
 	/*
+		Set the RGB value for all colors in the specified frame. Animation is referenced
+		by name.
 	*/
 	EXPORT_API void PluginFillColorRGBName(const char* path, int frameId, int red, int green, int blue);
 	/*
@@ -600,17 +716,19 @@ extern "C"
 	/*
 		This method will only update colors in the animation that are not already
 		set to black. Set the RGB value for a subset of colors in the specified
-		frame.
+		frame. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillNonZeroColor(int animationId, int frameId, int color);
 	/*
 		This method will only update colors in the animation that are not already
 		set to black. Set the RGB value for a subset of colors for all frames.
+		Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFrames(int animationId, int color);
 	/*
 		This method will only update colors in the animation that are not already
 		set to black. Set the RGB value for a subset of colors for all frames.
+		Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int color);
 	/*
@@ -620,10 +738,15 @@ extern "C"
 	/*
 		This method will only update colors in the animation that are not already
 		set to black. Set the RGB value for a subset of colors for all frames.
-		Use the range of 0 to 255 for red, green, and blue parameters.
+		Use the range of 0 to 255 for red, green, and blue parameters. Animation
+		is referenced by id.
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFramesRGB(int animationId, int red, int green, int blue);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Set the RGB value for a subset of colors for all frames.
+		Use the range of 0 to 255 for red, green, and blue parameters. Animation
+		is referenced by name.
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFramesRGBName(const char* path, int red, int green, int blue);
 	/*
@@ -633,7 +756,7 @@ extern "C"
 	/*
 		This method will only update colors in the animation that are not already
 		set to black. Set the RGB value for a subset of colors in the specified
-		frame.
+		frame. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int color);
 	/*
@@ -643,10 +766,15 @@ extern "C"
 	/*
 		This method will only update colors in the animation that are not already
 		set to black. Set the RGB value for a subset of colors in the specified
-		frame. Use the range of 0 to 255 for red, green, and blue parameters.
+		frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation
+		is referenced by id.
 	*/
 	EXPORT_API void PluginFillNonZeroColorRGB(int animationId, int frameId, int red, int green, int blue);
 	/*
+		This method will only update colors in the animation that are not already
+		set to black. Set the RGB value for a subset of colors in the specified
+		frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation
+		is referenced by name.
 	*/
 	EXPORT_API void PluginFillNonZeroColorRGBName(const char* path, int frameId, int red, int green, int blue);
 	/*
@@ -654,12 +782,18 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillNonZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
+		Fill the frame with random RGB values for the given frame. Animation is
+		referenced by id.
 	*/
 	EXPORT_API void PluginFillRandomColors(int animationId, int frameId);
 	/*
+		Fill the frame with random RGB values for all frames. Animation is referenced
+		by id.
 	*/
 	EXPORT_API void PluginFillRandomColorsAllFrames(int animationId);
 	/*
+		Fill the frame with random RGB values for all frames. Animation is referenced
+		by name.
 	*/
 	EXPORT_API void PluginFillRandomColorsAllFramesName(const char* path);
 	/*
@@ -667,12 +801,18 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillRandomColorsAllFramesNameD(const char* path);
 	/*
+		Fill the frame with random black and white values for the specified frame.
+		Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillRandomColorsBlackAndWhite(int animationId, int frameId);
 	/*
+		Fill the frame with random black and white values for all frames. Animation
+		is referenced by id.
 	*/
 	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFrames(int animationId);
 	/*
+		Fill the frame with random black and white values for all frames. Animation
+		is referenced by name.
 	*/
 	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(const char* path);
 	/*
@@ -680,6 +820,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const char* path);
 	/*
+		Fill the frame with random black and white values for the specified frame.
+		Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillRandomColorsBlackAndWhiteName(const char* path, int frameId);
 	/*
@@ -687,6 +829,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteNameD(const char* path, double frameId);
 	/*
+		Fill the frame with random RGB values for the given frame. Animation is
+		referenced by name.
 	*/
 	EXPORT_API void PluginFillRandomColorsName(const char* path, int frameId);
 	/*
@@ -694,12 +838,18 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillRandomColorsNameD(const char* path, double frameId);
 	/*
+		Fill the specified frame with RGB color where the animation color is less
+		than the RGB threshold. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillThresholdColors(int animationId, int frameId, int threshold, int color);
 	/*
+		Fill all frames with RGB color where the animation color is less than the
+		RGB threshold. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillThresholdColorsAllFrames(int animationId, int threshold, int color);
 	/*
+		Fill all frames with RGB color where the animation color is less than the
+		RGB threshold. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillThresholdColorsAllFramesName(const char* path, int threshold, int color);
 	/*
@@ -707,9 +857,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillThresholdColorsAllFramesNameD(const char* path, double threshold, double color);
 	/*
+		Fill all frames with RGB color where the animation color is less than the
+		threshold. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillThresholdColorsAllFramesRGB(int animationId, int threshold, int red, int green, int blue);
 	/*
+		Fill all frames with RGB color where the animation color is less than the
+		threshold. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillThresholdColorsAllFramesRGBName(const char* path, int threshold, int red, int green, int blue);
 	/*
@@ -717,9 +871,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(const char* path, double threshold, double red, double green, double blue);
 	/*
+		Fill all frames with the min RGB color where the animation color is less
+		than the min threshold AND with the max RGB color where the animation is
+		more than the max threshold. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGB(int animationId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 	/*
+		Fill all frames with the min RGB color where the animation color is less
+		than the min threshold AND with the max RGB color where the animation is
+		more than the max threshold. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGBName(const char* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 	/*
@@ -727,9 +887,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillThresholdColorsMinMaxAllFramesRGBNameD(const char* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 	/*
+		Fill the specified frame with the min RGB color where the animation color
+		is less than the min threshold AND with the max RGB color where the animation
+		is more than the max threshold. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillThresholdColorsMinMaxRGB(int animationId, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 	/*
+		Fill the specified frame with the min RGB color where the animation color
+		is less than the min threshold AND with the max RGB color where the animation
+		is more than the max threshold. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillThresholdColorsMinMaxRGBName(const char* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 	/*
@@ -737,6 +903,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillThresholdColorsMinMaxRGBNameD(const char* path, double frameId, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 	/*
+		Fill the specified frame with RGB color where the animation color is less
+		than the RGB threshold. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillThresholdColorsName(const char* path, int frameId, int threshold, int color);
 	/*
@@ -744,9 +912,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillThresholdColorsNameD(const char* path, double frameId, double threshold, double color);
 	/*
+		Fill the specified frame with RGB color where the animation color is less
+		than the RGB threshold. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillThresholdColorsRGB(int animationId, int frameId, int threshold, int red, int green, int blue);
 	/*
+		Fill the specified frame with RGB color where the animation color is less
+		than the RGB threshold. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillThresholdColorsRGBName(const char* path, int frameId, int threshold, int red, int green, int blue);
 	/*
@@ -754,9 +926,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillThresholdColorsRGBNameD(const char* path, double frameId, double threshold, double red, double green, double blue);
 	/*
+		Fill all frames with RGB color where the animation color is less than the
+		RGB threshold. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGB(int animationId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 	/*
+		Fill all frames with RGB color where the animation color is less than the
+		RGB threshold. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGBName(const char* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 	/*
@@ -764,9 +940,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillThresholdRGBColorsAllFramesRGBNameD(const char* path, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
 	/*
+		Fill the specified frame with RGB color where the animation color is less
+		than the RGB threshold. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillThresholdRGBColorsRGB(int animationId, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 	/*
+		Fill the specified frame with RGB color where the animation color is less
+		than the RGB threshold. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillThresholdRGBColorsRGBName(const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 	/*
@@ -774,12 +954,18 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillThresholdRGBColorsRGBNameD(const char* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
 	/*
+		Fill the specified frame with RGB color where the animation color is zero.
+		Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillZeroColor(int animationId, int frameId, int color);
 	/*
+		Fill all frames with RGB color where the animation color is zero. Animation
+		is referenced by id.
 	*/
 	EXPORT_API void PluginFillZeroColorAllFrames(int animationId, int color);
 	/*
+		Fill all frames with RGB color where the animation color is zero. Animation
+		is referenced by name.
 	*/
 	EXPORT_API void PluginFillZeroColorAllFramesName(const char* path, int color);
 	/*
@@ -787,9 +973,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillZeroColorAllFramesNameD(const char* path, double color);
 	/*
+		Fill all frames with RGB color where the animation color is zero. Animation
+		is referenced by id.
 	*/
 	EXPORT_API void PluginFillZeroColorAllFramesRGB(int animationId, int red, int green, int blue);
 	/*
+		Fill all frames with RGB color where the animation color is zero. Animation
+		is referenced by name.
 	*/
 	EXPORT_API void PluginFillZeroColorAllFramesRGBName(const char* path, int red, int green, int blue);
 	/*
@@ -797,6 +987,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 	/*
+		Fill the specified frame with RGB color where the animation color is zero.
+		Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillZeroColorName(const char* path, int frameId, int color);
 	/*
@@ -804,9 +996,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillZeroColorNameD(const char* path, double frameId, double color);
 	/*
+		Fill the specified frame with RGB color where the animation color is zero.
+		Animation is referenced by id.
 	*/
 	EXPORT_API void PluginFillZeroColorRGB(int animationId, int frameId, int red, int green, int blue);
 	/*
+		Fill the specified frame with RGB color where the animation color is zero.
+		Animation is referenced by name.
 	*/
 	EXPORT_API void PluginFillZeroColorRGBName(const char* path, int frameId, int red, int green, int blue);
 	/*
@@ -814,11 +1010,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginFillZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
+		Get the animation color for a frame given the `1D` `led`. The `led` should
+		be greater than or equal to 0 and less than the `MaxLeds`. Animation is
+		referenced by id.
 	*/
 	EXPORT_API int PluginGet1DColor(int animationId, int frameId, int led);
 	/*
 		Get the animation color for a frame given the `1D` `led`. The `led` should
-		be greater than or equal to 0 and less than the `MaxLeds`.
+		be greater than or equal to 0 and less than the `MaxLeds`. Animation is
+		referenced by name.
 	*/
 	EXPORT_API int PluginGet1DColorName(const char* path, int frameId, int led);
 	/*
@@ -826,12 +1026,17 @@ extern "C"
 	*/
 	EXPORT_API double PluginGet1DColorNameD(const char* path, double frameId, double led);
 	/*
+		Get the animation color for a frame given the `2D` `row` and `column`. The
+		`row` should be greater than or equal to 0 and less than the `MaxRow`.
+		The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
+		Animation is referenced by id.
 	*/
 	EXPORT_API int PluginGet2DColor(int animationId, int frameId, int row, int column);
 	/*
 		Get the animation color for a frame given the `2D` `row` and `column`. The
 		`row` should be greater than or equal to 0 and less than the `MaxRow`.
 		The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
+		Animation is referenced by name.
 	*/
 	EXPORT_API int PluginGet2DColorName(const char* path, int frameId, int row, int column);
 	/*
@@ -839,6 +1044,7 @@ extern "C"
 	*/
 	EXPORT_API double PluginGet2DColorNameD(const char* path, double frameId, double row, double column);
 	/*
+		Get the animation id for the named animation.
 	*/
 	EXPORT_API int PluginGetAnimation(const char* name);
 	/*
@@ -971,13 +1177,14 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetPlayingAnimationCount();
 	/*
-	*/
-	EXPORT_API int PluginGetPlayingAnimationId(int index);
-	/*
 		`PluginGetPlayingAnimationId` will return the `animationId` given the `index`
 		of the playing animation. The `index` is zero-based and less than the number
 		returned by `PluginGetPlayingAnimationCount`. Use `PluginGetAnimationName`
 		to get the name of the animation.
+	*/
+	EXPORT_API int PluginGetPlayingAnimationId(int index);
+	/*
+		Get the RGB color given red, green, and blue.
 	*/
 	EXPORT_API int PluginGetRGB(int red, int green, int blue);
 	/*
@@ -1006,9 +1213,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginInitD();
 	/*
+		Insert an animation delay by duplicating the frame by the delay number of
+		times. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginInsertDelay(int animationId, int frameId, int delay);
 	/*
+		Insert an animation delay by duplicating the frame by the delay number of
+		times. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginInsertDelayName(const char* path, int frameId, int delay);
 	/*
@@ -1016,9 +1227,13 @@ extern "C"
 	*/
 	EXPORT_API double PluginInsertDelayNameD(const char* path, double frameId, double delay);
 	/*
+		Duplicate the source frame index at the target frame index. Animation is
+		referenced by id.
 	*/
 	EXPORT_API void PluginInsertFrame(int animationId, int sourceFrame, int targetFrame);
 	/*
+		Duplicate the source frame index at the target frame index. Animation is
+		referenced by name.
 	*/
 	EXPORT_API void PluginInsertFrameName(const char* path, int sourceFrame, int targetFrame);
 	/*
@@ -1026,12 +1241,16 @@ extern "C"
 	*/
 	EXPORT_API double PluginInsertFrameNameD(const char* path, double sourceFrame, double targetFrame);
 	/*
+		Invert all the colors at the specified frame. Animation is referenced by
+		id.
 	*/
 	EXPORT_API void PluginInvertColors(int animationId, int frameId);
 	/*
+		Invert all the colors for all frames. Animation is referenced by id.
 	*/
 	EXPORT_API void PluginInvertColorsAllFrames(int animationId);
 	/*
+		Invert all the colors for all frames. Animation is referenced by name.
 	*/
 	EXPORT_API void PluginInvertColorsAllFramesName(const char* path);
 	/*
@@ -1039,6 +1258,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginInvertColorsAllFramesNameD(const char* path);
 	/*
+		Invert all the colors at the specified frame. Animation is referenced by
+		name.
 	*/
 	EXPORT_API void PluginInvertColorsName(const char* path, int frameId);
 	/*
@@ -1084,6 +1305,10 @@ extern "C"
 	*/
 	EXPORT_API double PluginIsPlatformSupportedD();
 	/*
+		`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`.
+		The named `.chroma` animation file will be automatically opened. The method
+		will return whether the animation is playing or not. Animation is referenced
+		by id.
 	*/
 	EXPORT_API bool PluginIsPlaying(int animationId);
 	/*
@@ -1093,7 +1318,8 @@ extern "C"
 	/*
 		`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`.
 		The named `.chroma` animation file will be automatically opened. The method
-		will return whether the animation is playing or not.
+		will return whether the animation is playing or not. Animation is referenced
+		by name.
 	*/
 	EXPORT_API bool PluginIsPlayingName(const char* path);
 	/*
@@ -1111,9 +1337,11 @@ extern "C"
 	*/
 	EXPORT_API double PluginIsPlayingTypeD(double deviceType, double device);
 	/*
+		Do a lerp math operation on a float.
 	*/
 	EXPORT_API float PluginLerp(float start, float end, float amt);
 	/*
+		Lerp from one color to another given t in the range 0.0 to 1.0.
 	*/
 	EXPORT_API int PluginLerpColor(int from, int to, float t);
 	/*
@@ -1126,15 +1354,23 @@ extern "C"
 	*/
 	EXPORT_API double PluginLoadAnimationD(double animationId);
 	/*
+		Load the named animation.
 	*/
 	EXPORT_API void PluginLoadAnimationName(const char* path);
 	/*
+		Load a composite set of animations.
 	*/
 	EXPORT_API void PluginLoadComposite(const char* name);
 	/*
+		Make a blank animation for the length of the frame count. Frame duration
+		defaults to the duration. The frame color defaults to color. Animation
+		is referenced by id.
 	*/
 	EXPORT_API void PluginMakeBlankFrames(int animationId, int frameCount, float duration, int color);
 	/*
+		Make a blank animation for the length of the frame count. Frame duration
+		defaults to the duration. The frame color defaults to color. Animation
+		is referenced by name.
 	*/
 	EXPORT_API void PluginMakeBlankFramesName(const char* path, int frameCount, float duration, int color);
 	/*
@@ -1142,12 +1378,21 @@ extern "C"
 	*/
 	EXPORT_API double PluginMakeBlankFramesNameD(const char* path, double frameCount, double duration, double color);
 	/*
+		Make a blank animation for the length of the frame count. Frame duration
+		defaults to the duration. The frame color is random. Animation is referenced
+		by id.
 	*/
 	EXPORT_API void PluginMakeBlankFramesRandom(int animationId, int frameCount, float duration);
 	/*
+		Make a blank animation for the length of the frame count. Frame duration
+		defaults to the duration. The frame color is random black and white. Animation
+		is referenced by id.
 	*/
 	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhite(int animationId, int frameCount, float duration);
 	/*
+		Make a blank animation for the length of the frame count. Frame duration
+		defaults to the duration. The frame color is random black and white. Animation
+		is referenced by name.
 	*/
 	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhiteName(const char* path, int frameCount, float duration);
 	/*
@@ -1155,6 +1400,9 @@ extern "C"
 	*/
 	EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(const char* path, double frameCount, double duration);
 	/*
+		Make a blank animation for the length of the frame count. Frame duration
+		defaults to the duration. The frame color is random. Animation is referenced
+		by name.
 	*/
 	EXPORT_API void PluginMakeBlankFramesRandomName(const char* path, int frameCount, float duration);
 	/*
@@ -1162,9 +1410,15 @@ extern "C"
 	*/
 	EXPORT_API double PluginMakeBlankFramesRandomNameD(const char* path, double frameCount, double duration);
 	/*
+		Make a blank animation for the length of the frame count. Frame duration
+		defaults to the duration. The frame color defaults to color. Animation
+		is referenced by id.
 	*/
 	EXPORT_API void PluginMakeBlankFramesRGB(int animationId, int frameCount, float duration, int red, int green, int blue);
 	/*
+		Make a blank animation for the length of the frame count. Frame duration
+		defaults to the duration. The frame color defaults to color. Animation
+		is referenced by name.
 	*/
 	EXPORT_API void PluginMakeBlankFramesRGBName(const char* path, int frameCount, float duration, int red, int green, int blue);
 	/*
