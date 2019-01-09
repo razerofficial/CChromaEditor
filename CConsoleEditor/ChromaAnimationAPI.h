@@ -25,12 +25,17 @@ void LogError(const char* text, ...);
 */
 typedef int(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int length);
 /*
+	Add source color to target where color is not black for all frames, reference
+	source and target by id.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
 /*
+	Add source color to target where color is not black for all frames, reference
+	source and target by name.
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -40,6 +45,7 @@ typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimatio
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
@@ -49,6 +55,7 @@ typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int ta
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 /*
@@ -58,6 +65,7 @@ typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimatio
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -67,6 +75,7 @@ typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceA
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
@@ -76,6 +85,7 @@ typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId,
 */
 typedef void(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 /*
@@ -85,6 +95,7 @@ typedef void(*PLUGIN_APPEND_ALL_FRAMES)(int sourceAnimationId, int targetAnimati
 */
 typedef void(*PLUGIN_APPEND_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_APPEND_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -108,6 +119,7 @@ typedef void(*PLUGIN_CLOSE_ALL)();
 */
 typedef int(*PLUGIN_CLOSE_ANIMATION)(int animationId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_CLOSE_ANIMATION_D)(double animationId);
 /*
@@ -116,6 +128,7 @@ typedef double(*PLUGIN_CLOSE_ANIMATION_D)(double animationId);
 */
 typedef void(*PLUGIN_CLOSE_ANIMATION_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_CLOSE_ANIMATION_NAME_D)(const char* path);
 /*
@@ -124,6 +137,7 @@ typedef double(*PLUGIN_CLOSE_ANIMATION_NAME_D)(const char* path);
 */
 typedef void(*PLUGIN_CLOSE_COMPOSITE)(const char* name);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_CLOSE_COMPOSITE_D)(const char* name);
 /*
@@ -133,6 +147,7 @@ typedef int(*PLUGIN_COPY_ANIMATION)(int sourceAnimationId, const char* targetAni
 */
 typedef void(*PLUGIN_COPY_ANIMATION_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_ANIMATION_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -142,6 +157,7 @@ typedef void(*PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES)(int animationId, float redInt
 */
 typedef void(*PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME)(const char* path, float redIntensity, float greenIntensity);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME_D)(const char* path, double redIntensity, double greenIntensity);
 /*
@@ -151,6 +167,7 @@ typedef void(*PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES)(int animationId, float redIn
 */
 typedef void(*PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME)(const char* path, float redIntensity, float blueIntensity);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME_D)(const char* path, double redIntensity, double blueIntensity);
 /*
@@ -165,6 +182,7 @@ typedef void(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES)(int sourceAnimationId, int targe
 */
 typedef void(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation, int rzkey);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double rzkey);
 /*
@@ -174,6 +192,7 @@ typedef void(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET)(int sourceAnimationId, in
 */
 typedef void(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double rzkey, double offset);
 /*
@@ -182,6 +201,7 @@ typedef double(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME_D)(const char* sour
 */
 typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_KEY_COLOR_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 /*
@@ -198,6 +218,7 @@ typedef void(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, i
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -207,12 +228,14 @@ typedef void(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimati
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId);
 /*
@@ -222,6 +245,7 @@ typedef void(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int t
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 /*
@@ -235,6 +259,7 @@ typedef void(*PLUGIN_COPY_NON_ZERO_KEY_COLOR)(int sourceAnimationId, int targetA
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_KEY_COLOR_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 /*
@@ -247,6 +272,7 @@ typedef void(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimati
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -256,12 +282,14 @@ typedef void(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int source
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId);
 /*
@@ -271,6 +299,7 @@ typedef void(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId
 */
 typedef void(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 /*
@@ -280,6 +309,7 @@ typedef void(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES)(int animationId, float greenIn
 */
 typedef void(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME)(const char* path, float greenIntensity, float blueIntensity);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME_D)(const char* path, double greenIntensity, double blueIntensity);
 /*
@@ -289,6 +319,7 @@ typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int t
 */
 typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -298,6 +329,7 @@ typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId
 */
 typedef void(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
@@ -307,6 +339,7 @@ typedef void(*PLUGIN_COPY_ZERO_KEY_COLOR)(int sourceAnimationId, int targetAnima
 */
 typedef void(*PLUGIN_COPY_ZERO_KEY_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_ZERO_KEY_COLOR_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 /*
@@ -316,42 +349,55 @@ typedef void(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId
 */
 typedef void(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_CREATE_CHROMA_LINK_EFFECT)(ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_CREATE_EFFECT)(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_CREATE_HEADSET_EFFECT)(ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_CREATE_KEYBOARD_EFFECT)(ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_CREATE_KEYPAD_EFFECT)(ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_CREATE_MOUSE_EFFECT)(ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_CREATE_MOUSEPAD_EFFECT)(ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_DELETE_EFFECT)(RZEFFECTID EffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_INIT)();
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_QUERY_DEVICE)(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_SET_EFFECT)(RZEFFECTID EffectId);
 /*
+	Direct access to low level API.
 */
 typedef RZRESULT(*PLUGIN_CORE_UNINIT)();
 /*
@@ -386,6 +432,7 @@ typedef void(*PLUGIN_DUPLICATE_FIRST_FRAME)(int animationId, int frameCount);
 */
 typedef void(*PLUGIN_DUPLICATE_FIRST_FRAME_NAME)(const char* path, int frameCount);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_DUPLICATE_FIRST_FRAME_NAME_D)(const char* path, double frameCount);
 /*
@@ -395,6 +442,7 @@ typedef void(*PLUGIN_DUPLICATE_FRAMES)(int animationId);
 */
 typedef void(*PLUGIN_DUPLICATE_FRAMES_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_DUPLICATE_FRAMES_NAME_D)(const char* path);
 /*
@@ -404,6 +452,7 @@ typedef void(*PLUGIN_DUPLICATE_MIRROR_FRAMES)(int animationId);
 */
 typedef void(*PLUGIN_DUPLICATE_MIRROR_FRAMES_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_DUPLICATE_MIRROR_FRAMES_NAME_D)(const char* path);
 /*
@@ -413,6 +462,7 @@ typedef void(*PLUGIN_FADE_END_FRAMES)(int animationId, int fade);
 */
 typedef void(*PLUGIN_FADE_END_FRAMES_NAME)(const char* path, int fade);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FADE_END_FRAMES_NAME_D)(const char* path, double fade);
 /*
@@ -422,6 +472,7 @@ typedef void(*PLUGIN_FADE_START_FRAMES)(int animationId, int fade);
 */
 typedef void(*PLUGIN_FADE_START_FRAMES_NAME)(const char* path, int fade);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FADE_START_FRAMES_NAME_D)(const char* path, double fade);
 /*
@@ -437,6 +488,7 @@ typedef void(*PLUGIN_FILL_COLOR_ALL_FRAMES)(int animationId, int color);
 */
 typedef void(*PLUGIN_FILL_COLOR_ALL_FRAMES_NAME)(const char* path, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_COLOR_ALL_FRAMES_NAME_D)(const char* path, double color);
 /*
@@ -448,6 +500,7 @@ typedef void(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB)(int animationId, int red, int gr
 */
 typedef void(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME_D)(const char* path, double red, double green, double blue);
 /*
@@ -456,6 +509,7 @@ typedef double(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME_D)(const char* path, doubl
 */
 typedef void(*PLUGIN_FILL_COLOR_NAME)(const char* path, int frameId, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_COLOR_NAME_D)(const char* path, double frameId, double color);
 /*
@@ -467,6 +521,7 @@ typedef void(*PLUGIN_FILL_COLOR_RGB)(int animationId, int frameId, int red, int 
 */
 typedef void(*PLUGIN_FILL_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_COLOR_RGB_NAME_D)(const char* path, double frameId, double red, double green, double blue);
 /*
@@ -486,6 +541,7 @@ typedef void(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES)(int animationId, int color)
 */
 typedef void(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_NAME)(const char* path, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_NAME_D)(const char* path, double color);
 /*
@@ -498,6 +554,7 @@ typedef void(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB)(int animationId, int re
 */
 typedef void(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D)(const char* path, double red, double green, double blue);
 /*
@@ -507,6 +564,7 @@ typedef double(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D)(const char* pa
 */
 typedef void(*PLUGIN_FILL_NON_ZERO_COLOR_NAME)(const char* path, int frameId, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_NON_ZERO_COLOR_NAME_D)(const char* path, double frameId, double color);
 /*
@@ -519,6 +577,7 @@ typedef void(*PLUGIN_FILL_NON_ZERO_COLOR_RGB)(int animationId, int frameId, int 
 */
 typedef void(*PLUGIN_FILL_NON_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_NON_ZERO_COLOR_RGB_NAME_D)(const char* path, double frameId, double red, double green, double blue);
 /*
@@ -531,6 +590,7 @@ typedef void(*PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES)(int animationId);
 */
 typedef void(*PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES_NAME_D)(const char* path);
 /*
@@ -543,18 +603,21 @@ typedef void(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES)(int animatio
 */
 typedef void(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES_NAME_D)(const char* path);
 /*
 */
 typedef void(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME)(const char* path, int frameId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME_D)(const char* path, double frameId);
 /*
 */
 typedef void(*PLUGIN_FILL_RANDOM_COLORS_NAME)(const char* path, int frameId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_RANDOM_COLORS_NAME_D)(const char* path, double frameId);
 /*
@@ -567,6 +630,7 @@ typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES)(int animationId, int thre
 */
 typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_NAME)(const char* path, int threshold, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_NAME_D)(const char* path, double threshold, double color);
 /*
@@ -576,6 +640,7 @@ typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB)(int animationId, int 
 */
 typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB_NAME)(const char* path, int threshold, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB_NAME_D)(const char* path, double threshold, double red, double green, double blue);
 /*
@@ -585,6 +650,7 @@ typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB)(int animation
 */
 typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME)(const char* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME_D)(const char* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 /*
@@ -594,12 +660,14 @@ typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB)(int animationId, int fra
 */
 typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB_NAME)(const char* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB_NAME_D)(const char* path, double frameId, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 /*
 */
 typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_NAME)(const char* path, int frameId, int threshold, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_THRESHOLD_COLORS_NAME_D)(const char* path, double frameId, double threshold, double color);
 /*
@@ -609,6 +677,7 @@ typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_RGB)(int animationId, int frameId, in
 */
 typedef void(*PLUGIN_FILL_THRESHOLD_COLORS_RGB_NAME)(const char* path, int frameId, int threshold, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_THRESHOLD_COLORS_RGB_NAME_D)(const char* path, double frameId, double threshold, double red, double green, double blue);
 /*
@@ -618,6 +687,7 @@ typedef void(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB)(int animationId, 
 */
 typedef void(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB_NAME)(const char* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB_NAME_D)(const char* path, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
 /*
@@ -627,6 +697,7 @@ typedef void(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB)(int animationId, int frameId
 */
 typedef void(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB_NAME)(const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB_NAME_D)(const char* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
 /*
@@ -639,6 +710,7 @@ typedef void(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES)(int animationId, int color);
 */
 typedef void(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME)(const char* path, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME_D)(const char* path, double color);
 /*
@@ -648,12 +720,14 @@ typedef void(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB)(int animationId, int red, i
 */
 typedef void(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D)(const char* path, double red, double green, double blue);
 /*
 */
 typedef void(*PLUGIN_FILL_ZERO_COLOR_NAME)(const char* path, int frameId, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_ZERO_COLOR_NAME_D)(const char* path, double frameId, double color);
 /*
@@ -663,6 +737,7 @@ typedef void(*PLUGIN_FILL_ZERO_COLOR_RGB)(int animationId, int frameId, int red,
 */
 typedef void(*PLUGIN_FILL_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_FILL_ZERO_COLOR_RGB_NAME_D)(const char* path, double frameId, double red, double green, double blue);
 /*
@@ -674,6 +749,7 @@ typedef int(*PLUGIN_GET_1D_COLOR)(int animationId, int frameId, int led);
 */
 typedef int(*PLUGIN_GET_1D_COLOR_NAME)(const char* path, int frameId, int led);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_1D_COLOR_NAME_D)(const char* path, double frameId, double led);
 /*
@@ -686,6 +762,7 @@ typedef int(*PLUGIN_GET_2D_COLOR)(int animationId, int frameId, int row, int col
 */
 typedef int(*PLUGIN_GET_2D_COLOR_NAME)(const char* path, int frameId, int row, int column);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_2D_COLOR_NAME_D)(const char* path, double frameId, double row, double column);
 /*
@@ -696,6 +773,7 @@ typedef int(*PLUGIN_GET_ANIMATION)(const char* name);
 */
 typedef int(*PLUGIN_GET_ANIMATION_COUNT)();
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_ANIMATION_D)(const char* name);
 /*
@@ -720,6 +798,7 @@ typedef int(*PLUGIN_GET_CURRENT_FRAME)(int animationId);
 */
 typedef int(*PLUGIN_GET_CURRENT_FRAME_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_CURRENT_FRAME_NAME_D)(const char* path);
 /*
@@ -735,6 +814,7 @@ typedef int(*PLUGIN_GET_DEVICE)(int animationId);
 */
 typedef int(*PLUGIN_GET_DEVICE_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_DEVICE_NAME_D)(const char* path);
 /*
@@ -748,6 +828,7 @@ typedef int(*PLUGIN_GET_DEVICE_TYPE)(int animationId);
 */
 typedef int(*PLUGIN_GET_DEVICE_TYPE_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_DEVICE_TYPE_NAME_D)(const char* path);
 /*
@@ -770,6 +851,7 @@ typedef int(*PLUGIN_GET_FRAME_COUNT)(int animationId);
 */
 typedef int(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_FRAME_COUNT_NAME_D)(const char* path);
 /*
@@ -777,6 +859,7 @@ typedef double(*PLUGIN_GET_FRAME_COUNT_NAME_D)(const char* path);
 */
 typedef int(*PLUGIN_GET_KEY_COLOR)(int animationId, int frameId, int rzkey);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_KEY_COLOR_D)(const char* path, double frameId, double rzkey);
 /*
@@ -789,6 +872,7 @@ typedef int(*PLUGIN_GET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey
 */
 typedef int(*PLUGIN_GET_MAX_COLUMN)(int device);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_MAX_COLUMN_D)(double device);
 /*
@@ -797,6 +881,7 @@ typedef double(*PLUGIN_GET_MAX_COLUMN_D)(double device);
 */
 typedef int(*PLUGIN_GET_MAX_LEDS)(int device);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_MAX_LEDS_D)(double device);
 /*
@@ -805,6 +890,7 @@ typedef double(*PLUGIN_GET_MAX_LEDS_D)(double device);
 */
 typedef int(*PLUGIN_GET_MAX_ROW)(int device);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_MAX_ROW_D)(double device);
 /*
@@ -822,6 +908,7 @@ typedef int(*PLUGIN_GET_PLAYING_ANIMATION_ID)(int index);
 */
 typedef int(*PLUGIN_GET_RGB)(int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_GET_RGBD)(double red, double green, double blue);
 /*
@@ -833,6 +920,7 @@ typedef bool(*PLUGIN_HAS_ANIMATION_LOOP)(int animationId);
 */
 typedef bool(*PLUGIN_HAS_ANIMATION_LOOP_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_HAS_ANIMATION_LOOP_NAME_D)(const char* path);
 /*
@@ -841,6 +929,7 @@ typedef double(*PLUGIN_HAS_ANIMATION_LOOP_NAME_D)(const char* path);
 */
 typedef int(*PLUGIN_INIT)();
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_INIT_D)();
 /*
@@ -850,6 +939,7 @@ typedef void(*PLUGIN_INSERT_DELAY)(int animationId, int frameId, int delay);
 */
 typedef void(*PLUGIN_INSERT_DELAY_NAME)(const char* path, int frameId, int delay);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_INSERT_DELAY_NAME_D)(const char* path, double frameId, double delay);
 /*
@@ -859,6 +949,7 @@ typedef void(*PLUGIN_INSERT_FRAME)(int animationId, int sourceFrame, int targetF
 */
 typedef void(*PLUGIN_INSERT_FRAME_NAME)(const char* path, int sourceFrame, int targetFrame);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_INSERT_FRAME_NAME_D)(const char* path, double sourceFrame, double targetFrame);
 /*
@@ -871,12 +962,14 @@ typedef void(*PLUGIN_INVERT_COLORS_ALL_FRAMES)(int animationId);
 */
 typedef void(*PLUGIN_INVERT_COLORS_ALL_FRAMES_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_INVERT_COLORS_ALL_FRAMES_NAME_D)(const char* path);
 /*
 */
 typedef void(*PLUGIN_INVERT_COLORS_NAME)(const char* path, int frameId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_INVERT_COLORS_NAME_D)(const char* path, double frameId);
 /*
@@ -888,6 +981,7 @@ typedef bool(*PLUGIN_IS_ANIMATION_PAUSED)(int animationId);
 */
 typedef bool(*PLUGIN_IS_ANIMATION_PAUSED_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_IS_ANIMATION_PAUSED_NAME_D)(const char* path);
 /*
@@ -896,6 +990,7 @@ typedef double(*PLUGIN_IS_ANIMATION_PAUSED_NAME_D)(const char* path);
 */
 typedef bool(*PLUGIN_IS_DIALOG_OPEN)();
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_IS_DIALOG_OPEN_D)();
 /*
@@ -904,6 +999,7 @@ typedef double(*PLUGIN_IS_DIALOG_OPEN_D)();
 */
 typedef bool(*PLUGIN_IS_INITIALIZED)();
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_IS_INITIALIZED_D)();
 /*
@@ -911,12 +1007,14 @@ typedef double(*PLUGIN_IS_INITIALIZED_D)();
 */
 typedef bool(*PLUGIN_IS_PLATFORM_SUPPORTED)();
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_IS_PLATFORM_SUPPORTED_D)();
 /*
 */
 typedef bool(*PLUGIN_IS_PLAYING)(int animationId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_IS_PLAYING_D)(double animationId);
 /*
@@ -926,6 +1024,7 @@ typedef double(*PLUGIN_IS_PLAYING_D)(double animationId);
 */
 typedef bool(*PLUGIN_IS_PLAYING_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_IS_PLAYING_NAME_D)(const char* path);
 /*
@@ -935,6 +1034,7 @@ typedef double(*PLUGIN_IS_PLAYING_NAME_D)(const char* path);
 */
 typedef bool(*PLUGIN_IS_PLAYING_TYPE)(int deviceType, int device);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_IS_PLAYING_TYPE_D)(double deviceType, double device);
 /*
@@ -949,6 +1049,7 @@ typedef int(*PLUGIN_LERP_COLOR)(int from, int to, float t);
 */
 typedef int(*PLUGIN_LOAD_ANIMATION)(int animationId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_LOAD_ANIMATION_D)(double animationId);
 /*
@@ -964,6 +1065,7 @@ typedef void(*PLUGIN_MAKE_BLANK_FRAMES)(int animationId, int frameCount, float d
 */
 typedef void(*PLUGIN_MAKE_BLANK_FRAMES_NAME)(const char* path, int frameCount, float duration, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MAKE_BLANK_FRAMES_NAME_D)(const char* path, double frameCount, double duration, double color);
 /*
@@ -976,12 +1078,14 @@ typedef void(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE)(int animationId, 
 */
 typedef void(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE_NAME)(const char* path, int frameCount, float duration);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE_NAME_D)(const char* path, double frameCount, double duration);
 /*
 */
 typedef void(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_NAME)(const char* path, int frameCount, float duration);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_NAME_D)(const char* path, double frameCount, double duration);
 /*
@@ -991,6 +1095,7 @@ typedef void(*PLUGIN_MAKE_BLANK_FRAMES_RGB)(int animationId, int frameCount, flo
 */
 typedef void(*PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME)(const char* path, int frameCount, float duration, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME_D)(const char* path, double frameCount, double duration, double red, double green, double blue);
 /*
@@ -1011,6 +1116,7 @@ typedef void(*PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES)(int animationId, int color1
 */
 typedef void(*PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES_NAME)(const char* path, int color1, int color2);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES_NAME_D)(const char* path, double color1, double color2);
 /*
@@ -1035,6 +1141,7 @@ typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES)(int animationId, float inten
 */
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)(const char* path, float intensity);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME_D)(const char* path, double intensity);
 /*
@@ -1044,6 +1151,7 @@ typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB)(int animationId, int red
 */
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME)(const char* path, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME_D)(const char* path, double red, double green, double blue);
 /*
@@ -1056,12 +1164,14 @@ typedef void(*PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES)(int animationId, int c
 */
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES_NAME)(const char* path, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES_NAME_D)(const char* path, double color);
 /*
 */
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME)(const char* path, int frameId, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME_D)(const char* path, double frameId, double color);
 /*
@@ -1072,6 +1182,7 @@ typedef double(*PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME_D)(const char* path, double
 */
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const char* path, int frameId, float intensity);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_INTENSITY_NAME_D)(const char* path, double frameId, double intensity);
 /*
@@ -1081,6 +1192,7 @@ typedef void(*PLUGIN_MULTIPLY_INTENSITY_RGB)(int animationId, int frameId, int r
 */
 typedef void(*PLUGIN_MULTIPLY_INTENSITY_RGB_NAME)(const char* path, int frameId, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_INTENSITY_RGB_NAME_D)(const char* path, double frameId, double red, double green, double blue);
 /*
@@ -1093,6 +1205,7 @@ typedef void(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES)(int animati
 */
 typedef void(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME)(const char* path, int color1, int color2);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME_D)(const char* path, double color1, double color2);
 /*
@@ -1102,6 +1215,7 @@ typedef void(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB)(int ani
 */
 typedef void(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME)(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME_D)(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 /*
@@ -1114,6 +1228,7 @@ typedef void(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES)(int animationId, int
 */
 typedef void(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME)(const char* path, int color1, int color2);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME_D)(const char* path, double color1, double color2);
 /*
@@ -1123,6 +1238,7 @@ typedef void(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB)(int animationId,
 */
 typedef void(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME)(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME_D)(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 /*
@@ -1144,6 +1260,7 @@ typedef void(*PLUGIN_OFFSET_COLORS_ALL_FRAMES)(int animationId, int red, int gre
 */
 typedef void(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME_D)(const char* path, double red, double green, double blue);
 /*
@@ -1153,6 +1270,7 @@ typedef double(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME_D)(const char* path, double
 */
 typedef void(*PLUGIN_OFFSET_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_OFFSET_COLORS_NAME_D)(const char* path, double frameId, double red, double green, double blue);
 /*
@@ -1177,6 +1295,7 @@ typedef void(*PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES)(int animationId, int red
 */
 typedef void(*PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME)(const char* path, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME_D)(const char* path, double red, double green, double blue);
 /*
@@ -1187,6 +1306,7 @@ typedef double(*PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME_D)(const char* pat
 */
 typedef void(*PLUGIN_OFFSET_NON_ZERO_COLORS_NAME)(const char* path, int frameId, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_OFFSET_NON_ZERO_COLORS_NAME_D)(const char* path, double frameId, double red, double green, double blue);
 /*
@@ -1196,6 +1316,7 @@ typedef double(*PLUGIN_OFFSET_NON_ZERO_COLORS_NAME_D)(const char* path, double f
 */
 typedef int(*PLUGIN_OPEN_ANIMATION)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_OPEN_ANIMATION_D)(const char* path);
 /*
@@ -1207,9 +1328,11 @@ typedef int(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
 */
 typedef int(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY_D)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_OPEN_EDITOR_DIALOG_D)(const char* path);
 /*
@@ -1218,6 +1341,7 @@ typedef double(*PLUGIN_OPEN_EDITOR_DIALOG_D)(const char* path);
 */
 typedef int(*PLUGIN_OVERRIDE_FRAME_DURATION)(int animationId, float duration);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_OVERRIDE_FRAME_DURATION_D)(double animationId, double duration);
 /*
@@ -1232,6 +1356,7 @@ typedef void(*PLUGIN_PAUSE_ANIMATION)(int animationId);
 */
 typedef void(*PLUGIN_PAUSE_ANIMATION_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_PAUSE_ANIMATION_NAME_D)(const char* path);
 /*
@@ -1240,6 +1365,7 @@ typedef double(*PLUGIN_PAUSE_ANIMATION_NAME_D)(const char* path);
 */
 typedef int(*PLUGIN_PLAY_ANIMATION)(int animationId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_PLAY_ANIMATION_D)(double animationId);
 /*
@@ -1255,6 +1381,7 @@ typedef void(*PLUGIN_PLAY_ANIMATION_FRAME)(int animationId, int frameId, bool lo
 */
 typedef void(*PLUGIN_PLAY_ANIMATION_FRAME_NAME)(const char* path, int frameId, bool loop);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_PLAY_ANIMATION_FRAME_NAME_D)(const char* path, double frameId, double loop);
 /*
@@ -1270,6 +1397,7 @@ typedef void(*PLUGIN_PLAY_ANIMATION_LOOP)(int animationId, bool loop);
 */
 typedef void(*PLUGIN_PLAY_ANIMATION_NAME)(const char* path, bool loop);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_PLAY_ANIMATION_NAME_D)(const char* path, double loop);
 /*
@@ -1279,6 +1407,7 @@ typedef double(*PLUGIN_PLAY_ANIMATION_NAME_D)(const char* path, double loop);
 */
 typedef void(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_PLAY_COMPOSITE_D)(const char* name, double loop);
 /*
@@ -1287,6 +1416,7 @@ typedef double(*PLUGIN_PLAY_COMPOSITE_D)(const char* name, double loop);
 */
 typedef int(*PLUGIN_PREVIEW_FRAME)(int animationId, int frameIndex);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_PREVIEW_FRAME_D)(double animationId, double frameIndex);
 /*
@@ -1299,6 +1429,7 @@ typedef void(*PLUGIN_REDUCE_FRAMES)(int animationId, int n);
 */
 typedef void(*PLUGIN_REDUCE_FRAMES_NAME)(const char* path, int n);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_REDUCE_FRAMES_NAME_D)(const char* path, double n);
 /*
@@ -1315,6 +1446,7 @@ typedef void(*PLUGIN_RESUME_ANIMATION)(int animationId, bool loop);
 */
 typedef void(*PLUGIN_RESUME_ANIMATION_NAME)(const char* path, bool loop);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_RESUME_ANIMATION_NAME_D)(const char* path, double loop);
 /*
@@ -1329,6 +1461,7 @@ typedef void(*PLUGIN_REVERSE_ALL_FRAMES)(int animationId);
 */
 typedef void(*PLUGIN_REVERSE_ALL_FRAMES_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_REVERSE_ALL_FRAMES_NAME_D)(const char* path);
 /*
@@ -1346,6 +1479,7 @@ typedef void(*PLUGIN_SET_1D_COLOR)(int animationId, int frameId, int led, int co
 */
 typedef void(*PLUGIN_SET_1D_COLOR_NAME)(const char* path, int frameId, int led, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_1D_COLOR_NAME_D)(const char* path, double frameId, double led, double color);
 /*
@@ -1358,6 +1492,7 @@ typedef void(*PLUGIN_SET_2D_COLOR)(int animationId, int frameId, int row, int co
 */
 typedef void(*PLUGIN_SET_2D_COLOR_NAME)(const char* path, int frameId, int row, int column, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_2D_COLOR_NAME_D)(const char* path, double frameId, double rowColumnIndex, double color);
 /*
@@ -1367,6 +1502,7 @@ typedef void(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES)(int animationId);
 */
 typedef void(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME_D)(const char* path);
 /*
@@ -1376,6 +1512,7 @@ typedef void(*PLUGIN_SET_CHROMA_CUSTOM_FLAG)(int animationId, bool flag);
 */
 typedef void(*PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME)(const char* path, bool flag);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME_D)(const char* path, double flag);
 /*
@@ -1387,6 +1524,7 @@ typedef void(*PLUGIN_SET_CURRENT_FRAME)(int animationId, int frameId);
 */
 typedef void(*PLUGIN_SET_CURRENT_FRAME_NAME)(const char* path, int frameId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_CURRENT_FRAME_NAME_D)(const char* path, double frameId);
 /*
@@ -1409,6 +1547,7 @@ typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES)(int animationId, int rzkey, int c
 */
 typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME)(const char* path, int rzkey, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME_D)(const char* path, double rzkey, double color);
 /*
@@ -1418,6 +1557,7 @@ typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB)(int animationId, int rzkey, i
 */
 typedef void(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME)(const char* path, int rzkey, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME_D)(const char* path, double rzkey, double red, double green, double blue);
 /*
@@ -1425,6 +1565,7 @@ typedef double(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME_D)(const char* path, do
 */
 typedef void(*PLUGIN_SET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_KEY_COLOR_NAME_D)(const char* path, double frameId, double rzkey, double color);
 /*
@@ -1434,6 +1575,7 @@ typedef void(*PLUGIN_SET_KEY_COLOR_RGB)(int animationId, int frameId, int rzkey,
 */
 typedef void(*PLUGIN_SET_KEY_COLOR_RGB_NAME)(const char* path, int frameId, int rzkey, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_KEY_COLOR_RGB_NAME_D)(const char* path, double frameId, double rzkey, double red, double green, double blue);
 /*
@@ -1447,6 +1589,7 @@ typedef void(*PLUGIN_SET_KEY_NON_ZERO_COLOR)(int animationId, int frameId, int r
 */
 typedef void(*PLUGIN_SET_KEY_NON_ZERO_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_KEY_NON_ZERO_COLOR_NAME_D)(const char* path, double frameId, double rzkey, double color);
 /*
@@ -1456,6 +1599,7 @@ typedef void(*PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB)(int animationId, int frameId, i
 */
 typedef void(*PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, int rzkey, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB_NAME_D)(const char* path, double frameId, double rzkey, double red, double green, double blue);
 /*
@@ -1537,6 +1681,7 @@ typedef void(*PLUGIN_SET_KEY_ZERO_COLOR)(int animationId, int frameId, int rzkey
 */
 typedef void(*PLUGIN_SET_KEY_ZERO_COLOR_NAME)(const char* path, int frameId, int rzkey, int color);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_KEY_ZERO_COLOR_NAME_D)(const char* path, double frameId, double rzkey, double color);
 /*
@@ -1546,6 +1691,7 @@ typedef void(*PLUGIN_SET_KEY_ZERO_COLOR_RGB)(int animationId, int frameId, int r
 */
 typedef void(*PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME)(const char* path, int frameId, int rzkey, int red, int green, int blue);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME_D)(const char* path, double frameId, double rzkey, double red, double green, double blue);
 /*
@@ -1564,6 +1710,7 @@ typedef void(*PLUGIN_STOP_ALL)();
 */
 typedef int(*PLUGIN_STOP_ANIMATION)(int animationId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_STOP_ANIMATION_D)(double animationId);
 /*
@@ -1573,6 +1720,7 @@ typedef double(*PLUGIN_STOP_ANIMATION_D)(double animationId);
 */
 typedef void(*PLUGIN_STOP_ANIMATION_NAME)(const char* path);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_STOP_ANIMATION_NAME_D)(const char* path);
 /*
@@ -1582,6 +1730,7 @@ typedef double(*PLUGIN_STOP_ANIMATION_NAME_D)(const char* path);
 */
 typedef void(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_STOP_ANIMATION_TYPE_D)(double deviceType, double device);
 /*
@@ -1591,6 +1740,7 @@ typedef double(*PLUGIN_STOP_ANIMATION_TYPE_D)(double deviceType, double device);
 */
 typedef void(*PLUGIN_STOP_COMPOSITE)(const char* name);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_STOP_COMPOSITE_D)(const char* name);
 /*
@@ -1600,6 +1750,7 @@ typedef void(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationI
 */
 typedef void(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -1609,6 +1760,7 @@ typedef void(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAni
 */
 typedef void(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
@@ -1618,6 +1770,7 @@ typedef void(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, i
 */
 typedef void(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 /*
@@ -1627,6 +1780,7 @@ typedef void(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAni
 */
 typedef void(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
 /*
@@ -1636,6 +1790,7 @@ typedef void(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int so
 */
 typedef void(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
@@ -1645,6 +1800,7 @@ typedef void(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimati
 */
 typedef void(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 /*
@@ -1654,6 +1810,7 @@ typedef void(*PLUGIN_TRIM_END_FRAMES)(int animationId, int lastFrameId);
 */
 typedef void(*PLUGIN_TRIM_END_FRAMES_NAME)(const char* path, int lastFrameId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_TRIM_END_FRAMES_NAME_D)(const char* path, double lastFrameId);
 /*
@@ -1663,6 +1820,7 @@ typedef void(*PLUGIN_TRIM_FRAME)(int animationId, int frameId);
 */
 typedef void(*PLUGIN_TRIM_FRAME_NAME)(const char* path, int frameId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_TRIM_FRAME_NAME_D)(const char* path, double frameId);
 /*
@@ -1672,6 +1830,7 @@ typedef void(*PLUGIN_TRIM_START_FRAMES)(int animationId, int numberOfFrames);
 */
 typedef void(*PLUGIN_TRIM_START_FRAMES_NAME)(const char* path, int numberOfFrames);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_TRIM_START_FRAMES_NAME_D)(const char* path, double numberOfFrames);
 /*
@@ -1679,6 +1838,7 @@ typedef double(*PLUGIN_TRIM_START_FRAMES_NAME_D)(const char* path, double number
 */
 typedef int(*PLUGIN_UNINIT)();
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_UNINIT_D)();
 /*
@@ -1687,6 +1847,7 @@ typedef double(*PLUGIN_UNINIT_D)();
 */
 typedef int(*PLUGIN_UNLOAD_ANIMATION)(int animationId);
 /*
+	D suffix for limited data types.
 */
 typedef double(*PLUGIN_UNLOAD_ANIMATION_D)(double animationId);
 /*
@@ -1726,12 +1887,17 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_FRAME, AddFrame);
 		/*
+			Add source color to target where color is not black for all frames, reference
+			source and target by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES, AddNonZeroAllKeysAllFrames);
 		/*
+			Add source color to target where color is not black for all frames, reference
+			source and target by name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME, AddNonZeroAllKeysAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, AddNonZeroAllKeysAllFramesNameD);
 		/*
@@ -1741,6 +1907,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroAllKeysAllFramesOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, AddNonZeroAllKeysAllFramesOffsetNameD);
 		/*
@@ -1750,6 +1917,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME, AddNonZeroAllKeysOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME_D, AddNonZeroAllKeysOffsetNameD);
 		/*
@@ -1759,6 +1927,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, AddNonZeroTargetAllKeysAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, AddNonZeroTargetAllKeysAllFramesNameD);
 		/*
@@ -1768,6 +1937,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroTargetAllKeysAllFramesOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, AddNonZeroTargetAllKeysAllFramesOffsetNameD);
 		/*
@@ -1777,6 +1947,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME, AddNonZeroTargetAllKeysOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D, AddNonZeroTargetAllKeysOffsetNameD);
 		/*
@@ -1786,6 +1957,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES_NAME, AppendAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES_NAME_D, AppendAllFramesNameD);
 		/*
@@ -1809,6 +1981,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION, CloseAnimation);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION_D, CloseAnimationD);
 		/*
@@ -1817,6 +1990,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION_NAME, CloseAnimationName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION_NAME_D, CloseAnimationNameD);
 		/*
@@ -1825,6 +1999,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_COMPOSITE, CloseComposite);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_COMPOSITE_D, CloseCompositeD);
 		/*
@@ -1834,6 +2009,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ANIMATION_NAME, CopyAnimationName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ANIMATION_NAME_D, CopyAnimationNameD);
 		/*
@@ -1843,6 +2019,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME, CopyBlueChannelAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME_D, CopyBlueChannelAllFramesNameD);
 		/*
@@ -1852,6 +2029,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME, CopyGreenChannelAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME_D, CopyGreenChannelAllFramesNameD);
 		/*
@@ -1866,6 +2044,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME, CopyKeyColorAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME_D, CopyKeyColorAllFramesNameD);
 		/*
@@ -1875,6 +2054,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME, CopyKeyColorAllFramesOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME_D, CopyKeyColorAllFramesOffsetNameD);
 		/*
@@ -1883,6 +2063,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME_D, CopyKeyColorNameD);
 		/*
@@ -1899,6 +2080,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroAllKeysAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, CopyNonZeroAllKeysAllFramesNameD);
 		/*
@@ -1908,12 +2090,14 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyNonZeroAllKeysAllFramesOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, CopyNonZeroAllKeysAllFramesOffsetNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_NAME, CopyNonZeroAllKeysName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_NAME_D, CopyNonZeroAllKeysNameD);
 		/*
@@ -1923,6 +2107,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET_NAME, CopyNonZeroAllKeysOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET_NAME_D, CopyNonZeroAllKeysOffsetNameD);
 		/*
@@ -1936,6 +2121,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_KEY_COLOR_NAME, CopyNonZeroKeyColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_KEY_COLOR_NAME_D, CopyNonZeroKeyColorNameD);
 		/*
@@ -1948,6 +2134,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroTargetAllKeysAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, CopyNonZeroTargetAllKeysAllFramesNameD);
 		/*
@@ -1957,12 +2144,14 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyNonZeroTargetAllKeysAllFramesOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, CopyNonZeroTargetAllKeysAllFramesOffsetNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_NAME, CopyNonZeroTargetAllKeysName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_NAME_D, CopyNonZeroTargetAllKeysNameD);
 		/*
@@ -1972,6 +2161,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME, CopyNonZeroTargetAllKeysOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D, CopyNonZeroTargetAllKeysOffsetNameD);
 		/*
@@ -1981,6 +2171,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME, CopyRedChannelAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME_D, CopyRedChannelAllFramesNameD);
 		/*
@@ -1990,6 +2181,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyZeroAllKeysAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, CopyZeroAllKeysAllFramesNameD);
 		/*
@@ -1999,6 +2191,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyZeroAllKeysAllFramesOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, CopyZeroAllKeysAllFramesOffsetNameD);
 		/*
@@ -2008,6 +2201,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_KEY_COLOR_NAME, CopyZeroKeyColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_KEY_COLOR_NAME_D, CopyZeroKeyColorNameD);
 		/*
@@ -2017,42 +2211,55 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, CopyZeroTargetAllKeysAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, CopyZeroTargetAllKeysAllFramesNameD);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_CHROMA_LINK_EFFECT, CoreCreateChromaLinkEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_EFFECT, CoreCreateEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_HEADSET_EFFECT, CoreCreateHeadsetEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_KEYBOARD_EFFECT, CoreCreateKeyboardEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_KEYPAD_EFFECT, CoreCreateKeypadEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_MOUSE_EFFECT, CoreCreateMouseEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_MOUSEPAD_EFFECT, CoreCreateMousepadEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_DELETE_EFFECT, CoreDeleteEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_INIT, CoreInit);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_QUERY_DEVICE, CoreQueryDevice);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_SET_EFFECT, CoreSetEffect);
 		/*
+			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_UNINIT, CoreUnInit);
 		/*
@@ -2087,6 +2294,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FIRST_FRAME_NAME, DuplicateFirstFrameName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FIRST_FRAME_NAME_D, DuplicateFirstFrameNameD);
 		/*
@@ -2096,6 +2304,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FRAMES_NAME, DuplicateFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FRAMES_NAME_D, DuplicateFramesNameD);
 		/*
@@ -2105,6 +2314,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_MIRROR_FRAMES_NAME, DuplicateMirrorFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_MIRROR_FRAMES_NAME_D, DuplicateMirrorFramesNameD);
 		/*
@@ -2114,6 +2324,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_END_FRAMES_NAME, FadeEndFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_END_FRAMES_NAME_D, FadeEndFramesNameD);
 		/*
@@ -2123,6 +2334,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_START_FRAMES_NAME, FadeStartFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_START_FRAMES_NAME_D, FadeStartFramesNameD);
 		/*
@@ -2138,6 +2350,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_NAME, FillColorAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_NAME_D, FillColorAllFramesNameD);
 		/*
@@ -2149,6 +2362,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME, FillColorAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME_D, FillColorAllFramesRGBNameD);
 		/*
@@ -2157,6 +2371,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_NAME, FillColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_NAME_D, FillColorNameD);
 		/*
@@ -2168,6 +2383,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_RGB_NAME, FillColorRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_RGB_NAME_D, FillColorRGBNameD);
 		/*
@@ -2187,6 +2403,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_NAME, FillNonZeroColorAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_NAME_D, FillNonZeroColorAllFramesNameD);
 		/*
@@ -2199,6 +2416,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME, FillNonZeroColorAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D, FillNonZeroColorAllFramesRGBNameD);
 		/*
@@ -2208,6 +2426,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_NAME, FillNonZeroColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_NAME_D, FillNonZeroColorNameD);
 		/*
@@ -2220,6 +2439,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_RGB_NAME, FillNonZeroColorRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_RGB_NAME_D, FillNonZeroColorRGBNameD);
 		/*
@@ -2232,6 +2452,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES_NAME, FillRandomColorsAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES_NAME_D, FillRandomColorsAllFramesNameD);
 		/*
@@ -2244,18 +2465,21 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES_NAME, FillRandomColorsBlackAndWhiteAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES_NAME_D, FillRandomColorsBlackAndWhiteAllFramesNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME, FillRandomColorsBlackAndWhiteName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME_D, FillRandomColorsBlackAndWhiteNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_NAME, FillRandomColorsName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_NAME_D, FillRandomColorsNameD);
 		/*
@@ -2268,6 +2492,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_NAME, FillThresholdColorsAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_NAME_D, FillThresholdColorsAllFramesNameD);
 		/*
@@ -2277,6 +2502,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB_NAME, FillThresholdColorsAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB_NAME_D, FillThresholdColorsAllFramesRGBNameD);
 		/*
@@ -2286,6 +2512,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME, FillThresholdColorsMinMaxAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME_D, FillThresholdColorsMinMaxAllFramesRGBNameD);
 		/*
@@ -2295,12 +2522,14 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB_NAME, FillThresholdColorsMinMaxRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB_NAME_D, FillThresholdColorsMinMaxRGBNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_NAME, FillThresholdColorsName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_NAME_D, FillThresholdColorsNameD);
 		/*
@@ -2310,6 +2539,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_RGB_NAME, FillThresholdColorsRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_RGB_NAME_D, FillThresholdColorsRGBNameD);
 		/*
@@ -2319,6 +2549,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB_NAME, FillThresholdRGBColorsAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB_NAME_D, FillThresholdRGBColorsAllFramesRGBNameD);
 		/*
@@ -2328,6 +2559,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB_NAME, FillThresholdRGBColorsRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB_NAME_D, FillThresholdRGBColorsRGBNameD);
 		/*
@@ -2340,6 +2572,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME, FillZeroColorAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME_D, FillZeroColorAllFramesNameD);
 		/*
@@ -2349,12 +2582,14 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME, FillZeroColorAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D, FillZeroColorAllFramesRGBNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_NAME, FillZeroColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_NAME_D, FillZeroColorNameD);
 		/*
@@ -2364,6 +2599,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB_NAME, FillZeroColorRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB_NAME_D, FillZeroColorRGBNameD);
 		/*
@@ -2375,6 +2611,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_1D_COLOR_NAME, Get1DColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_1D_COLOR_NAME_D, Get1DColorNameD);
 		/*
@@ -2387,6 +2624,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_2D_COLOR_NAME, Get2DColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_2D_COLOR_NAME_D, Get2DColorNameD);
 		/*
@@ -2397,6 +2635,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_COUNT, GetAnimationCount);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_D, GetAnimationD);
 		/*
@@ -2421,6 +2660,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_CURRENT_FRAME_NAME, GetCurrentFrameName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_CURRENT_FRAME_NAME_D, GetCurrentFrameNameD);
 		/*
@@ -2436,6 +2676,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_NAME, GetDeviceName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_NAME_D, GetDeviceNameD);
 		/*
@@ -2449,6 +2690,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_TYPE_NAME, GetDeviceTypeName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_TYPE_NAME_D, GetDeviceTypeNameD);
 		/*
@@ -2471,6 +2713,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME, GetFrameCountName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME_D, GetFrameCountNameD);
 		/*
@@ -2478,6 +2721,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_KEY_COLOR, GetKeyColor);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_KEY_COLOR_D, GetKeyColorD);
 		/*
@@ -2490,6 +2734,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_COLUMN, GetMaxColumn);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_COLUMN_D, GetMaxColumnD);
 		/*
@@ -2498,6 +2743,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_LEDS, GetMaxLeds);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_LEDS_D, GetMaxLedsD);
 		/*
@@ -2506,6 +2752,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_ROW, GetMaxRow);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_ROW_D, GetMaxRowD);
 		/*
@@ -2523,6 +2770,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_RGB, GetRGB);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_RGBD, GetRGBD);
 		/*
@@ -2534,6 +2782,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_HAS_ANIMATION_LOOP_NAME, HasAnimationLoopName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_HAS_ANIMATION_LOOP_NAME_D, HasAnimationLoopNameD);
 		/*
@@ -2542,6 +2791,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INIT, Init);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INIT_D, InitD);
 		/*
@@ -2551,6 +2801,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_DELAY_NAME, InsertDelayName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_DELAY_NAME_D, InsertDelayNameD);
 		/*
@@ -2560,6 +2811,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_FRAME_NAME, InsertFrameName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_FRAME_NAME_D, InsertFrameNameD);
 		/*
@@ -2572,12 +2824,14 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_ALL_FRAMES_NAME, InvertColorsAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_ALL_FRAMES_NAME_D, InvertColorsAllFramesNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_NAME, InvertColorsName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_NAME_D, InvertColorsNameD);
 		/*
@@ -2589,6 +2843,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_ANIMATION_PAUSED_NAME, IsAnimationPausedName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_ANIMATION_PAUSED_NAME_D, IsAnimationPausedNameD);
 		/*
@@ -2597,6 +2852,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_DIALOG_OPEN, IsDialogOpen);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_DIALOG_OPEN_D, IsDialogOpenD);
 		/*
@@ -2605,6 +2861,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_INITIALIZED, IsInitialized);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_INITIALIZED_D, IsInitializedD);
 		/*
@@ -2612,12 +2869,14 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLATFORM_SUPPORTED, IsPlatformSupported);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLATFORM_SUPPORTED_D, IsPlatformSupportedD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING, IsPlaying);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_D, IsPlayingD);
 		/*
@@ -2627,6 +2886,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_NAME, IsPlayingName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_NAME_D, IsPlayingNameD);
 		/*
@@ -2636,6 +2896,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_TYPE, IsPlayingType);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_TYPE_D, IsPlayingTypeD);
 		/*
@@ -2650,6 +2911,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_ANIMATION, LoadAnimation);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_ANIMATION_D, LoadAnimationD);
 		/*
@@ -2665,6 +2927,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_NAME, MakeBlankFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_NAME_D, MakeBlankFramesNameD);
 		/*
@@ -2677,12 +2940,14 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE_NAME, MakeBlankFramesRandomBlackAndWhiteName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE_NAME_D, MakeBlankFramesRandomBlackAndWhiteNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_NAME, MakeBlankFramesRandomName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_NAME_D, MakeBlankFramesRandomNameD);
 		/*
@@ -2692,6 +2957,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME, MakeBlankFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME_D, MakeBlankFramesRGBNameD);
 		/*
@@ -2712,6 +2978,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES_NAME, MultiplyColorLerpAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES_NAME_D, MultiplyColorLerpAllFramesNameD);
 		/*
@@ -2736,6 +3003,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME, MultiplyIntensityAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME_D, MultiplyIntensityAllFramesNameD);
 		/*
@@ -2745,6 +3013,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME, MultiplyIntensityAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME_D, MultiplyIntensityAllFramesRGBNameD);
 		/*
@@ -2757,12 +3026,14 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES_NAME, MultiplyIntensityColorAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES_NAME_D, MultiplyIntensityColorAllFramesNameD);
 		/*
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME, MultiplyIntensityColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME_D, MultiplyIntensityColorNameD);
 		/*
@@ -2773,6 +3044,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME_D, MultiplyIntensityNameD);
 		/*
@@ -2782,6 +3054,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_RGB_NAME, MultiplyIntensityRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_RGB_NAME_D, MultiplyIntensityRGBNameD);
 		/*
@@ -2794,6 +3067,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME, MultiplyNonZeroTargetColorLerpAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME_D, MultiplyNonZeroTargetColorLerpAllFramesNameD);
 		/*
@@ -2803,6 +3077,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME, MultiplyNonZeroTargetColorLerpAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME_D, MultiplyNonZeroTargetColorLerpAllFramesRGBNameD);
 		/*
@@ -2815,6 +3090,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME, MultiplyTargetColorLerpAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME_D, MultiplyTargetColorLerpAllFramesNameD);
 		/*
@@ -2824,6 +3100,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME, MultiplyTargetColorLerpAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME_D, MultiplyTargetColorLerpAllFramesRGBNameD);
 		/*
@@ -2845,6 +3122,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME, OffsetColorsAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME_D, OffsetColorsAllFramesNameD);
 		/*
@@ -2854,6 +3132,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_NAME, OffsetColorsName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_NAME_D, OffsetColorsNameD);
 		/*
@@ -2878,6 +3157,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME, OffsetNonZeroColorsAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME_D, OffsetNonZeroColorsAllFramesNameD);
 		/*
@@ -2888,6 +3168,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_NAME, OffsetNonZeroColorsName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_NAME_D, OffsetNonZeroColorsNameD);
 		/*
@@ -2897,6 +3178,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION, OpenAnimation);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION_D, OpenAnimationD);
 		/*
@@ -2908,9 +3190,11 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY, OpenEditorDialogAndPlay);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY_D, OpenEditorDialogAndPlayD);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_D, OpenEditorDialogD);
 		/*
@@ -2919,6 +3203,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OVERRIDE_FRAME_DURATION, OverrideFrameDuration);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OVERRIDE_FRAME_DURATION_D, OverrideFrameDurationD);
 		/*
@@ -2933,6 +3218,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PAUSE_ANIMATION_NAME, PauseAnimationName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PAUSE_ANIMATION_NAME_D, PauseAnimationNameD);
 		/*
@@ -2941,6 +3227,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION, PlayAnimation);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_D, PlayAnimationD);
 		/*
@@ -2956,6 +3243,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_FRAME_NAME, PlayAnimationFrameName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_FRAME_NAME_D, PlayAnimationFrameNameD);
 		/*
@@ -2971,6 +3259,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_NAME, PlayAnimationName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_NAME_D, PlayAnimationNameD);
 		/*
@@ -2980,6 +3269,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_COMPOSITE, PlayComposite);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_COMPOSITE_D, PlayCompositeD);
 		/*
@@ -2988,6 +3278,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME_D, PreviewFrameD);
 		/*
@@ -3000,6 +3291,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REDUCE_FRAMES_NAME, ReduceFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REDUCE_FRAMES_NAME_D, ReduceFramesNameD);
 		/*
@@ -3016,6 +3308,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_RESUME_ANIMATION_NAME, ResumeAnimationName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_RESUME_ANIMATION_NAME_D, ResumeAnimationNameD);
 		/*
@@ -3030,6 +3323,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE_ALL_FRAMES_NAME, ReverseAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE_ALL_FRAMES_NAME_D, ReverseAllFramesNameD);
 		/*
@@ -3047,6 +3341,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_1D_COLOR_NAME, Set1DColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_1D_COLOR_NAME_D, Set1DColorNameD);
 		/*
@@ -3059,6 +3354,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_2D_COLOR_NAME, Set2DColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_2D_COLOR_NAME_D, Set2DColorNameD);
 		/*
@@ -3068,6 +3364,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME, SetChromaCustomColorAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME_D, SetChromaCustomColorAllFramesNameD);
 		/*
@@ -3077,6 +3374,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME, SetChromaCustomFlagName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME_D, SetChromaCustomFlagNameD);
 		/*
@@ -3088,6 +3386,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CURRENT_FRAME_NAME, SetCurrentFrameName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CURRENT_FRAME_NAME_D, SetCurrentFrameNameD);
 		/*
@@ -3110,6 +3409,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME, SetKeyColorAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME_D, SetKeyColorAllFramesNameD);
 		/*
@@ -3119,6 +3419,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME, SetKeyColorAllFramesRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME_D, SetKeyColorAllFramesRGBNameD);
 		/*
@@ -3126,6 +3427,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_NAME, SetKeyColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_NAME_D, SetKeyColorNameD);
 		/*
@@ -3135,6 +3437,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_RGB_NAME, SetKeyColorRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_RGB_NAME_D, SetKeyColorRGBNameD);
 		/*
@@ -3148,6 +3451,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_NAME, SetKeyNonZeroColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_NAME_D, SetKeyNonZeroColorNameD);
 		/*
@@ -3157,6 +3461,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB_NAME, SetKeyNonZeroColorRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB_NAME_D, SetKeyNonZeroColorRGBNameD);
 		/*
@@ -3238,6 +3543,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_NAME, SetKeyZeroColorName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_NAME_D, SetKeyZeroColorNameD);
 		/*
@@ -3247,6 +3553,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME, SetKeyZeroColorRGBName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME_D, SetKeyZeroColorRGBNameD);
 		/*
@@ -3265,6 +3572,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION, StopAnimation);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_D, StopAnimationD);
 		/*
@@ -3274,6 +3582,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_NAME, StopAnimationName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_NAME_D, StopAnimationNameD);
 		/*
@@ -3283,6 +3592,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_TYPE, StopAnimationType);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_TYPE_D, StopAnimationTypeD);
 		/*
@@ -3292,6 +3602,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_COMPOSITE, StopComposite);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_COMPOSITE_D, StopCompositeD);
 		/*
@@ -3301,6 +3612,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME, SubtractNonZeroAllKeysAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, SubtractNonZeroAllKeysAllFramesNameD);
 		/*
@@ -3310,6 +3622,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, SubtractNonZeroAllKeysAllFramesOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, SubtractNonZeroAllKeysAllFramesOffsetNameD);
 		/*
@@ -3319,6 +3632,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET_NAME, SubtractNonZeroAllKeysOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET_NAME_D, SubtractNonZeroAllKeysOffsetNameD);
 		/*
@@ -3328,6 +3642,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, SubtractNonZeroTargetAllKeysAllFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, SubtractNonZeroTargetAllKeysAllFramesNameD);
 		/*
@@ -3337,6 +3652,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, SubtractNonZeroTargetAllKeysAllFramesOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, SubtractNonZeroTargetAllKeysAllFramesOffsetNameD);
 		/*
@@ -3346,6 +3662,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME, SubtractNonZeroTargetAllKeysOffsetName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D, SubtractNonZeroTargetAllKeysOffsetNameD);
 		/*
@@ -3355,6 +3672,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_END_FRAMES_NAME, TrimEndFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_END_FRAMES_NAME_D, TrimEndFramesNameD);
 		/*
@@ -3364,6 +3682,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_FRAME_NAME, TrimFrameName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_FRAME_NAME_D, TrimFrameNameD);
 		/*
@@ -3373,6 +3692,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_START_FRAMES_NAME, TrimStartFramesName);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_START_FRAMES_NAME_D, TrimStartFramesNameD);
 		/*
@@ -3380,6 +3700,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNINIT, Uninit);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNINIT_D, UninitD);
 		/*
@@ -3388,6 +3709,7 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_ANIMATION, UnloadAnimation);
 		/*
+			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_ANIMATION_D, UnloadAnimationD);
 		/*

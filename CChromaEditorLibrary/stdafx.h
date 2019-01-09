@@ -70,12 +70,17 @@ extern "C"
 	*/
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
 	/*
+		Add source color to target where color is not black for all frames, reference
+		source and target by id.
 	*/
 	EXPORT_API void PluginAddNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 	/*
+		Add source color to target where color is not black for all frames, reference
+		source and target by name.
 	*/
 	EXPORT_API void PluginAddNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -85,6 +90,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
@@ -94,6 +100,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginAddNonZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginAddNonZeroAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
@@ -103,6 +110,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -112,6 +120,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
@@ -121,6 +130,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginAddNonZeroTargetAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginAddNonZeroTargetAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
@@ -130,6 +140,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginAppendAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginAppendAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -153,6 +164,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginCloseAnimation(int animationId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCloseAnimationD(double animationId);
 	/*
@@ -161,6 +173,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCloseAnimationName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCloseAnimationNameD(const char* path);
 	/*
@@ -169,6 +182,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCloseComposite(const char* name);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCloseCompositeD(const char* name);
 	/*
@@ -178,6 +192,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyAnimationName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyAnimationNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -187,6 +202,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyBlueChannelAllFramesName(const char* path, float redIntensity, float greenIntensity);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyBlueChannelAllFramesNameD(const char* path, double redIntensity, double greenIntensity);
 	/*
@@ -196,6 +212,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyGreenChannelAllFramesName(const char* path, float redIntensity, float blueIntensity);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyGreenChannelAllFramesNameD(const char* path, double redIntensity, double blueIntensity);
 	/*
@@ -210,6 +227,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyKeyColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, int rzkey);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyKeyColorAllFramesNameD(const char* sourceAnimation, const char* targetAnimation, double rzkey);
 	/*
@@ -219,6 +237,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyKeyColorAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyKeyColorAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double rzkey, double offset);
 	/*
@@ -227,6 +246,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 	/*
@@ -243,6 +263,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -252,12 +273,14 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroAllKeysNameD(const char* sourceAnimation, const char* targetAnimation, double frameId);
 	/*
@@ -267,6 +290,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyNonZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
@@ -280,6 +304,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyNonZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 	/*
@@ -292,6 +317,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -301,12 +327,14 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysNameD(const char* sourceAnimation, const char* targetAnimation, double frameId);
 	/*
@@ -316,6 +344,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
@@ -325,6 +354,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyRedChannelAllFramesName(const char* path, float greenIntensity, float blueIntensity);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyRedChannelAllFramesNameD(const char* path, double greenIntensity, double blueIntensity);
 	/*
@@ -334,6 +364,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -343,6 +374,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
@@ -352,6 +384,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyZeroKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 	/*
@@ -361,42 +394,55 @@ extern "C"
 	*/
 	EXPORT_API void PluginCopyZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreCreateChromaLinkEffect(ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreCreateEffect(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreCreateHeadsetEffect(ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreCreateKeyboardEffect(ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreCreateKeypadEffect(ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreCreateMouseEffect(ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreCreateMousepadEffect(ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreDeleteEffect(RZEFFECTID EffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreInit();
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreSetEffect(RZEFFECTID EffectId);
 	/*
+		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreUnInit();
 	/*
@@ -431,6 +477,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginDuplicateFirstFrameName(const char* path, int frameCount);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginDuplicateFirstFrameNameD(const char* path, double frameCount);
 	/*
@@ -440,6 +487,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginDuplicateFramesName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginDuplicateFramesNameD(const char* path);
 	/*
@@ -449,6 +497,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginDuplicateMirrorFramesName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginDuplicateMirrorFramesNameD(const char* path);
 	/*
@@ -458,6 +507,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFadeEndFramesName(const char* path, int fade);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFadeEndFramesNameD(const char* path, double fade);
 	/*
@@ -467,6 +517,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFadeStartFramesName(const char* path, int fade);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFadeStartFramesNameD(const char* path, double fade);
 	/*
@@ -482,6 +533,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillColorAllFramesName(const char* path, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double color);
 	/*
@@ -493,6 +545,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillColorAllFramesRGBName(const char* path, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 	/*
@@ -501,6 +554,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillColorName(const char* path, int frameId, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double color);
 	/*
@@ -512,6 +566,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillColorRGBName(const char* path, int frameId, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
@@ -531,6 +586,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const char* path, double color);
 	/*
@@ -543,6 +599,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillNonZeroColorAllFramesRGBName(const char* path, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillNonZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 	/*
@@ -552,6 +609,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillNonZeroColorNameD(const char* path, double frameId, double color);
 	/*
@@ -564,6 +622,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillNonZeroColorRGBName(const char* path, int frameId, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillNonZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
@@ -576,6 +635,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillRandomColorsAllFramesName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillRandomColorsAllFramesNameD(const char* path);
 	/*
@@ -588,18 +648,21 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const char* path);
 	/*
 	*/
 	EXPORT_API void PluginFillRandomColorsBlackAndWhiteName(const char* path, int frameId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteNameD(const char* path, double frameId);
 	/*
 	*/
 	EXPORT_API void PluginFillRandomColorsName(const char* path, int frameId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillRandomColorsNameD(const char* path, double frameId);
 	/*
@@ -612,6 +675,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillThresholdColorsAllFramesName(const char* path, int threshold, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillThresholdColorsAllFramesNameD(const char* path, double threshold, double color);
 	/*
@@ -621,6 +685,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillThresholdColorsAllFramesRGBName(const char* path, int threshold, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(const char* path, double threshold, double red, double green, double blue);
 	/*
@@ -630,6 +695,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGBName(const char* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillThresholdColorsMinMaxAllFramesRGBNameD(const char* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 	/*
@@ -639,12 +705,14 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillThresholdColorsMinMaxRGBName(const char* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillThresholdColorsMinMaxRGBNameD(const char* path, double frameId, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 	/*
 	*/
 	EXPORT_API void PluginFillThresholdColorsName(const char* path, int frameId, int threshold, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillThresholdColorsNameD(const char* path, double frameId, double threshold, double color);
 	/*
@@ -654,6 +722,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillThresholdColorsRGBName(const char* path, int frameId, int threshold, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillThresholdColorsRGBNameD(const char* path, double frameId, double threshold, double red, double green, double blue);
 	/*
@@ -663,6 +732,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGBName(const char* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillThresholdRGBColorsAllFramesRGBNameD(const char* path, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
 	/*
@@ -672,6 +742,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillThresholdRGBColorsRGBName(const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillThresholdRGBColorsRGBNameD(const char* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
 	/*
@@ -684,6 +755,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillZeroColorAllFramesName(const char* path, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillZeroColorAllFramesNameD(const char* path, double color);
 	/*
@@ -693,12 +765,14 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillZeroColorAllFramesRGBName(const char* path, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue);
 	/*
 	*/
 	EXPORT_API void PluginFillZeroColorName(const char* path, int frameId, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillZeroColorNameD(const char* path, double frameId, double color);
 	/*
@@ -708,6 +782,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginFillZeroColorRGBName(const char* path, int frameId, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginFillZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
@@ -719,6 +794,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGet1DColorName(const char* path, int frameId, int led);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGet1DColorNameD(const char* path, double frameId, double led);
 	/*
@@ -731,6 +807,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGet2DColorName(const char* path, int frameId, int row, int column);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGet2DColorNameD(const char* path, double frameId, double row, double column);
 	/*
@@ -741,6 +818,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetAnimationCount();
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetAnimationD(const char* name);
 	/*
@@ -765,6 +843,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetCurrentFrameName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetCurrentFrameNameD(const char* path);
 	/*
@@ -780,6 +859,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetDeviceName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetDeviceNameD(const char* path);
 	/*
@@ -793,6 +873,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetDeviceTypeName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetDeviceTypeNameD(const char* path);
 	/*
@@ -815,6 +896,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetFrameCountName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetFrameCountNameD(const char* path);
 	/*
@@ -822,6 +904,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetKeyColor(int animationId, int frameId, int rzkey);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetKeyColorD(const char* path, double frameId, double rzkey);
 	/*
@@ -834,6 +917,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetMaxColumn(int device);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetMaxColumnD(double device);
 	/*
@@ -842,6 +926,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetMaxLeds(int device);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetMaxLedsD(double device);
 	/*
@@ -850,6 +935,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetMaxRow(int device);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetMaxRowD(double device);
 	/*
@@ -867,6 +953,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetRGB(int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetRGBD(double red, double green, double blue);
 	/*
@@ -878,6 +965,7 @@ extern "C"
 	*/
 	EXPORT_API bool PluginHasAnimationLoopName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginHasAnimationLoopNameD(const char* path);
 	/*
@@ -886,6 +974,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginInit();
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginInitD();
 	/*
@@ -895,6 +984,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginInsertDelayName(const char* path, int frameId, int delay);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginInsertDelayNameD(const char* path, double frameId, double delay);
 	/*
@@ -904,6 +994,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginInsertFrameName(const char* path, int sourceFrame, int targetFrame);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginInsertFrameNameD(const char* path, double sourceFrame, double targetFrame);
 	/*
@@ -916,12 +1007,14 @@ extern "C"
 	*/
 	EXPORT_API void PluginInvertColorsAllFramesName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginInvertColorsAllFramesNameD(const char* path);
 	/*
 	*/
 	EXPORT_API void PluginInvertColorsName(const char* path, int frameId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginInvertColorsNameD(const char* path, double frameId);
 	/*
@@ -933,6 +1026,7 @@ extern "C"
 	*/
 	EXPORT_API bool PluginIsAnimationPausedName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginIsAnimationPausedNameD(const char* path);
 	/*
@@ -941,6 +1035,7 @@ extern "C"
 	*/
 	EXPORT_API bool PluginIsDialogOpen();
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginIsDialogOpenD();
 	/*
@@ -949,6 +1044,7 @@ extern "C"
 	*/
 	EXPORT_API bool PluginIsInitialized();
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginIsInitializedD();
 	/*
@@ -956,12 +1052,14 @@ extern "C"
 	*/
 	EXPORT_API bool PluginIsPlatformSupported();
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginIsPlatformSupportedD();
 	/*
 	*/
 	EXPORT_API bool PluginIsPlaying(int animationId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginIsPlayingD(double animationId);
 	/*
@@ -971,6 +1069,7 @@ extern "C"
 	*/
 	EXPORT_API bool PluginIsPlayingName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginIsPlayingNameD(const char* path);
 	/*
@@ -980,6 +1079,7 @@ extern "C"
 	*/
 	EXPORT_API bool PluginIsPlayingType(int deviceType, int device);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginIsPlayingTypeD(double deviceType, double device);
 	/*
@@ -994,6 +1094,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginLoadAnimation(int animationId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginLoadAnimationD(double animationId);
 	/*
@@ -1009,6 +1110,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMakeBlankFramesName(const char* path, int frameCount, float duration, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMakeBlankFramesNameD(const char* path, double frameCount, double duration, double color);
 	/*
@@ -1021,12 +1123,14 @@ extern "C"
 	*/
 	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhiteName(const char* path, int frameCount, float duration);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(const char* path, double frameCount, double duration);
 	/*
 	*/
 	EXPORT_API void PluginMakeBlankFramesRandomName(const char* path, int frameCount, float duration);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMakeBlankFramesRandomNameD(const char* path, double frameCount, double duration);
 	/*
@@ -1036,6 +1140,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMakeBlankFramesRGBName(const char* path, int frameCount, float duration, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMakeBlankFramesRGBNameD(const char* path, double frameCount, double duration, double red, double green, double blue);
 	/*
@@ -1056,6 +1161,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyColorLerpAllFramesName(const char* path, int color1, int color2);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyColorLerpAllFramesNameD(const char* path, double color1, double color2);
 	/*
@@ -1080,6 +1186,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyIntensityAllFramesName(const char* path, float intensity);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyIntensityAllFramesNameD(const char* path, double intensity);
 	/*
@@ -1089,6 +1196,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyIntensityAllFramesRGBName(const char* path, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyIntensityAllFramesRGBNameD(const char* path, double red, double green, double blue);
 	/*
@@ -1101,12 +1209,14 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyIntensityColorAllFramesName(const char* path, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyIntensityColorAllFramesNameD(const char* path, double color);
 	/*
 	*/
 	EXPORT_API void PluginMultiplyIntensityColorName(const char* path, int frameId, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyIntensityColorNameD(const char* path, double frameId, double color);
 	/*
@@ -1117,6 +1227,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyIntensityName(const char* path, int frameId, float intensity);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyIntensityNameD(const char* path, double frameId, double intensity);
 	/*
@@ -1126,6 +1237,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyIntensityRGBName(const char* path, int frameId, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyIntensityRGBNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
@@ -1138,6 +1250,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesName(const char* path, int color1, int color2);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesNameD(const char* path, double color1, double color2);
 	/*
@@ -1147,6 +1260,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 	/*
@@ -1159,6 +1273,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesName(const char* path, int color1, int color2);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(const char* path, double color1, double color2);
 	/*
@@ -1168,6 +1283,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 	/*
@@ -1189,6 +1305,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginOffsetColorsAllFramesName(const char* path, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginOffsetColorsAllFramesNameD(const char* path, double red, double green, double blue);
 	/*
@@ -1198,6 +1315,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginOffsetColorsName(const char* path, int frameId, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginOffsetColorsNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
@@ -1222,6 +1340,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(const char* path, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginOffsetNonZeroColorsAllFramesNameD(const char* path, double red, double green, double blue);
 	/*
@@ -1232,6 +1351,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginOffsetNonZeroColorsName(const char* path, int frameId, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginOffsetNonZeroColorsNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
@@ -1241,6 +1361,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginOpenAnimation(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginOpenAnimationD(const char* path);
 	/*
@@ -1252,9 +1373,11 @@ extern "C"
 	*/
 	EXPORT_API int PluginOpenEditorDialogAndPlay(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginOpenEditorDialogAndPlayD(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginOpenEditorDialogD(const char* path);
 	/*
@@ -1263,6 +1386,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginOverrideFrameDurationD(double animationId, double duration);
 	/*
@@ -1277,6 +1401,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginPauseAnimationName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginPauseAnimationNameD(const char* path);
 	/*
@@ -1285,6 +1410,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginPlayAnimation(int animationId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginPlayAnimationD(double animationId);
 	/*
@@ -1300,6 +1426,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginPlayAnimationFrameName(const char* path, int frameId, bool loop);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginPlayAnimationFrameNameD(const char* path, double frameId, double loop);
 	/*
@@ -1315,6 +1442,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginPlayAnimationNameD(const char* path, double loop);
 	/*
@@ -1324,6 +1452,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginPlayComposite(const char* name, bool loop);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginPlayCompositeD(const char* name, double loop);
 	/*
@@ -1332,6 +1461,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginPreviewFrameD(double animationId, double frameIndex);
 	/*
@@ -1344,6 +1474,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginReduceFramesName(const char* path, int n);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginReduceFramesNameD(const char* path, double n);
 	/*
@@ -1360,6 +1491,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginResumeAnimationName(const char* path, bool loop);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginResumeAnimationNameD(const char* path, double loop);
 	/*
@@ -1374,6 +1506,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginReverseAllFramesName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginReverseAllFramesNameD(const char* path);
 	/*
@@ -1391,6 +1524,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSet1DColorName(const char* path, int frameId, int led, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSet1DColorNameD(const char* path, double frameId, double led, double color);
 	/*
@@ -1403,6 +1537,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSet2DColorName(const char* path, int frameId, int row, int column, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSet2DColorNameD(const char* path, double frameId, double rowColumnIndex, double color);
 	/*
@@ -1412,6 +1547,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetChromaCustomColorAllFramesName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetChromaCustomColorAllFramesNameD(const char* path);
 	/*
@@ -1421,6 +1557,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetChromaCustomFlagName(const char* path, bool flag);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetChromaCustomFlagNameD(const char* path, double flag);
 	/*
@@ -1432,6 +1569,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetCurrentFrameName(const char* path, int frameId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetCurrentFrameNameD(const char* path, double frameId);
 	/*
@@ -1454,6 +1592,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetKeyColorAllFramesName(const char* path, int rzkey, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetKeyColorAllFramesNameD(const char* path, double rzkey, double color);
 	/*
@@ -1463,6 +1602,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetKeyColorAllFramesRGBName(const char* path, int rzkey, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetKeyColorAllFramesRGBNameD(const char* path, double rzkey, double red, double green, double blue);
 	/*
@@ -1470,6 +1610,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color);
 	/*
@@ -1479,6 +1620,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetKeyColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetKeyColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue);
 	/*
@@ -1492,6 +1634,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId, int rzkey, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetKeyNonZeroColorNameD(const char* path, double frameId, double rzkey, double color);
 	/*
@@ -1501,6 +1644,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetKeyNonZeroColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetKeyNonZeroColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue);
 	/*
@@ -1582,6 +1726,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetKeyZeroColorName(const char* path, int frameId, int rzkey, int color);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetKeyZeroColorNameD(const char* path, double frameId, double rzkey, double color);
 	/*
@@ -1591,6 +1736,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetKeyZeroColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSetKeyZeroColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue);
 	/*
@@ -1609,6 +1755,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginStopAnimation(int animationId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginStopAnimationD(double animationId);
 	/*
@@ -1618,6 +1765,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginStopAnimationName(const char* path);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginStopAnimationNameD(const char* path);
 	/*
@@ -1627,6 +1775,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginStopAnimationType(int deviceType, int device);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginStopAnimationTypeD(double deviceType, double device);
 	/*
@@ -1636,6 +1785,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginStopComposite(const char* name);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginStopCompositeD(const char* name);
 	/*
@@ -1645,6 +1795,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -1654,6 +1805,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
@@ -1663,6 +1815,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSubtractNonZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSubtractNonZeroAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
@@ -1672,6 +1825,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
 	/*
@@ -1681,6 +1835,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
@@ -1690,6 +1845,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginSubtractNonZeroTargetAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSubtractNonZeroTargetAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset);
 	/*
@@ -1699,6 +1855,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginTrimEndFramesName(const char* path, int lastFrameId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginTrimEndFramesNameD(const char* path, double lastFrameId);
 	/*
@@ -1708,6 +1865,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginTrimFrameName(const char* path, int frameId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginTrimFrameNameD(const char* path, double frameId);
 	/*
@@ -1717,6 +1875,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginTrimStartFramesName(const char* path, int numberOfFrames);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginTrimStartFramesNameD(const char* path, double numberOfFrames);
 	/*
@@ -1724,6 +1883,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginUninit();
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginUninitD();
 	/*
@@ -1732,6 +1892,7 @@ extern "C"
 	*/
 	EXPORT_API int PluginUnloadAnimation(int animationId);
 	/*
+		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginUnloadAnimationD(double animationId);
 	/*
@@ -1751,6 +1912,5 @@ extern "C"
 	*/
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 #pragma endregion
-
 	
 }

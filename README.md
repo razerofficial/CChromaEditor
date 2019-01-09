@@ -626,6 +626,9 @@ int result = ChromaAnimationAPI::AddFrame(
 <a name="PluginAddNonZeroAllKeysAllFrames"></a>
 **PluginAddNonZeroAllKeysAllFrames**
 
+Add source color to target where color is not black for all frames, reference
+source and target by id.
+
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysAllFrames(
@@ -640,6 +643,9 @@ ChromaAnimationAPI::AddNonZeroAllKeysAllFrames(
 <a name="PluginAddNonZeroAllKeysAllFramesName"></a>
 **PluginAddNonZeroAllKeysAllFramesName**
 
+Add source color to target where color is not black for all frames, reference
+source and target by name.
+
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysAllFramesName(
@@ -653,6 +659,8 @@ ChromaAnimationAPI::AddNonZeroAllKeysAllFramesName(
 ---
 <a name="PluginAddNonZeroAllKeysAllFramesNameD"></a>
 **PluginAddNonZeroAllKeysAllFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -696,6 +704,8 @@ ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffsetName(
 <a name="PluginAddNonZeroAllKeysAllFramesOffsetNameD"></a>
 **PluginAddNonZeroAllKeysAllFramesOffsetNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(
@@ -737,6 +747,8 @@ ChromaAnimationAPI::AddNonZeroAllKeysOffsetName(
 ---
 <a name="PluginAddNonZeroAllKeysOffsetNameD"></a>
 **PluginAddNonZeroAllKeysOffsetNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -782,6 +794,8 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesName(
 <a name="PluginAddNonZeroTargetAllKeysAllFramesNameD"></a>
 **PluginAddNonZeroTargetAllKeysAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesNameD(
@@ -824,6 +838,8 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesOffsetName(
 <a name="PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD"></a>
 **PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD(
@@ -865,6 +881,8 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysOffsetName(
 ---
 <a name="PluginAddNonZeroTargetAllKeysOffsetNameD"></a>
 **PluginAddNonZeroTargetAllKeysOffsetNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -909,6 +927,8 @@ ChromaAnimationAPI::AppendAllFramesName(
 ---
 <a name="PluginAppendAllFramesNameD"></a>
 **PluginAppendAllFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -986,6 +1006,8 @@ int result = ChromaAnimationAPI::CloseAnimation(int animationId);
 <a name="PluginCloseAnimationD"></a>
 **PluginCloseAnimationD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCloseAnimationD(double animationId);
@@ -1013,6 +1035,8 @@ ChromaAnimationAPI::CloseAnimationName(const char* path);
 <a name="PluginCloseAnimationNameD"></a>
 **PluginCloseAnimationNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCloseAnimationNameD(const char* path);
@@ -1039,6 +1063,8 @@ ChromaAnimationAPI::CloseComposite(const char* name);
 ---
 <a name="PluginCloseCompositeD"></a>
 **PluginCloseCompositeD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1079,6 +1105,8 @@ ChromaAnimationAPI::CopyAnimationName(
 ---
 <a name="PluginCopyAnimationNameD"></a>
 **PluginCopyAnimationNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1122,6 +1150,8 @@ ChromaAnimationAPI::CopyBlueChannelAllFramesName(
 <a name="PluginCopyBlueChannelAllFramesNameD"></a>
 **PluginCopyBlueChannelAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyBlueChannelAllFramesNameD(
@@ -1163,6 +1193,8 @@ ChromaAnimationAPI::CopyGreenChannelAllFramesName(
 ---
 <a name="PluginCopyGreenChannelAllFramesNameD"></a>
 **PluginCopyGreenChannelAllFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1223,6 +1255,8 @@ ChromaAnimationAPI::CopyKeyColorAllFramesName(
 <a name="PluginCopyKeyColorAllFramesNameD"></a>
 **PluginCopyKeyColorAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyKeyColorAllFramesNameD(
@@ -1265,6 +1299,8 @@ ChromaAnimationAPI::CopyKeyColorAllFramesOffsetName(
 <a name="PluginCopyKeyColorAllFramesOffsetNameD"></a>
 **PluginCopyKeyColorAllFramesOffsetNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyKeyColorAllFramesOffsetNameD(
@@ -1295,6 +1331,8 @@ ChromaAnimationAPI::CopyKeyColorName(
 ---
 <a name="PluginCopyKeyColorNameD"></a>
 **PluginCopyKeyColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1360,6 +1398,8 @@ ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesName(
 <a name="PluginCopyNonZeroAllKeysAllFramesNameD"></a>
 **PluginCopyNonZeroAllKeysAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(
@@ -1402,6 +1442,8 @@ ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesOffsetName(
 <a name="PluginCopyNonZeroAllKeysAllFramesOffsetNameD"></a>
 **PluginCopyNonZeroAllKeysAllFramesOffsetNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroAllKeysAllFramesOffsetNameD(
@@ -1429,6 +1471,8 @@ ChromaAnimationAPI::CopyNonZeroAllKeysName(
 ---
 <a name="PluginCopyNonZeroAllKeysNameD"></a>
 **PluginCopyNonZeroAllKeysNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1471,6 +1515,8 @@ ChromaAnimationAPI::CopyNonZeroAllKeysOffsetName(
 ---
 <a name="PluginCopyNonZeroAllKeysOffsetNameD"></a>
 **PluginCopyNonZeroAllKeysOffsetNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1521,6 +1567,8 @@ ChromaAnimationAPI::CopyNonZeroKeyColorName(
 ---
 <a name="PluginCopyNonZeroKeyColorNameD"></a>
 **PluginCopyNonZeroKeyColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1580,6 +1628,8 @@ ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesName(
 <a name="PluginCopyNonZeroTargetAllKeysAllFramesNameD"></a>
 **PluginCopyNonZeroTargetAllKeysAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesNameD(
@@ -1622,6 +1672,8 @@ ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesOffsetName(
 <a name="PluginCopyNonZeroTargetAllKeysAllFramesOffsetNameD"></a>
 **PluginCopyNonZeroTargetAllKeysAllFramesOffsetNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesOffsetNameD(
@@ -1649,6 +1701,8 @@ ChromaAnimationAPI::CopyNonZeroTargetAllKeysName(
 ---
 <a name="PluginCopyNonZeroTargetAllKeysNameD"></a>
 **PluginCopyNonZeroTargetAllKeysNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1691,6 +1745,8 @@ ChromaAnimationAPI::CopyNonZeroTargetAllKeysOffsetName(
 ---
 <a name="PluginCopyNonZeroTargetAllKeysOffsetNameD"></a>
 **PluginCopyNonZeroTargetAllKeysOffsetNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1736,6 +1792,8 @@ ChromaAnimationAPI::CopyRedChannelAllFramesName(
 <a name="PluginCopyRedChannelAllFramesNameD"></a>
 **PluginCopyRedChannelAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyRedChannelAllFramesNameD(
@@ -1777,6 +1835,8 @@ ChromaAnimationAPI::CopyZeroAllKeysAllFramesName(
 ---
 <a name="PluginCopyZeroAllKeysAllFramesNameD"></a>
 **PluginCopyZeroAllKeysAllFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1820,6 +1880,8 @@ ChromaAnimationAPI::CopyZeroAllKeysAllFramesOffsetName(
 <a name="PluginCopyZeroAllKeysAllFramesOffsetNameD"></a>
 **PluginCopyZeroAllKeysAllFramesOffsetNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyZeroAllKeysAllFramesOffsetNameD(
@@ -1861,6 +1923,8 @@ ChromaAnimationAPI::CopyZeroKeyColorName(
 ---
 <a name="PluginCopyZeroKeyColorNameD"></a>
 **PluginCopyZeroKeyColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -1906,6 +1970,8 @@ ChromaAnimationAPI::CopyZeroTargetAllKeysAllFramesName(
 <a name="PluginCopyZeroTargetAllKeysAllFramesNameD"></a>
 **PluginCopyZeroTargetAllKeysAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyZeroTargetAllKeysAllFramesNameD(
@@ -1919,6 +1985,8 @@ double result = ChromaAnimationAPI::CopyZeroTargetAllKeysAllFramesNameD(
 ---
 <a name="PluginCoreCreateChromaLinkEffect"></a>
 **PluginCoreCreateChromaLinkEffect**
+
+Direct access to low level API.
 
 ```C++
 // DLL Interface
@@ -1934,6 +2002,8 @@ RZRESULT result = ChromaAnimationAPI::CoreCreateChromaLinkEffect(
 <a name="PluginCoreCreateEffect"></a>
 **PluginCoreCreateEffect**
 
+Direct access to low level API.
+
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateEffect(
@@ -1947,6 +2017,8 @@ RZRESULT result = ChromaAnimationAPI::CoreCreateEffect(
 ---
 <a name="PluginCoreCreateHeadsetEffect"></a>
 **PluginCoreCreateHeadsetEffect**
+
+Direct access to low level API.
 
 ```C++
 // DLL Interface
@@ -1962,6 +2034,8 @@ RZRESULT result = ChromaAnimationAPI::CoreCreateHeadsetEffect(
 <a name="PluginCoreCreateKeyboardEffect"></a>
 **PluginCoreCreateKeyboardEffect**
 
+Direct access to low level API.
+
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateKeyboardEffect(
@@ -1975,6 +2049,8 @@ RZRESULT result = ChromaAnimationAPI::CoreCreateKeyboardEffect(
 ---
 <a name="PluginCoreCreateKeypadEffect"></a>
 **PluginCoreCreateKeypadEffect**
+
+Direct access to low level API.
 
 ```C++
 // DLL Interface
@@ -1990,6 +2066,8 @@ RZRESULT result = ChromaAnimationAPI::CoreCreateKeypadEffect(
 <a name="PluginCoreCreateMouseEffect"></a>
 **PluginCoreCreateMouseEffect**
 
+Direct access to low level API.
+
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateMouseEffect(
@@ -2003,6 +2081,8 @@ RZRESULT result = ChromaAnimationAPI::CoreCreateMouseEffect(
 ---
 <a name="PluginCoreCreateMousepadEffect"></a>
 **PluginCoreCreateMousepadEffect**
+
+Direct access to low level API.
 
 ```C++
 // DLL Interface
@@ -2018,6 +2098,8 @@ RZRESULT result = ChromaAnimationAPI::CoreCreateMousepadEffect(
 <a name="PluginCoreDeleteEffect"></a>
 **PluginCoreDeleteEffect**
 
+Direct access to low level API.
+
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreDeleteEffect(RZEFFECTID EffectId);
@@ -2030,6 +2112,8 @@ RZRESULT result = ChromaAnimationAPI::CoreDeleteEffect(RZEFFECTID EffectId);
 <a name="PluginCoreInit"></a>
 **PluginCoreInit**
 
+Direct access to low level API.
+
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreInit();
@@ -2041,6 +2125,8 @@ RZRESULT result = ChromaAnimationAPI::CoreInit();
 ---
 <a name="PluginCoreQueryDevice"></a>
 **PluginCoreQueryDevice**
+
+Direct access to low level API.
 
 ```C++
 // DLL Interface
@@ -2056,6 +2142,8 @@ RZRESULT result = ChromaAnimationAPI::CoreQueryDevice(
 <a name="PluginCoreSetEffect"></a>
 **PluginCoreSetEffect**
 
+Direct access to low level API.
+
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreSetEffect(RZEFFECTID EffectId);
@@ -2067,6 +2155,8 @@ RZRESULT result = ChromaAnimationAPI::CoreSetEffect(RZEFFECTID EffectId);
 ---
 <a name="PluginCoreUnInit"></a>
 **PluginCoreUnInit**
+
+Direct access to low level API.
 
 ```C++
 // DLL Interface
@@ -2181,6 +2271,8 @@ ChromaAnimationAPI::DuplicateFirstFrameName(
 <a name="PluginDuplicateFirstFrameNameD"></a>
 **PluginDuplicateFirstFrameNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginDuplicateFirstFrameNameD(
@@ -2219,6 +2311,8 @@ ChromaAnimationAPI::DuplicateFramesName(const char* path);
 <a name="PluginDuplicateFramesNameD"></a>
 **PluginDuplicateFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginDuplicateFramesNameD(const char* path);
@@ -2254,6 +2348,8 @@ ChromaAnimationAPI::DuplicateMirrorFramesName(const char* path);
 ---
 <a name="PluginDuplicateMirrorFramesNameD"></a>
 **PluginDuplicateMirrorFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2294,6 +2390,8 @@ ChromaAnimationAPI::FadeEndFramesName(
 ---
 <a name="PluginFadeEndFramesNameD"></a>
 **PluginFadeEndFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2336,6 +2434,8 @@ ChromaAnimationAPI::FadeStartFramesName(
 ---
 <a name="PluginFadeStartFramesNameD"></a>
 **PluginFadeStartFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2398,6 +2498,8 @@ ChromaAnimationAPI::FillColorAllFramesName(
 <a name="PluginFillColorAllFramesNameD"></a>
 **PluginFillColorAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillColorAllFramesNameD(
@@ -2443,6 +2545,8 @@ ChromaAnimationAPI::FillColorAllFramesRGBName(
 <a name="PluginFillColorAllFramesRGBNameD"></a>
 **PluginFillColorAllFramesRGBNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillColorAllFramesRGBNameD(
@@ -2473,6 +2577,8 @@ ChromaAnimationAPI::FillColorName(
 ---
 <a name="PluginFillColorNameD"></a>
 **PluginFillColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2518,6 +2624,8 @@ ChromaAnimationAPI::FillColorRGBName(
 ---
 <a name="PluginFillColorRGBNameD"></a>
 **PluginFillColorRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2585,6 +2693,8 @@ ChromaAnimationAPI::FillNonZeroColorAllFramesName(
 <a name="PluginFillNonZeroColorAllFramesNameD"></a>
 **PluginFillNonZeroColorAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillNonZeroColorAllFramesNameD(
@@ -2631,6 +2741,8 @@ ChromaAnimationAPI::FillNonZeroColorAllFramesRGBName(
 <a name="PluginFillNonZeroColorAllFramesRGBNameD"></a>
 **PluginFillNonZeroColorAllFramesRGBNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillNonZeroColorAllFramesRGBNameD(
@@ -2662,6 +2774,8 @@ ChromaAnimationAPI::FillNonZeroColorName(
 ---
 <a name="PluginFillNonZeroColorNameD"></a>
 **PluginFillNonZeroColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2708,6 +2822,8 @@ ChromaAnimationAPI::FillNonZeroColorRGBName(
 ---
 <a name="PluginFillNonZeroColorRGBNameD"></a>
 **PluginFillNonZeroColorRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2761,6 +2877,8 @@ ChromaAnimationAPI::FillRandomColorsAllFramesName(const char* path);
 <a name="PluginFillRandomColorsAllFramesNameD"></a>
 **PluginFillRandomColorsAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillRandomColorsAllFramesNameD(const char* path);
@@ -2811,6 +2929,8 @@ ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(const char* path)
 <a name="PluginFillRandomColorsBlackAndWhiteAllFramesNameD"></a>
 **PluginFillRandomColorsBlackAndWhiteAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const char* path);
@@ -2836,6 +2956,8 @@ ChromaAnimationAPI::FillRandomColorsBlackAndWhiteName(
 ---
 <a name="PluginFillRandomColorsBlackAndWhiteNameD"></a>
 **PluginFillRandomColorsBlackAndWhiteNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2864,6 +2986,8 @@ ChromaAnimationAPI::FillRandomColorsName(
 ---
 <a name="PluginFillRandomColorsNameD"></a>
 **PluginFillRandomColorsNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -2921,6 +3045,8 @@ ChromaAnimationAPI::FillThresholdColorsAllFramesName(
 <a name="PluginFillThresholdColorsAllFramesNameD"></a>
 **PluginFillThresholdColorsAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdColorsAllFramesNameD(
@@ -2962,6 +3088,8 @@ ChromaAnimationAPI::FillThresholdColorsAllFramesRGBName(
 ---
 <a name="PluginFillThresholdColorsAllFramesRGBNameD"></a>
 **PluginFillThresholdColorsAllFramesRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3008,6 +3136,8 @@ ChromaAnimationAPI::FillThresholdColorsMinMaxAllFramesRGBName(
 ---
 <a name="PluginFillThresholdColorsMinMaxAllFramesRGBNameD"></a>
 **PluginFillThresholdColorsMinMaxAllFramesRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3057,6 +3187,8 @@ ChromaAnimationAPI::FillThresholdColorsMinMaxRGBName(
 <a name="PluginFillThresholdColorsMinMaxRGBNameD"></a>
 **PluginFillThresholdColorsMinMaxRGBNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdColorsMinMaxRGBNameD(
@@ -3086,6 +3218,8 @@ ChromaAnimationAPI::FillThresholdColorsName(
 ---
 <a name="PluginFillThresholdColorsNameD"></a>
 **PluginFillThresholdColorsNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3128,6 +3262,8 @@ ChromaAnimationAPI::FillThresholdColorsRGBName(
 ---
 <a name="PluginFillThresholdColorsRGBNameD"></a>
 **PluginFillThresholdColorsRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3177,6 +3313,8 @@ ChromaAnimationAPI::FillThresholdRGBColorsAllFramesRGBName(
 <a name="PluginFillThresholdRGBColorsAllFramesRGBNameD"></a>
 **PluginFillThresholdRGBColorsAllFramesRGBNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdRGBColorsAllFramesRGBNameD(
@@ -3224,6 +3362,8 @@ ChromaAnimationAPI::FillThresholdRGBColorsRGBName(
 ---
 <a name="PluginFillThresholdRGBColorsRGBNameD"></a>
 **PluginFillThresholdRGBColorsRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3283,6 +3423,8 @@ ChromaAnimationAPI::FillZeroColorAllFramesName(
 <a name="PluginFillZeroColorAllFramesNameD"></a>
 **PluginFillZeroColorAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillZeroColorAllFramesNameD(
@@ -3325,6 +3467,8 @@ ChromaAnimationAPI::FillZeroColorAllFramesRGBName(
 <a name="PluginFillZeroColorAllFramesRGBNameD"></a>
 **PluginFillZeroColorAllFramesRGBNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(
@@ -3352,6 +3496,8 @@ ChromaAnimationAPI::FillZeroColorName(
 ---
 <a name="PluginFillZeroColorNameD"></a>
 **PluginFillZeroColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3394,6 +3540,8 @@ ChromaAnimationAPI::FillZeroColorRGBName(
 ---
 <a name="PluginFillZeroColorRGBNameD"></a>
 **PluginFillZeroColorRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3439,6 +3587,8 @@ int result = ChromaAnimationAPI::Get1DColorName(
 ---
 <a name="PluginGet1DColorNameD"></a>
 **PluginGet1DColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3486,6 +3636,8 @@ int result = ChromaAnimationAPI::Get2DColorName(
 <a name="PluginGet2DColorNameD"></a>
 **PluginGet2DColorNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginGet2DColorNameD(
@@ -3525,6 +3677,8 @@ int result = ChromaAnimationAPI::GetAnimationCount();
 ---
 <a name="PluginGetAnimationD"></a>
 **PluginGetAnimationD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3599,6 +3753,8 @@ int result = ChromaAnimationAPI::GetCurrentFrameName(const char* path);
 <a name="PluginGetCurrentFrameNameD"></a>
 **PluginGetCurrentFrameNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginGetCurrentFrameNameD(const char* path);
@@ -3643,6 +3799,8 @@ int result = ChromaAnimationAPI::GetDeviceName(const char* path);
 <a name="PluginGetDeviceNameD"></a>
 **PluginGetDeviceNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginGetDeviceNameD(const char* path);
@@ -3684,6 +3842,8 @@ int result = ChromaAnimationAPI::GetDeviceTypeName(const char* path);
 ---
 <a name="PluginGetDeviceTypeNameD"></a>
 **PluginGetDeviceTypeNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3748,6 +3908,8 @@ int result = ChromaAnimationAPI::GetFrameCountName(const char* path);
 <a name="PluginGetFrameCountNameD"></a>
 **PluginGetFrameCountNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginGetFrameCountNameD(const char* path);
@@ -3775,6 +3937,8 @@ int result = ChromaAnimationAPI::GetKeyColor(
 ---
 <a name="PluginGetKeyColorD"></a>
 **PluginGetKeyColorD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3821,6 +3985,8 @@ int result = ChromaAnimationAPI::GetMaxColumn(int device);
 <a name="PluginGetMaxColumnD"></a>
 **PluginGetMaxColumnD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginGetMaxColumnD(double device);
@@ -3848,6 +4014,8 @@ int result = ChromaAnimationAPI::GetMaxLeds(int device);
 <a name="PluginGetMaxLedsD"></a>
 **PluginGetMaxLedsD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginGetMaxLedsD(double device);
@@ -3874,6 +4042,8 @@ int result = ChromaAnimationAPI::GetMaxRow(int device);
 ---
 <a name="PluginGetMaxRowD"></a>
 **PluginGetMaxRowD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -3932,6 +4102,8 @@ int result = ChromaAnimationAPI::GetRGB(
 <a name="PluginGetRGBD"></a>
 **PluginGetRGBD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginGetRGBD(
@@ -3974,6 +4146,8 @@ bool result = ChromaAnimationAPI::HasAnimationLoopName(const char* path);
 <a name="PluginHasAnimationLoopNameD"></a>
 **PluginHasAnimationLoopNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginHasAnimationLoopNameD(const char* path);
@@ -4000,6 +4174,8 @@ int result = ChromaAnimationAPI::Init();
 ---
 <a name="PluginInitD"></a>
 **PluginInitD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4040,6 +4216,8 @@ ChromaAnimationAPI::InsertDelayName(
 ---
 <a name="PluginInsertDelayNameD"></a>
 **PluginInsertDelayNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4082,6 +4260,8 @@ ChromaAnimationAPI::InsertFrameName(
 ---
 <a name="PluginInsertFrameNameD"></a>
 **PluginInsertFrameNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4135,6 +4315,8 @@ ChromaAnimationAPI::InvertColorsAllFramesName(const char* path);
 <a name="PluginInvertColorsAllFramesNameD"></a>
 **PluginInvertColorsAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginInvertColorsAllFramesNameD(const char* path);
@@ -4160,6 +4342,8 @@ ChromaAnimationAPI::InvertColorsName(
 ---
 <a name="PluginInvertColorsNameD"></a>
 **PluginInvertColorsNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4203,6 +4387,8 @@ bool result = ChromaAnimationAPI::IsAnimationPausedName(const char* path);
 <a name="PluginIsAnimationPausedNameD"></a>
 **PluginIsAnimationPausedNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginIsAnimationPausedNameD(const char* path);
@@ -4229,6 +4415,8 @@ bool result = ChromaAnimationAPI::IsDialogOpen();
 ---
 <a name="PluginIsDialogOpenD"></a>
 **PluginIsDialogOpenD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4257,6 +4445,8 @@ bool result = ChromaAnimationAPI::IsInitialized();
 <a name="PluginIsInitializedD"></a>
 **PluginIsInitializedD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginIsInitializedD();
@@ -4283,6 +4473,8 @@ bool result = ChromaAnimationAPI::IsPlatformSupported();
 <a name="PluginIsPlatformSupportedD"></a>
 **PluginIsPlatformSupportedD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginIsPlatformSupportedD();
@@ -4306,6 +4498,8 @@ bool result = ChromaAnimationAPI::IsPlaying(int animationId);
 ---
 <a name="PluginIsPlayingD"></a>
 **PluginIsPlayingD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4334,6 +4528,8 @@ bool result = ChromaAnimationAPI::IsPlayingName(const char* path);
 ---
 <a name="PluginIsPlayingNameD"></a>
 **PluginIsPlayingNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4364,6 +4560,8 @@ bool result = ChromaAnimationAPI::IsPlayingType(
 ---
 <a name="PluginIsPlayingTypeD"></a>
 **PluginIsPlayingTypeD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4421,6 +4619,8 @@ int result = ChromaAnimationAPI::LoadAnimation(int animationId);
 ---
 <a name="PluginLoadAnimationD"></a>
 **PluginLoadAnimationD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4486,6 +4686,8 @@ ChromaAnimationAPI::MakeBlankFramesName(
 <a name="PluginMakeBlankFramesNameD"></a>
 **PluginMakeBlankFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginMakeBlankFramesNameD(
@@ -4542,6 +4744,8 @@ ChromaAnimationAPI::MakeBlankFramesRandomBlackAndWhiteName(
 <a name="PluginMakeBlankFramesRandomBlackAndWhiteNameD"></a>
 **PluginMakeBlankFramesRandomBlackAndWhiteNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(
@@ -4569,6 +4773,8 @@ ChromaAnimationAPI::MakeBlankFramesRandomName(
 ---
 <a name="PluginMakeBlankFramesRandomNameD"></a>
 **PluginMakeBlankFramesRandomNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4611,6 +4817,8 @@ ChromaAnimationAPI::MakeBlankFramesRGBName(
 ---
 <a name="PluginMakeBlankFramesRGBNameD"></a>
 **PluginMakeBlankFramesRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4687,6 +4895,8 @@ ChromaAnimationAPI::MultiplyColorLerpAllFramesName(
 <a name="PluginMultiplyColorLerpAllFramesNameD"></a>
 **PluginMultiplyColorLerpAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyColorLerpAllFramesNameD(
@@ -4758,6 +4968,8 @@ ChromaAnimationAPI::MultiplyIntensityAllFramesName(
 <a name="PluginMultiplyIntensityAllFramesNameD"></a>
 **PluginMultiplyIntensityAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyIntensityAllFramesNameD(
@@ -4799,6 +5011,8 @@ ChromaAnimationAPI::MultiplyIntensityAllFramesRGBName(
 ---
 <a name="PluginMultiplyIntensityAllFramesRGBNameD"></a>
 **PluginMultiplyIntensityAllFramesRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4856,6 +5070,8 @@ ChromaAnimationAPI::MultiplyIntensityColorAllFramesName(
 <a name="PluginMultiplyIntensityColorAllFramesNameD"></a>
 **PluginMultiplyIntensityColorAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyIntensityColorAllFramesNameD(
@@ -4883,6 +5099,8 @@ ChromaAnimationAPI::MultiplyIntensityColorName(
 ---
 <a name="PluginMultiplyIntensityColorNameD"></a>
 **PluginMultiplyIntensityColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4916,6 +5134,8 @@ ChromaAnimationAPI::MultiplyIntensityName(
 ---
 <a name="PluginMultiplyIntensityNameD"></a>
 **PluginMultiplyIntensityNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -4958,6 +5178,8 @@ ChromaAnimationAPI::MultiplyIntensityRGBName(
 ---
 <a name="PluginMultiplyIntensityRGBNameD"></a>
 **PluginMultiplyIntensityRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5015,6 +5237,8 @@ ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesName(
 <a name="PluginMultiplyNonZeroTargetColorLerpAllFramesNameD"></a>
 **PluginMultiplyNonZeroTargetColorLerpAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesNameD(
@@ -5058,6 +5282,8 @@ ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesRGBName(
 ---
 <a name="PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD"></a>
 **PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5117,6 +5343,8 @@ ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesName(
 <a name="PluginMultiplyTargetColorLerpAllFramesNameD"></a>
 **PluginMultiplyTargetColorLerpAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(
@@ -5160,6 +5388,8 @@ ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesRGBName(
 ---
 <a name="PluginMultiplyTargetColorLerpAllFramesRGBNameD"></a>
 **PluginMultiplyTargetColorLerpAllFramesRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5231,6 +5461,8 @@ ChromaAnimationAPI::OffsetColorsAllFramesName(
 <a name="PluginOffsetColorsAllFramesNameD"></a>
 **PluginOffsetColorsAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginOffsetColorsAllFramesNameD(
@@ -5262,6 +5494,8 @@ ChromaAnimationAPI::OffsetColorsName(
 ---
 <a name="PluginOffsetColorsNameD"></a>
 **PluginOffsetColorsNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5334,6 +5568,8 @@ ChromaAnimationAPI::OffsetNonZeroColorsAllFramesName(
 <a name="PluginOffsetNonZeroColorsAllFramesNameD"></a>
 **PluginOffsetNonZeroColorsAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginOffsetNonZeroColorsAllFramesNameD(
@@ -5367,6 +5603,8 @@ ChromaAnimationAPI::OffsetNonZeroColorsName(
 <a name="PluginOffsetNonZeroColorsNameD"></a>
 **PluginOffsetNonZeroColorsNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginOffsetNonZeroColorsNameD(
@@ -5396,6 +5634,8 @@ int result = ChromaAnimationAPI::OpenAnimation(const char* path);
 ---
 <a name="PluginOpenAnimationD"></a>
 **PluginOpenAnimationD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5436,6 +5676,8 @@ int result = ChromaAnimationAPI::OpenEditorDialogAndPlay(const char* path);
 <a name="PluginOpenEditorDialogAndPlayD"></a>
 **PluginOpenEditorDialogAndPlayD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginOpenEditorDialogAndPlayD(const char* path);
@@ -5447,6 +5689,8 @@ double result = ChromaAnimationAPI::OpenEditorDialogAndPlayD(const char* path);
 ---
 <a name="PluginOpenEditorDialogD"></a>
 **PluginOpenEditorDialogD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5476,6 +5720,8 @@ int result = ChromaAnimationAPI::OverrideFrameDuration(
 ---
 <a name="PluginOverrideFrameDurationD"></a>
 **PluginOverrideFrameDurationD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5533,6 +5779,8 @@ ChromaAnimationAPI::PauseAnimationName(const char* path);
 <a name="PluginPauseAnimationNameD"></a>
 **PluginPauseAnimationNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginPauseAnimationNameD(const char* path);
@@ -5559,6 +5807,8 @@ int result = ChromaAnimationAPI::PlayAnimation(int animationId);
 ---
 <a name="PluginPlayAnimationD"></a>
 **PluginPlayAnimationD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5607,6 +5857,8 @@ ChromaAnimationAPI::PlayAnimationFrameName(
 ---
 <a name="PluginPlayAnimationFrameNameD"></a>
 **PluginPlayAnimationFrameNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5658,6 +5910,8 @@ ChromaAnimationAPI::PlayAnimationName(
 <a name="PluginPlayAnimationNameD"></a>
 **PluginPlayAnimationNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginPlayAnimationNameD(
@@ -5690,6 +5944,8 @@ ChromaAnimationAPI::PlayComposite(
 <a name="PluginPlayCompositeD"></a>
 **PluginPlayCompositeD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginPlayCompositeD(
@@ -5720,6 +5976,8 @@ int result = ChromaAnimationAPI::PreviewFrame(
 ---
 <a name="PluginPreviewFrameD"></a>
 **PluginPreviewFrameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5776,6 +6034,8 @@ ChromaAnimationAPI::ReduceFramesName(
 ---
 <a name="PluginReduceFramesNameD"></a>
 **PluginReduceFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5838,6 +6098,8 @@ ChromaAnimationAPI::ResumeAnimationName(
 <a name="PluginResumeAnimationNameD"></a>
 **PluginResumeAnimationNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginResumeAnimationNameD(
@@ -5890,6 +6152,8 @@ ChromaAnimationAPI::ReverseAllFramesName(const char* path);
 ---
 <a name="PluginReverseAllFramesNameD"></a>
 **PluginReverseAllFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -5962,6 +6226,8 @@ ChromaAnimationAPI::Set1DColorName(
 <a name="PluginSet1DColorNameD"></a>
 **PluginSet1DColorNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSet1DColorNameD(
@@ -6008,6 +6274,8 @@ ChromaAnimationAPI::Set2DColorName(
 <a name="PluginSet2DColorNameD"></a>
 **PluginSet2DColorNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSet2DColorNameD(
@@ -6045,6 +6313,8 @@ ChromaAnimationAPI::SetChromaCustomColorAllFramesName(const char* path);
 ---
 <a name="PluginSetChromaCustomColorAllFramesNameD"></a>
 **PluginSetChromaCustomColorAllFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -6085,6 +6355,8 @@ ChromaAnimationAPI::SetChromaCustomFlagName(
 ---
 <a name="PluginSetChromaCustomFlagNameD"></a>
 **PluginSetChromaCustomFlagNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -6131,6 +6403,8 @@ ChromaAnimationAPI::SetCurrentFrameName(
 ---
 <a name="PluginSetCurrentFrameNameD"></a>
 **PluginSetCurrentFrameNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -6222,6 +6496,8 @@ ChromaAnimationAPI::SetKeyColorAllFramesName(
 <a name="PluginSetKeyColorAllFramesNameD"></a>
 **PluginSetKeyColorAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyColorAllFramesNameD(
@@ -6264,6 +6540,8 @@ ChromaAnimationAPI::SetKeyColorAllFramesRGBName(
 <a name="PluginSetKeyColorAllFramesRGBNameD"></a>
 **PluginSetKeyColorAllFramesRGBNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyColorAllFramesRGBNameD(
@@ -6293,6 +6571,8 @@ ChromaAnimationAPI::SetKeyColorName(
 ---
 <a name="PluginSetKeyColorNameD"></a>
 **PluginSetKeyColorNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -6335,6 +6615,8 @@ ChromaAnimationAPI::SetKeyColorRGBName(
 ---
 <a name="PluginSetKeyColorRGBNameD"></a>
 **PluginSetKeyColorRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -6386,6 +6668,8 @@ ChromaAnimationAPI::SetKeyNonZeroColorName(
 <a name="PluginSetKeyNonZeroColorNameD"></a>
 **PluginSetKeyNonZeroColorNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyNonZeroColorNameD(
@@ -6427,6 +6711,8 @@ ChromaAnimationAPI::SetKeyNonZeroColorRGBName(
 ---
 <a name="PluginSetKeyNonZeroColorRGBNameD"></a>
 **PluginSetKeyNonZeroColorRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -6802,6 +7088,8 @@ ChromaAnimationAPI::SetKeyZeroColorName(
 <a name="PluginSetKeyZeroColorNameD"></a>
 **PluginSetKeyZeroColorNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyZeroColorNameD(
@@ -6843,6 +7131,8 @@ ChromaAnimationAPI::SetKeyZeroColorRGBName(
 ---
 <a name="PluginSetKeyZeroColorRGBNameD"></a>
 **PluginSetKeyZeroColorRGBNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -6905,6 +7195,8 @@ int result = ChromaAnimationAPI::StopAnimation(int animationId);
 <a name="PluginStopAnimationD"></a>
 **PluginStopAnimationD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginStopAnimationD(double animationId);
@@ -6932,6 +7224,8 @@ ChromaAnimationAPI::StopAnimationName(const char* path);
 ---
 <a name="PluginStopAnimationNameD"></a>
 **PluginStopAnimationNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -6963,6 +7257,8 @@ ChromaAnimationAPI::StopAnimationType(
 <a name="PluginStopAnimationTypeD"></a>
 **PluginStopAnimationTypeD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginStopAnimationTypeD(
@@ -6992,6 +7288,8 @@ ChromaAnimationAPI::StopComposite(const char* name);
 ---
 <a name="PluginStopCompositeD"></a>
 **PluginStopCompositeD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -7032,6 +7330,8 @@ ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesName(
 ---
 <a name="PluginSubtractNonZeroAllKeysAllFramesNameD"></a>
 **PluginSubtractNonZeroAllKeysAllFramesNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -7075,6 +7375,8 @@ ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesOffsetName(
 <a name="PluginSubtractNonZeroAllKeysAllFramesOffsetNameD"></a>
 **PluginSubtractNonZeroAllKeysAllFramesOffsetNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesOffsetNameD(
@@ -7116,6 +7418,8 @@ ChromaAnimationAPI::SubtractNonZeroAllKeysOffsetName(
 ---
 <a name="PluginSubtractNonZeroAllKeysOffsetNameD"></a>
 **PluginSubtractNonZeroAllKeysOffsetNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -7161,6 +7465,8 @@ ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesName(
 <a name="PluginSubtractNonZeroTargetAllKeysAllFramesNameD"></a>
 **PluginSubtractNonZeroTargetAllKeysAllFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesNameD(
@@ -7203,6 +7509,8 @@ ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesOffsetName(
 <a name="PluginSubtractNonZeroTargetAllKeysAllFramesOffsetNameD"></a>
 **PluginSubtractNonZeroTargetAllKeysAllFramesOffsetNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesOffsetNameD(
@@ -7244,6 +7552,8 @@ ChromaAnimationAPI::SubtractNonZeroTargetAllKeysOffsetName(
 ---
 <a name="PluginSubtractNonZeroTargetAllKeysOffsetNameD"></a>
 **PluginSubtractNonZeroTargetAllKeysOffsetNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -7289,6 +7599,8 @@ ChromaAnimationAPI::TrimEndFramesName(
 <a name="PluginTrimEndFramesNameD"></a>
 **PluginTrimEndFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginTrimEndFramesNameD(
@@ -7330,6 +7642,8 @@ ChromaAnimationAPI::TrimFrameName(
 ---
 <a name="PluginTrimFrameNameD"></a>
 **PluginTrimFrameNameD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -7373,6 +7687,8 @@ ChromaAnimationAPI::TrimStartFramesName(
 <a name="PluginTrimStartFramesNameD"></a>
 **PluginTrimStartFramesNameD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginTrimStartFramesNameD(
@@ -7401,6 +7717,8 @@ int result = ChromaAnimationAPI::Uninit();
 <a name="PluginUninitD"></a>
 **PluginUninitD**
 
+D suffix for limited data types.
+
 ```C++
 // DLL Interface
 EXPORT_API double PluginUninitD();
@@ -7427,6 +7745,8 @@ int result = ChromaAnimationAPI::UnloadAnimation(int animationId);
 ---
 <a name="PluginUnloadAnimationD"></a>
 **PluginUnloadAnimationD**
+
+D suffix for limited data types.
 
 ```C++
 // DLL Interface
@@ -7481,8 +7801,6 @@ EXPORT_API int PluginUpdateFrame(
 int result = ChromaAnimationAPI::UpdateFrame(
 	int animationId, int frameIndex, float duration, int* colors, int length);
 ```
-
-
 
 
 <br/><br/>
