@@ -459,6 +459,7 @@ Methods:
 * [PluginOffsetNonZeroColorsNameD](#PluginOffsetNonZeroColorsNameD)
 * [PluginOpenAnimation](#PluginOpenAnimation)
 * [PluginOpenAnimationD](#PluginOpenAnimationD)
+* [PluginOpenAnimationFromMemory](#PluginOpenAnimationFromMemory)
 * [PluginOpenEditorDialog](#PluginOpenEditorDialog)
 * [PluginOpenEditorDialogAndPlay](#PluginOpenEditorDialogAndPlay)
 * [PluginOpenEditorDialogAndPlayD](#PluginOpenEditorDialogAndPlayD)
@@ -6113,6 +6114,26 @@ EXPORT_API double PluginOpenAnimationD(const char* path);
 
 // Class Plugin
 double result = ChromaAnimationAPI::OpenAnimationD(const char* path);
+```
+
+---
+<a name="PluginOpenAnimationFromMemory"></a>
+**PluginOpenAnimationFromMemory**
+
+Opens a `Chroma` animation data from memory so that it can be played. `Data`
+is a pointer to byte array of the loaded animation in memory. `Name` will
+be assigned to the animation when loaded. Returns an animation id >= 0
+upon success. Returns -1 if there was a failure. The animation id is used
+in most of the API methods.
+
+```C++
+// DLL Interface
+EXPORT_API int PluginOpenAnimationFromMemory(
+	const byte* data, const char* name);
+
+// Class Plugin
+int result = ChromaAnimationAPI::OpenAnimationFromMemory(
+	const byte* data, const char* name);
 ```
 
 ---
