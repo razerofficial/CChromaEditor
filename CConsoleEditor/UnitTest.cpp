@@ -39,9 +39,15 @@ void UnitTests::UnitTestsInit()
 
 void UnitTests::UnitTestsUninit()
 {
+	ChromaAnimationAPI::StopAll();
+
+	ChromaAnimationAPI::CloseAll();
+
 	ChromaAnimationAPI::Uninit();
 
 	Sleep(1000);
+
+	fprintf(stdout, "Unit Tests have completed!\r\n");
 }
 
 void UnitTests::UnitTestsPlayComposite()
@@ -971,7 +977,12 @@ void UnitTests::Run()
 	fprintf(stdout, "Start of unit tests...\r\n");
 	Sleep(500);
 	UnitTestsInit();
-	UnitTestsLoadedAnimations();
+
+	Sleep(500);
+
+
+	//UnitTestsLoadedAnimations();
+	UnitTestsOpenAnimationFromMemory();
 	//UnitTestsFadeStart();
 	//UnitTestsFadeEnd();
 	//UnitTestsCopyAnimation();
@@ -987,12 +998,11 @@ void UnitTests::Run()
 	//UnitTestsOffset();
 	//UnitTestsNonZero();
 	//UnitTestsCreateAnimation();
-
-	UnitTestsUninit();
+ 	UnitTestsUninit();
 
 	while (true)
 	{
-		Sleep(100);
+		Sleep(1000);
 	}
 }
 
@@ -1017,4 +1027,61 @@ int UnitTests::CloseAnimation(int animationId)
 	int result = (int)ChromaAnimationAPI::CloseAnimation(animationId);
 	fprintf(stdout, "CloseAnimation: %d result=%d\r\n", animationId, result);
 	return result;
+}
+
+void UnitTests::UnitTestsOpenAnimationFromMemory()
+{
+	const char* path = "Random_Keyboard.chroma";
+	FILE* stream = nullptr;
+	try
+	{
+		if (0 != fopen_s(&stream, path, "rb") ||
+			stream == nullptr)
+		{
+			fprintf(stderr, "UnitTestsOpenAnimationFromMemory: Failed to open animation! %s\r\n", path);
+		}
+
+		fprintf(stdout, "UnitTestsOpenAnimationFromMemory: Reading animation file contents...\r\n");
+
+		vector<byte> lstBuffer;
+
+		byte data = 0;
+		long read = 0;
+		do
+		{
+			read = fread(&data, sizeof(byte), 1, stream);
+			lstBuffer.push_back(data);
+		} while (read != 0);
+
+ 		fprintf(stderr, "UnitTestsOpenAnimationFromMemory: File size is! %d\r\n", lstBuffer.size());
+
+		byte* buffer = new byte[lstBuffer.size()];
+		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
+
+		fprintf(stdout, "UnitTestsOpenAnimationFromMemory: Opening file from buffer...\r\n");
+
+		const char* name = "MemoryAnimation.chroma";
+		ChromaAnimationAPI::OpenAnimationFromMemory(buffer, name);
+
+		fprintf(stdout, "UnitTestsOpenAnimationFromMemory: Deleting buffer...\r\n");
+
+		delete buffer;
+
+		fprintf(stdout, "UnitTestsOpenAnimationFromMemory: Playing animation...\r\n");
+
+		ChromaAnimationAPI::PlayAnimationName(name, true);
+
+		Sleep(5000);
+	}
+	catch (exception)
+	{
+		fprintf(stderr, "UnitTestsOpenAnimationFromMemory: Exception path=%s\r\n", path);
+	}
+
+	if (stream != nullptr)
+	{
+		fclose(stream);
+	}
+
+	fprintf(stdout, "UnitTestsOpenAnimationFromMemory: Complete!\r\n");
 }

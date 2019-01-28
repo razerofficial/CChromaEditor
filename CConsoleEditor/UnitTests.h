@@ -62,4 +62,6 @@ public:
 
 	static int CloseAnimation(int animationId);
 
+	static void UnitTestsOpenAnimationFromMemory();
+
 };
