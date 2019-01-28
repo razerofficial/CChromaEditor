@@ -404,6 +404,36 @@ extern "C"
 		}
 	}
 
+	EXPORT_API int PluginOpenAnimationFromMemory(const byte* data, const char* name)
+	{
+		try
+		{
+			PluginCloseAnimationName(name);
+
+			//return animation id
+			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimationFromMemory(data);
+			if (animation == nullptr)
+			{
+				//LogError("PluginOpenAnimationFromMemory: Animation is null! name=%s\r\n", name);
+				return -1;
+			}
+			else
+			{
+				animation->SetName(name);
+				int id = _gAnimationId;
+				_gAnimations[id] = animation;
+				++_gAnimationId;
+				_gAnimationMapID[name] = id;
+				return id;
+			}
+		}
+		catch (exception)
+		{
+			LogError("PluginOpenAnimationFromMemory: Exception path=%s\r\n", name);
+			return -1;
+		}
+	}
+
 	EXPORT_API double PluginOpenAnimationD(const char* path)
 	{
 		return PluginOpenAnimation(path);

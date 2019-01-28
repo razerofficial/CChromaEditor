@@ -1251,3 +1251,217 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 
 	return animation;
 }
+
+AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
+{
+	const byte* pointer = data;
+	AnimationBase* animation = nullptr;
+
+	if (0 == data)
+	{
+		LogError("OpenAnimationFromMemory: Failed to open animation!\r\n");
+		return nullptr;
+	}
+
+	long read = 0;
+	long expectedRead = 1;
+	long expectedSize = sizeof(byte);
+
+	//version
+	int version = 0;
+	expectedSize = sizeof(int);
+	memcpy(&version, pointer, expectedSize);
+	pointer += expectedSize;
+	if (version != ANIMATION_VERSION)
+	{
+		LogError("OpenAnimationFromMemory: Unexpected Version!\r\n");
+		return nullptr;
+	}
+
+	//LogDebug("OpenAnimationFromMemory: Version: %d\r\n", version);
+
+	//device
+	byte device = 0;
+
+	// device type
+	byte deviceType = 0;
+	expectedSize = sizeof(byte);
+	memcpy(&deviceType, pointer, expectedSize);
+	pointer += expectedSize;
+
+	//device
+	switch ((EChromaSDKDeviceTypeEnum)deviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		//LogDebug("OpenAnimation: DeviceType: 1D\r\n");
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		//LogDebug("OpenAnimation: DeviceType: 2D\r\n");
+		break;
+	default:
+		LogError("OpenAnimationFromMemory: Unexpected DeviceType!\r\n");
+		return nullptr;
+	}
+
+	switch (deviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			expectedSize = sizeof(byte);
+			memcpy(&device, pointer, expectedSize);
+			pointer += expectedSize;
+
+			switch ((EChromaSDKDevice1DEnum)device)
+			{
+			case EChromaSDKDevice1DEnum::DE_ChromaLink:
+				//LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
+				break;
+			case EChromaSDKDevice1DEnum::DE_Headset:
+				//LogDebug("OpenAnimation: Device: DE_Headset\r\n");
+				break;
+			case EChromaSDKDevice1DEnum::DE_Mousepad:
+				//LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
+				break;
+			}
+
+			Animation1D* animation1D = new Animation1D();
+			animation = animation1D;
+
+			// device
+			animation1D->SetDevice((EChromaSDKDevice1DEnum)device);
+
+			//frame count
+			int frameCount;
+
+			expectedSize = sizeof(int);
+			memcpy(&frameCount, pointer, expectedSize);
+			pointer += expectedSize;
+
+			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+			for (int index = 0; index < frameCount; ++index)
+			{
+				FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+				int maxLeds = GetMaxLeds((EChromaSDKDevice1DEnum)device);
+
+				//duration
+				float duration = 0.0f;
+				expectedSize = sizeof(float);
+				memcpy(&duration, pointer, expectedSize);
+				pointer += expectedSize;
+
+				if (duration >= 0.033f)
+				{
+					frame.Duration = duration;
+				}
+				else
+				{
+					frame.Duration = 0.033f;
+				}
+
+				// colors
+				expectedSize = sizeof(int);
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					int color = 0;
+					memcpy(&color, pointer, expectedSize);
+					pointer += expectedSize;
+
+					frame.Colors.push_back((COLORREF)color);
+				}
+				if (index == 0)
+				{
+					frames[0] = frame;
+				}
+				else
+				{
+					frames.push_back(frame);
+				}
+			}
+		}
+		break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			expectedSize = sizeof(byte);
+			memcpy(&device, pointer, expectedSize);
+			pointer += expectedSize;
+
+			switch ((EChromaSDKDevice2DEnum)device)
+			{
+			case EChromaSDKDevice2DEnum::DE_Keyboard:
+				//LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
+				break;
+			case EChromaSDKDevice2DEnum::DE_Keypad:
+				//LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
+				break;
+			case EChromaSDKDevice2DEnum::DE_Mouse:
+				//LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
+				break;
+			}
+
+			Animation2D* animation2D = new Animation2D();
+			animation = animation2D;
+
+			//device
+			animation2D->SetDevice((EChromaSDKDevice2DEnum)device);
+
+			//frame count
+			int frameCount;
+
+			expectedSize = sizeof(int);
+			memcpy(&frameCount, pointer, expectedSize);
+			pointer += expectedSize;
+
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			for (int index = 0; index < frameCount; ++index)
+			{
+				FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+				int maxRow = GetMaxRow((EChromaSDKDevice2DEnum)device);
+				int maxColumn = GetMaxColumn((EChromaSDKDevice2DEnum)device);
+
+				//duration
+				float duration = 0.0f;
+				expectedSize = sizeof(float);
+				memcpy(&duration, pointer, expectedSize);
+				pointer += expectedSize;
+
+				if (duration >= 0.033f)
+				{
+					frame.Duration = duration;
+				}
+				else
+				{
+					frame.Duration = 0.033f;
+				}
+
+				// colors
+				expectedSize = sizeof(int);
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors row = FChromaSDKColors();
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = 0;
+						memcpy(&color, pointer, expectedSize);
+						pointer += expectedSize;
+
+						row.Colors.push_back((COLORREF)color);
+					}
+					frame.Colors.push_back(row);
+				}
+				if (index == 0)
+				{
+					frames[0] = frame;
+				}
+				else
+				{
+					frames.push_back(frame);
+				}
+			}
+		}
+		break;
+	}
+
+	//LogDebug("OpenAnimationFromMemory: Loaded %s\r\n", path.c_str());
+
+	return animation;
+}
