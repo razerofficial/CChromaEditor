@@ -15,6 +15,8 @@
 
 **Apps:**
 
+- [CSDK_SampleApp](https://github.com/razerofficial/CSDK_SampleApp) - Chroma C++ Sample App
+
 - [ChromaClientForDiscord](https://github.com/tgraupmann/ChromaDiscordApp) - Add Chroma lighting to the Discord App events
 
 - [ChromaClientForMixer](https://github.com/tgraupmann/ChromaClientForMixer) - Add Chroma lighting to the Mixer streaming experience
