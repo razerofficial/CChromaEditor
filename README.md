@@ -13,6 +13,10 @@
 <a name="see-also"></a>
 ## See Also
 
+**Docs:**
+
+- [Chroma Animation Guide](http://chroma.razer.com/ChromaGuide/) - Visual examples of the Chroma Animation API methods
+
 **Apps:**
 
 - [CSDK_SampleApp](https://github.com/razerofficial/CSDK_SampleApp) - Chroma C++ Sample App
