@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "RzChromaSDK.h"
 #include "RzErrors.h"
+#include "VerifyLibrarySignature.h"
 #include <tchar.h>
 
 
@@ -12,6 +13,8 @@
 
 
 HMODULE RzChromaSDK::_sLibraryChroma = NULL;
+bool RzChromaSDK::_sInvalidSignature = false;
+bool RzChromaSDK::_sLoaded = false;
 
 // assign static methods
 #undef CHROMASDK_DECLARE_METHOD_IMPL
@@ -176,11 +179,38 @@ RZRESULT RzChromaSDK::QueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TY
 
 bool RzChromaSDK::IsLibraryLoaded()
 {
+	// abort load if an invalid signature was detected
+	if (_sInvalidSignature)
+	{
+		return false;
+	}
+
+	// library has loaded and validation is complete
+	if (_sLoaded)
+	{
+		return true;
+	}
+
+	// load the library if previously not loaded
 	if (_sLibraryChroma == NULL)
 	{
+		// load the library
 		_sLibraryChroma = LoadLibrary(CHROMASDKDLL);
 		if (_sLibraryChroma == NULL)
 		{
+			return false;
+		}
+
+		// verify the library has a valid signature
+		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature(CHROMASDKDLL, _sLibraryChroma);
+ 		if (_sInvalidSignature)
+		{
+			fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
+			
+			// unload the library
+			FreeLibrary(_sLibraryChroma);
+			_sLibraryChroma = NULL;
+
 			return false;
 		}
 	}
@@ -201,5 +231,6 @@ bool RzChromaSDK::IsLibraryLoaded()
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_UNREGISTER_EVENT_NOTIFICATION, UnregisterEventNotification);
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
 
+	_sLoaded = true;
 	return true;
 }

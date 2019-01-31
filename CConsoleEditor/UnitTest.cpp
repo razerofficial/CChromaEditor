@@ -978,6 +978,12 @@ void UnitTests::Run()
 	Sleep(500);
 	UnitTestsInit();
 
+	if (!ChromaAnimationAPI::IsInitialized())
+	{
+		fprintf(stdout, "Library hasn't loaded, aborting unit tests...\r\n");
+		return;
+	}
+
 	Sleep(500);
 
 

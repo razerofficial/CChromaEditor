@@ -15,7 +15,6 @@ int Init()
 		return -1;
 	}
 
-	fprintf(stdout, "Validated all DLL methods [success]\r\n");
 	return 0;
 }
 
