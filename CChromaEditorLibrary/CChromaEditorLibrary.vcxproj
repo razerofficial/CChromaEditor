@@ -119,6 +119,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>.\CChromaEditorLibrary.def</ModuleDefinitionFile>
+      <OutputFile>$(OutDir)$(TargetName)64$(TargetExt)</OutputFile>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
