@@ -202,7 +202,7 @@ bool RzChromaSDK::IsLibraryLoaded()
 		}
 
 		// verify the library has a valid signature
-		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature(CHROMASDKDLL, _sLibraryChroma);
+		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibraryChroma);
  		if (_sInvalidSignature)
 		{
 			fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
