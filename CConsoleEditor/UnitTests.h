@@ -56,6 +56,8 @@ public:
 
 	static void UnitTestsDuplicateFirstFrame();
 
+	static void UnitTestsIdleAnimation();
+
 	static void Run();
 
 	static int OpenAndPlay(const char* path);

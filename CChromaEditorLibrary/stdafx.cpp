@@ -9885,4 +9885,37 @@ extern "C"
 		RZRESULT result = ChromaSDKPlugin::GetInstance()->DeleteEffect(effectId);
 		return result;
 	}
+
+	EXPORT_API void PluginUseIdleAnimation(bool flag)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+	}
+
+	EXPORT_API void PluginSetIdleAnimation(int animationId)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			LogError("PluginSetIdleAnimation: Animation is null! id=%d\r\n", animationId);
+			return;
+		}
+	}
+
+	EXPORT_API void PluginSetIdleAnimationName(const char* path)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginSetIdleAnimationName: Animation not found! %s\r\n", path);
+			return;
+		}
+		PluginSetIdleAnimation(animationId);
+	}
 }

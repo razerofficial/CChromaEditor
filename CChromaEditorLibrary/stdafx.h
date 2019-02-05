@@ -1955,6 +1955,16 @@ extern "C"
 	*/
 	EXPORT_API RZRESULT PluginSetEffect(const ChromaSDK::FChromaSDKGuid& effectId);
 	/*
+		When the idle animation is used, the named animation will play when no other
+		animations are playing. Reference the animation by id.
+	*/
+	EXPORT_API void PluginSetIdleAnimation(int animationId);
+	/*
+		When the idle animation is used, the named animation will play when no other
+		animations are playing. Reference the animation by name.
+	*/
+	EXPORT_API void PluginSetIdleAnimationName(const char* path);
+	/*
 		Set animation key to a static color for the given frame.
 	*/
 	EXPORT_API void PluginSetKeyColor(int animationId, int frameId, int rzkey, int color);
@@ -2388,6 +2398,14 @@ extern "C"
 		failure.
 	*/
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
+	/*
+		When the idle animation flag is true, when no other animations are playing,
+		the idle animation will be used. The idle animation will not be affected
+		by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId,
+		and PluginGetPlayingAnimationCount. Then the idle animation flag is false,
+		the idle animation is disabled.
+	*/
+	EXPORT_API void PluginUseIdleAnimation(bool flag);
 #pragma endregion
 	
 }

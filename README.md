@@ -131,6 +131,8 @@ Import a GIF animation into the grid layout. Multiple frames will be added if th
 
 The API has various methods with the `D` suffix where `double` return-type/parameters were used. This is to support engines like `GameMaker` which have a limited number of data-types.
 
+*(Start of automation)*
+
 Methods:
 
 * [PluginAddFrame](#PluginAddFrame)
@@ -519,6 +521,8 @@ Methods:
 * [PluginSetCurrentFrameNameD](#PluginSetCurrentFrameNameD)
 * [PluginSetDevice](#PluginSetDevice)
 * [PluginSetEffect](#PluginSetEffect)
+* [PluginSetIdleAnimation](#PluginSetIdleAnimation)
+* [PluginSetIdleAnimationName](#PluginSetIdleAnimationName)
 * [PluginSetKeyColor](#PluginSetKeyColor)
 * [PluginSetKeyColorAllFrames](#PluginSetKeyColorAllFrames)
 * [PluginSetKeyColorAllFramesName](#PluginSetKeyColorAllFramesName)
@@ -609,6 +613,7 @@ Methods:
 * [PluginUnloadAnimationName](#PluginUnloadAnimationName)
 * [PluginUnloadComposite](#PluginUnloadComposite)
 * [PluginUpdateFrame](#PluginUpdateFrame)
+* [PluginUseIdleAnimation](#PluginUseIdleAnimation)
 
 ---
 <a name="PluginAddFrame"></a>
@@ -6999,6 +7004,36 @@ RZRESULT result = ChromaAnimationAPI::SetEffect(
 ```
 
 ---
+<a name="PluginSetIdleAnimation"></a>
+**PluginSetIdleAnimation**
+
+When the idle animation is used, the named animation will play when no other
+animations are playing. Reference the animation by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginSetIdleAnimation(int animationId);
+
+// Class Plugin
+ChromaAnimationAPI::SetIdleAnimation(int animationId);
+```
+
+---
+<a name="PluginSetIdleAnimationName"></a>
+**PluginSetIdleAnimationName**
+
+When the idle animation is used, the named animation will play when no other
+animations are playing. Reference the animation by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginSetIdleAnimationName(const char* path);
+
+// Class Plugin
+ChromaAnimationAPI::SetIdleAnimationName(const char* path);
+```
+
+---
 <a name="PluginSetKeyColor"></a>
 **PluginSetKeyColor**
 
@@ -8506,12 +8541,32 @@ int result = ChromaAnimationAPI::UpdateFrame(
 	int animationId, int frameIndex, float duration, int* colors, int length);
 ```
 
+---
+<a name="PluginUseIdleAnimation"></a>
+**PluginUseIdleAnimation**
+
+When the idle animation flag is true, when no other animations are playing,
+the idle animation will be used. The idle animation will not be affected
+by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId,
+and PluginGetPlayingAnimationCount. Then the idle animation flag is false,
+the idle animation is disabled.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginUseIdleAnimation(bool flag);
+
+// Class Plugin
+ChromaAnimationAPI::UseIdleAnimation(bool flag);
+```
+
+
+
 
 <br/><br/>
 
 <hr/>
 
-* (End of automation)
+*(End of automation)*
 
 <br/><br/>
 
