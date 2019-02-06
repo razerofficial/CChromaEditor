@@ -48,6 +48,8 @@ void UnitTests::UnitTestsUninit()
 	Sleep(1000);
 
 	fprintf(stdout, "Unit Tests have completed!\r\n");
+
+	exit(0);
 }
 
 void UnitTests::UnitTestsPlayComposite()
