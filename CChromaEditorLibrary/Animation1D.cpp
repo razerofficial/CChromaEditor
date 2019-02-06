@@ -188,6 +188,11 @@ void Animation1D::Update(float deltaTime)
 		return;
 	}
 
+	InternalUpdate(deltaTime);
+}
+
+void Animation1D::InternalUpdate(float deltaTime)
+{
 	if (_mCurrentFrame == -1)
 	{
 		_mCurrentFrame = 0;

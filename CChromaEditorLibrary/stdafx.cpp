@@ -645,7 +645,10 @@ extern "C"
 				{
 					_gAnimationMapID.erase(animationName);
 				}
-				delete _gAnimations[animationId];
+				if (ChromaThread::Instance())
+				{
+					ChromaThread::Instance()->DeleteAnimation(animation);
+				}
 				_gAnimations.erase(animationId);
 				return animationId;
 			}
@@ -692,7 +695,10 @@ extern "C"
 		{
 			for (auto iter = _gAnimations.begin(); iter != _gAnimations.end(); ++iter)
 			{
-				PluginCloseAnimation(iter->first);
+				int animationId = iter->first;
+				PluginStopAnimation(animationId);
+				PluginUnloadAnimation(animationId);
+				PluginCloseAnimation(animationId);
 			}
 		}
 		_gAnimationId = 0;
@@ -1570,6 +1576,17 @@ extern "C"
 			return _gAnimations[animationId];
 		}
 		return nullptr;
+	}
+
+	AnimationBase* GetAnimationInstanceName(const char* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			//LogError("GetAnimationInstanceName: Animation not found! %s\r\n", path);
+			return nullptr;
+		}
+		return GetAnimationInstance(animationId);
 	}
 
 	EXPORT_API int PluginGetAnimation(const char* name)
@@ -9890,6 +9907,8 @@ extern "C"
 	{
 		// Chroma thread plays animations
 		SetupChromaThread();
+
+		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(flag);
 	}
 
 	EXPORT_API void PluginSetIdleAnimation(int animationId)
@@ -9903,6 +9922,8 @@ extern "C"
 			LogError("PluginSetIdleAnimation: Animation is null! id=%d\r\n", animationId);
 			return;
 		}
+
+		ChromaSDKPlugin::GetInstance()->SetIdleAnimation(animation->GetName().c_str());
 	}
 
 	EXPORT_API void PluginSetIdleAnimationName(const char* path)

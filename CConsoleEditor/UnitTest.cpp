@@ -1100,6 +1100,9 @@ void UnitTests::UnitTestsIdleAnimation()
 
 	fprintf(stdout, "Idle is [ON].\r\n");
 	ChromaAnimationAPI::UseIdleAnimation(true);
+
+	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
+	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
 	ChromaAnimationAPI::SetIdleAnimationName(idleAnimation);
 	
 	ChromaAnimationAPI::CloseAnimationName(animation);
@@ -1109,6 +1112,12 @@ void UnitTests::UnitTestsIdleAnimation()
 	ChromaAnimationAPI::PlayAnimationName(animation, false);
 	fprintf(stdout, "Waiting 3 sec...\r\n");
 	Sleep(3000);
+	fprintf(stdout, "\r\n");
+
+	//fprintf(stdout, "Close idle animation while active...\r\n");
+	//ChromaAnimationAPI::CloseAnimationName(idleAnimation);
+	//ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
+	//Sleep(3000);
 	fprintf(stdout, "\r\n");
 
 	fprintf(stdout, "Play random animation.\r\n");
@@ -1131,6 +1140,7 @@ void UnitTests::UnitTestsIdleAnimation()
 
 	fprintf(stdout, "Idle is [OFF].\r\n");
 	ChromaAnimationAPI::UseIdleAnimation(false);
+	ChromaAnimationAPI::ClearAll();
 	fprintf(stdout, "Waiting 3 sec...\r\n");
 	Sleep(3000);
 	fprintf(stdout, "\r\n");

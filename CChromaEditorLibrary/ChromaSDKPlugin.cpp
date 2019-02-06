@@ -2,6 +2,7 @@
 #include "Animation1D.h"
 #include "Animation2D.h"
 #include "ChromaSDKPlugin.h"
+#include "ChromaThread.h"
 #include "RzChromaSDK.h"
 
 #define ANIMATION_VERSION 1
@@ -1464,4 +1465,20 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	//LogDebug("OpenAnimationFromMemory: Loaded %s\r\n", path.c_str());
 
 	return animation;
+}
+
+void ChromaSDKPlugin::UseIdleAnimation(bool flag)
+{
+	if (ChromaThread::Instance())
+	{
+		ChromaThread::Instance()->UseIdleAnimation(flag);
+	}
+}
+
+void ChromaSDKPlugin::SetIdleAnimation(const char* path)
+{
+	if (ChromaThread::Instance())
+	{
+		ChromaThread::Instance()->SetIdleAnimation(path);
+	}
 }

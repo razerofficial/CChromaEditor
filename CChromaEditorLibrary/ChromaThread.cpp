@@ -19,9 +19,22 @@ ChromaThread* ChromaThread::Instance()
 	return _sInstance;
 }
 
+void ChromaThread::UseIdleAnimation(bool flag)
+{
+	_mUseIdleAnimation = flag;
+}
+void ChromaThread::SetIdleAnimation(const char* name)
+{
+	lock_guard<mutex> guard(_mMutex);
+	_mIdleAnimation = name;
+}
+
 void ChromaThread::ProcessAnimations(float deltaTime)
 {
 	lock_guard<mutex> guard(_mMutex);
+
+	// detect if animations are playing
+	bool detectIdle = true;
 
 	// update animations
 	vector<AnimationBase*> doneList = vector<AnimationBase*>();
@@ -32,13 +45,19 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 		{
 			animation->Update(deltaTime);
 			// no need to update animations that are no longer playing
-			if (!animation->IsPlaying())
+			if (animation->IsPlaying())
+			{
+				// an animation is playing, idle condition is false
+				detectIdle = false;
+			}
+			else
 			{
 				doneList.push_back(animation);
 			}
 		}
 	}
 
+	// remove animations that are done from the playing animation list
 	for (int i = 0; i < int(doneList.size()) && _mWaitForExit; ++i)
 	{
 		AnimationBase* animation = doneList[i];
@@ -49,6 +68,27 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 			{
 				_mAnimations.erase(it);
 			}
+		}
+	}
+
+	// if no animations are playing, the idle animation can be played
+	if (_mUseIdleAnimation &&
+		detectIdle)
+	{
+		AnimationBase* idleAnimation = GetAnimationInstanceName(_mIdleAnimation.c_str());
+		if (idleAnimation)
+		{
+			if (!idleAnimation->IsPlaying())
+			{
+				idleAnimation->Load();
+
+				idleAnimation->InternalSetTime(0.0f);
+				idleAnimation->InternalSetCurrentFrame(-1);
+				idleAnimation->InternalSetIsPlaying(true);
+				idleAnimation->InternalSetLoop(false);
+				idleAnimation->InternalSetIsPaused(false);
+			}
+			idleAnimation->InternalUpdate(deltaTime);
 		}
 	}
 }
@@ -99,6 +139,7 @@ void ChromaThread::Stop()
 	_mWaitForExit = false;
 
 	lock_guard<mutex> guard(_mMutex);
+	_mUseIdleAnimation = false;
 	_mAnimations.clear();
 }
 
@@ -110,7 +151,6 @@ void ChromaThread::AddAnimation(AnimationBase* animation)
 	{
 		_mAnimations.push_back(animation);
 	}
-	
 }
 
 void ChromaThread::RemoveAnimation(AnimationBase* animation)
@@ -124,6 +164,13 @@ void ChromaThread::RemoveAnimation(AnimationBase* animation)
 			_mAnimations.erase(it);
 		}
 	}
+}
+
+void ChromaThread::DeleteAnimation(AnimationBase* animation)
+{
+	lock_guard<mutex> guard(_mMutex);
+	//delete animation safely
+	delete animation;
 }
 
 int ChromaThread::GetAnimationCount()
@@ -141,7 +188,7 @@ int ChromaThread::GetAnimationId(int index)
 	}
 	if (index < int(_mAnimations.size()))
 	{
-		AnimationBase* animation =_mAnimations[index];
+		AnimationBase* animation = _mAnimations[index];
 		if (animation != nullptr)
 		{
 			return PluginGetAnimationIdFromInstance(animation);

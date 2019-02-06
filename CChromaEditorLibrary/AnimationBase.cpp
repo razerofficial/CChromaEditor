@@ -56,3 +56,24 @@ bool AnimationBase::HasLoop()
 {
 	return _mLoop;
 }
+
+void AnimationBase::InternalSetTime(float time)
+{
+	_mTime = time;
+}
+void AnimationBase::InternalSetCurrentFrame(int currentFrame)
+{
+	_mCurrentFrame = currentFrame;
+}
+void AnimationBase::InternalSetIsPlaying(bool isPlaying)
+{
+	_mIsPlaying = isPlaying;
+}
+void AnimationBase::InternalSetLoop(bool loop)
+{
+	_mLoop = loop;
+}
+void AnimationBase::InternalSetIsPaused(bool isPaused)
+{
+	_mIsPaused = isPaused;
+}

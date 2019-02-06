@@ -28,6 +28,9 @@ namespace ChromaSDK
 		int Save(const char* path);
 		void SetChromaCustom(bool flag);
 		bool UseChromaCustom();
+
+		// Support idle animation
+		void InternalUpdate(float deltaTime);
 	private:
 		EChromaSDKDevice2DEnum _mDevice;
 		std::vector<FChromaSDKColorFrame2D> _mFrames;

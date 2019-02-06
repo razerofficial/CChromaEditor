@@ -44,6 +44,10 @@ namespace ChromaSDK
 
 		AnimationBase* OpenAnimation(const std::string& path);
 		AnimationBase* OpenAnimationFromMemory(const byte* data);
+
+		void UseIdleAnimation(bool flag);
+		void SetIdleAnimation(const char* path);
+
 	private:
 		ChromaSDKPlugin();
 

@@ -26,6 +26,9 @@ namespace ChromaSDK
 		void Update(float deltaTime);
 		void ResetFrames();
 		int Save(const char* path);
+
+		// Support idle animation
+		void InternalUpdate(float deltaTime);
 	private:
 		EChromaSDKDevice1DEnum _mDevice;
 		std::vector<FChromaSDKColorFrame1D> _mFrames;

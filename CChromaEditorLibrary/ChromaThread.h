@@ -2,6 +2,7 @@
 
 #include "AnimationBase.h"
 #include <mutex>
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -15,8 +16,11 @@ namespace ChromaSDK
 		void Stop();
 		void AddAnimation(AnimationBase* animation);
 		void RemoveAnimation(AnimationBase* animation);
+		void DeleteAnimation(AnimationBase* animation);
 		int GetAnimationCount();
 		int GetAnimationId(int index);
+		void UseIdleAnimation(bool flag);
+		void SetIdleAnimation(const char* name);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
@@ -26,5 +30,7 @@ namespace ChromaSDK
 		std::thread* _mThread;
 		std::mutex _mMutex;
 		bool _mWaitForExit;
+		bool _mUseIdleAnimation;
+		std::string _mIdleAnimation;
 	};
 }

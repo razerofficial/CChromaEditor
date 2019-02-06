@@ -29,6 +29,17 @@ namespace ChromaSDK
 		virtual void Update(float deltaTime) = 0;
 		virtual void ResetFrames() = 0;
 		virtual int Save(const char* path) = 0;
+
+		// Support idle animation
+
+		// Update the animation whether it's playing or not, used by the idle animation
+		virtual void InternalUpdate(float deltaTime) = 0;
+		virtual void InternalSetTime(float time);
+		virtual void InternalSetCurrentFrame(int currentFrame);
+		virtual void InternalSetIsPlaying(bool isPlaying);
+		virtual void InternalSetLoop(bool loop);
+		virtual void InternalSetIsPaused(bool isPaused);
+
 	protected:
 		std::string _mName;
 		int _mCurrentFrame;
