@@ -1098,6 +1098,8 @@ void UnitTests::UnitTestsIdleAnimation()
 	const char* animation = "Random_Keyboard.chroma";
 	const char* idleAnimation = "Fire_Keyboard.chroma";
 
+	const int delay = 3000;
+
 	fprintf(stdout, "Idle is [ON].\r\n");
 	ChromaAnimationAPI::UseIdleAnimation(true);
 
@@ -1111,37 +1113,37 @@ void UnitTests::UnitTestsIdleAnimation()
 	fprintf(stdout, "Play random animation.\r\n");
 	ChromaAnimationAPI::PlayAnimationName(animation, false);
 	fprintf(stdout, "Waiting 3 sec...\r\n");
-	Sleep(3000);
+	Sleep(delay);
 	fprintf(stdout, "\r\n");
 
-	//fprintf(stdout, "Close idle animation while active...\r\n");
-	//ChromaAnimationAPI::CloseAnimationName(idleAnimation);
-	//ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
-	//Sleep(3000);
-	fprintf(stdout, "\r\n");
-
-	fprintf(stdout, "Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(animation, false);
-	fprintf(stdout, "Waiting 3 sec...\r\n");
-	Sleep(3000);
+	fprintf(stdout, "Close idle animation while active...\r\n");
+	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
+	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
+	Sleep(delay);
 	fprintf(stdout, "\r\n");
 
 	fprintf(stdout, "Play random animation.\r\n");
 	ChromaAnimationAPI::PlayAnimationName(animation, false);
 	fprintf(stdout, "Waiting 3 sec...\r\n");
-	Sleep(3000);
+	Sleep(delay);
+	fprintf(stdout, "\r\n");
+
+	fprintf(stdout, "Play random animation.\r\n");
+	ChromaAnimationAPI::PlayAnimationName(animation, false);
+	fprintf(stdout, "Waiting 3 sec...\r\n");
+	Sleep(delay);
 	fprintf(stdout, "\r\n");
 
 	fprintf(stdout, "Clear all animations with idle [ON].\r\n");
 	ChromaAnimationAPI::ClearAll();
 	fprintf(stdout, "Waiting 3 sec...\r\n");
-	Sleep(3000);
+	Sleep(delay);
 	fprintf(stdout, "\r\n");
 
 	fprintf(stdout, "Idle is [OFF].\r\n");
 	ChromaAnimationAPI::UseIdleAnimation(false);
 	ChromaAnimationAPI::ClearAll();
 	fprintf(stdout, "Waiting 3 sec...\r\n");
-	Sleep(3000);
+	Sleep(delay);
 	fprintf(stdout, "\r\n");
 }

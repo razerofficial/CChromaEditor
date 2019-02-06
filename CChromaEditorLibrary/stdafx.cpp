@@ -693,11 +693,10 @@ extern "C"
 		int result = RzChromaSDK::UnInit();
 		if (PluginIsInitialized())
 		{
-			for (auto iter = _gAnimations.begin(); iter != _gAnimations.end(); ++iter)
+			while (_gAnimations.size() > 0)
 			{
+				auto iter = _gAnimations.begin();
 				int animationId = iter->first;
-				PluginStopAnimation(animationId);
-				PluginUnloadAnimation(animationId);
 				PluginCloseAnimation(animationId);
 			}
 		}
