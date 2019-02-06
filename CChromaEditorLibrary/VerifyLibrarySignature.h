@@ -1,6 +1,9 @@
 #pragma once
 
+#include <tchar.h>
 #include <Windows.h>
+
+typedef _TCHAR *PTCHAR;
 
 namespace ChromaSDK
 {

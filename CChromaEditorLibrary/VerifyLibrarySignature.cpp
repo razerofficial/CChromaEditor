@@ -3,10 +3,12 @@
 #include <psapi.h>
 #include <wintrust.h>
 #include <Softpub.h>
+#include <shlwapi.h>
 
 #pragma comment (lib, "wintrust")
 #pragma comment (lib, "Psapi")
 #pragma comment(lib, "crypt32")
+#pragma comment(lib, "ShLwApi")
 
 namespace ChromaSDK
 {
