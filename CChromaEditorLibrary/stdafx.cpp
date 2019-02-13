@@ -6075,13 +6075,13 @@ extern "C"
 						green != 0 &&
 						blue != 0)
 					{
-						if (red <= minThreshold &&
-							green <= minThreshold &&
+						if (red <= minThreshold ||
+							green <= minThreshold ||
 							blue <= minThreshold) {
 							colors[i] = minColor;
 						}
-						else if (red >= maxThreshold &&
-							green >= maxThreshold &&
+						else if (red >= maxThreshold ||
+							green >= maxThreshold ||
 							blue >= maxThreshold) {
 							colors[i] = maxColor;
 						}
@@ -6109,8 +6109,8 @@ extern "C"
 						int red = oldColor & 0xFF;
 						int green = (oldColor & 0xFF00) >> 8;
 						int blue = (oldColor & 0xFF0000) >> 16;
-						if (red != 0 &&
-							green != 0 &&
+						if (red != 0 ||
+							green != 0 ||
 							blue != 0)
 						{
 							if (red <= minThreshold &&
@@ -6118,8 +6118,8 @@ extern "C"
 								blue <= minThreshold) {
 								row.Colors[j] = minColor;
 							}
-							else if (red >= maxThreshold &&
-								green >= maxThreshold &&
+							else if (red >= maxThreshold ||
+								green >= maxThreshold ||
 								blue >= maxThreshold) {
 								row.Colors[j] = maxColor;
 							}
