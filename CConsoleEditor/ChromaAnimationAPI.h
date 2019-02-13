@@ -2358,9 +2358,9 @@ typedef int(*PLUGIN_UPDATE_FRAME)(int animationId, int frameIndex, float duratio
 	the idle animation will be used. The idle animation will not be affected
 	by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId,
 	and PluginGetPlayingAnimationCount. Then the idle animation flag is false,
-	the idle animation is disabled.
+	the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 */
-typedef void(*PLUGIN_USE_IDLE_ANIMATION)(bool flag);
+typedef void(*PLUGIN_USE_IDLE_ANIMATION)(int device, bool flag);
 #pragma endregion
 
 #define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature FieldName;
@@ -4715,7 +4715,7 @@ namespace ChromaSDK
 			the idle animation will be used. The idle animation will not be affected
 			by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId,
 			and PluginGetPlayingAnimationCount. Then the idle animation flag is false,
-			the idle animation is disabled.
+			the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_IDLE_ANIMATION, UseIdleAnimation);
 #pragma endregion

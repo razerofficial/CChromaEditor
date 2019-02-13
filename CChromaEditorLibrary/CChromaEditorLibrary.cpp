@@ -183,11 +183,11 @@ void CMainViewDlg::SaveFile()
 		switch (_mDeviceType)
 		{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
-			device = _mEdit1D.GetDevice();
+			device = (int)_mEdit1D.GetDevice();
 			fwrite(&device, expectedSize, 1, stream);
 			break;
 		case EChromaSDKDeviceTypeEnum::DE_2D:
-			device = _mEdit2D.GetDevice();
+			device = (int)_mEdit2D.GetDevice();
 			fwrite(&device, expectedSize, 1, stream);
 			break;
 		}

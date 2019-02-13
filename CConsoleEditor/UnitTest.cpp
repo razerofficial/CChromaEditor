@@ -1103,7 +1103,7 @@ void UnitTests::UnitTestsIdleAnimation()
 	const int delay = 3000;
 
 	fprintf(stdout, "Idle is [ON].\r\n");
-	ChromaAnimationAPI::UseIdleAnimation(true);
+	ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, true);
 
 	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
 	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
@@ -1143,7 +1143,7 @@ void UnitTests::UnitTestsIdleAnimation()
 	fprintf(stdout, "\r\n");
 
 	fprintf(stdout, "Idle is [OFF].\r\n");
-	ChromaAnimationAPI::UseIdleAnimation(false);
+	ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, false);
 	ChromaAnimationAPI::ClearAll();
 	fprintf(stdout, "Waiting 3 sec...\r\n");
 	Sleep(delay);

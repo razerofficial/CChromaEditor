@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "Animation1D.h"
+#include "Animation2D.h"
 #include "ChromaThread.h"
 #include <chrono>
 
@@ -12,6 +14,11 @@ ChromaThread::ChromaThread()
 {
 	_mThread = nullptr;
 	_mWaitForExit = true;
+	for (int i = 0; i < (int)EChromaSDKDeviceEnum::DE_MAX; ++i)
+	{
+		_mUseIdleAnimation.push_back(false);
+		_mIdleAnimation.push_back("");
+	}	
 }
 
 ChromaThread* ChromaThread::Instance()
@@ -19,14 +26,63 @@ ChromaThread* ChromaThread::Instance()
 	return _sInstance;
 }
 
-void ChromaThread::UseIdleAnimation(bool flag)
+void ChromaThread::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
 {
-	_mUseIdleAnimation = flag;
+	switch (device)
+	{
+	case EChromaSDKDeviceEnum::DE_ChromaLink:
+	case EChromaSDKDeviceEnum::DE_Headset:
+	case EChromaSDKDeviceEnum::DE_Keyboard:
+	case EChromaSDKDeviceEnum::DE_Keypad:
+	case EChromaSDKDeviceEnum::DE_Mouse:
+	case EChromaSDKDeviceEnum::DE_Mousepad:
+		_mUseIdleAnimation[(int)device] = flag;
+		break;
+	}
 }
 void ChromaThread::SetIdleAnimation(const char* name)
 {
 	lock_guard<mutex> guard(_mMutex);
-	_mIdleAnimation = name;
+	AnimationBase* animation = GetAnimationInstanceName(name);
+	if (animation)
+	{
+		EChromaSDKDeviceEnum device;
+		Animation1D* animation1D;
+		Animation2D* animation2D;
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			animation1D = dynamic_cast<Animation1D*>(animation);
+			switch (animation1D->GetDevice())
+			{
+			case EChromaSDKDevice1DEnum::DE_ChromaLink:
+				_mIdleAnimation[(int)EChromaSDKDeviceEnum::DE_ChromaLink] = name;
+				break;
+			case EChromaSDKDevice1DEnum::DE_Headset:
+				_mIdleAnimation[(int)EChromaSDKDeviceEnum::DE_Headset] = name;
+				break;
+			case EChromaSDKDevice1DEnum::DE_Mousepad:
+				_mIdleAnimation[(int)EChromaSDKDeviceEnum::DE_Mousepad] = name;
+				break;
+			}
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			animation2D = dynamic_cast<Animation2D*>(animation);
+			switch (animation2D->GetDevice())
+			{
+			case EChromaSDKDevice2DEnum::DE_Keyboard:
+				_mIdleAnimation[(int)EChromaSDKDeviceEnum::DE_Keyboard] = name;
+				break;
+			case EChromaSDKDevice2DEnum::DE_Keypad:
+				_mIdleAnimation[(int)EChromaSDKDeviceEnum::DE_Keypad] = name;
+				break;
+			case EChromaSDKDevice2DEnum::DE_Mouse:
+				_mIdleAnimation[(int)EChromaSDKDeviceEnum::DE_Mouse] = name;
+				break;
+			}
+			break;
+		}
+	}
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
@@ -34,7 +90,11 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 	lock_guard<mutex> guard(_mMutex);
 
 	// detect if animations are playing
-	bool detectIdle = true;
+	vector<bool> detectIdle;
+	for (int i = 0; i < (int)EChromaSDKDeviceEnum::DE_MAX; ++i)
+	{
+		detectIdle.push_back(true);
+	}
 
 	// update animations
 	vector<AnimationBase*> doneList = vector<AnimationBase*>();
@@ -48,7 +108,41 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 			if (animation->IsPlaying())
 			{
 				// an animation is playing, idle condition is false
-				detectIdle = false;
+				Animation1D* animation1D;
+				Animation2D* animation2D;
+				switch (animation->GetDeviceType())
+				{
+				case EChromaSDKDeviceTypeEnum::DE_1D:
+					animation1D = dynamic_cast<Animation1D*>(animation);
+					switch (animation1D->GetDevice())
+					{
+					case EChromaSDKDevice1DEnum::DE_ChromaLink:
+						detectIdle[(int)EChromaSDKDeviceEnum::DE_ChromaLink] = false;
+						break;
+					case EChromaSDKDevice1DEnum::DE_Headset:
+						detectIdle[(int)EChromaSDKDeviceEnum::DE_Headset] = false;
+						break;
+					case EChromaSDKDevice1DEnum::DE_Mousepad:
+						detectIdle[(int)EChromaSDKDeviceEnum::DE_Mousepad] = false;
+						break;
+					}
+					break;
+				case EChromaSDKDeviceTypeEnum::DE_2D:
+					animation2D = dynamic_cast<Animation2D*>(animation);
+					switch (animation2D->GetDevice())
+					{
+					case EChromaSDKDevice2DEnum::DE_Keyboard:
+						detectIdle[(int)EChromaSDKDeviceEnum::DE_Keyboard] = false;
+						break;
+					case EChromaSDKDevice2DEnum::DE_Keypad:
+						detectIdle[(int)EChromaSDKDeviceEnum::DE_Keypad] = false;
+						break;
+					case EChromaSDKDevice2DEnum::DE_Mouse:
+						detectIdle[(int)EChromaSDKDeviceEnum::DE_Mouse] = false;
+						break;
+					}
+					break;
+				}
 			}
 			else
 			{
@@ -72,23 +166,26 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 	}
 
 	// if no animations are playing, the idle animation can be played
-	if (_mUseIdleAnimation &&
-		detectIdle)
+	for (int i = 0; i < (int)EChromaSDKDeviceEnum::DE_MAX; ++i)
 	{
-		AnimationBase* idleAnimation = GetAnimationInstanceName(_mIdleAnimation.c_str());
-		if (idleAnimation)
+		if (_mUseIdleAnimation[i] &&
+			detectIdle[i])
 		{
-			if (!idleAnimation->IsPlaying())
+			AnimationBase* idleAnimation = GetAnimationInstanceName(_mIdleAnimation[i].c_str());
+			if (idleAnimation)
 			{
-				idleAnimation->Load();
+				if (!idleAnimation->IsPlaying())
+				{
+					idleAnimation->Load();
 
-				idleAnimation->InternalSetTime(0.0f);
-				idleAnimation->InternalSetCurrentFrame(-1);
-				idleAnimation->InternalSetIsPlaying(true);
-				idleAnimation->InternalSetLoop(false);
-				idleAnimation->InternalSetIsPaused(false);
+					idleAnimation->InternalSetTime(0.0f);
+					idleAnimation->InternalSetCurrentFrame(-1);
+					idleAnimation->InternalSetIsPlaying(true);
+					idleAnimation->InternalSetLoop(false);
+					idleAnimation->InternalSetIsPaused(false);
+				}
+				idleAnimation->InternalUpdate(deltaTime);
 			}
-			idleAnimation->InternalUpdate(deltaTime);
 		}
 	}
 }
@@ -139,7 +236,10 @@ void ChromaThread::Stop()
 	_mWaitForExit = false;
 
 	lock_guard<mutex> guard(_mMutex);
-	_mUseIdleAnimation = false;
+	for (int i = 0; i < (int)EChromaSDKDeviceEnum::DE_MAX; ++i)
+	{
+		_mUseIdleAnimation[i] = false;
+	}
 	_mAnimations.clear();
 }
 

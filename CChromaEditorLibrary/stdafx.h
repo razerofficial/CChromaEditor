@@ -2404,9 +2404,9 @@ extern "C"
 		the idle animation will be used. The idle animation will not be affected
 		by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId,
 		and PluginGetPlayingAnimationCount. Then the idle animation flag is false,
-		the idle animation is disabled.
+		the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 	*/
-	EXPORT_API void PluginUseIdleAnimation(bool flag);
+	EXPORT_API void PluginUseIdleAnimation(int device, bool flag);
 #pragma endregion
 	
 }

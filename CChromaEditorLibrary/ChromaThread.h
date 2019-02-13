@@ -19,7 +19,7 @@ namespace ChromaSDK
 		void DeleteAnimation(AnimationBase* animation);
 		int GetAnimationCount();
 		int GetAnimationId(int index);
-		void UseIdleAnimation(bool flag);
+		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
 		void SetIdleAnimation(const char* name);
 	private:
 		ChromaThread();
@@ -30,7 +30,7 @@ namespace ChromaSDK
 		std::thread* _mThread;
 		std::mutex _mMutex;
 		bool _mWaitForExit;
-		bool _mUseIdleAnimation;
-		std::string _mIdleAnimation;
+		std::vector<bool> _mUseIdleAnimation;
+		std::vector<std::string> _mIdleAnimation;
 	};
 }

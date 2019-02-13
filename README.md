@@ -8549,14 +8549,16 @@ When the idle animation flag is true, when no other animations are playing,
 the idle animation will be used. The idle animation will not be affected
 by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId,
 and PluginGetPlayingAnimationCount. Then the idle animation flag is false,
-the idle animation is disabled.
+the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 
 ```C++
 // DLL Interface
-EXPORT_API void PluginUseIdleAnimation(bool flag);
+EXPORT_API void PluginUseIdleAnimation(
+	int device, bool flag);
 
 // Class Plugin
-ChromaAnimationAPI::UseIdleAnimation(bool flag);
+ChromaAnimationAPI::UseIdleAnimation(
+	int device, bool flag);
 ```
 
 
