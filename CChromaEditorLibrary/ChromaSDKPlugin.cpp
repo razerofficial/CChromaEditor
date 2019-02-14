@@ -1475,10 +1475,10 @@ void ChromaSDKPlugin::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
 	}
 }
 
-void ChromaSDKPlugin::SetIdleAnimation(const char* path)
+void ChromaSDKPlugin::SetIdleAnimationName(const char* path)
 {
 	if (ChromaThread::Instance())
 	{
-		ChromaThread::Instance()->SetIdleAnimation(path);
+		ChromaThread::Instance()->SetIdleAnimationName(path);
 	}
 }

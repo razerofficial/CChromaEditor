@@ -347,10 +347,11 @@ int Animation2D::Save(const char* path)
 
 		//frames
 		COLORREF color = RGB(0, 0, 0);
+		float duration = 0.0f;
 		for (unsigned int index = 0; index < frameCount; ++index)
 		{
 			//duration
-			float duration = GetDuration(index);
+			duration = GetDuration(index);
 			expectedSize = sizeof(float);
 			fwrite(&duration, expectedSize, 1, stream);
 
@@ -364,7 +365,7 @@ int Animation2D::Save(const char* path)
 					for (unsigned int j = 0; j < row.Colors.size(); ++j)
 					{
 						//color
-						int color = row.Colors[j];
+						color = row.Colors[j];
 						expectedSize = sizeof(int);
 						fwrite(&color, expectedSize, 1, stream);
 					}

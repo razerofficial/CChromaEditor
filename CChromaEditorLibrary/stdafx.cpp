@@ -9956,7 +9956,7 @@ extern "C"
 			return;
 		}
 
-		ChromaSDKPlugin::GetInstance()->SetIdleAnimation(animation->GetName().c_str());
+		ChromaSDKPlugin::GetInstance()->SetIdleAnimationName(animation->GetName().c_str());
 	}
 
 	EXPORT_API void PluginSetIdleAnimationName(const char* path)
@@ -9964,12 +9964,6 @@ extern "C"
 		// Chroma thread plays animations
 		SetupChromaThread();
 
-		int animationId = PluginGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError("PluginSetIdleAnimationName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginSetIdleAnimation(animationId);
+		ChromaSDKPlugin::GetInstance()->SetIdleAnimationName(path);
 	}
 }

@@ -40,15 +40,14 @@ void ChromaThread::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
 		break;
 	}
 }
-void ChromaThread::SetIdleAnimation(const char* name)
+void ChromaThread::SetIdleAnimationName(const char* name)
 {
 	lock_guard<mutex> guard(_mMutex);
 	AnimationBase* animation = GetAnimationInstanceName(name);
 	if (animation)
 	{
-		EChromaSDKDeviceEnum device;
-		Animation1D* animation1D;
-		Animation2D* animation2D;
+		Animation1D* animation1D = nullptr;
+		Animation2D* animation2D = nullptr;
 		switch (animation->GetDeviceType())
 		{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -108,8 +107,8 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 			if (animation->IsPlaying())
 			{
 				// an animation is playing, idle condition is false
-				Animation1D* animation1D;
-				Animation2D* animation2D;
+				Animation1D* animation1D = nullptr;
+				Animation2D* animation2D = nullptr;
 				switch (animation->GetDeviceType())
 				{
 				case EChromaSDKDeviceTypeEnum::DE_1D:

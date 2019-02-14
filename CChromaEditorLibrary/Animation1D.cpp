@@ -341,7 +341,7 @@ int Animation1D::Save(const char* path)
 		for (unsigned int index = 0; index < frameCount; ++index)
 		{
 			//duration
-			float duration = GetDuration(index);
+			duration = GetDuration(index);
 			expectedSize = sizeof(float);
 			fwrite(&duration, expectedSize, 1, stream);
 
@@ -352,7 +352,7 @@ int Animation1D::Save(const char* path)
 				for (unsigned int i = 0; i < frame.Colors.size(); ++i)
 				{
 					//color
-					int color = (int)frame.Colors[i];
+					color = (int)frame.Colors[i];
 					expectedSize = sizeof(int);
 					fwrite(&color, expectedSize, 1, stream);
 				}

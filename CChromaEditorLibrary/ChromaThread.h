@@ -20,7 +20,7 @@ namespace ChromaSDK
 		int GetAnimationCount();
 		int GetAnimationId(int index);
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
-		void SetIdleAnimation(const char* name);
+		void SetIdleAnimationName(const char* name);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
