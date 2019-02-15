@@ -380,6 +380,8 @@ extern "C"
 	{
 		try
 		{
+			PluginCloseAnimationName(path);
+
 			//return animation id
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
 			if (animation == nullptr)
@@ -1590,12 +1592,9 @@ extern "C"
 
 	EXPORT_API int PluginGetAnimation(const char* name)
 	{
-		for (std::map<string, int>::iterator it = _gAnimationMapID.begin(); it != _gAnimationMapID.end(); ++it)
+		if (_gAnimationMapID.find(name) != _gAnimationMapID.end())
 		{
-			const string& item = (*it).first;
-			if (item.compare(name) == 0) {
-				return (*it).second;
-			}
+			return _gAnimationMapID[name];
 		}
 		return PluginOpenAnimation(name);
 	}
@@ -1607,13 +1606,17 @@ extern "C"
 
 	EXPORT_API void PluginCloseAnimationName(const char* path)
 	{
-		int animationId = PluginGetAnimation(path);
-		if (animationId < 0)
+		if (_gAnimationMapID.find(path) != _gAnimationMapID.end())
 		{
-			//LogError("PluginCloseAnimationName: Animation not found! %s\r\n", path);
-			return;
+			int animationId = _gAnimationMapID[path];
+			PluginCloseAnimation(animationId);
 		}
-		PluginCloseAnimation(animationId);
+		/*
+		else
+		{
+			LogError("PluginCloseAnimationName: Animation not found! %s\r\n", path);
+		}
+		*/
 	}
 
 	EXPORT_API double PluginCloseAnimationNameD(const char* path)
