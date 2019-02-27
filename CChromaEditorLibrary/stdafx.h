@@ -1208,7 +1208,7 @@ extern "C"
 		Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many
 		API methods auto initialize the ChromaSDK if not already initialized.
 	*/
-	EXPORT_API int PluginInit();
+	EXPORT_API RZRESULT PluginInit();
 	/*
 		D suffix for limited data types.
 	*/
@@ -2366,7 +2366,7 @@ extern "C"
 	/*
 		Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
 	*/
-	EXPORT_API int PluginUninit();
+	EXPORT_API RZRESULT PluginUninit();
 	/*
 		D suffix for limited data types.
 	*/

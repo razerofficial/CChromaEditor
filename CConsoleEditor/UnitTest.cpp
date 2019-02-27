@@ -890,7 +890,7 @@ void UnitTests::UnitTestsSaveAnimation()
 
 	int baseAnimation = ChromaAnimationAPI::CreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
 	int frameCount = 100;
-	ChromaAnimationAPI::MakeBlankFramesRandom(baseAnimation, frameCount, 0.1);
+	ChromaAnimationAPI::MakeBlankFramesRandom(baseAnimation, frameCount, 0.1f);
 
 	ChromaAnimationAPI::SetChromaCustomFlag(baseAnimation, true);
 	ChromaAnimationAPI::SetChromaCustomColorAllFrames(baseAnimation);
@@ -937,7 +937,7 @@ void UnitTests::UnitTestsCreateRandomBlackAndWhite()
 
 	int baseAnimation = ChromaAnimationAPI::CreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
 	int frameCount = 100;
-	ChromaAnimationAPI::MakeBlankFramesRandomBlackAndWhite(baseAnimation, frameCount, 0.1);
+	ChromaAnimationAPI::MakeBlankFramesRandomBlackAndWhite(baseAnimation, frameCount, 0.1f);
 	ChromaAnimationAPI::MultiplyIntensityAllFrames(baseAnimation, 0.25f);
 
 	ChromaAnimationAPI::SetChromaCustomFlag(baseAnimation, true);
@@ -967,7 +967,7 @@ void UnitTests::UnitTestsDuplicateFirstFrame()
 
 	for (int frameId = 0; frameId < frameCount; ++frameId) {
 		float t = 1 - fabsf(cos(MATH_PI*frameId / (float)frameCount));
-		ChromaAnimationAPI::MultiplyIntensityRGBName(baseLayer, frameId, 0, 127 * t, 0);
+		ChromaAnimationAPI::MultiplyIntensityRGBName(baseLayer, frameId, 0, (int)(127 * t), 0);
 	}
 
 	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);

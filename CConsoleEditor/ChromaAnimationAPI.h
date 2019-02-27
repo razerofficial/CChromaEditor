@@ -1162,7 +1162,7 @@ typedef double(*PLUGIN_HAS_ANIMATION_LOOP_NAME_D)(const char* path);
 	Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many
 	API methods auto initialize the ChromaSDK if not already initialized.
 */
-typedef int(*PLUGIN_INIT)();
+typedef RZRESULT(*PLUGIN_INIT)();
 /*
 	D suffix for limited data types.
 */
@@ -2320,7 +2320,7 @@ typedef double(*PLUGIN_TRIM_START_FRAMES_NAME_D)(const char* path, double number
 /*
 	Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
 */
-typedef int(*PLUGIN_UNINIT)();
+typedef RZRESULT(*PLUGIN_UNINIT)();
 /*
 	D suffix for limited data types.
 */

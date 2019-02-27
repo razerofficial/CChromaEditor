@@ -667,7 +667,7 @@ extern "C"
 		return (double)PluginCloseAnimation((int)animationId);
 	}
 
-	EXPORT_API int PluginInit()
+	EXPORT_API RZRESULT PluginInit()
 	{
 		// Chroma thread plays animations
 		SetupChromaThread();
@@ -687,12 +687,12 @@ extern "C"
 		return (double)PluginInit();
 	}
 
-	EXPORT_API int PluginUninit()
+	EXPORT_API RZRESULT PluginUninit()
 	{
 		// Chroma thread plays animations
 		StopChromaThread();
 
-		int result = RzChromaSDK::UnInit();
+		RZRESULT result = RzChromaSDK::UnInit();
 		if (PluginIsInitialized())
 		{
 			while (_gAnimations.size() > 0)
