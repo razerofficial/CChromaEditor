@@ -1211,6 +1211,14 @@ void UnitTests::UnitTestsDamage()
 	// Focus on one damage animation at a time
 	int selected = 0;
 
+	int keys[] =
+	{
+		Keyboard::RZKEY::RZKEY_W,
+		Keyboard::RZKEY::RZKEY_A,
+		Keyboard::RZKEY::RZKEY_S,
+		Keyboard::RZKEY::RZKEY_D,
+	};
+
 	while (true)
 	{
 		// get time in seconds
@@ -1248,6 +1256,8 @@ void UnitTests::UnitTestsDamage()
 
 			ChromaAnimationAPI::CopyNonZeroAllKeysName(copy.c_str(), COPY_BLANK_KEYBOARD, 0);
 		}
+
+		ChromaAnimationAPI::SetKeysColorRGBName(COPY_BLANK_KEYBOARD, 0, keys, (int)size(keys), 255, 255, 255);
 
 		ChromaAnimationAPI::PreviewFrameName(COPY_BLANK_KEYBOARD, 0);
 		Sleep(33);
