@@ -45,4 +45,14 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Animations\Damage1_Keyboard.chroma" />
+    <None Include="Animations\Damage2_Keyboard.chroma" />
+    <None Include="Animations\Damage3_Keyboard.chroma" />
+    <None Include="Animations\Damage4_Keyboard.chroma" />
+    <None Include="Animations\Damage5_Keyboard.chroma" />
+    <None Include="Animations\Damage6_Keyboard.chroma" />
+    <None Include="Animations\Damage7_Keyboard.chroma" />
+    <None Include="Animations\Damage8_Keyboard.chroma" />
+  </ItemGroup>
 </Project>

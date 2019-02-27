@@ -159,6 +159,32 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UnitTest.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Animations\Damage1_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Damage2_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Damage3_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Damage4_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Damage5_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Damage6_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Damage7_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Damage8_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

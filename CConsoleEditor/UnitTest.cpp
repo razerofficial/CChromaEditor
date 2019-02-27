@@ -4,6 +4,7 @@
 
 #include <chrono>
 #include <thread>
+#include <vector>
 
 
 using namespace std;
@@ -990,7 +991,8 @@ void UnitTests::Run()
 
 
 	//UnitTestsLoadedAnimations();
-	UnitTestsIdleAnimation();
+	UnitTestsDamage();
+	//UnitTestsIdleAnimation();
 	//UnitTestsOpenAnimationFromMemory();
 	//UnitTestsFadeStart();
 	//UnitTestsFadeEnd();
@@ -1148,4 +1150,106 @@ void UnitTests::UnitTestsIdleAnimation()
 	fprintf(stdout, "Waiting 3 sec...\r\n");
 	Sleep(delay);
 	fprintf(stdout, "\r\n");
+}
+
+struct DamageMeta
+{
+	string _mName;
+	float _mTime;
+};
+
+void UnitTests::UnitTestsDamage()
+{
+	vector<DamageMeta> damageList;
+	for (int i = 0; i < 8; ++i)
+	{
+		string name = "Animations/Damage";
+		switch (i + 1)
+		{
+		case 1:
+			name += "1";
+			break;
+		case 2:
+			name += "2";
+			break;
+		case 3:
+			name += "3";
+			break;
+		case 4:
+			name += "4";
+			break;
+		case 5:
+			name += "5";
+			break;
+		case 6:
+			name += "6";
+			break;
+		case 7:
+			name += "7";
+			break;
+		case 8:
+			name += "8";
+			break;
+		}
+		name += "_Keyboard.chroma";
+		DamageMeta damage = DamageMeta();
+		damage._mName = name;
+		damage._mTime = 0;
+		damageList.push_back(damage);
+	}
+
+	int frameCount = 1;
+
+	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+	ChromaAnimationAPI::GetAnimation(BLANK_KEYBOARD);
+
+	const char* COPY_BLANK_KEYBOARD = "Copy_Blank_Keyboard.chroma";
+
+	// get current time
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+	// Focus on one damage animation at a time
+	int selected = 0;
+
+	while (true)
+	{
+		// get time in seconds
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+
+		//integer number of times to blink per second
+		const float speed = 2;
+
+		ChromaAnimationAPI::CopyAnimationName(BLANK_KEYBOARD, COPY_BLANK_KEYBOARD);
+
+		for (int i = 0; i < 8; ++i)
+		{
+			// randomly select another animation
+			if (rand() % 100 == 0)
+			{
+				selected = i;
+			}
+			if (selected != i)
+			{
+				continue;
+			}
+
+			float t = fabsf(cos((speed * MATH_PI * deltaTime)));
+
+			DamageMeta& damage = damageList[i];
+
+			string copy = "copy_";
+			copy += damage._mName;
+			ChromaAnimationAPI::CopyAnimationName(damage._mName.c_str(), copy.c_str());
+
+			ChromaAnimationAPI::MultiplyIntensityRGBName(copy.c_str(), 0, 255, 0, 0);
+
+			ChromaAnimationAPI::MultiplyIntensityName(copy.c_str(), 0, t);
+
+			ChromaAnimationAPI::CopyNonZeroAllKeysName(copy.c_str(), COPY_BLANK_KEYBOARD, 0);
+		}
+
+		ChromaAnimationAPI::PreviewFrameName(COPY_BLANK_KEYBOARD, 0);
+		Sleep(33);
+	}
 }

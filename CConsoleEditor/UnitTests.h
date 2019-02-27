@@ -58,6 +58,8 @@ public:
 
 	static void UnitTestsIdleAnimation();
 
+	static void UnitTestsDamage();
+
 	static void Run();
 
 	static int OpenAndPlay(const char* path);
