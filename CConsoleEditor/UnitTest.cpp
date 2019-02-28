@@ -1152,15 +1152,9 @@ void UnitTests::UnitTestsIdleAnimation()
 	fprintf(stdout, "\r\n");
 }
 
-struct DamageMeta
-{
-	string _mName;
-	float _mTime;
-};
-
 void UnitTests::UnitTestsDamage()
 {
-	vector<DamageMeta> damageList;
+	vector<string> damageList;
 	for (int i = 0; i < 8; ++i)
 	{
 		string name = "Animations/Damage";
@@ -1192,10 +1186,7 @@ void UnitTests::UnitTestsDamage()
 			break;
 		}
 		name += "_Keyboard.chroma";
-		DamageMeta damage = DamageMeta();
-		damage._mName = name;
-		damage._mTime = 0;
-		damageList.push_back(damage);
+		damageList.push_back(name);
 	}
 
 	int frameCount = 1;
@@ -1244,11 +1235,11 @@ void UnitTests::UnitTestsDamage()
 
 			float t = fabsf(cos((speed * MATH_PI * deltaTime)));
 
-			DamageMeta& damage = damageList[i];
+			string& name = damageList[i];
 
 			string copy = "copy_";
-			copy += damage._mName;
-			ChromaAnimationAPI::CopyAnimationName(damage._mName.c_str(), copy.c_str());
+			copy += name;
+			ChromaAnimationAPI::CopyAnimationName(name.c_str(), copy.c_str());
 
 			ChromaAnimationAPI::MultiplyIntensityRGBName(copy.c_str(), 0, 255, 0, 0);
 
