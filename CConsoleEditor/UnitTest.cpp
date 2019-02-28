@@ -58,7 +58,7 @@ void UnitTests::UnitTestsPlayComposite()
 	while (true)
 	{
 		fprintf(stdout, "Measure CPU usage.\r\n");
-		const char* RANDOM_COMPOSITE = "Random";
+		const char* RANDOM_COMPOSITE = "Animations/Random";
 		ChromaAnimationAPI::PlayComposite(RANDOM_COMPOSITE, false);
 		Sleep(3000);
 	}
@@ -84,12 +84,12 @@ void UnitTests::UnitTestsOpenClose()
 		}
 
 		fprintf(stdout, "Playing effects...\r\n");
-		int randomChromaLinkEffect = OpenAndPlay("Random_ChromaLink.chroma");
-		int randomHeadsetEffect = OpenAndPlay("Random_Headset.chroma");
-		int randomKeyboardEffect = OpenAndPlay("Random_Keyboard.chroma");
-		int randomKeypadEffect = OpenAndPlay("Random_Keypad.chroma");
-		int randomMouseEffect = OpenAndPlay("Random_Mouse.chroma");
-		int randomMousepadEffect = OpenAndPlay("Random_Mousepad.chroma");
+		int randomChromaLinkEffect = OpenAndPlay("Animations/Random_ChromaLink.chroma");
+		int randomHeadsetEffect = OpenAndPlay("Animations/Random_Headset.chroma");
+		int randomKeyboardEffect = OpenAndPlay("Animations/Random_Keyboard.chroma");
+		int randomKeypadEffect = OpenAndPlay("Animations/Random_Keypad.chroma");
+		int randomMouseEffect = OpenAndPlay("Animations/Random_Mouse.chroma");
+		int randomMousepadEffect = OpenAndPlay("Animations/Random_Mousepad.chroma");
 		this_thread::sleep_for(chrono::seconds(1));
 
 		ChromaAnimationAPI::CloseAnimation(randomChromaLinkEffect);
@@ -106,8 +106,8 @@ void UnitTests::UnitTestsOpenClose()
 
 void UnitTests::UnitTestsLayering()
 {
-	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
-	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+	const char* BLANK_KEYBOARD = "Animations/Blank_Keyboard.chroma";
+	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
 
 	const char* animationName = "";
 	int animationId = -1;
@@ -138,10 +138,10 @@ void UnitTests::UnitTestsLayering()
 
 void UnitTests::UnitTestsLoadedAnimations()
 {
-	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
-	const char* BLANK_COMPOSITE = "Blank";
-	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
-	const char* RANDOM_COMPOSITE = "Random";
+	const char* BLANK_KEYBOARD = "Animations/Blank_Keyboard.chroma";
+	const char* BLANK_COMPOSITE = "Animations/Blank";
+	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
+	const char* RANDOM_COMPOSITE = "Animations/Random";
 	const char* animationName = "";
 	int animationId = -1;
 
@@ -187,10 +187,10 @@ void UnitTests::UnitTestsSetKeys()
 		(int)Keyboard::RZKEY::RZKEY_D,
 	};
 
-	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
-	const char* BLANK_COMPOSITE = "Blank";
-	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
-	const char* RANDOM_COMPOSITE = "Random";
+	const char* BLANK_KEYBOARD = "Animations/Blank_Keyboard.chroma";
+	const char* BLANK_COMPOSITE = "Animations/Blank";
+	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
+	const char* RANDOM_COMPOSITE = "Animations/Random";
 	const char* animationName = "";
 	const char* compositeName = "";
 	const int COLOR_RED = 0xFF;
@@ -242,10 +242,10 @@ void UnitTests::UnitTestsSetKeys()
 
 void UnitTests::UnitTestsClear()
 {
-	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
-	const char* BLANK_COMPOSITE = "Blank";
-	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
-	const char* RANDOM_COMPOSITE = "Random";
+	const char* BLANK_KEYBOARD = "Animations/Blank_Keyboard.chroma";
+	const char* BLANK_COMPOSITE = "Animations/Blank";
+	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
+	const char* RANDOM_COMPOSITE = "Animations/Random";
 	const char* animationName = "";
 	const char* compositeName = "";
 	int animationId = -1;
@@ -309,10 +309,10 @@ void UnitTests::UnitTestsClear()
 
 void UnitTests::UnitTestsWait()
 {
-	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
-	const char* BLANK_COMPOSITE = "Blank";
-	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
-	const char* RANDOM_COMPOSITE = "Random";
+	const char* BLANK_KEYBOARD = "Animations/Blank_Keyboard.chroma";
+	const char* BLANK_COMPOSITE = "Animations/Blank";
+	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
+	const char* RANDOM_COMPOSITE = "Animations/Random";
 	const char* animationName = "";
 	int animationId = -1;
 
@@ -379,7 +379,7 @@ void UnitTests::UnitTestsWait()
 
 void UnitTests::UnitTestsCopy()
 {
-	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
 
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(RANDOM_KEYBOARD);
 	for (int index = 0; index < frameCount; ++index)
@@ -397,7 +397,7 @@ void UnitTests::UnitTestsCopy()
 
 void UnitTests::UnitTestsMisc()
 {
-	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
 
 	fprintf(stdout, "Call: PlayComposite: Random\r\n");
 	ChromaAnimationAPI::PlayComposite("Random", true);
@@ -434,7 +434,7 @@ void UnitTests::UnitTestsOffset()
 {
 	fprintf(stdout, "Start of offset unit test.\r\n");
 
-	const char* RANDOM_KEYBOARD = "Random_Keyboard.chroma";
+	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
 
 	const char* animationName = RANDOM_KEYBOARD;
 	ChromaAnimationAPI::CloseAnimationName(animationName);
@@ -543,8 +543,8 @@ void UnitTests::UnitTestsNonZero()
 		(int)Keyboard::RZKEY::RZKEY_D,
 	};
 
-	const char* SPRITE_KEYBOARD = "Sprite_Keyboard.chroma";
-	const char* WAVE_KEYBOARD = "Rows_Keyboard.chroma";
+	const char* SPRITE_KEYBOARD = "Animations/Sprite_Keyboard.chroma";
+	const char* WAVE_KEYBOARD = "Animations/Rows_Keyboard.chroma";
 
 	const char* animationName = WAVE_KEYBOARD;
 	int animationId = ChromaAnimationAPI::OpenAnimation(animationName);
@@ -773,7 +773,7 @@ void UnitTests::UnitTestsHDKIndividualLEDsGradient()
 
 void UnitTests::UnitTestsCreateAnimation()
 {
-	const char* animationName = "New_ChromaLink.chroma";
+	const char* animationName = "Animations/New_ChromaLink.chroma";
 	int animationId = ChromaAnimationAPI::CreateAnimation(animationName, (int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink);
 	if (animationId < 0)
 	{
@@ -829,7 +829,7 @@ void UnitTests::UnitTestsKeyboardCustom()
 
 void UnitTests::UnitTestsFadeStart()
 {
-	const char* baseLayer = "Blank_Keyboard.chroma";
+	const char* baseLayer = "Animations/Blank_Keyboard.chroma";
 	ChromaAnimationAPI::CloseAnimationName(baseLayer);
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 
@@ -847,7 +847,7 @@ void UnitTests::UnitTestsFadeStart()
 
 void UnitTests::UnitTestsFadeEnd()
 {
-	const char* baseLayer = "Blank_Keyboard.chroma";
+	const char* baseLayer = "Animations/Blank_Keyboard.chroma";
 	ChromaAnimationAPI::CloseAnimationName(baseLayer);
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 
@@ -865,7 +865,7 @@ void UnitTests::UnitTestsFadeEnd()
 
 void UnitTests::UnitTestsCopyAnimation()
 {
-	const char* baseLayer = "Fire_Keyboard.chroma";
+	const char* baseLayer = "Animations/Fire_Keyboard.chroma";
 	const char* layerTemp = "TempLayer";
 	ChromaAnimationAPI::CloseAnimationName(baseLayer);
 	ChromaAnimationAPI::GetAnimation(baseLayer);
@@ -913,7 +913,7 @@ void UnitTests::UnitTestsSaveAnimation()
 
 void UnitTests::UnitTestsSaveAnimation2()
 {
-	const char* baseLayer = "Fire_Keyboard.chroma";
+	const char* baseLayer = "Animations/Fire_Keyboard.chroma";
 	ChromaAnimationAPI::CloseAnimationName(baseLayer);
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 
@@ -958,7 +958,7 @@ void UnitTests::UnitTestsCreateRandomBlackAndWhite()
 
 void UnitTests::UnitTestsDuplicateFirstFrame()
 {
-	const char* baseLayer = "CircleSmall_Keyboard.chroma";
+	const char* baseLayer = "Animations/CircleSmall_Keyboard.chroma";
 	ChromaAnimationAPI::CloseAnimationName(baseLayer);
 	int baseAnimation = ChromaAnimationAPI::OpenAnimation(baseLayer);
 
@@ -1042,7 +1042,7 @@ int UnitTests::CloseAnimation(int animationId)
 
 void UnitTests::UnitTestsOpenAnimationFromMemory()
 {
-	const char* path = "Random_Keyboard.chroma";
+	const char* path = "Animations/Random_Keyboard.chroma";
 	FILE* stream = nullptr;
 	try
 	{
@@ -1099,8 +1099,8 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 
 void UnitTests::UnitTestsIdleAnimation()
 {
-	const char* animation = "Random_Keyboard.chroma";
-	const char* idleAnimation = "Fire_Keyboard.chroma";
+	const char* animation = "Animations/Random_Keyboard.chroma";
+	const char* idleAnimation = "Animations/Fire_Keyboard.chroma";
 
 	const int delay = 3000;
 
@@ -1191,10 +1191,12 @@ void UnitTests::UnitTestsDamage()
 
 	int frameCount = 1;
 
-	const char* BLANK_KEYBOARD = "Blank_Keyboard.chroma";
+	const char* BLANK_KEYBOARD = "Animations/Blank_Keyboard.chroma";
 	ChromaAnimationAPI::GetAnimation(BLANK_KEYBOARD);
 
 	const char* COPY_BLANK_KEYBOARD = "Copy_Blank_Keyboard.chroma";
+
+	const char* RAINBOW_KEYBOARD = "Animations/Rainbow_Keyboard.chroma";
 
 	// get current time
 	high_resolution_clock::time_point timer = high_resolution_clock::now();
@@ -1209,6 +1211,10 @@ void UnitTests::UnitTestsDamage()
 		Keyboard::RZKEY::RZKEY_S,
 		Keyboard::RZKEY::RZKEY_D,
 	};
+
+	int frameCountRainbow = ChromaAnimationAPI::GetFrameCountName(RAINBOW_KEYBOARD);
+
+	int indexRainbow = 0;
 
 	while (true)
 	{
@@ -1248,9 +1254,13 @@ void UnitTests::UnitTestsDamage()
 			ChromaAnimationAPI::CopyNonZeroAllKeysName(copy.c_str(), COPY_BLANK_KEYBOARD, 0);
 		}
 
-		ChromaAnimationAPI::SetKeysColorRGBName(COPY_BLANK_KEYBOARD, 0, keys, (int)size(keys), 255, 255, 255);
+		//ChromaAnimationAPI::SetKeysColorRGBName(COPY_BLANK_KEYBOARD, 0, keys, (int)size(keys), 255, 255, 255);
+
+		ChromaAnimationAPI::CopyKeysColorOffsetName(RAINBOW_KEYBOARD, COPY_BLANK_KEYBOARD, indexRainbow, 0, keys, (int)size(keys));
 
 		ChromaAnimationAPI::PreviewFrameName(COPY_BLANK_KEYBOARD, 0);
+		
 		Sleep(33);
+		indexRainbow = (indexRainbow+1) % frameCountRainbow;
 	}
 }

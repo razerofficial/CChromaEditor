@@ -255,6 +255,30 @@ typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const cha
 */
 typedef double(*PLUGIN_COPY_KEY_COLOR_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 /*
+	Copy animation color for a set of keys from the source animation to the
+	target animation for the given frame. Reference the source and target by
+	id.
+*/
+typedef void(*PLUGIN_COPY_KEYS_COLOR)(int sourceAnimationId, int targetAnimationId, int frameId, int* keys, int size);
+/*
+	Copy animation color for a set of keys from the source animation to the
+	target animation for the given frame. Reference the source and target by
+	name.
+*/
+typedef void(*PLUGIN_COPY_KEYS_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int* keys, int size);
+/*
+	Copy animation color for a set of keys from the source animation to the
+	target animation from the source frame to the target frame. Reference the
+	source and target by id.
+*/
+typedef void(*PLUGIN_COPY_KEYS_COLOR_OFFSET)(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, int* keys, int size);
+/*
+	Copy animation color for a set of keys from the source animation to the
+	target animation from the source frame to the target frame. Reference the
+	source and target by name.
+*/
+typedef void(*PLUGIN_COPY_KEYS_COLOR_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, int* keys, int size);
+/*
 	Copy source animation to target animation for the given frame. Source and
 	target are referenced by id.
 */
@@ -2611,6 +2635,30 @@ namespace ChromaSDK
 			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME_D, CopyKeyColorNameD);
+		/*
+			Copy animation color for a set of keys from the source animation to the
+			target animation for the given frame. Reference the source and target by
+			id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR, CopyKeysColor);
+		/*
+			Copy animation color for a set of keys from the source animation to the
+			target animation for the given frame. Reference the source and target by
+			name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_NAME, CopyKeysColorName);
+		/*
+			Copy animation color for a set of keys from the source animation to the
+			target animation from the source frame to the target frame. Reference the
+			source and target by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_OFFSET, CopyKeysColorOffset);
+		/*
+			Copy animation color for a set of keys from the source animation to the
+			target animation from the source frame to the target frame. Reference the
+			source and target by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_OFFSET_NAME, CopyKeysColorOffsetName);
 		/*
 			Copy source animation to target animation for the given frame. Source and
 			target are referenced by id.

@@ -72,12 +72,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -94,7 +96,8 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>COPY /Y *.chroma "$(outdir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,7 +128,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>COPY /Y *.chroma "$(outdir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -160,6 +164,30 @@
     <ClCompile Include="UnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Animations\Blank_ChromaLink.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Blank_Headset.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Blank_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Blank_Keypad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Blank_Mouse.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Blank_Mousepad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\ChromaLinkEffect.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\CircleSmall_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Animations\Damage1_Keyboard.chroma">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -182,6 +210,87 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Animations\Damage8_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Fire_ChromaLink.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Fire_Headset.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Fire_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Fire_Keypad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Fire_Mouse.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Fire_Mousepad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\HeadsetEffect.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\KeyboardCoolFireAnimation.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\KeyboardEffect.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\KeyboardParticleAnimation.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\KeyboardParticleAnimation2.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\KeypadEffect.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\MouseEffect.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\New_ChromaLink.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Rainbow_ChromaLink.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Rainbow_Headset.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Rainbow_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Rainbow_Mouse.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Rainbow_Mousepad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Random_ChromaLink.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Random_Headset.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Random_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Random_Keypad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Random_Mouse.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Random_Mousepad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Rows_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\Sprite_Keyboard.chroma">
       <DeploymentContent>true</DeploymentContent>
     </None>
   </ItemGroup>
