@@ -1248,14 +1248,10 @@ void UnitTests::UnitTestsDamage()
 			copy += name;
 			ChromaAnimationAPI::CopyAnimationName(name.c_str(), copy.c_str());
 
-			ChromaAnimationAPI::MultiplyIntensityRGBName(copy.c_str(), 0, 255, 0, 0);
-
-			ChromaAnimationAPI::MultiplyIntensityName(copy.c_str(), 0, t);
+			ChromaAnimationAPI::MultiplyIntensityRGBName(copy.c_str(), 0, (int)(255*t), 0, 0);
 
 			ChromaAnimationAPI::CopyNonZeroAllKeysName(copy.c_str(), COPY_BLANK_KEYBOARD, 0);
 		}
-
-		//ChromaAnimationAPI::SetKeysColorRGBName(COPY_BLANK_KEYBOARD, 0, keys, (int)size(keys), 255, 255, 255);
 
 		ChromaAnimationAPI::CopyKeysColorOffsetName(RAINBOW_KEYBOARD, COPY_BLANK_KEYBOARD, indexRainbow, 0, keys, (int)size(keys));
 
