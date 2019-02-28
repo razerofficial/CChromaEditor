@@ -2431,6 +2431,10 @@ extern "C"
 		the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 	*/
 	EXPORT_API void PluginUseIdleAnimation(int device, bool flag);
+	/*
+		Set idle animation flag for all devices.
+	*/
+	EXPORT_API void PluginUseIdleAnimations(bool flag);
 #pragma endregion
 	
 }

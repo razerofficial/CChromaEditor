@@ -2385,6 +2385,10 @@ typedef int(*PLUGIN_UPDATE_FRAME)(int animationId, int frameIndex, float duratio
 	the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 */
 typedef void(*PLUGIN_USE_IDLE_ANIMATION)(int device, bool flag);
+/*
+	Set idle animation flag for all devices.
+*/
+typedef void(*PLUGIN_USE_IDLE_ANIMATIONS)(bool flag);
 #pragma endregion
 
 #define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature FieldName;
@@ -4766,6 +4770,10 @@ namespace ChromaSDK
 			the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_IDLE_ANIMATION, UseIdleAnimation);
+		/*
+			Set idle animation flag for all devices.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_IDLE_ANIMATIONS, UseIdleAnimations);
 #pragma endregion
 
 		static int InitAPI();

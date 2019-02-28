@@ -33,7 +33,8 @@ void UnitTests::IsPlaying(const char* name)
 
 void UnitTests::UnitTestsInit()
 {
-	ChromaAnimationAPI::Init();
+	RZRESULT result = ChromaAnimationAPI::Init();
+	fprintf(stdout, "Init result=%ld\r\n", result);
 
 	Sleep(1000);
 }

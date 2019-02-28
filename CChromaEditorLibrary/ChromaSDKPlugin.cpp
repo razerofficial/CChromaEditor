@@ -27,15 +27,6 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	}
 	//LogDebug("ChromaSDKPlugin loaded.\r\n");	
 
-	if (RzChromaSDK::Init() == 0)
-	{
-		//LogDebug("ChromaSDKPlugin initialized.\r\n");
-	}
-	else
-	{
-		LogError("ChromaSDKPlugin failed to initialize!\r\n");
-	}
-
 	// keyboard mapping
 	_mKeyboardEnumMap[EChromaSDKKeyboardKey::KK_ESC] = Keyboard::RZKEY::RZKEY_ESC;
 	_mKeyboardEnumMap[EChromaSDKKeyboardKey::KK_F1] = Keyboard::RZKEY::RZKEY_F1;

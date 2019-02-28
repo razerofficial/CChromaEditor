@@ -672,13 +672,12 @@ extern "C"
 		// Chroma thread plays animations
 		SetupChromaThread();
 
-		_gAnimationId = 0;
-		_gAnimationMapID.clear();
-		_gAnimations.clear();
-		_gPlayMap1D.clear();
-		_gPlayMap2D.clear();
+		PluginUseIdleAnimations(false);
+		PluginStopAll();
+		PluginCloseAll();
 
-		ChromaSDKPlugin::GetInstance();
+		_gAnimationId = 0;
+
 		return RzChromaSDK::Init();
 	}
 
@@ -10078,6 +10077,16 @@ extern "C"
 		SetupChromaThread();
 
 		ChromaSDKPlugin::GetInstance()->UseIdleAnimation((EChromaSDKDeviceEnum)device, flag);
+	}
+
+	EXPORT_API void PluginUseIdleAnimations(bool flag)
+	{
+		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_ChromaLink, flag);
+		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Headset, flag);
+		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keyboard, flag);
+		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keypad, flag);
+		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mouse, flag);
+		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mousepad, flag);
 	}
 
 	EXPORT_API void PluginSetIdleAnimation(int animationId)
