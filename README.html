@@ -27,6 +27,7 @@
 <li><a href="#see-also">See Also</a></li>
 <li><a href="#frameworks-supported">Frameworks supported</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#security">Security</a></li>
 <li><a href="#assets">Assets</a></li>
 <li><a href="dialog">Dialog</a></li>
 <li><a href="#api">API</a></li>
@@ -87,6 +88,52 @@
 </li>
 </ul>
 <p><img src="images/image_2.png" alt="image_42"></p>
+<hr>
+<p><a name="security"></a></p>
+<h2 id="security">Security</h2>
+<p>The C++ Chroma Editor Library loads the Chroma API by loading the core Razer DLL with LoadLibrary.</p>
+<pre><code>// load the library if previously not loaded
+if (_sLibraryChroma == NULL)
+{
+    // load the library
+    _sLibraryChroma = LoadLibrary(CHROMASDKDLL);
+    if (_sLibraryChroma == NULL)
+    {
+        return false;
+    }
+    return true;
+}</code></pre><hr>
+<p>To avoid a 3rd party injecting malicious code, the C++ Chroma Editor Library checks for a valid signature on the Razer Chroma DLL. The DLL issuer is also validated to be <code>Razer USA Ltd.</code> before the API methods can be invoked.</p>
+<pre><code>// load the library if previously not loaded
+if (_sLibraryChroma == NULL)
+{
+    // load the library
+    _sLibraryChroma = LoadLibrary(CHROMASDKDLL);
+    if (_sLibraryChroma == NULL)
+    {
+        return false;
+    }
+
+    // verify the library has a valid signature
+    _sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibraryChroma);
+    if (_sInvalidSignature)
+    {
+        fprintf(stderr, &quot;Failed to load Chroma library with invalid signature!\r\n&quot;);
+
+        // unload the library
+        FreeLibrary(_sLibraryChroma);
+        _sLibraryChroma = NULL;
+
+        return false;
+    }
+}</code></pre><hr>
+<p>The <code>ChromaAnimationAPI::Init()</code> method returns <code>RZRESULT_SUCCESS</code> when initialization has succeeded. Avoid making calls to the Chroma API when anything other than success is returned. A unsuccessful result indicates <code>Chroma</code> is not present on the machine.</p>
+<pre><code>RZRESULT result = ChromaAnimationAPI::Init();
+if (result != RZSUCCESS)
+{
+    // avoid making API calls
+    return;
+}</code></pre><hr>
 <p><a name="getting-started"></a></p>
 <h2 id="getting-started">Getting Started</h2>
 <p><strong>Running the editor application</strong></p>
