@@ -5,6 +5,7 @@
 * [See Also](#see-also)
 * [Frameworks supported](#frameworks-supported)
 * [Prerequisites](#prerequisites)
+* [Security](#security)
 * [Assets](#assets)
 * [Dialog](dialog)
 * [API](#api)
@@ -62,6 +63,71 @@
 
 ![image_42](images/image_2.png)
 
+---
+
+<a name="security"></a>
+## Security
+
+The C++ Chroma Editor Library loads the Chroma API by loading the core Razer DLL with LoadLibrary.
+
+```
+// load the library if previously not loaded
+if (_sLibraryChroma == NULL)
+{
+	// load the library
+	_sLibraryChroma = LoadLibrary(CHROMASDKDLL);
+	if (_sLibraryChroma == NULL)
+	{
+		return false;
+	}
+	return true;
+}
+```
+
+---
+
+To avoid a 3rd party injecting malicious code, the C++ Chroma Editor Library checks for a valid signature on the Razer Chroma DLL. The DLL issuer is also validated to be `Razer USA Ltd.` before the API methods can be invoked.
+
+```
+// load the library if previously not loaded
+if (_sLibraryChroma == NULL)
+{
+	// load the library
+	_sLibraryChroma = LoadLibrary(CHROMASDKDLL);
+	if (_sLibraryChroma == NULL)
+	{
+		return false;
+	}
+
+	// verify the library has a valid signature
+	_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibraryChroma);
+	if (_sInvalidSignature)
+	{
+		fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
+
+		// unload the library
+		FreeLibrary(_sLibraryChroma);
+		_sLibraryChroma = NULL;
+
+		return false;
+	}
+}
+```
+
+---
+
+The `ChromaAnimationAPI::Init()` method returns `RZRESULT_SUCCESS` when initialization has succeeded. Avoid making calls to the Chroma API when anything other than success is returned. A unsuccessful result indicates `Chroma` is not present on the machine.
+
+```
+RZRESULT result = ChromaAnimationAPI::Init();
+if (result != RZSUCCESS)
+{
+	// avoid making API calls
+	return;
+}
+```
+
+---
 
 <a name="getting-started"></a>
 ## Getting Started
