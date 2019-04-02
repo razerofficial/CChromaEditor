@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Animations">
+      <UniqueIdentifier>{9ad1368a-01f8-45b5-9528-9d40c2824ee1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -46,48 +49,134 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Animations\Damage1_Keyboard.chroma" />
-    <None Include="Animations\Damage2_Keyboard.chroma" />
-    <None Include="Animations\Damage3_Keyboard.chroma" />
-    <None Include="Animations\Damage4_Keyboard.chroma" />
-    <None Include="Animations\Damage5_Keyboard.chroma" />
-    <None Include="Animations\Damage6_Keyboard.chroma" />
-    <None Include="Animations\Damage7_Keyboard.chroma" />
-    <None Include="Animations\Damage8_Keyboard.chroma" />
-    <None Include="Animations\Blank_ChromaLink.chroma" />
-    <None Include="Animations\Blank_Headset.chroma" />
-    <None Include="Animations\Blank_Keyboard.chroma" />
-    <None Include="Animations\Blank_Keypad.chroma" />
-    <None Include="Animations\Blank_Mouse.chroma" />
-    <None Include="Animations\Blank_Mousepad.chroma" />
-    <None Include="Animations\ChromaLinkEffect.chroma" />
-    <None Include="Animations\CircleSmall_Keyboard.chroma" />
-    <None Include="Animations\Fire_ChromaLink.chroma" />
-    <None Include="Animations\Fire_Headset.chroma" />
-    <None Include="Animations\Fire_Keyboard.chroma" />
-    <None Include="Animations\Fire_Keypad.chroma" />
-    <None Include="Animations\Fire_Mouse.chroma" />
-    <None Include="Animations\Fire_Mousepad.chroma" />
-    <None Include="Animations\HeadsetEffect.chroma" />
-    <None Include="Animations\KeyboardCoolFireAnimation.chroma" />
-    <None Include="Animations\KeyboardEffect.chroma" />
-    <None Include="Animations\KeyboardParticleAnimation.chroma" />
-    <None Include="Animations\KeyboardParticleAnimation2.chroma" />
-    <None Include="Animations\KeypadEffect.chroma" />
-    <None Include="Animations\MouseEffect.chroma" />
-    <None Include="Animations\New_ChromaLink.chroma" />
-    <None Include="Animations\Random_ChromaLink.chroma" />
-    <None Include="Animations\Random_Headset.chroma" />
-    <None Include="Animations\Random_Keyboard.chroma" />
-    <None Include="Animations\Random_Keypad.chroma" />
-    <None Include="Animations\Random_Mouse.chroma" />
-    <None Include="Animations\Random_Mousepad.chroma" />
-    <None Include="Animations\Rows_Keyboard.chroma" />
-    <None Include="Animations\Sprite_Keyboard.chroma" />
-    <None Include="Animations\Rainbow_ChromaLink.chroma" />
-    <None Include="Animations\Rainbow_Headset.chroma" />
-    <None Include="Animations\Rainbow_Keyboard.chroma" />
-    <None Include="Animations\Rainbow_Mouse.chroma" />
-    <None Include="Animations\Rainbow_Mousepad.chroma" />
+    <None Include="Animations\Blank_ChromaLink.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Blank_Headset.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Blank_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Blank_Keypad.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Blank_Mouse.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Blank_Mousepad.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\ChromaLinkEffect.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\CircleSmall_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Damage1_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Damage2_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Damage3_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Damage4_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Damage5_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Damage6_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Damage7_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Damage8_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Fire_ChromaLink.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Fire_Headset.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Fire_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Fire_Keypad.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Fire_Mouse.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Fire_Mousepad.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\HeadsetEffect.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\KeyboardCoolFireAnimation.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\KeyboardEffect.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\KeyboardParticleAnimation.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\KeyboardParticleAnimation2.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\KeypadEffect.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\MouseEffect.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\New_ChromaLink.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Rainbow_ChromaLink.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Rainbow_Headset.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Rainbow_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Rainbow_Mouse.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Rainbow_Mousepad.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Random_ChromaLink.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Random_Headset.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Random_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Random_Keypad.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Random_Mouse.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Random_Mousepad.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Rows_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\Sprite_Keyboard.chroma">
+      <Filter>Animations</Filter>
+    </None>
   </ItemGroup>
 </Project>

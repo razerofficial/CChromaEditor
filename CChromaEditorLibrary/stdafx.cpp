@@ -73,12 +73,22 @@ map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
 
 void SetupChromaThread()
 {
-	ChromaThread::Instance()->Start();
+	if (ChromaThread::Instance() == nullptr)
+	{
+		ChromaThread::Init();
+	}
+	if (ChromaThread::Instance() != nullptr)
+	{
+		ChromaThread::Instance()->Start();
+	}
 }
 
 void StopChromaThread()
 {
-	ChromaThread::Instance()->Stop();
+	if (ChromaThread::Instance() != nullptr)
+	{
+		ChromaThread::Instance()->Stop();
+	}
 }
 
 void ThreadOpenEditorDialog(bool playOnOpen)
@@ -184,9 +194,6 @@ extern "C"
 
 	EXPORT_API bool PluginIsInitialized()
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
 		return ChromaSDKPlugin::GetInstance()->IsInitialized();
 	}
 
@@ -550,6 +557,7 @@ extern "C"
 					_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
 					break;
 				}
+				animation->Load();
 				animation->Play(false);
 				return animationId;
 			}
@@ -760,27 +768,29 @@ extern "C"
 		{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
 				{
-					Animation1D animation1D = Animation1D();
-					animation1D.SetDevice((EChromaSDKDevice1DEnum)device);
-					vector<FChromaSDKColorFrame1D>& frames = animation1D.GetFrames();
+					Animation1D* animation1D = new Animation1D();
+					animation1D->SetDevice((EChromaSDKDevice1DEnum)device);
+					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					frames.clear();
 					FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D((EChromaSDKDevice1DEnum)device);
 					frames.push_back(frame);
-					animation1D.Save(path);
+					animation1D->Save(path);
+					delete animation1D;
 					return PluginOpenAnimation(path);
 				}
 				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
 				{
-					Animation2D animation2D = Animation2D();
-					animation2D.SetDevice((EChromaSDKDevice2DEnum)device);
-					vector<FChromaSDKColorFrame2D>& frames = animation2D.GetFrames();
+					Animation2D* animation2D = new Animation2D();
+					animation2D->SetDevice((EChromaSDKDevice2DEnum)device);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					frames.clear();
 					FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D((EChromaSDKDevice2DEnum)device);
 					frames.push_back(frame);
-					animation2D.Save(path);
+					animation2D->Save(path);
+					delete animation2D;
 					return PluginOpenAnimation(path);
 				}
 				break;
@@ -1569,6 +1579,23 @@ extern "C"
 		return -1;
 	}
 
+	int GetAnimationIdFromInstance(AnimationBase* animation)
+	{
+		if (animation == nullptr)
+		{
+			fprintf(stderr, "GetAnimationIdFromInstance: Invalid animation!\r\n");
+			return -1;
+		}
+		for (auto iter = _gAnimations.begin(); iter != _gAnimations.end(); ++iter)
+		{
+			if (iter->second == animation)
+			{
+				return iter->first;
+			}
+		}
+		return -1;
+	}
+
 	AnimationBase* GetAnimationInstance(int animationId)
 	{
 		if (_gAnimations.find(animationId) != _gAnimations.end())
@@ -1587,6 +1614,17 @@ extern "C"
 			return nullptr;
 		}
 		return GetAnimationInstance(animationId);
+	}
+
+	ChromaSDK::AnimationBase* GetAnimationInstanceIfOpenName(const char* path)
+	{
+		auto it = _gAnimationMapID.find(path);
+		if (it != _gAnimationMapID.end())
+		{
+			return GetAnimationInstance(it->second);
+		}
+		//LogError("GetAnimationInstanceIfOpenName: Animation not found! %s\r\n", path);
+		return nullptr;
 	}
 
 	EXPORT_API int PluginGetAnimation(const char* name)
@@ -1663,6 +1701,7 @@ extern "C"
 				_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
 				break;
 			}
+			animation->Load();
 			animation->Play(loop);
 		}
 	}
@@ -1714,6 +1753,7 @@ extern "C"
 				_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
 				break;
 			}
+			animation->Load();
 			animation->Play(loop);
 		}
 	}
@@ -3018,7 +3058,7 @@ extern "C"
 		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
 		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
 		if (frameId < 0 ||
-			frameId >= sourceFrames.size())
+			frameId >= (int)sourceFrames.size())
 		{
 			return;
 		}
@@ -3026,7 +3066,7 @@ extern "C"
 		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
 		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
 		if (frameId < 0 ||
-			frameId >= targetFrames.size())
+			frameId >= (int)targetFrames.size())
 		{
 			return;
 		}
@@ -3084,7 +3124,7 @@ extern "C"
 		Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
 		vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
 		if (sourceFrameId < 0 ||
-			sourceFrameId >= sourceFrames.size())
+			sourceFrameId >= (int)sourceFrames.size())
 		{
 			return;
 		}
@@ -3092,7 +3132,7 @@ extern "C"
 		Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
 		vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
 		if (targetFrameId < 0 ||
-			targetFrameId >= targetFrames.size())
+			targetFrameId >= (int)targetFrames.size())
 		{
 			return;
 		}
@@ -5781,7 +5821,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -5798,7 +5838,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -5850,7 +5890,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -5878,7 +5918,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -5942,7 +5982,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -5959,7 +5999,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -6012,7 +6052,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -6040,7 +6080,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -6104,7 +6144,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -6132,7 +6172,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -6195,7 +6235,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -6230,7 +6270,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -6498,7 +6538,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -6518,7 +6558,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -6579,7 +6619,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -6599,7 +6639,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -6654,7 +6694,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -6674,7 +6714,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -6735,7 +6775,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -6755,7 +6795,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -6945,7 +6985,7 @@ extern "C"
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame1D& frame = frames[frameId];
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors1D(animation1D->GetDevice());
@@ -6957,7 +6997,7 @@ extern "C"
 				Animation2D* animation2D = (Animation2D*)(animation);
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame2D& frame = frames[frameId];
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors2D(animation2D->GetDevice());
@@ -7004,7 +7044,7 @@ extern "C"
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame1D& frame = frames[frameId];
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors1D(animation1D->GetDevice());
@@ -7016,7 +7056,7 @@ extern "C"
 				Animation2D* animation2D = (Animation2D*)(animation);
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame2D& frame = frames[frameId];
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColors2D(animation2D->GetDevice());
@@ -7063,7 +7103,7 @@ extern "C"
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame1D& frame = frames[frameId];
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColorsBlackAndWhite1D(animation1D->GetDevice());
@@ -7075,7 +7115,7 @@ extern "C"
 				Animation2D* animation2D = (Animation2D*)(animation);
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame2D& frame = frames[frameId];
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColorsBlackAndWhite2D(animation2D->GetDevice());
@@ -7122,7 +7162,7 @@ extern "C"
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame1D& frame = frames[frameId];
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColorsBlackAndWhite1D(animation1D->GetDevice());
@@ -7134,7 +7174,7 @@ extern "C"
 				Animation2D* animation2D = (Animation2D*)(animation);
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame2D& frame = frames[frameId];
 					frame.Colors = ChromaSDKPlugin::GetInstance()->CreateRandomColorsBlackAndWhite2D(animation2D->GetDevice());
@@ -7181,7 +7221,7 @@ extern "C"
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame1D& frame = frames[frameId];
 					int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -7203,7 +7243,7 @@ extern "C"
 				Animation2D* animation2D = (Animation2D*)(animation);
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame2D& frame = frames[frameId];
 					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7264,7 +7304,7 @@ extern "C"
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame1D& frame = frames[frameId];
 					int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -7286,7 +7326,7 @@ extern "C"
 				Animation2D* animation2D = (Animation2D*)(animation);
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 				if (frameId >= 0 &&
-					frameId < frames.size())
+					frameId < (int)frames.size())
 				{
 					FChromaSDKColorFrame2D& frame = frames[frameId];
 					int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7344,7 +7384,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -7369,7 +7409,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7462,7 +7502,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -7490,7 +7530,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7586,7 +7626,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -7597,9 +7637,9 @@ extern "C"
 					int red = (color & 0xFF);
 					int green = (color & 0xFF00) >> 8;
 					int blue = (color & 0xFF0000) >> 16;
-					red = max(0, min(255, red * intensity));
-					green = max(0, min(255, green * intensity));
-					blue = max(0, min(255, blue * intensity));
+					red = max(0, min(255, (int)(red * intensity)));
+					green = max(0, min(255, (int)(green * intensity)));
+					blue = max(0, min(255, (int)(blue * intensity)));
 					color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 					colors[i] = color;
 				}
@@ -7611,7 +7651,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7625,9 +7665,9 @@ extern "C"
 						int red = (color & 0xFF);
 						int green = (color & 0xFF00) >> 8;
 						int blue = (color & 0xFF0000) >> 16;
-						red = max(0, min(255, red * intensity));
-						green = max(0, min(255, green * intensity));
-						blue = max(0, min(255, blue * intensity));
+						red = max(0, min(255, (int)(red * intensity)));
+						green = max(0, min(255, (int)(green * intensity)));
+						blue = max(0, min(255, (int)(blue * intensity)));
 						color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 						row.Colors[j] = color;
 					}
@@ -7678,7 +7718,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -7689,9 +7729,9 @@ extern "C"
 					int red = (color & 0xFF);
 					int green = (color & 0xFF00) >> 8;
 					int blue = (color & 0xFF0000) >> 16;
-					red = max(0, min(255, red * redIntensity));
-					green = max(0, min(255, green * greenIntensity));
-					blue = max(0, min(255, blue * blueIntensity));
+					red = max(0, min(255, (int)(red * redIntensity)));
+					green = max(0, min(255, (int)(green * greenIntensity)));
+					blue = max(0, min(255, (int)(blue * blueIntensity)));
 					color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 					colors[i] = color;
 				}
@@ -7703,7 +7743,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7717,9 +7757,9 @@ extern "C"
 						int red = (color & 0xFF);
 						int green = (color & 0xFF00) >> 8;
 						int blue = (color & 0xFF0000) >> 16;
-						red = max(0, min(255, red * redIntensity));
-						green = max(0, min(255, green * greenIntensity));
-						blue = max(0, min(255, blue * blueIntensity));
+						red = max(0, min(255, (int)(red * redIntensity)));
+						green = max(0, min(255, (int)(green * greenIntensity)));
+						blue = max(0, min(255, (int)(blue * blueIntensity)));
 						color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 						row.Colors[j] = color;
 					}
@@ -7800,7 +7840,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -7811,9 +7851,9 @@ extern "C"
 					int red = (color & 0xFF);
 					int green = (color & 0xFF00) >> 8;
 					int blue = (color & 0xFF0000) >> 16;
-					red = max(0, min(255, red * redIntensity));
-					green = max(0, min(255, green * greenIntensity));
-					blue = max(0, min(255, blue * blueIntensity));
+					red = max(0, min(255, (int)(red * redIntensity)));
+					green = max(0, min(255, (int)(green * greenIntensity)));
+					blue = max(0, min(255, (int)(blue * blueIntensity)));
 					color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 					colors[i] = color;
 				}
@@ -7825,7 +7865,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -7839,9 +7879,9 @@ extern "C"
 						int red = (color & 0xFF);
 						int green = (color & 0xFF00) >> 8;
 						int blue = (color & 0xFF0000) >> 16;
-						red = max(0, min(255, red * redIntensity));
-						green = max(0, min(255, green * greenIntensity));
-						blue = max(0, min(255, blue * blueIntensity));
+						red = max(0, min(255, (int)(red * redIntensity)));
+						green = max(0, min(255, (int)(green * greenIntensity)));
+						blue = max(0, min(255, (int)(blue * blueIntensity)));
 						color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 						row.Colors[j] = color;
 					}
@@ -7942,9 +7982,9 @@ extern "C"
 	}
 
 	EXPORT_API int PluginLerpColor(int from, int to, float t) {
-		int red = floor(PluginLerp((from & 0xFF), (to & 0xFF), t));
-		int green = floor(PluginLerp((from & 0xFF00) >> 8, (to & 0xFF00) >> 8, t));
-		int blue = floor(PluginLerp((from & 0xFF0000) >> 16, (to & 0xFF0000) >> 16, t));
+		int red = (int)floor(PluginLerp((float)(from & 0xFF), (float)(to & 0xFF), t));
+		int green = (int)floor(PluginLerp((float)((from & 0xFF00) >> 8), (float)((to & 0xFF00) >> 8), t));
+		int blue = (int)floor(PluginLerp((float)((from & 0xFF0000) >> 16), (float)((to & 0xFF0000) >> 16), t));
 		int color = red | (green << 8) | (blue << 16);
 		return color;
 	}
@@ -7965,7 +8005,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -7987,7 +8027,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -8026,7 +8066,7 @@ extern "C"
 			Animation1D* animation1D = (Animation1D*)(animation);
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame1D& frame = frames[frameId];
 				int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -8051,7 +8091,7 @@ extern "C"
 			Animation2D* animation2D = (Animation2D*)(animation);
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			if (frameId >= 0 &&
-				frameId < frames.size())
+				frameId < (int)frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[frameId];
 				int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -8605,7 +8645,7 @@ extern "C"
 
 	EXPORT_API double PluginMakeBlankFramesNameD(const char* path, double frameCount, double duration, double color)
 	{
-		PluginMakeBlankFramesName(path, (int)frameCount, (int)duration, (int)color);
+		PluginMakeBlankFramesName(path, (int)frameCount, (float)duration, (int)color);
 		return 0;
 	}
 
@@ -8675,7 +8715,7 @@ extern "C"
 
 	EXPORT_API double PluginMakeBlankFramesRGBNameD(const char* path, double frameCount, double duration, double red, double green, double blue)
 	{
-		PluginMakeBlankFramesRGBName(path, (int)frameCount, (int)duration, (int)red, (int)green, (int)blue);
+		PluginMakeBlankFramesRGBName(path, (int)frameCount, (float)duration, (int)red, (int)green, (int)blue);
 		return 0;
 	}
 
@@ -8753,7 +8793,7 @@ extern "C"
 
 	EXPORT_API double PluginMakeBlankFramesRandomNameD(const char* path, double frameCount, double duration)
 	{
-		PluginMakeBlankFramesRandomName(path, (int)frameCount, (int)duration);
+		PluginMakeBlankFramesRandomName(path, (int)frameCount, (float)duration);
 		return 0;
 	}
 
@@ -8827,7 +8867,7 @@ extern "C"
 
 	EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(const char* path, double frameCount, double duration)
 	{
-		PluginMakeBlankFramesRandomBlackAndWhiteName(path, (int)frameCount, (int)duration);
+		PluginMakeBlankFramesRandomBlackAndWhiteName(path, (int)frameCount, (float)duration);
 		return 0;
 	}
 
@@ -8860,7 +8900,7 @@ extern "C"
 						newFrames.push_back(frame2);
 					}
 					frames.clear();
-					for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+					for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 					{
 						FChromaSDKColorFrame1D frame = newFrames[frameId];
 						frames.push_back(frame);
@@ -8880,7 +8920,7 @@ extern "C"
 						newFrames.push_back(frame2);
 					}
 					frames.clear();
-					for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+					for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 					{
 						FChromaSDKColorFrame2D frame = newFrames[frameId];
 						frames.push_back(frame);
@@ -8965,7 +9005,7 @@ extern "C"
 	}
 	EXPORT_API double PluginDuplicateFirstFrameNameD(const char* path, double frameCount)
 	{
-		PluginDuplicateFirstFrameName(path, frameCount);
+		PluginDuplicateFirstFrameName(path, (int)frameCount);
 		return 0;
 	}
 
@@ -9074,7 +9114,7 @@ extern "C"
 					newFrames.push_back(frame);
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame1D frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9098,7 +9138,7 @@ extern "C"
 					newFrames.push_back(frame);
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame2D frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9163,7 +9203,7 @@ extern "C"
 					newFrames.push_back(frame);
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame1D frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9188,7 +9228,7 @@ extern "C"
 					newFrames.push_back(frame);
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame2D frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9249,7 +9289,7 @@ extern "C"
 					newFrames.push_back(frame);
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame1D& frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9277,7 +9317,7 @@ extern "C"
 					newFrames.push_back(frame);
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame2D& frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9339,7 +9379,7 @@ extern "C"
 					}
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame1D& frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9360,7 +9400,7 @@ extern "C"
 					}
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame2D& frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9417,7 +9457,7 @@ extern "C"
 					newFrames.push_back(frame);
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame1D& frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9435,7 +9475,7 @@ extern "C"
 					newFrames.push_back(frame);
 				}
 				frames.clear();
-				for (int frameId = 0; frameId < newFrames.size(); ++frameId)
+				for (int frameId = 0; frameId < (int)newFrames.size(); ++frameId)
 				{
 					FChromaSDKColorFrame2D& frame = newFrames[frameId];
 					frames.push_back(frame);
@@ -9485,7 +9525,7 @@ extern "C"
 			{
 				Animation1D* animation1D = (Animation1D*)(animation);
 				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
-				while (lastFrameId < frames.size())
+				while (lastFrameId < (int)frames.size())
 				{
 					frames.pop_back();
 				}				
@@ -9495,7 +9535,7 @@ extern "C"
 			{
 				Animation2D* animation2D = (Animation2D*)(animation);
 				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-				while (lastFrameId < frames.size())
+				while (lastFrameId < (int)frames.size())
 				{
 					frames.pop_back();
 				}
@@ -9626,7 +9666,7 @@ extern "C"
 					Animation1D* animation1D = (Animation1D*)(animation);
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameId >= 0 &&
-						frameId < frames.size())
+						frameId < (int)frames.size())
 					{
 						FChromaSDKColorFrame1D& frame = frames[frameId];
 						int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -9635,8 +9675,8 @@ extern "C"
 						{
 							int color = colors[i];
 							int red = (color & 0xFF);
-							int green = max(0, min(255, red * greenIntensity));
-							int blue = max(0, min(255, red * blueIntensity));
+							int green = max(0, min(255, (int)(red * greenIntensity)));
+							int blue = max(0, min(255, (int)(red * blueIntensity)));
 							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 							colors[i] = color;
 						}
@@ -9648,7 +9688,7 @@ extern "C"
 					Animation2D* animation2D = (Animation2D*)(animation);
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameId >= 0 &&
-						frameId < frames.size())
+						frameId < (int)frames.size())
 					{
 						FChromaSDKColorFrame2D& frame = frames[frameId];
 						int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -9660,8 +9700,8 @@ extern "C"
 							{
 								int color = row.Colors[j];
 								int red = (color & 0xFF);
-								int green = max(0, min(255, red * greenIntensity));
-								int blue = max(0, min(255, red * blueIntensity));
+								int green = max(0, min(255, (int)(red * greenIntensity)));
+								int blue = max(0, min(255, (int)(red * blueIntensity)));
 								color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 								row.Colors[j] = color;
 							}
@@ -9712,7 +9752,7 @@ extern "C"
 					Animation1D* animation1D = (Animation1D*)(animation);
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameId >= 0 &&
-						frameId < frames.size())
+						frameId < (int)frames.size())
 					{
 						FChromaSDKColorFrame1D& frame = frames[frameId];
 						int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -9721,8 +9761,8 @@ extern "C"
 						{
 							int color = colors[i];
 							int green = (color & 0xFF0000) >> 16;
-							int red = max(0, min(255, green * redIntensity));
-							int blue = max(0, min(255, green * blueIntensity));
+							int red = max(0, min(255, (int)(green * redIntensity)));
+							int blue = max(0, min(255, (int)(green * blueIntensity)));
 							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 							colors[i] = color;
 						}
@@ -9734,7 +9774,7 @@ extern "C"
 					Animation2D* animation2D = (Animation2D*)(animation);
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameId >= 0 &&
-						frameId < frames.size())
+						frameId < (int)frames.size())
 					{
 						FChromaSDKColorFrame2D& frame = frames[frameId];
 						int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -9746,8 +9786,8 @@ extern "C"
 							{
 								int color = row.Colors[j];
 								int green = (color & 0xFF0000) >> 16;
-								int red = max(0, min(255, green * redIntensity));
-								int blue = max(0, min(255, green * blueIntensity));
+								int red = max(0, min(255, (int)(green * redIntensity)));
+								int blue = max(0, min(255, (int)(green * blueIntensity)));
 								color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 								row.Colors[j] = color;
 							}
@@ -9798,7 +9838,7 @@ extern "C"
 					Animation1D* animation1D = (Animation1D*)(animation);
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameId >= 0 &&
-						frameId < frames.size())
+						frameId < (int)frames.size())
 					{
 						FChromaSDKColorFrame1D& frame = frames[frameId];
 						int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(animation1D->GetDevice());
@@ -9807,8 +9847,8 @@ extern "C"
 						{
 							int color = colors[i];
 							int green = (color & 0xFF00) >> 8;
-							int red = max(0, min(255, green * redIntensity));
-							int blue = max(0, min(255, green * greenIntensity));
+							int red = max(0, min(255, (int)(green * redIntensity)));
+							int blue = max(0, min(255, (int)(green * greenIntensity)));
 							color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 							colors[i] = color;
 						}
@@ -9820,7 +9860,7 @@ extern "C"
 					Animation2D* animation2D = (Animation2D*)(animation);
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameId >= 0 &&
-						frameId < frames.size())
+						frameId < (int)frames.size())
 					{
 						FChromaSDKColorFrame2D& frame = frames[frameId];
 						int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(animation2D->GetDevice());
@@ -9832,8 +9872,8 @@ extern "C"
 							{
 								int color = row.Colors[j];
 								int green = (color & 0xFF00) >> 8;
-								int red = max(0, min(255, green * redIntensity));
-								int blue = max(0, min(255, green * greenIntensity));
+								int red = max(0, min(255, (int)(green * redIntensity)));
+								int blue = max(0, min(255, (int)(green * greenIntensity)));
 								color = (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);
 								row.Colors[j] = color;
 							}
@@ -9888,7 +9928,7 @@ extern "C"
 			targetFrames.clear();
 			Animation1D* sourceAnimation1D = (Animation1D*)sourceAnimation;
 			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
-			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			for (int frameId = 0; frameId < (int)sourceFrames.size(); ++frameId)
 			{
 				FChromaSDKColorFrame1D frame = sourceFrames[frameId];
 				targetFrames.push_back(frame);
@@ -9910,7 +9950,7 @@ extern "C"
 			targetFrames.clear();
 			Animation2D* sourceAnimation2D = (Animation2D*)sourceAnimation;
 			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
-			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			for (int frameId = 0; frameId < (int)sourceFrames.size(); ++frameId)
 			{
 				FChromaSDKColorFrame2D frame = sourceFrames[frameId];
 				targetFrames.push_back(frame);
@@ -9969,7 +10009,7 @@ extern "C"
 			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
 			Animation1D* targetAnimation1D = (Animation1D*)targetAnimation;
 			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
-			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			for (int frameId = 0; frameId < (int)sourceFrames.size(); ++frameId)
 			{
 				FChromaSDKColorFrame1D frame = sourceFrames[frameId];
 				targetFrames.push_back(frame);
@@ -9982,7 +10022,7 @@ extern "C"
 			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
 			Animation2D* targetAnimation2D = (Animation2D*)targetAnimation;
 			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
-			for (int frameId = 0; frameId < sourceFrames.size(); ++frameId)
+			for (int frameId = 0; frameId < (int)sourceFrames.size(); ++frameId)
 			{
 				FChromaSDKColorFrame2D frame = sourceFrames[frameId];
 				targetFrames.push_back(frame);

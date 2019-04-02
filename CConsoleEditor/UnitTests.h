@@ -60,12 +60,14 @@ public:
 
 	static void UnitTestsDamage();
 
-	static void Run();
-
 	static int OpenAndPlay(const char* path);
 
 	static int CloseAnimation(int animationId);
 
+	static void UnitTestFireKeyboard();
+
 	static void UnitTestsOpenAnimationFromMemory();
+
+	static void Run();
 
 };

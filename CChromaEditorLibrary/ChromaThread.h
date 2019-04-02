@@ -12,6 +12,7 @@ namespace ChromaSDK
 	{
 	public:
 		static ChromaThread* Instance();
+		static void Init();
 		void Start();
 		void Stop();
 		void AddAnimation(AnimationBase* animation);
@@ -26,11 +27,11 @@ namespace ChromaSDK
 		void ProcessAnimations(float deltaTime);
 		void ChromaWorker();
 		static ChromaThread* _sInstance;
-		std::vector<AnimationBase*> _mAnimations;
-		std::thread* _mThread;
-		std::mutex _mMutex;
-		bool _mWaitForExit;
-		std::vector<bool> _mUseIdleAnimation;
-		std::vector<std::string> _mIdleAnimation;
+		static std::mutex _sMutex;
+		static bool _sWaitForExit;
+		static std::thread* _sThread;
+		static std::vector<AnimationBase*> _sAnimations;
+		static std::vector<bool> _sUseIdleAnimation;
+		static std::vector<std::string> _sIdleAnimation;
 	};
 }

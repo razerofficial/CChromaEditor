@@ -29,6 +29,19 @@ void Animation1D::Reset()
 	_mLoop = false;
 }
 
+Animation1D& Animation1D::operator=(const Animation1D& rhs)
+{
+	_mDevice = rhs._mDevice;
+	_mFrames = rhs._mFrames;
+
+	_mIsPlaying = rhs._mIsPlaying;
+	_mIsLoaded = rhs._mIsLoaded;
+	_mTime = rhs._mTime;
+	_mCurrentFrame = rhs._mCurrentFrame;
+	_mLoop = rhs._mLoop;
+	return *this;
+}
+
 EChromaSDKDeviceTypeEnum Animation1D::GetDeviceType()
 {
 	return EChromaSDKDeviceTypeEnum::DE_1D;
@@ -138,11 +151,6 @@ void Animation1D::Unload()
 
 void Animation1D::Play(bool loop)
 {
-	if (!_mIsLoaded)
-	{
-		Load();
-	}
-
 	_mTime = 0.0f;
 	_mCurrentFrame = -1;
 	_mIsPlaying = true;
@@ -196,7 +204,7 @@ void Animation1D::InternalUpdate(float deltaTime)
 	if (_mCurrentFrame == -1)
 	{
 		_mCurrentFrame = 0;
-		if (_mCurrentFrame < _mEffects.size())
+		if (_mCurrentFrame >= 0 && _mCurrentFrame < (int)_mEffects.size())
 		{
 			FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
 			try
@@ -220,21 +228,24 @@ void Animation1D::InternalUpdate(float deltaTime)
 		if (nextTime < _mTime)
 		{
 			_mTime = 0.0f;
-			if ((_mCurrentFrame + 1) < _mEffects.size())
+			if ((_mCurrentFrame + 1) < (int)_mEffects.size())
 			{
 				++_mCurrentFrame;
-				FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
-				try
+				if (_mCurrentFrame >= 0 && _mCurrentFrame < (int)_mEffects.size())
 				{
-					int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
-					if (result != 0)
+					FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
+					try
 					{
-						fprintf(stderr, "Update: Failed to set effect!\r\n");
+						int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
+						if (result != 0)
+						{
+							fprintf(stderr, "Update: Failed to set effect!\r\n");
+						}
 					}
-				}
-				catch (exception)
-				{
-					fprintf(stderr, "Update: Exception in set effect!\r\n");
+					catch (exception)
+					{
+						fprintf(stderr, "Update: Exception in set effect!\r\n");
+					}
 				}
 			}
 			else

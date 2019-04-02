@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ChromaSDKPluginTypes.h"
+#include <mutex>
 #include <string>
 
 namespace ChromaSDK
@@ -32,6 +33,8 @@ namespace ChromaSDK
 
 		// Support idle animation
 
+		std::mutex& GetMutex();
+
 		// Update the animation whether it's playing or not, used by the idle animation
 		virtual void InternalUpdate(float deltaTime) = 0;
 		virtual void InternalSetTime(float time);
@@ -49,5 +52,6 @@ namespace ChromaSDK
 		bool _mLoop;
 		float _mTime;
 		std::vector<FChromaSDKEffectResult> _mEffects;
+		std::mutex _mMutex;
 	};
 }

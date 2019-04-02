@@ -28,7 +28,13 @@ int main(int argc, char *argv[])
 
 #if RUN_UNIT_TESTS
 	UnitTests::Run();
-#endif
+#else
+	RZRESULT result = ChromaAnimationAPI::Init();
+	if (result != 0)
+	{
+		fprintf(stderr, "Failed to initialize Chroma! %d", result);
+		return -1;
+	}
 
 	if (argc <= 1)
 	{
@@ -57,6 +63,8 @@ int main(int argc, char *argv[])
 	{
 		Sleep(0);
 	}
+
+#endif
 
 	ChromaAnimationAPI::Uninit();
 	fprintf(stdout, "CConsoleEditor exited.\r\n");

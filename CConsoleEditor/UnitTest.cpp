@@ -976,48 +976,6 @@ void UnitTests::UnitTestsDuplicateFirstFrame()
 	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 }
 
-void UnitTests::Run()
-{
-	fprintf(stdout, "Start of unit tests...\r\n");
-	Sleep(500);
-	UnitTestsInit();
-
-	if (!ChromaAnimationAPI::IsInitialized())
-	{
-		fprintf(stdout, "Library hasn't loaded, aborting unit tests...\r\n");
-		return;
-	}
-
-	Sleep(500);
-
-
-	//UnitTestsLoadedAnimations();
-	UnitTestsDamage();
-	//UnitTestsIdleAnimation();
-	//UnitTestsOpenAnimationFromMemory();
-	//UnitTestsFadeStart();
-	//UnitTestsFadeEnd();
-	//UnitTestsCopyAnimation();
-	//UnitTestsSaveAnimation();
-	//UnitTestsSaveAnimation2();
-	//UnitTestsDuplicateFirstFrame();
-	//UnitTestsCreateRandomBlackAndWhite();
-	//UnitTestsCreateRandomBlackAndWhite();
-	//UnitTestsKeyboardCustom();
-	//UnitTestsPlayComposite();
-	//UnitTestsHDKIndividualLEDsGradient();
-	//UnitTestsHDKIndividualLEDs();
-	//UnitTestsOffset();
-	//UnitTestsNonZero();
-	//UnitTestsCreateAnimation();
- 	UnitTestsUninit();
-
-	while (true)
-	{
-		Sleep(1000);
-	}
-}
-
 int UnitTests::OpenAndPlay(const char* path)
 {
 	int animationId = (int)ChromaAnimationAPI::OpenAnimation(path);
@@ -1100,7 +1058,7 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 
 void UnitTests::UnitTestsIdleAnimation()
 {
-	const char* animation = "Animations/Random_Keyboard.chroma";
+	const char* randomAnimation = "Animations/Random_Keyboard.chroma";
 	const char* idleAnimation = "Animations/Fire_Keyboard.chroma";
 
 	const int delay = 3000;
@@ -1112,11 +1070,11 @@ void UnitTests::UnitTestsIdleAnimation()
 	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
 	ChromaAnimationAPI::SetIdleAnimationName(idleAnimation);
 	
-	ChromaAnimationAPI::CloseAnimationName(animation);
-	ChromaAnimationAPI::OverrideFrameDurationName(animation, 0.1f);
+	ChromaAnimationAPI::CloseAnimationName(randomAnimation);
+	ChromaAnimationAPI::OverrideFrameDurationName(randomAnimation, 0.1f);
 
 	fprintf(stdout, "Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(animation, false);
+	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
 	fprintf(stdout, "Waiting 3 sec...\r\n");
 	Sleep(delay);
 	fprintf(stdout, "\r\n");
@@ -1127,14 +1085,17 @@ void UnitTests::UnitTestsIdleAnimation()
 	Sleep(delay);
 	fprintf(stdout, "\r\n");
 
+	fprintf(stdout, "Set idle animation.\r\n");
+	ChromaAnimationAPI::SetIdleAnimationName(idleAnimation);
+
 	fprintf(stdout, "Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(animation, false);
+	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
 	fprintf(stdout, "Waiting 3 sec...\r\n");
 	Sleep(delay);
 	fprintf(stdout, "\r\n");
 
 	fprintf(stdout, "Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(animation, false);
+	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
 	fprintf(stdout, "Waiting 3 sec...\r\n");
 	Sleep(delay);
 	fprintf(stdout, "\r\n");
@@ -1259,5 +1220,51 @@ void UnitTests::UnitTestsDamage()
 		
 		Sleep(33);
 		indexRainbow = (indexRainbow+1) % frameCountRainbow;
+	}
+}
+
+void UnitTests::UnitTestFireKeyboard()
+{
+	const char* path = "Animations/Fire_Keyboard.chroma";
+	ChromaAnimationAPI::PlayAnimationName(path, false);
+	Sleep(3000);
+}
+
+void UnitTests::Run()
+{
+	fprintf(stdout, "Start of unit tests...\r\n");
+	UnitTestsInit();
+
+	if (!ChromaAnimationAPI::IsInitialized())
+	{
+		fprintf(stdout, "Library hasn't loaded, aborting unit tests...\r\n");
+		return;
+	}
+
+	//UnitTestsLoadedAnimations();
+	//UnitTestsDamage();
+	//UnitTestsIdleAnimation();
+	UnitTestFireKeyboard();
+	//UnitTestsOpenAnimationFromMemory();
+	//UnitTestsFadeStart();
+	//UnitTestsFadeEnd();
+	//UnitTestsCopyAnimation();
+	//UnitTestsSaveAnimation();
+	//UnitTestsSaveAnimation2();
+	//UnitTestsDuplicateFirstFrame();
+	//UnitTestsCreateRandomBlackAndWhite();
+	//UnitTestsCreateRandomBlackAndWhite();
+	//UnitTestsKeyboardCustom();
+	//UnitTestsPlayComposite();
+	//UnitTestsHDKIndividualLEDsGradient();
+	//UnitTestsHDKIndividualLEDs();
+	//UnitTestsOffset();
+	//UnitTestsNonZero();
+	//UnitTestsCreateAnimation();
+	UnitTestsUninit();
+
+	while (true)
+	{
+		Sleep(1000);
 	}
 }

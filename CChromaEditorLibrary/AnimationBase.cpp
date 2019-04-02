@@ -6,10 +6,12 @@ using namespace std;
 
 AnimationBase::AnimationBase()
 {
-	_mCurrentFrame = 0;
-	_mIsPlaying = false;
-	_mTime = 0.0f;
 	_mName = "";
+	_mCurrentFrame = 0;
+	_mIsLoaded = false;
+	_mIsPlaying = false;
+	_mIsPaused = true;
+	_mTime = 0.0f;
 }
 
 const string& AnimationBase::GetName()
@@ -76,4 +78,9 @@ void AnimationBase::InternalSetLoop(bool loop)
 void AnimationBase::InternalSetIsPaused(bool isPaused)
 {
 	_mIsPaused = isPaused;
+}
+
+mutex& AnimationBase::GetMutex()
+{
+	return _mMutex;
 }
