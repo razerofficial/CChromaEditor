@@ -70,6 +70,8 @@ public:
 
 	static void UnitTestsMeasurePreloading();
 
+	static void UnitTestsMeasurePreloadingWithCaching();
+
 	static void Run();
 
 };

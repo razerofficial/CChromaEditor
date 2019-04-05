@@ -1294,8 +1294,117 @@ void UnitTests::UnitTestsMeasurePreloading()
 		float deltaTime = (float)(time_span.count() / 1000.0f);
 		fprintf(stdout, "Preload elapsed time: %f\r\n", deltaTime);
 
-		Sleep(250);
+		Sleep(500);
 	}
+}
+
+void UnitTests::UnitTestsMeasurePreloadingWithCaching()
+{
+	const char* path = "Animations/Rainbow_Keyboard.chroma";
+	FILE* stream = nullptr;
+	try
+	{
+		if (0 != fopen_s(&stream, path, "rb") ||
+			stream == nullptr)
+		{
+			fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: Failed to open animation! %s\r\n", path);
+		}
+
+		fprintf(stdout, "UnitTestsMeasurePreloadingWithCaching: Reading animation file contents...\r\n");
+
+		vector<byte> lstBuffer;
+
+		byte data = 0;
+		long read = 0;
+		do
+		{
+			read = fread(&data, sizeof(byte), 1, stream);
+			lstBuffer.push_back(data);
+		} while (read != 0);
+
+		fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: File size is! %d\r\n", lstBuffer.size());
+
+		byte* buffer = new byte[lstBuffer.size()];
+		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
+
+		fprintf(stdout, "UnitTestsMeasurePreloadingWithCaching: Opening file from buffer...\r\n");
+
+		const char* name = "MemoryAnimation.chroma";
+
+		// measure performance
+
+		fprintf(stdout, "Measure [immediate mode] elapsed time...\r\n");
+		for (int i = 0; i < 10; ++i)
+		{
+			// open the animation
+			int animationId = ChromaAnimationAPI::OpenAnimationFromMemory(buffer, name);
+
+			// set default preloading flag to true
+			ChromaAnimationAPI::UsePreloading(animationId, false);
+
+			// get current time
+			high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+			// no need to load the animation
+
+			// play the animation
+			ChromaAnimationAPI::PlayAnimationLoop(animationId, true);
+
+			// get time in seconds
+			duration<double, milli> time_span = high_resolution_clock::now() - timer;
+			float deltaTime = (float)(time_span.count() / 1000.0f);
+			fprintf(stdout, "Immediate elapsed time: %f\r\n", deltaTime);
+
+			Sleep(500);
+
+			// close animation
+			ChromaAnimationAPI::CloseAnimation(animationId);
+		}
+
+		fprintf(stdout, "Measure [preload mode] elapsed time...\r\n");
+		for (int i = 0; i < 10; ++i)
+		{
+			// open the animation
+			int animationId = ChromaAnimationAPI::OpenAnimationFromMemory(buffer, name);
+
+			// set the preloading flag to true (true is the default)
+			ChromaAnimationAPI::UsePreloading(animationId, true);
+
+			// get current time
+			high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+			// load the animation
+			ChromaAnimationAPI::LoadAnimation(animationId);
+
+			// play the animation
+			ChromaAnimationAPI::PlayAnimationLoop(animationId, true);
+
+			// get time in seconds
+			duration<double, milli> time_span = high_resolution_clock::now() - timer;
+			float deltaTime = (float)(time_span.count() / 1000.0f);
+			fprintf(stdout, "Preload elapsed time: %f\r\n", deltaTime);
+
+			Sleep(500);
+
+			// close animation
+			ChromaAnimationAPI::CloseAnimation(animationId);
+		}
+
+		// clear buffer for loading from memory
+		fprintf(stdout, "UnitTestsMeasurePreloadingWithCaching: Deleting buffer...\r\n");
+		delete buffer;
+	}
+	catch (exception)
+	{
+		fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: Exception path=%s\r\n", path);
+	}
+
+	if (stream != nullptr)
+	{
+		fclose(stream);
+	}
+
+	fprintf(stdout, "UnitTestsMeasurePreloadingWithCaching: Complete!\r\n");
 }
 
 void UnitTests::Run()
@@ -1329,7 +1438,8 @@ void UnitTests::Run()
 	//UnitTestsOffset();
 	//UnitTestsNonZero();
 	//UnitTestsCreateAnimation();
-	UnitTestsMeasurePreloading();
+	//UnitTestsMeasurePreloading();
+	UnitTestsMeasurePreloadingWithCaching();
 	UnitTestsUninit();
 
 	while (true)
