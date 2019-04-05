@@ -30,6 +30,9 @@ namespace ChromaSDK
 
 		// Support idle animation
 		void InternalUpdate(float deltaTime);
+
+		// Handle preload and immediate mode
+		void InternalShowFrame();
 	private:
 		EChromaSDKDevice1DEnum _mDevice;
 		std::vector<FChromaSDKColorFrame1D> _mFrames;

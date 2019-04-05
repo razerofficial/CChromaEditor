@@ -2389,6 +2389,16 @@ typedef void(*PLUGIN_USE_IDLE_ANIMATION)(int device, bool flag);
 	Set idle animation flag for all devices.
 */
 typedef void(*PLUGIN_USE_IDLE_ANIMATIONS)(bool flag);
+/*
+	Set preloading animation flag, which is set to true by default. Reference
+	animation by id.
+*/
+typedef void(*PLUGIN_USE_PRELOADING)(int animationId, bool flag);
+/*
+	Set preloading animation flag, which is set to true by default. Reference
+	animation by name.
+*/
+typedef void(*PLUGIN_USE_PRELOADING_NAME)(const char* path, bool flag);
 #pragma endregion
 
 #define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature FieldName;
@@ -4774,6 +4784,16 @@ namespace ChromaSDK
 			Set idle animation flag for all devices.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_IDLE_ANIMATIONS, UseIdleAnimations);
+		/*
+			Set preloading animation flag, which is set to true by default. Reference
+			animation by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_PRELOADING, UsePreloading);
+		/*
+			Set preloading animation flag, which is set to true by default. Reference
+			animation by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_PRELOADING_NAME, UsePreloadingName);
 #pragma endregion
 
 		static int InitAPI();

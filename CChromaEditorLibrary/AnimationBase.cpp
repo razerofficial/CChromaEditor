@@ -12,6 +12,7 @@ AnimationBase::AnimationBase()
 	_mIsPlaying = false;
 	_mIsPaused = true;
 	_mTime = 0.0f;
+	_mUsePreloading = true;
 }
 
 const string& AnimationBase::GetName()
@@ -83,4 +84,14 @@ void AnimationBase::InternalSetIsPaused(bool isPaused)
 mutex& AnimationBase::GetMutex()
 {
 	return _mMutex;
+}
+
+void AnimationBase::UsePreloading(bool flag)
+{
+	_mUsePreloading = flag;
+}
+
+bool AnimationBase::HasUsePreloading()
+{
+	return _mUsePreloading;
 }

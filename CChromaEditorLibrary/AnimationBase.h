@@ -30,6 +30,8 @@ namespace ChromaSDK
 		virtual void Update(float deltaTime) = 0;
 		virtual void ResetFrames() = 0;
 		virtual int Save(const char* path) = 0;
+		void UsePreloading(bool flag);
+		bool HasUsePreloading();
 
 		// Support idle animation
 
@@ -43,6 +45,9 @@ namespace ChromaSDK
 		virtual void InternalSetLoop(bool loop);
 		virtual void InternalSetIsPaused(bool isPaused);
 
+		// Handle preload and immediate mode
+		virtual void InternalShowFrame() = 0;
+
 	protected:
 		std::string _mName;
 		int _mCurrentFrame;
@@ -51,6 +56,7 @@ namespace ChromaSDK
 		bool _mIsPaused;
 		bool _mLoop;
 		float _mTime;
+		bool _mUsePreloading;
 		std::vector<FChromaSDKEffectResult> _mEffects;
 		std::mutex _mMutex;
 	};

@@ -1230,6 +1230,74 @@ void UnitTests::UnitTestFireKeyboard()
 	Sleep(3000);
 }
 
+void UnitTests::UnitTestsMeasurePreloading()
+{
+	const char* RAINBOW_KEYBOARD = "Animations/Rainbow_Keyboard.chroma";
+
+	fprintf(stdout, "Measure [immediate mode] elapsed time...\r\n");
+	for (int i = 0; i < 10; ++i)
+	{
+		// unload the animation (shouldn't be loaded)
+		ChromaAnimationAPI::UnloadAnimationName(RAINBOW_KEYBOARD);
+
+		// close animation before test
+		ChromaAnimationAPI::CloseAnimationName(RAINBOW_KEYBOARD);
+
+		// open the animation
+		ChromaAnimationAPI::GetAnimation(RAINBOW_KEYBOARD);
+
+		// set default preloading flag to true
+		ChromaAnimationAPI::UsePreloadingName(RAINBOW_KEYBOARD, false);
+
+		// get current time
+		high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+		// no need to load the animation
+
+		// play the animation
+		ChromaAnimationAPI::PlayAnimationName(RAINBOW_KEYBOARD, true);
+
+		// get time in seconds
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		fprintf(stdout, "Immediate elapsed time: %f\r\n", deltaTime);
+
+		Sleep(500);
+	}
+
+	fprintf(stdout, "Measure [preload mode] elapsed time...\r\n");
+	for (int i = 0; i < 10; ++i)
+	{
+		// unload the animation
+		ChromaAnimationAPI::UnloadAnimationName(RAINBOW_KEYBOARD);
+
+		// close animation before test
+		ChromaAnimationAPI::CloseAnimationName(RAINBOW_KEYBOARD);
+
+		// get current time
+		high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+		// set the preloading flag to true (true is the default)
+		ChromaAnimationAPI::UsePreloadingName(RAINBOW_KEYBOARD, true);
+
+		// open the animation
+		ChromaAnimationAPI::GetAnimation(RAINBOW_KEYBOARD);
+
+		// load the animation
+		ChromaAnimationAPI::LoadAnimationName(RAINBOW_KEYBOARD);
+
+		// play the animation
+		ChromaAnimationAPI::PlayAnimationName(RAINBOW_KEYBOARD, true);
+
+		// get time in seconds
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		fprintf(stdout, "Preload elapsed time: %f\r\n", deltaTime);
+
+		Sleep(250);
+	}
+}
+
 void UnitTests::Run()
 {
 	fprintf(stdout, "Start of unit tests...\r\n");
@@ -1244,7 +1312,7 @@ void UnitTests::Run()
 	//UnitTestsLoadedAnimations();
 	//UnitTestsDamage();
 	//UnitTestsIdleAnimation();
-	UnitTestFireKeyboard();
+	//UnitTestFireKeyboard();
 	//UnitTestsOpenAnimationFromMemory();
 	//UnitTestsFadeStart();
 	//UnitTestsFadeEnd();
@@ -1261,6 +1329,7 @@ void UnitTests::Run()
 	//UnitTestsOffset();
 	//UnitTestsNonZero();
 	//UnitTestsCreateAnimation();
+	UnitTestsMeasurePreloading();
 	UnitTestsUninit();
 
 	while (true)

@@ -199,11 +199,10 @@ void Animation1D::Update(float deltaTime)
 	InternalUpdate(deltaTime);
 }
 
-void Animation1D::InternalUpdate(float deltaTime)
+void Animation1D::InternalShowFrame()
 {
-	if (_mCurrentFrame == -1)
+	if (_mUsePreloading)
 	{
-		_mCurrentFrame = 0;
 		if (_mCurrentFrame >= 0 && _mCurrentFrame < (int)_mEffects.size())
 		{
 			FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
@@ -212,14 +211,44 @@ void Animation1D::InternalUpdate(float deltaTime)
 				int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
 				if (result != 0)
 				{
-					fprintf(stderr, "Play: Failed to set effect!\r\n");
+					fprintf(stderr, "InternalShowFrame: Failed to set effect!\r\n");
 				}
 			}
 			catch (exception)
 			{
-				fprintf(stderr, "Play: Exception in set effect!\r\n");
+				fprintf(stderr, "InternalShowFrame: Exception in set effect!\r\n");
 			}
 		}
+	}
+	else
+	{
+		//immediate mode
+		if (_mCurrentFrame >= 0 && _mCurrentFrame < (int)_mFrames.size())
+		{
+			FChromaSDKColorFrame1D& frame = _mFrames[_mCurrentFrame];
+			try
+			{
+				FChromaSDKEffectResult effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom1D(_mDevice, frame.Colors);
+				if (effect.Result == RZRESULT_SUCCESS)
+				{
+					ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
+					ChromaSDKPlugin::GetInstance()->DeleteEffect(effect.EffectId);
+				}
+			}
+			catch (exception)
+			{
+				fprintf(stderr, "InternalShowFrame: Exception in set effect!\r\n");
+			}
+		}
+	}
+}
+
+void Animation1D::InternalUpdate(float deltaTime)
+{
+	if (_mCurrentFrame == -1)
+	{
+		_mCurrentFrame = 0;
+		InternalShowFrame();
 	}
 	else
 	{
@@ -231,22 +260,7 @@ void Animation1D::InternalUpdate(float deltaTime)
 			if ((_mCurrentFrame + 1) < (int)_mEffects.size())
 			{
 				++_mCurrentFrame;
-				if (_mCurrentFrame >= 0 && _mCurrentFrame < (int)_mEffects.size())
-				{
-					FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];
-					try
-					{
-						int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
-						if (result != 0)
-						{
-							fprintf(stderr, "Update: Failed to set effect!\r\n");
-						}
-					}
-					catch (exception)
-					{
-						fprintf(stderr, "Update: Exception in set effect!\r\n");
-					}
-				}
+				InternalShowFrame();
 			}
 			else
 			{

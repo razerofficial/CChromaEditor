@@ -68,6 +68,8 @@ public:
 
 	static void UnitTestsOpenAnimationFromMemory();
 
+	static void UnitTestsMeasurePreloading();
+
 	static void Run();
 
 };

@@ -557,7 +557,10 @@ extern "C"
 					_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
 					break;
 				}
-				animation->Load();
+				if (animation->HasUsePreloading())
+				{
+					animation->Load();
+				}
 				animation->Play(false);
 				return animationId;
 			}
@@ -1701,7 +1704,10 @@ extern "C"
 				_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
 				break;
 			}
-			animation->Load();
+			if (animation->HasUsePreloading())
+			{
+				animation->Load();
+			}
 			animation->Play(loop);
 		}
 	}
@@ -1753,7 +1759,10 @@ extern "C"
 				_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
 				break;
 			}
-			animation->Load();
+			if (animation->HasUsePreloading())
+			{
+				animation->Load();
+			}
 			animation->Play(loop);
 		}
 	}
@@ -10150,5 +10159,35 @@ extern "C"
 		SetupChromaThread();
 
 		ChromaSDKPlugin::GetInstance()->SetIdleAnimationName(path);
+	}
+
+	EXPORT_API void PluginUsePreloading(int animationId, bool flag)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			LogError("PluginUsePreloading: Animation is null! id=%d\r\n", animationId);
+			return;
+		}
+
+		animation->UsePreloading(flag);
+	}
+
+	EXPORT_API void PluginUsePreloadingName(const char* path, bool flag)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		AnimationBase* animation = GetAnimationInstanceName(path);
+		if (nullptr == animation)
+		{
+			LogError("PluginUsePreloadingName: Animation is null! %s\r\n", path);
+			return;
+		}
+
+		animation->UsePreloading(flag);
 	}
 }

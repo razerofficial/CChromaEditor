@@ -2437,6 +2437,16 @@ extern "C"
 		Set idle animation flag for all devices.
 	*/
 	EXPORT_API void PluginUseIdleAnimations(bool flag);
+	/*
+		Set preloading animation flag, which is set to true by default. Reference
+		animation by id.
+	*/
+	EXPORT_API void PluginUsePreloading(int animationId, bool flag);
+	/*
+		Set preloading animation flag, which is set to true by default. Reference
+		animation by name.
+	*/
+	EXPORT_API void PluginUsePreloadingName(const char* path, bool flag);
 #pragma endregion
 	
 }
