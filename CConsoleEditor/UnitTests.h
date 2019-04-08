@@ -72,6 +72,8 @@ public:
 
 	static void UnitTestsMeasurePreloadingWithCaching();
 
+	static void UnitTestsMeasureGetAnimationWithCaching();
+
 	static void Run();
 
 };

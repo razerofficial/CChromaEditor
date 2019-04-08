@@ -1252,7 +1252,7 @@ void UnitTests::UnitTestsMeasurePreloading()
 		// get current time
 		high_resolution_clock::time_point timer = high_resolution_clock::now();
 
-		// no need to load the animation
+		// PlayAnimation() will not invoke Load() in immediate mode
 
 		// play the animation
 		ChromaAnimationAPI::PlayAnimationName(RAINBOW_KEYBOARD, true);
@@ -1274,17 +1274,16 @@ void UnitTests::UnitTestsMeasurePreloading()
 		// close animation before test
 		ChromaAnimationAPI::CloseAnimationName(RAINBOW_KEYBOARD);
 
-		// get current time
-		high_resolution_clock::time_point timer = high_resolution_clock::now();
-
 		// set the preloading flag to true (true is the default)
 		ChromaAnimationAPI::UsePreloadingName(RAINBOW_KEYBOARD, true);
 
 		// open the animation
 		ChromaAnimationAPI::GetAnimation(RAINBOW_KEYBOARD);
 
-		// load the animation
-		ChromaAnimationAPI::LoadAnimationName(RAINBOW_KEYBOARD);
+		// get current time
+		high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+		// PlayAnimation() is going to invoke Load() in preloading mode (default)
 
 		// play the animation
 		ChromaAnimationAPI::PlayAnimationName(RAINBOW_KEYBOARD, true);
@@ -1345,7 +1344,7 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 			// get current time
 			high_resolution_clock::time_point timer = high_resolution_clock::now();
 
-			// no need to load the animation
+			// PlayAnimation() will not invoke Load() in immediate mode
 
 			// play the animation
 			ChromaAnimationAPI::PlayAnimationLoop(animationId, true);
@@ -1373,8 +1372,7 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 			// get current time
 			high_resolution_clock::time_point timer = high_resolution_clock::now();
 
-			// load the animation
-			ChromaAnimationAPI::LoadAnimation(animationId);
+			// PlayAnimation() is going to invoke Load() in preloading mode (default)
 
 			// play the animation
 			ChromaAnimationAPI::PlayAnimationLoop(animationId, true);
@@ -1405,6 +1403,80 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 	}
 
 	fprintf(stdout, "UnitTestsMeasurePreloadingWithCaching: Complete!\r\n");
+}
+
+void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
+{
+	const char* path = "Animations/Rainbow_Keyboard.chroma";
+	FILE* stream = nullptr;
+	try
+	{
+		if (0 != fopen_s(&stream, path, "rb") ||
+			stream == nullptr)
+		{
+			fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: Failed to open animation! %s\r\n", path);
+		}
+
+		fprintf(stdout, "UnitTestsMeasureGetAnimationWithCaching: Reading animation file contents...\r\n");
+
+		vector<byte> lstBuffer;
+
+		byte data = 0;
+		long read = 0;
+		do
+		{
+			read = fread(&data, sizeof(byte), 1, stream);
+			lstBuffer.push_back(data);
+		} while (read != 0);
+
+		fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: File size is! %d\r\n", lstBuffer.size());
+
+		byte* buffer = new byte[lstBuffer.size()];
+		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
+
+		fprintf(stdout, "UnitTestsMeasureGetAnimationWithCaching: Opening file from buffer...\r\n");
+
+		const char* name = "MemoryAnimation.chroma";
+
+		// measure performance
+
+		fprintf(stdout, "Measure [GetAnimation()] elapsed time...\r\n");
+		for (int i = 0; i < 10; ++i)
+		{
+			// get current time
+			high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+			// open the animation
+			int animationId = ChromaAnimationAPI::OpenAnimationFromMemory(buffer, name);
+
+			// no need to load the animation
+
+			// get time in seconds
+			duration<double, milli> time_span = high_resolution_clock::now() - timer;
+			float deltaTime = (float)(time_span.count() / 1000.0f);
+			fprintf(stdout, "GetAnimation() elapsed time: %f\r\n", deltaTime);
+
+			Sleep(500);
+
+			// close animation
+			ChromaAnimationAPI::CloseAnimation(animationId);
+		}
+
+		// clear buffer for loading from memory
+		fprintf(stdout, "UnitTestsMeasureGetAnimationWithCaching: Deleting buffer...\r\n");
+		delete buffer;
+	}
+	catch (exception)
+	{
+		fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: Exception path=%s\r\n", path);
+	}
+
+	if (stream != nullptr)
+	{
+		fclose(stream);
+	}
+
+	fprintf(stdout, "UnitTestsMeasureGetAnimationWithCaching: Complete!\r\n");
 }
 
 void UnitTests::Run()
@@ -1439,7 +1511,8 @@ void UnitTests::Run()
 	//UnitTestsNonZero();
 	//UnitTestsCreateAnimation();
 	//UnitTestsMeasurePreloading();
-	UnitTestsMeasurePreloadingWithCaching();
+	//UnitTestsMeasurePreloadingWithCaching();
+	UnitTestsMeasureGetAnimationWithCaching();
 	UnitTestsUninit();
 
 	while (true)
