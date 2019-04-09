@@ -258,7 +258,7 @@ void Animation1D::InternalUpdate(float deltaTime)
 		if (nextTime < _mTime)
 		{
 			_mTime = 0.0f;
-			if ((_mCurrentFrame + 1) < (int)_mEffects.size())
+			if ((_mCurrentFrame + 1) < (int)_mFrames.size())
 			{
 				++_mCurrentFrame;
 				InternalShowFrame();
