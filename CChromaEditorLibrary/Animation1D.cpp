@@ -203,6 +203,7 @@ void Animation1D::InternalShowFrame()
 {
 	if (_mUsePreloading)
 	{
+		// use cached effects
 		if (_mCurrentFrame >= 0 && _mCurrentFrame < (int)_mEffects.size())
 		{
 			FChromaSDKEffectResult& effect = _mEffects[_mCurrentFrame];

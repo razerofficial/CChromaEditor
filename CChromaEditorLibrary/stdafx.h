@@ -1173,6 +1173,17 @@ extern "C"
 	*/
 	EXPORT_API int PluginGetKeyColorName(const char* path, int frameId, int rzkey);
 	/*
+		Returns `RZRESULT_SUCCESS` if the plugin has been initialized successfully.
+		Returns `RZRESULT_DLL_NOT_FOUND` if core Chroma library is not found. Returns
+		`RZRESULT_DLL_INVALID_SIGNATURE` if core Chroma library has an invalid
+		signature.
+	*/
+	EXPORT_API RZRESULT PluginGetLibraryLoadedState();
+	/*
+		D suffix for limited data types.
+	*/
+	EXPORT_API double PluginGetLibraryLoadedStateD();
+	/*
 		Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an
 		integer upon success. Returns -1 upon failure.
 	*/

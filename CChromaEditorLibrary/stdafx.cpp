@@ -209,6 +209,16 @@ extern "C"
 		}
 	}
 
+	EXPORT_API RZRESULT PluginGetLibraryLoadedState()
+	{
+		return RzChromaSDK::GetLibraryLoadedState();
+	}
+
+	EXPORT_API double PluginGetLibraryLoadedStateD()
+	{
+		return (double)PluginGetLibraryLoadedState();
+	}
+
 	EXPORT_API int PluginGetRGB(int red, int green, int blue)
 	{
 		return (red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16);

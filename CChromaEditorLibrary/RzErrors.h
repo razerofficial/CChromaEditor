@@ -40,6 +40,10 @@
 #define     RZRESULT_NOT_VALID_STATE            5023L
 //! No more items
 #define     RZRESULT_NO_MORE_ITEMS              259L
+//! DLL not found
+#define     RZRESULT_DLL_NOT_FOUND				6023L
+//! Invalid signature
+#define     RZRESULT_DLL_INVALID_SIGNATURE		6033L
 //! General failure.
 #define     RZRESULT_FAILED                     2147500037L
 

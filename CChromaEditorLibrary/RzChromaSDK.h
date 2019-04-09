@@ -42,7 +42,7 @@ public:
 	static RZRESULT QueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo);
 
 	// Extra methods
-	static bool IsLibraryLoaded(); // call to preload the library
+	static RZRESULT GetLibraryLoadedState(); // call to preload the library
 
 private:
 

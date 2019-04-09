@@ -1405,6 +1405,35 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 	fprintf(stdout, "UnitTestsMeasurePreloadingWithCaching: Complete!\r\n");
 }
 
+void UnitTests::UnitTestsMeasureGetAnimation()
+{
+	const char* path = "Animations/Rainbow_Keyboard.chroma";
+
+	// measure performance
+
+	fprintf(stdout, "Measure [GetAnimation()] elapsed time...\r\n");
+	for (int i = 0; i < 10; ++i)
+	{
+		// get current time
+		high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+		// open the animation
+		ChromaAnimationAPI::GetAnimation(path);
+
+		// get time in seconds
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		fprintf(stdout, "GetAnimation() elapsed time: %f\r\n", deltaTime);
+
+		Sleep(500);
+
+		// close animation
+		ChromaAnimationAPI::CloseAnimationName(path);
+	}
+
+	fprintf(stdout, "UnitTestsMeasureGetAnimation: Complete!\r\n");
+}
+
 void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 {
 	const char* path = "Animations/Rainbow_Keyboard.chroma";
@@ -1492,7 +1521,6 @@ void UnitTests::Run()
 
 	//UnitTestsLoadedAnimations();
 	//UnitTestsDamage();
-	//UnitTestsIdleAnimation();
 	//UnitTestFireKeyboard();
 	//UnitTestsOpenAnimationFromMemory();
 	//UnitTestsFadeStart();
@@ -1501,7 +1529,6 @@ void UnitTests::Run()
 	//UnitTestsSaveAnimation();
 	//UnitTestsSaveAnimation2();
 	//UnitTestsDuplicateFirstFrame();
-	//UnitTestsCreateRandomBlackAndWhite();
 	//UnitTestsCreateRandomBlackAndWhite();
 	//UnitTestsKeyboardCustom();
 	//UnitTestsPlayComposite();
@@ -1512,7 +1539,9 @@ void UnitTests::Run()
 	//UnitTestsCreateAnimation();
 	//UnitTestsMeasurePreloading();
 	//UnitTestsMeasurePreloadingWithCaching();
+	//UnitTestsMeasureGetAnimation();
 	UnitTestsMeasureGetAnimationWithCaching();
+	//UnitTestsIdleAnimation();
 	UnitTestsUninit();
 
 	while (true)

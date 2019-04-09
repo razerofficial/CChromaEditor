@@ -51,7 +51,7 @@ CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
 
 RZRESULT RzChromaSDK::Init()
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -60,7 +60,7 @@ RZRESULT RzChromaSDK::Init()
 
 RZRESULT RzChromaSDK::UnInit()
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -69,7 +69,7 @@ RZRESULT RzChromaSDK::UnInit()
 
 RZRESULT RzChromaSDK::CreateEffect(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -78,7 +78,7 @@ RZRESULT RzChromaSDK::CreateEffect(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE E
 
 RZRESULT RzChromaSDK::CreateChromaLinkEffect(ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -87,7 +87,7 @@ RZRESULT RzChromaSDK::CreateChromaLinkEffect(ChromaSDK::ChromaLink::EFFECT_TYPE 
 
 RZRESULT RzChromaSDK::CreateKeyboardEffect(ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -96,7 +96,7 @@ RZRESULT RzChromaSDK::CreateKeyboardEffect(ChromaSDK::Keyboard::EFFECT_TYPE Effe
 
 RZRESULT RzChromaSDK::CreateKeypadEffect(ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -105,7 +105,7 @@ RZRESULT RzChromaSDK::CreateKeypadEffect(ChromaSDK::Keypad::EFFECT_TYPE Effect, 
 
 RZRESULT RzChromaSDK::CreateHeadsetEffect(ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -114,7 +114,7 @@ RZRESULT RzChromaSDK::CreateHeadsetEffect(ChromaSDK::Headset::EFFECT_TYPE Effect
 
 RZRESULT RzChromaSDK::CreateMouseEffect(ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -123,7 +123,7 @@ RZRESULT RzChromaSDK::CreateMouseEffect(ChromaSDK::Mouse::EFFECT_TYPE Effect, PR
 
 RZRESULT RzChromaSDK::CreateMousepadEffect(ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -132,7 +132,7 @@ RZRESULT RzChromaSDK::CreateMousepadEffect(ChromaSDK::Mousepad::EFFECT_TYPE Effe
 
 RZRESULT RzChromaSDK::SetEffect(RZEFFECTID EffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -141,7 +141,7 @@ RZRESULT RzChromaSDK::SetEffect(RZEFFECTID EffectId)
 
 RZRESULT RzChromaSDK::DeleteEffect(RZEFFECTID EffectId)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -150,7 +150,7 @@ RZRESULT RzChromaSDK::DeleteEffect(RZEFFECTID EffectId)
 
 RZRESULT RzChromaSDK::RegisterEventNotification(HWND hWnd)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -159,7 +159,7 @@ RZRESULT RzChromaSDK::RegisterEventNotification(HWND hWnd)
 
 RZRESULT RzChromaSDK::UnregisterEventNotification(void)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -168,7 +168,7 @@ RZRESULT RzChromaSDK::UnregisterEventNotification(void)
 
 RZRESULT RzChromaSDK::QueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo)
 {
-	if (!IsLibraryLoaded())
+	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		return RZRESULT_FAILED;
 	}
@@ -177,18 +177,18 @@ RZRESULT RzChromaSDK::QueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TY
 
 // EXTRA METHODS
 
-bool RzChromaSDK::IsLibraryLoaded()
+RZRESULT RzChromaSDK::GetLibraryLoadedState()
 {
 	// abort load if an invalid signature was detected
 	if (_sInvalidSignature)
 	{
-		return false;
+		return RZRESULT_DLL_INVALID_SIGNATURE;
 	}
 
 	// library has loaded and validation is complete
 	if (_sLoaded)
 	{
-		return true;
+		return RZRESULT_SUCCESS;
 	}
 
 	// load the library if previously not loaded
@@ -198,7 +198,7 @@ bool RzChromaSDK::IsLibraryLoaded()
 		_sLibraryChroma = LoadLibrary(CHROMASDKDLL);
 		if (_sLibraryChroma == NULL)
 		{
-			return false;
+			return RZRESULT_DLL_NOT_FOUND;
 		}
 
 		// verify the library has a valid signature
@@ -211,7 +211,7 @@ bool RzChromaSDK::IsLibraryLoaded()
 			FreeLibrary(_sLibraryChroma);
 			_sLibraryChroma = NULL;
 
-			return false;
+			return RZRESULT_DLL_INVALID_SIGNATURE;
 		}
 	}
 
@@ -232,5 +232,5 @@ bool RzChromaSDK::IsLibraryLoaded()
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
 
 	_sLoaded = true;
-	return true;
+	return RZRESULT_SUCCESS;
 }

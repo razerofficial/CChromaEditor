@@ -20,7 +20,7 @@ ChromaSDKPlugin* ChromaSDKPlugin::_sInstance = nullptr;
 
 ChromaSDKPlugin::ChromaSDKPlugin()
 {
-	if (!RzChromaSDK::IsLibraryLoaded())
+	if (RzChromaSDK::GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
 		LogError("ChromaSDKPlugin failed to load!\r\n");
 		return;
@@ -346,7 +346,7 @@ ChromaSDKPlugin* ChromaSDKPlugin::GetInstance()
 
 bool ChromaSDKPlugin::IsInitialized()
 {
-	return RzChromaSDK::IsLibraryLoaded();
+	return RzChromaSDK::GetLibraryLoadedState() == RZRESULT_SUCCESS;
 }
 
 int ChromaSDKPlugin::GetMaxLeds(const EChromaSDKDevice1DEnum& device)
@@ -969,268 +969,209 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 	}
 	else
 	{
-		long read = 0;
-		long expectedRead = 1;
-		long expectedSize = sizeof(byte);
+		byte read1;
+		byte read2;
+		byte read3;
+		byte read4;
 
 		//version
-		int version = 0;
-		expectedSize = sizeof(int);
-		read = fread(&version, expectedSize, 1, stream);
-		if (read != expectedRead)
-		{
-			LogError("OpenAnimation: Failed to read version!\r\n");
-			std::fclose(stream);
-			return nullptr;
-		}
+		fread(&read1, sizeof(byte), 1, stream);
+		fread(&read2, sizeof(byte), 1, stream);
+		fread(&read3, sizeof(byte), 1, stream);
+		fread(&read4, sizeof(byte), 1, stream);
+		int version = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
 		if (version != ANIMATION_VERSION)
 		{
 			LogError("OpenAnimation: Unexpected Version!\r\n");
 			std::fclose(stream);
 			return nullptr;
 		}
-
 		//LogDebug("OpenAnimation: Version: %d\r\n", version);
 
-		//device
-		byte device = 0;
-
 		// device type
-		byte deviceType = 0;
-		expectedSize = sizeof(byte);
-		read = fread(&deviceType, expectedSize, 1, stream);
-		if (read != expectedRead)
+		byte deviceType;
+		fread(&deviceType, sizeof(byte), 1, stream);
+
+		//device
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
 		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			//LogDebug("OpenAnimation: DeviceType: 1D\r\n");
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			//LogDebug("OpenAnimation: DeviceType: 2D\r\n");
+			break;
+		default:
 			LogError("OpenAnimation: Unexpected DeviceType!\r\n");
 			std::fclose(stream);
 			return nullptr;
 		}
-		else
+
+		switch (deviceType)
 		{
-			//device
-			switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		case EChromaSDKDeviceTypeEnum::DE_1D:
 			{
-			case EChromaSDKDeviceTypeEnum::DE_1D:
-				//LogDebug("OpenAnimation: DeviceType: 1D\r\n");
+				//device
+				byte device;
+				fread(&device, sizeof(byte), 1, stream);
+				/*
+				switch ((EChromaSDKDevice1DEnum)device)
+				{
+				case EChromaSDKDevice1DEnum::DE_ChromaLink:
+					LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
+					break;
+				case EChromaSDKDevice1DEnum::DE_Headset:
+					LogDebug("OpenAnimation: Device: DE_Headset\r\n");
+					break;
+				case EChromaSDKDevice1DEnum::DE_Mousepad:
+					LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
+					break;
+				}
+				*/
+
+				Animation1D* animation1D = new Animation1D();
+				animation = animation1D;
+
+				// device
+				animation1D->SetDevice((EChromaSDKDevice1DEnum)device);
+
+				//frame count
+				fread(&read1, sizeof(byte), 1, stream);
+				fread(&read2, sizeof(byte), 1, stream);
+				fread(&read3, sizeof(byte), 1, stream);
+				fread(&read4, sizeof(byte), 1, stream);
+				int frameCount = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+
+				vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+				for (int index = 0; index < frameCount; ++index)
+				{
+					FChromaSDKColorFrame1D frame;
+					int maxLeds = GetMaxLeds((EChromaSDKDevice1DEnum)device);
+
+					//duration
+					fread(&read1, sizeof(byte), 1, stream);
+					fread(&read2, sizeof(byte), 1, stream);
+					fread(&read3, sizeof(byte), 1, stream);
+					fread(&read4, sizeof(byte), 1, stream);
+					
+					int d = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+					float duration;
+					memcpy(&duration, &d, sizeof(float));
+
+					if (duration >= 0.033f)
+					{
+						frame.Duration = duration;
+					}
+					else
+					{
+						frame.Duration = 0.033f;
+					}
+
+					// colors
+					for (int i = 0; i < maxLeds; ++i)
+					{
+						fread(&read1, sizeof(byte), 1, stream);
+						fread(&read2, sizeof(byte), 1, stream);
+						fread(&read3, sizeof(byte), 1, stream);
+						fread(&read4, sizeof(byte), 1, stream);
+
+						int color = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+						frame.Colors.push_back(color);
+					}
+					if (index == 0)
+					{
+						frames[0] = frame;
+					}
+					else
+					{
+						frames.push_back(frame);
+					}
+				}
 				break;
-			case EChromaSDKDeviceTypeEnum::DE_2D:
-				//LogDebug("OpenAnimation: DeviceType: 2D\r\n");
-				break;
-			default:
-				LogError("OpenAnimation: Unexpected DeviceType!\r\n");
-				std::fclose(stream);
-				return nullptr;
 			}
-
-			switch (deviceType)
-			{
-			case EChromaSDKDeviceTypeEnum::DE_1D:
-				read = fread(&device, expectedSize, 1, stream);
-				if (read != expectedRead)
-				{
-					LogError("OpenAnimation: Unexpected Device!\r\n");
-					std::fclose(stream);
-					return nullptr;
-				}
-				else
-				{
-					switch ((EChromaSDKDevice1DEnum)device)
-					{
-					case EChromaSDKDevice1DEnum::DE_ChromaLink:
-						//LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
-						break;
-					case EChromaSDKDevice1DEnum::DE_Headset:
-						//LogDebug("OpenAnimation: Device: DE_Headset\r\n");
-						break;
-					case EChromaSDKDevice1DEnum::DE_Mousepad:
-						//LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
-						break;
-					}
-
-					Animation1D* animation1D = new Animation1D();
-					animation = animation1D;
-
-					// device
-					animation1D->SetDevice((EChromaSDKDevice1DEnum)device);
-
-					//frame count
-					int frameCount;
-
-					expectedSize = sizeof(int);
-					read = fread(&frameCount, expectedSize, 1, stream);
-					if (read != expectedRead)
-					{
-						LogError("OpenAnimation: Error detected reading frame count!\r\n");
-						delete animation1D;
-						std::fclose(stream);
-						return nullptr;
-					}
-					else
-					{
-						vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
-						for (int index = 0; index < frameCount; ++index)
-						{
-							FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
-							int maxLeds = GetMaxLeds((EChromaSDKDevice1DEnum)device);
-
-							//duration
-							float duration = 0.0f;
-							expectedSize = sizeof(float);
-							read = fread(&duration, expectedSize, 1, stream);
-							if (read != expectedRead)
-							{
-								LogError("OpenAnimation: Error detected reading duration!\r\n");
-								delete animation1D;
-								std::fclose(stream);
-								return nullptr;
-							}
-							else
-							{
-								if (duration >= 0.033f)
-								{
-									frame.Duration = duration;
-								}
-								else
-								{
-									frame.Duration = 0.033f;
-								}
-
-								// colors
-								expectedSize = sizeof(int);
-								for (int i = 0; i < maxLeds; ++i)
-								{
-									int color = 0;
-									read = fread(&color, expectedSize, 1, stream);
-									if (read != expectedRead)
-									{
-										LogError("OpenAnimation: Error detected reading color!\r\n");
-										delete animation1D;
-										std::fclose(stream);
-										return nullptr;
-									}
-									else
-									{
-										frame.Colors.push_back((COLORREF)color);
-									}
-								}
-								if (index == 0)
-								{
-									frames[0] = frame;
-								}
-								else
-								{
-									frames.push_back(frame);
-								}
-							}
-						}
-					}
-				}
-				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
-				read = fread(&device, expectedSize, 1, stream);
-				if (read != expectedRead)
+			{
+				//device
+				byte device;
+				fread(&device, sizeof(byte), 1, stream);
+
+				/*
+				switch ((EChromaSDKDevice2DEnum)device)
 				{
-					LogError("OpenAnimation: Unexpected Device!\r\n");
-					std::fclose(stream);
-					return nullptr;
+				case EChromaSDKDevice2DEnum::DE_Keyboard:
+					LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
+					break;
+				case EChromaSDKDevice2DEnum::DE_Keypad:
+					LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
+					break;
+				case EChromaSDKDevice2DEnum::DE_Mouse:
+					LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
+					break;
 				}
-				else
+				*/
+
+				Animation2D* animation2D = new Animation2D();
+				animation = animation2D;
+
+				//device
+				animation2D->SetDevice((EChromaSDKDevice2DEnum)device);
+
+				//frame count
+				fread(&read1, sizeof(byte), 1, stream);
+				fread(&read2, sizeof(byte), 1, stream);
+				fread(&read3, sizeof(byte), 1, stream);
+				fread(&read4, sizeof(byte), 1, stream);
+				int frameCount = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+
+				vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+				for (int index = 0; index < frameCount; ++index)
 				{
-					switch ((EChromaSDKDevice2DEnum)device)
+					FChromaSDKColorFrame2D frame;
+					int maxRow = GetMaxRow((EChromaSDKDevice2DEnum)device);
+					int maxColumn = GetMaxColumn((EChromaSDKDevice2DEnum)device);
+
+					//duration
+					fread(&read1, sizeof(byte), 1, stream);
+					fread(&read2, sizeof(byte), 1, stream);
+					fread(&read3, sizeof(byte), 1, stream);
+					fread(&read4, sizeof(byte), 1, stream);
+
+					int d = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+					float duration;
+					memcpy(&duration, &d, sizeof(float));
+
+					if (duration >= 0.033f)
 					{
-					case EChromaSDKDevice2DEnum::DE_Keyboard:
-						//LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
-						break;
-					case EChromaSDKDevice2DEnum::DE_Keypad:
-						//LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
-						break;
-					case EChromaSDKDevice2DEnum::DE_Mouse:
-						//LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
-						break;
-					}
-
-					Animation2D* animation2D = new Animation2D();
-					animation = animation2D;
-
-					//device
-					animation2D->SetDevice((EChromaSDKDevice2DEnum)device);
-
-					//frame count
-					int frameCount;
-
-					expectedSize = sizeof(int);
-					read = fread(&frameCount, expectedSize, 1, stream);
-					if (read != expectedRead)
-					{
-						LogError("OpenAnimation: Error detected reading frame count!\r\n");
-						delete animation2D;
-						std::fclose(stream);
-						return nullptr;
+						frame.Duration = duration;
 					}
 					else
 					{
-						vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-						for (int index = 0; index < frameCount; ++index)
+						frame.Duration = 0.033f;
+					}
+
+					// colors
+					for (int i = 0; i < maxRow; ++i)
+					{
+						FChromaSDKColors& row = FChromaSDKColors();
+						for (int j = 0; j < maxColumn; ++j)
 						{
-							FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
-							int maxRow = GetMaxRow((EChromaSDKDevice2DEnum)device);
-							int maxColumn = GetMaxColumn((EChromaSDKDevice2DEnum)device);
+							fread(&read1, sizeof(byte), 1, stream);
+							fread(&read2, sizeof(byte), 1, stream);
+							fread(&read3, sizeof(byte), 1, stream);
+							fread(&read4, sizeof(byte), 1, stream);
 
-							//duration
-							float duration = 0.0f;
-							expectedSize = sizeof(float);
-							read = fread(&duration, expectedSize, 1, stream);
-							if (read != expectedRead)
-							{
-								LogError("OpenAnimation: Error detected reading duration!\r\n");
-								delete animation2D;
-								std::fclose(stream);
-								return nullptr;
-							}
-							else
-							{
-								if (duration >= 0.033f)
-								{
-									frame.Duration = duration;
-								}
-								else
-								{
-									frame.Duration = 0.033f;
-								}
-
-								// colors
-								expectedSize = sizeof(int);
-								for (int i = 0; i < maxRow; ++i)
-								{
-									FChromaSDKColors row = FChromaSDKColors();
-									for (int j = 0; j < maxColumn; ++j)
-									{
-										int color = 0;
-										read = fread(&color, expectedSize, 1, stream);
-										if (read != expectedRead)
-										{
-											LogError("OpenAnimation: Error detected reading color!\r\n");
-											delete animation2D;
-											std::fclose(stream);
-											return nullptr;
-										}
-										else
-										{
-											row.Colors.push_back((COLORREF)color);
-										}
-									}
-									frame.Colors.push_back(row);
-								}
-								if (index == 0)
-								{
-									frames[0] = frame;
-								}
-								else
-								{
-									frames.push_back(frame);
-								}
-							}
+							int color = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+							row.Colors.push_back(color);
 						}
+						frame.Colors.push_back(row);
+					}
+					if (index == 0)
+					{
+						frames[0] = frame;
+					}
+					else
+					{
+						frames.push_back(frame);
 					}
 				}
 				break;
@@ -1255,15 +1196,20 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 		return nullptr;
 	}
 
-	long read = 0;
-	long expectedRead = 1;
-	long expectedSize = sizeof(byte);
-
 	//version
-	int version = 0;
-	expectedSize = sizeof(int);
-	memcpy(&version, pointer, expectedSize);
-	pointer += expectedSize;
+	byte read1 = *pointer;
+	++pointer;
+
+	byte read2 = (*pointer << 8);
+	++pointer;
+
+	byte read3 = (*pointer << 16);
+	++pointer;
+
+	byte read4 = (*pointer << 24);
+	++pointer;
+
+	int version = (read1 << 24) | (read2 << 16) | (read3 << 8) || read4;
 	if (version != ANIMATION_VERSION)
 	{
 		LogError("OpenAnimationFromMemory: Unexpected Version!\r\n");
@@ -1272,14 +1218,9 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 
 	//LogDebug("OpenAnimationFromMemory: Version: %d\r\n", version);
 
-	//device
-	byte device = 0;
-
 	// device type
-	byte deviceType = 0;
-	expectedSize = sizeof(byte);
-	memcpy(&deviceType, pointer, expectedSize);
-	pointer += expectedSize;
+	byte deviceType = *pointer;
+	++pointer;
 
 	//device
 	switch ((EChromaSDKDeviceTypeEnum)deviceType)
@@ -1299,48 +1240,69 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
-			expectedSize = sizeof(byte);
-			memcpy(&device, pointer, expectedSize);
-			pointer += expectedSize;
+			//device
+			byte device = *pointer;
+			++pointer;
 
+			/*
 			switch ((EChromaSDKDevice1DEnum)device)
 			{
 			case EChromaSDKDevice1DEnum::DE_ChromaLink:
-				//LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
+				LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
 				break;
 			case EChromaSDKDevice1DEnum::DE_Headset:
-				//LogDebug("OpenAnimation: Device: DE_Headset\r\n");
+				LogDebug("OpenAnimation: Device: DE_Headset\r\n");
 				break;
 			case EChromaSDKDevice1DEnum::DE_Mousepad:
-				//LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
+				LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
 				break;
 			}
+			*/
 
 			Animation1D* animation1D = new Animation1D();
 			animation = animation1D;
 
 			// device
-			animation1D->SetDevice((EChromaSDKDevice1DEnum)device);
+			animation1D->SetDevice((EChromaSDKDevice1DEnum)device); 
 
 			//frame count
-			int frameCount;
+			int part1 = *pointer;
+			++pointer;
 
-			expectedSize = sizeof(int);
-			memcpy(&frameCount, pointer, expectedSize);
-			pointer += expectedSize;
+			int part2 = *pointer;
+			++pointer;
+
+			int part3 = *pointer;
+			++pointer;
+
+			int part4 = *pointer;
+			++pointer;
+
+			int frameCount = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
 
 			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 			for (int index = 0; index < frameCount; ++index)
 			{
-				FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
+				FChromaSDKColorFrame1D frame;
 				int maxLeds = GetMaxLeds((EChromaSDKDevice1DEnum)device);
 
 				//duration
-				float duration = 0.0f;
-				expectedSize = sizeof(float);
-				memcpy(&duration, pointer, expectedSize);
-				pointer += expectedSize;
+				read1 = *pointer;
+				++pointer;
 
+				read2 = *pointer;
+				++pointer;
+
+				read3 = *pointer;
+				++pointer;
+
+				read4 = *pointer;
+				++pointer;
+
+				int d = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+				float duration;
+				memcpy(&duration, &d, sizeof(float));
+				
 				if (duration >= 0.033f)
 				{
 					frame.Duration = duration;
@@ -1351,14 +1313,22 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 				}
 
 				// colors
-				expectedSize = sizeof(int);
 				for (int i = 0; i < maxLeds; ++i)
 				{
-					int color = 0;
-					memcpy(&color, pointer, expectedSize);
-					pointer += expectedSize;
+					read1 = *pointer;
+					++pointer;
 
-					frame.Colors.push_back((COLORREF)color);
+					read2 = *pointer;
+					++pointer;
+
+					read3 = *pointer;
+					++pointer;
+
+					read4 = *pointer;
+					++pointer;
+
+					int color = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+					frame.Colors.push_back(color);
 				}
 				if (index == 0)
 				{
@@ -1373,22 +1343,23 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
-			expectedSize = sizeof(byte);
-			memcpy(&device, pointer, expectedSize);
-			pointer += expectedSize;
+			byte device = *pointer;
+			++pointer;
 
+			/*
 			switch ((EChromaSDKDevice2DEnum)device)
 			{
 			case EChromaSDKDevice2DEnum::DE_Keyboard:
-				//LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
+				LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
 				break;
 			case EChromaSDKDevice2DEnum::DE_Keypad:
-				//LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
+				LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
 				break;
 			case EChromaSDKDevice2DEnum::DE_Mouse:
-				//LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
+				LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
 				break;
 			}
+			*/
 
 			Animation2D* animation2D = new Animation2D();
 			animation = animation2D;
@@ -1397,24 +1368,43 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 			animation2D->SetDevice((EChromaSDKDevice2DEnum)device);
 
 			//frame count
-			int frameCount;
+			byte read1 = *pointer;
+			++pointer;
 
-			expectedSize = sizeof(int);
-			memcpy(&frameCount, pointer, expectedSize);
-			pointer += expectedSize;
+			byte read2 = (*pointer << 8);
+			++pointer;
+
+			byte read3 = (*pointer << 16);
+			++pointer;
+
+			byte read4 = (*pointer << 24);
+			++pointer;
+
+			int frameCount = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
 
 			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 			for (int index = 0; index < frameCount; ++index)
 			{
-				FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+				FChromaSDKColorFrame2D frame;
 				int maxRow = GetMaxRow((EChromaSDKDevice2DEnum)device);
 				int maxColumn = GetMaxColumn((EChromaSDKDevice2DEnum)device);
 
 				//duration
-				float duration = 0.0f;
-				expectedSize = sizeof(float);
-				memcpy(&duration, pointer, expectedSize);
-				pointer += expectedSize;
+				read1 = *pointer;
+				++pointer;
+
+				read2 = (*pointer << 8);
+				++pointer;
+
+				read3 = (*pointer << 16);
+				++pointer;
+
+				read4 = (*pointer << 24);
+				++pointer;
+
+				int d = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+				float duration;
+				memcpy(&duration, &d, sizeof(float));
 
 				if (duration >= 0.033f)
 				{
@@ -1426,17 +1416,25 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 				}
 
 				// colors
-				expectedSize = sizeof(int);
 				for (int i = 0; i < maxRow; ++i)
 				{
-					FChromaSDKColors row = FChromaSDKColors();
+					FChromaSDKColors& row = FChromaSDKColors();
 					for (int j = 0; j < maxColumn; ++j)
 					{
-						int color = 0;
-						memcpy(&color, pointer, expectedSize);
-						pointer += expectedSize;
+						read1 = *pointer;
+						++pointer;
 
-						row.Colors.push_back((COLORREF)color);
+						read2 = (*pointer << 8);
+						++pointer;
+
+						read3 = (*pointer << 16);
+						++pointer;
+
+						read4 = (*pointer << 24);
+						++pointer;
+
+						int color = (read4 << 24) | (read3 << 16) | (read2 << 8) | read1;
+						row.Colors.push_back(color);
 					}
 					frame.Colors.push_back(row);
 				}

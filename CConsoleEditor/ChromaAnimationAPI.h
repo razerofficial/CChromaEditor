@@ -1125,6 +1125,17 @@ typedef double(*PLUGIN_GET_KEY_COLOR_D)(const char* path, double frameId, double
 */
 typedef int(*PLUGIN_GET_KEY_COLOR_NAME)(const char* path, int frameId, int rzkey);
 /*
+	Returns `RZRESULT_SUCCESS` if the plugin has been initialized successfully.
+	Returns `RZRESULT_DLL_NOT_FOUND` if core Chroma library is not found. Returns
+	`RZRESULT_DLL_INVALID_SIGNATURE` if core Chroma library has an invalid
+	signature.
+*/
+typedef RZRESULT(*PLUGIN_GET_LIBRARY_LOADED_STATE)();
+/*
+	D suffix for limited data types.
+*/
+typedef double(*PLUGIN_GET_LIBRARY_LOADED_STATE_D)();
+/*
 	Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an
 	integer upon success. Returns -1 upon failure.
 */
@@ -3519,6 +3530,17 @@ namespace ChromaSDK
 			Get the color of an animation key for the given frame referenced by name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_KEY_COLOR_NAME, GetKeyColorName);
+		/*
+			Returns `RZRESULT_SUCCESS` if the plugin has been initialized successfully.
+			Returns `RZRESULT_DLL_NOT_FOUND` if core Chroma library is not found. Returns
+			`RZRESULT_DLL_INVALID_SIGNATURE` if core Chroma library has an invalid
+			signature.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_LIBRARY_LOADED_STATE, GetLibraryLoadedState);
+		/*
+			D suffix for limited data types.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_LIBRARY_LOADED_STATE_D, GetLibraryLoadedStateD);
 		/*
 			Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an
 			integer upon success. Returns -1 upon failure.
