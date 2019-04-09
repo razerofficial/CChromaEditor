@@ -1469,8 +1469,11 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 
 		// measure performance
 
+		float total = 0;
+
 		fprintf(stdout, "Measure [GetAnimation()] elapsed time...\r\n");
-		for (int i = 0; i < 10; ++i)
+		int tries = 1000;
+		for (int i = 0; i < tries; ++i)
 		{
 			// get current time
 			high_resolution_clock::time_point timer = high_resolution_clock::now();
@@ -1483,12 +1486,13 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 			// get time in seconds
 			duration<double, milli> time_span = high_resolution_clock::now() - timer;
 			float deltaTime = (float)(time_span.count() / 1000.0f);
-			fprintf(stdout, "GetAnimation() elapsed time: %f\r\n", deltaTime);
+			total += deltaTime;
+			fprintf(stdout, "%d GetAnimation() elapsed time: %f average: %f\r\n", i, deltaTime, total / (float)(i+1));
 
 			Sleep(500);
 
 			// close animation
-			ChromaAnimationAPI::CloseAnimation(animationId);
+			ChromaAnimationAPI::CloseAll();
 		}
 
 		// clear buffer for loading from memory
