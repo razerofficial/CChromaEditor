@@ -51,126 +51,140 @@ CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
 
 RZRESULT RzChromaSDK::Init()
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodInit();
 }
 
 RZRESULT RzChromaSDK::UnInit()
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodUnInit();
 }
 
 RZRESULT RzChromaSDK::CreateEffect(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodCreateEffect(DeviceId, Effect, pParam, pEffectId);
 }
 
 RZRESULT RzChromaSDK::CreateChromaLinkEffect(ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodCreateChromaLinkEffect(Effect, pParam, pEffectId);
 }
 
 RZRESULT RzChromaSDK::CreateKeyboardEffect(ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodCreateKeyboardEffect(Effect, pParam, pEffectId);
 }
 
 RZRESULT RzChromaSDK::CreateKeypadEffect(ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodCreateKeypadEffect(Effect, pParam, pEffectId);
 }
 
 RZRESULT RzChromaSDK::CreateHeadsetEffect(ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodCreateHeadsetEffect(Effect, pParam, pEffectId);
 }
 
 RZRESULT RzChromaSDK::CreateMouseEffect(ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodCreateMouseEffect(Effect, pParam, pEffectId);
 }
 
 RZRESULT RzChromaSDK::CreateMousepadEffect(ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodCreateMousepadEffect(Effect, pParam, pEffectId);
 }
 
 RZRESULT RzChromaSDK::SetEffect(RZEFFECTID EffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodSetEffect(EffectId);
 }
 
 RZRESULT RzChromaSDK::DeleteEffect(RZEFFECTID EffectId)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodDeleteEffect(EffectId);
 }
 
 RZRESULT RzChromaSDK::RegisterEventNotification(HWND hWnd)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodRegisterEventNotification(hWnd);
 }
 
 RZRESULT RzChromaSDK::UnregisterEventNotification(void)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodUnregisterEventNotification();
 }
 
 RZRESULT RzChromaSDK::QueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo)
 {
-	if (GetLibraryLoadedState() != RZRESULT_SUCCESS)
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
 	{
-		return RZRESULT_FAILED;
+		return state;
 	}
 	return _sMethodQueryDevice(DeviceId, DeviceInfo);
 }
