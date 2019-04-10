@@ -62,6 +62,10 @@ void ChromaThread::SetIdleAnimationName(const char* name)
 	AnimationBase* animation = GetAnimationInstanceName(name);
 	if (animation != nullptr)
 	{
+		if (animation->HasUsePreloading())
+		{
+			animation->Load();
+		}
 		Animation1D* animation1D = nullptr;
 		Animation2D* animation2D = nullptr;
 		switch (animation->GetDeviceType())
