@@ -3,6 +3,7 @@
 #include "UnitTests.h"
 
 #include <chrono>
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -205,7 +206,7 @@ void UnitTests::UnitTestsSetKeys()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(animationName);
 	for (int i = 0; i < frameCount; ++i)
 	{
-		ChromaAnimationAPI::SetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_RED);
+		ChromaAnimationAPI::SetKeysColorName(animationName, i, wasdKeys, (int)size(wasdKeys), COLOR_RED);
 	}
 	ChromaAnimationAPI::UnloadComposite(compositeName);
 	ChromaAnimationAPI::PlayComposite(compositeName, false);
@@ -221,7 +222,7 @@ void UnitTests::UnitTestsSetKeys()
 
 	for (int i = 0; i < frameCount; ++i)
 	{
-		ChromaAnimationAPI::SetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_RED);
+		ChromaAnimationAPI::SetKeysColorName(animationName, i, wasdKeys, (int)size(wasdKeys), COLOR_RED);
 	}
 	ChromaAnimationAPI::UnloadAnimationName(animationName);
 	ChromaAnimationAPI::PlayAnimationName(animationName, false);
@@ -643,7 +644,7 @@ void UnitTests::UnitTestsNonZero()
 	fprintf(stdout, "WASD keys should be white every other frame.\r\n");
 	for (int i = 0; i < frameCount; ++i)
 	{
-		ChromaAnimationAPI::SetKeysNonZeroColorName(animationName, i, wasdKeys, size(wasdKeys), COLOR_WHITE);
+		ChromaAnimationAPI::SetKeysNonZeroColorName(animationName, i, wasdKeys, (int)size(wasdKeys), COLOR_WHITE);
 	}
 	ChromaAnimationAPI::UnloadAnimationName(animationName); //show changes
 	ChromaAnimationAPI::PlayAnimationName(animationName, false);
@@ -730,7 +731,7 @@ void UnitTests::UnitTestsHDKIndividualLEDs()
 
 	Sleep(1000);
 
-	delete colors;
+	delete []colors;
 }
 
 void UnitTests::UnitTestsHDKIndividualLEDsGradient()
@@ -769,7 +770,7 @@ void UnitTests::UnitTestsHDKIndividualLEDsGradient()
 
 	Sleep(1000);
 
-	delete colors;
+	delete []colors;
 }
 
 void UnitTests::UnitTestsCreateAnimation()
@@ -967,7 +968,7 @@ void UnitTests::UnitTestsDuplicateFirstFrame()
 	ChromaAnimationAPI::DuplicateFirstFrameName(baseLayer, frameCount);
 
 	for (int frameId = 0; frameId < frameCount; ++frameId) {
-		float t = 1 - fabsf(cos(MATH_PI*frameId / (float)frameCount));
+		float t = 1 - fabsf(cosf(MATH_PI*frameId / (float)frameCount));
 		ChromaAnimationAPI::MultiplyIntensityRGBName(baseLayer, frameId, 0, (int)(127 * t), 0);
 	}
 
@@ -1009,6 +1010,7 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 			stream == nullptr)
 		{
 			fprintf(stderr, "UnitTestsOpenAnimationFromMemory: Failed to open animation! %s\r\n", path);
+			return;
 		}
 
 		fprintf(stdout, "UnitTestsOpenAnimationFromMemory: Reading animation file contents...\r\n");
@@ -1016,14 +1018,14 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 		vector<byte> lstBuffer;
 
 		byte data = 0;
-		long read = 0;
+		size_t read = 0;
 		do
 		{
 			read = fread(&data, sizeof(byte), 1, stream);
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
- 		fprintf(stderr, "UnitTestsOpenAnimationFromMemory: File size is! %d\r\n", lstBuffer.size());
+ 		fprintf(stderr, "UnitTestsOpenAnimationFromMemory: File size is! %d\r\n", (int)lstBuffer.size());
 
 		byte* buffer = new byte[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
@@ -1035,7 +1037,7 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 
 		fprintf(stdout, "UnitTestsOpenAnimationFromMemory: Deleting buffer...\r\n");
 
-		delete buffer;
+		delete []buffer;
 
 		fprintf(stdout, "UnitTestsOpenAnimationFromMemory: Playing animation...\r\n");
 
@@ -1201,7 +1203,7 @@ void UnitTests::UnitTestsDamage()
 				continue;
 			}
 
-			float t = fabsf(cos((speed * MATH_PI * deltaTime)));
+			float t = fabsf(cosf((speed * MATH_PI * deltaTime)));
 
 			string& name = damageList[i];
 
@@ -1307,6 +1309,7 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 			stream == nullptr)
 		{
 			fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: Failed to open animation! %s\r\n", path);
+			return;
 		}
 
 		fprintf(stdout, "UnitTestsMeasurePreloadingWithCaching: Reading animation file contents...\r\n");
@@ -1314,14 +1317,14 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 		vector<byte> lstBuffer;
 
 		byte data = 0;
-		long read = 0;
+		size_t read = 0;
 		do
 		{
 			read = fread(&data, sizeof(byte), 1, stream);
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
-		fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: File size is! %d\r\n", lstBuffer.size());
+		fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: File size is! %d\r\n", (int)lstBuffer.size());
 
 		byte* buffer = new byte[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
@@ -1390,7 +1393,7 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 
 		// clear buffer for loading from memory
 		fprintf(stdout, "UnitTestsMeasurePreloadingWithCaching: Deleting buffer...\r\n");
-		delete buffer;
+		delete []buffer;
 	}
 	catch (exception)
 	{
@@ -1444,6 +1447,7 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 			stream == nullptr)
 		{
 			fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: Failed to open animation! %s\r\n", path);
+			return;
 		}
 
 		fprintf(stdout, "UnitTestsMeasureGetAnimationWithCaching: Reading animation file contents...\r\n");
@@ -1451,14 +1455,14 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 		vector<byte> lstBuffer;
 
 		byte data = 0;
-		long read = 0;
+		size_t read = 0;
 		do
 		{
 			read = fread(&data, sizeof(byte), 1, stream);
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
-		fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: File size is! %d\r\n", lstBuffer.size());
+		fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: File size is! %d\r\n", (int)lstBuffer.size());
 
 		byte* buffer = new byte[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
@@ -1497,7 +1501,7 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 
 		// clear buffer for loading from memory
 		fprintf(stdout, "UnitTestsMeasureGetAnimationWithCaching: Deleting buffer...\r\n");
-		delete buffer;
+		delete []buffer;
 	}
 	catch (exception)
 	{
@@ -1539,12 +1543,12 @@ void UnitTests::Run()
 	//UnitTestsHDKIndividualLEDsGradient();
 	//UnitTestsHDKIndividualLEDs();
 	//UnitTestsOffset();
-	//UnitTestsNonZero();
+	UnitTestsNonZero();
 	//UnitTestsCreateAnimation();
 	//UnitTestsMeasurePreloading();
 	//UnitTestsMeasurePreloadingWithCaching();
 	//UnitTestsMeasureGetAnimation();
-	UnitTestsMeasureGetAnimationWithCaching();
+	//UnitTestsMeasureGetAnimationWithCaching();
 	//UnitTestsIdleAnimation();
 	UnitTestsUninit();
 

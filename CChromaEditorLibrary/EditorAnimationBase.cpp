@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "EditorAnimationBase.h"
 #include "direct.h"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -49,6 +51,89 @@ void EditorAnimationBase::ImportTextureImage()
 		string texturePath = string(CT2CA(fileName));
 		//LogDebug("ImportTextureImage: %s\r\n", texturePath.c_str());
 		ReadImage(texturePath, false);
+	}
+	fileName.ReleaseBuffer();
+}
+
+void EditorAnimationBase::ImportTextureImageSequence()
+{
+	// get path from loaded filename
+	CString szDir;
+	size_t lastSlash = _mPath.find_last_of("/\\");
+	if (lastSlash < 0)
+	{
+		return;
+	}
+	string path = _mPath.substr(0, lastSlash);
+	//LogDebug("ImportTextureAnimation path=%s", path.c_str());
+	szDir += path.c_str();
+
+	const int MAX_CFileDialog_FILE_COUNT = 99;
+	const int FILE_LIST_BUFFER_SIZE = ((MAX_CFileDialog_FILE_COUNT * (MAX_PATH + 1)) + 1);
+
+	CString fileName;
+	wchar_t* p = fileName.GetBuffer(FILE_LIST_BUFFER_SIZE);
+	CFileDialog dlgFile(TRUE);
+	OPENFILENAME & ofn = dlgFile.GetOFN();
+	ofn.lpstrFilter = _TEXT("Select Frame 1 of Sequence\0*.bmp;*.jpg;*.png\0");
+	ofn.lpstrInitialDir = szDir;
+	ofn.lpstrFile = p;
+	ofn.nMaxFile = FILE_LIST_BUFFER_SIZE;
+
+	if (dlgFile.DoModal() == IDOK)
+	{
+		string texturePath = string(CT2CA(fileName));
+		//LogDebug("ImportTextureImage: %s\r\n", texturePath.c_str());
+		
+		std::size_t foundSeparator = texturePath.find_last_of("/\\");
+		std::size_t foundDot = texturePath.find_last_of(".");
+		string path = texturePath.substr(0, foundSeparator);
+		string filename = texturePath.substr(foundSeparator + 1, foundDot-foundSeparator-1);
+		string extension = texturePath.substr(foundDot);
+
+		int index = atoi(filename.c_str());
+		string strIndex = to_string(index);
+
+		int hasExtraDigits = filename.length() - strIndex.length();
+
+		std::cout << " path: " << path << '\n';
+		std::cout << " file: " << filename << '\n';
+		std::cout << " extension: " << extension << '\n';
+		std::cout << " index: " << index << '\n';
+		if (hasExtraDigits > 0)
+		{
+			std::cout << " has extra digits: " << hasExtraDigits << " of " << filename.length() << '\n';
+		}
+		bool firstFrame = true;
+		while (true)
+		{
+			if (firstFrame)
+			{
+				firstFrame = false;
+			}
+			else
+			{
+				AddFrame();
+			}
+			strIndex = to_string(index);
+			if (hasExtraDigits)
+			{
+				while (strIndex.length() < filename.length())
+				{
+					strIndex = "0" + strIndex;
+				}
+			}
+			string importPath = (path + "\\" + strIndex + extension);
+			ifstream f(importPath.c_str());
+			if (!f.good())
+			{
+				break;
+			}
+			std::cout << " Importing... " << importPath << '\n';
+			ReadImage(importPath, false);
+			++index;
+
+		}
 	}
 	fileName.ReleaseBuffer();
 }

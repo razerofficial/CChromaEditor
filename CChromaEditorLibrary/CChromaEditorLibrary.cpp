@@ -1051,6 +1051,7 @@ BEGIN_MESSAGE_MAP(CMainViewDlg, CDialogEx)
 	ON_BN_CLICKED(ID_MENU_SAVE_AS, &CMainViewDlg::OnBnClickedMenuSaveAs)
 	ON_BN_CLICKED(ID_MENU_EXIT, &CMainViewDlg::OnBnClickedMenuExit)
 	ON_BN_CLICKED(ID_MENU_IMPORT_IMAGE, &CMainViewDlg::OnBnClickedMenuImportImage)
+	ON_BN_CLICKED(ID_MENU_IMPORT_IMAGE_SEQUENCE, &CMainViewDlg::OnBnClickedMenuImportImageSequence)
 	ON_BN_CLICKED(ID_MENU_IMPORT_ANIMATION, &CMainViewDlg::OnBnClickedMenuImportAnimation)
 	ON_WM_TIMER()
 END_MESSAGE_MAP()
@@ -1195,9 +1196,9 @@ void CMainViewDlg::OnBnClickedMenuExit()
 
 void CMainViewDlg::OnBnClickedMenuImportImage()
 {
-	OnBnClickedButtonUnload(); // delete frame state
+	OnBnClickedButtonStop();
 
-	OnBnClickedButtonUnload();
+	OnBnClickedButtonUnload(); // delete frame state
 
 	EditorAnimationBase* editor = GetEditor();
 	if (editor == nullptr)
@@ -1205,6 +1206,25 @@ void CMainViewDlg::OnBnClickedMenuImportImage()
 		return;
 	}
 	editor->ImportTextureImage();
+	RefreshGrid();
+	RefreshFrames();
+
+	//show changes
+	OnBnClickedButtonPreview();
+}
+
+void CMainViewDlg::OnBnClickedMenuImportImageSequence()
+{
+	OnBnClickedButtonStop();
+
+	OnBnClickedButtonUnload(); // delete frame state
+
+	EditorAnimationBase* editor = GetEditor();
+	if (editor == nullptr)
+	{
+		return;
+	}
+	editor->ImportTextureImageSequence();
 	RefreshGrid();
 	RefreshFrames();
 

@@ -102,6 +102,7 @@ public:
 	afx_msg void OnBnClickedMenuSaveAs();
 	afx_msg void OnBnClickedMenuExit();
 	afx_msg void OnBnClickedMenuImportImage();
+	afx_msg void OnBnClickedMenuImportImageSequence();
 	afx_msg void OnBnClickedMenuImportAnimation();
 
 	// Avoid enter closing dialog
