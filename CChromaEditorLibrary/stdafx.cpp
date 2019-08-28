@@ -5589,6 +5589,116 @@ extern "C"
 	}
 
 
+	EXPORT_API void PluginCopyNonZeroTargetZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId)
+	{
+		PluginStopAnimation(targetAnimationId);
+		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
+		if (nullptr == sourceAnimation)
+		{
+			return;
+		}
+		AnimationBase* targetAnimation = GetAnimationInstance(targetAnimationId);
+		if (nullptr == targetAnimation)
+		{
+			return;
+		}
+		if (sourceAnimation->GetDeviceType() != targetAnimation->GetDeviceType() ||
+			sourceAnimation->GetDeviceId() != sourceAnimation->GetDeviceId())
+		{
+			return;
+		}
+		if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_1D)
+		{
+			Animation1D* sourceAnimation1D = (Animation1D*)(sourceAnimation);
+			Animation1D* targetAnimation1D = (Animation1D*)(targetAnimation);
+			vector<FChromaSDKColorFrame1D>& sourceFrames = sourceAnimation1D->GetFrames();
+			vector<FChromaSDKColorFrame1D>& targetFrames = targetAnimation1D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxLeds = PluginGetMaxLeds((int)sourceAnimation1D->GetDevice());
+			for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame1D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame1D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					int color = sourceFrame.Colors[i];
+					if (color != 0 &&
+						targetFrame.Colors[i] == 0)
+					{
+						targetFrame.Colors[i] = color;
+					}
+				}
+			}
+		}
+		else if (sourceAnimation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
+		{
+			Animation2D* sourceAnimation2D = (Animation2D*)(sourceAnimation);
+			Animation2D* targetAnimation2D = (Animation2D*)(targetAnimation);
+			vector<FChromaSDKColorFrame2D>& sourceFrames = sourceAnimation2D->GetFrames();
+			vector<FChromaSDKColorFrame2D>& targetFrames = targetAnimation2D->GetFrames();
+			if (sourceFrames.size() == 0)
+			{
+				return;
+			}
+			if (targetFrames.size() == 0)
+			{
+				return;
+			}
+			int maxRow = PluginGetMaxRow((int)sourceAnimation2D->GetDevice());
+			int maxColumn = PluginGetMaxColumn((int)sourceAnimation2D->GetDevice());
+			for (int frameId = 0; frameId < int(targetFrames.size()); ++frameId)
+			{
+				FChromaSDKColorFrame2D& sourceFrame = sourceFrames[frameId % sourceFrames.size()];
+				FChromaSDKColorFrame2D& targetFrame = targetFrames[frameId];
+				for (int i = 0; i < maxRow; ++i)
+				{
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int color = sourceFrame.Colors[i].Colors[j];
+						if (color != 0 &&
+							targetFrame.Colors[i].Colors[j] == 0)
+						{
+							targetFrame.Colors[i].Colors[j] = color;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	EXPORT_API void PluginCopyNonZeroTargetZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	{
+		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (sourceAnimationId < 0)
+		{
+			LogError("PluginCopyNonZeroTargetZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			return;
+		}
+
+		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		if (targetAnimationId < 0)
+		{
+			LogError("PluginCopyNonZeroTargetZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			return;
+		}
+
+		PluginCopyNonZeroTargetZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+	}
+
+	EXPORT_API double PluginCopyNonZeroTargetZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	{
+		PluginCopyNonZeroTargetZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
+		return 0;
+	}
+
+
 	EXPORT_API void PluginCopyZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId)
 	{
 		PluginStopAnimation(targetAnimationId);
@@ -6079,15 +6189,15 @@ extern "C"
 				for (int i = 0; i < maxLeds; ++i)
 				{
 					int oldColor = colors[i];
-					int red = oldColor & 0xFF;
-					int green = (oldColor & 0xFF00) >> 8;
-					int blue = (oldColor & 0xFF0000) >> 16;
-					if (red != 0 &&
-						green != 0 &&
-						blue != 0 &&
-						red <= threshold &&
-						green <= threshold &&
-						blue <= threshold) {
+					int r = oldColor & 0xFF;
+					int g = (oldColor & 0xFF00) >> 8;
+					int b = (oldColor & 0xFF0000) >> 16;
+					if (r != 0 &&
+						g != 0 &&
+						b != 0 &&
+						r <= threshold &&
+						g <= threshold &&
+						b <= threshold) {
 						colors[i] = color;
 					}
 				}
@@ -6110,15 +6220,15 @@ extern "C"
 					for (int j = 0; j < maxColumn; ++j)
 					{
 						int oldColor = row.Colors[j];
-						int red = oldColor & 0xFF;
-						int green = (oldColor & 0xFF00) >> 8;
-						int blue = (oldColor & 0xFF0000) >> 16;
-						if (red != 0 &&
-							green != 0 &&
-							blue != 0 &&
-							red <= threshold &&
-							green <= threshold &&
-							blue <= threshold) {
+						int r = oldColor & 0xFF;
+						int g = (oldColor & 0xFF00) >> 8;
+						int b = (oldColor & 0xFF0000) >> 16;
+						if (r != 0 &&
+							g != 0 &&
+							b != 0 &&
+							r <= threshold &&
+							g <= threshold &&
+							b <= threshold) {
 							row.Colors[j] = color;
 						}
 					}
