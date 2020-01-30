@@ -2244,6 +2244,14 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 	/*
+		`PluginStaticColor` sets the target device to the static color.
+	*/
+	EXPORT_API void PluginStaticColor(int deviceType, int device, int color);
+	/*
+		D suffix for limited data types.
+	*/
+	EXPORT_API double PluginStaticColorD(double deviceType, double device, double color);
+	/*
 		`PluginStopAll` will automatically stop all animations that are playing.
 	*/
 	EXPORT_API void PluginStopAll();

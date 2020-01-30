@@ -645,6 +645,8 @@ Methods:
 * [PluginSetKeyZeroColorRGBName](#PluginSetKeyZeroColorRGBName)
 * [PluginSetKeyZeroColorRGBNameD](#PluginSetKeyZeroColorRGBNameD)
 * [PluginSetLogDelegate](#PluginSetLogDelegate)
+* [PluginStaticColor](#PluginStaticColor)
+* [PluginStaticColorD](#PluginStaticColorD)
 * [PluginStopAll](#PluginStopAll)
 * [PluginStopAnimation](#PluginStopAnimation)
 * [PluginStopAnimationD](#PluginStopAnimationD)
@@ -8075,6 +8077,38 @@ EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 
 // Class Plugin
 ChromaAnimationAPI::SetLogDelegate(DebugLogPtr fp);
+```
+
+---
+<a name="PluginStaticColor"></a>
+**PluginStaticColor**
+
+`PluginStaticColor` sets the target device to the static color.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginStaticColor(
+	int deviceType, int device, int color);
+
+// Class Plugin
+ChromaAnimationAPI::StaticColor(
+	int deviceType, int device, int color);
+```
+
+---
+<a name="PluginStaticColorD"></a>
+**PluginStaticColorD**
+
+D suffix for limited data types.
+
+```C++
+// DLL Interface
+EXPORT_API double PluginStaticColorD(
+	double deviceType, double device, double color);
+
+// Class Plugin
+double result = ChromaAnimationAPI::StaticColorD(
+	double deviceType, double device, double color);
 ```
 
 ---

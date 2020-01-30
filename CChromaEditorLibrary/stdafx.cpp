@@ -10312,4 +10312,35 @@ extern "C"
 
 		animation->UsePreloading(flag);
 	}
+
+	EXPORT_API void PluginStaticColor(int deviceType, int device, int color)
+	{
+		PluginStopAnimationType(deviceType, device);
+		FChromaSDKEffectResult result;
+		switch ((EChromaSDKDeviceTypeEnum)deviceType)
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+			result = ChromaSDKPlugin::GetInstance()->CreateEffectStatic1D((EChromaSDKDevice1DEnum)device, color);
+			if (result.Result == 0)
+			{
+				ChromaSDKPlugin::GetInstance()->SetEffect(result.EffectId);
+				ChromaSDKPlugin::GetInstance()->DeleteEffect(result.EffectId);
+			}
+			break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+			result = ChromaSDKPlugin::GetInstance()->CreateEffectStatic2D((EChromaSDKDevice2DEnum)device, color);
+			if (result.Result == 0)
+			{
+				ChromaSDKPlugin::GetInstance()->SetEffect(result.EffectId);
+				ChromaSDKPlugin::GetInstance()->DeleteEffect(result.EffectId);
+			}
+			break;
+		}
+	}
+
+	EXPORT_API double PluginStaticColorD(double deviceType, double device, double color)
+	{
+		PluginStaticColor((int)deviceType, (int)device, (int)color);
+		return 0;
+	}
 }
