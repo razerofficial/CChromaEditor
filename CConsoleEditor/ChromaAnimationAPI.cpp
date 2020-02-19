@@ -1032,6 +1032,6 @@ int ChromaAnimationAPI::InitAPI()
 	CHROMASDK_VALIDATE_METHOD(PLUGIN_USE_PRELOADING_NAME, UsePreloadingName);
 #pragma endregion
 
-	fprintf(stdout, "Validated all DLL methods [success]\r\n");
+	//fprintf(stdout, "Validated all DLL methods [success]\r\n");
 	return 0;
 }
