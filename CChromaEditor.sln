@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CChromaEditorLibrary", "CChromaEditorLibrary\CChromaEditorLibrary.vcxproj", "{48DACD44-7EF3-45C8-B744-8D82390BAC93}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CConsoleEditor", "CConsoleEditor\CConsoleEditor.vcxproj", "{5F081398-5620-4B7E-B045-D5AB6091B72B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93} = {48DACD44-7EF3-45C8-B744-8D82390BAC93}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,5 +37,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66CDFACB-A54C-4D31-8163-C175D4213E80}
 	EndGlobalSection
 EndGlobal

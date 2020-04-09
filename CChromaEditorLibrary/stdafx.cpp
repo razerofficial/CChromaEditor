@@ -1281,7 +1281,7 @@ extern "C"
 						LogError("PluginPreviewFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
-					FChromaSDKColorFrame1D frame = frames[frameIndex];
+					FChromaSDKColorFrame1D& frame = frames[frameIndex];
 					vector<COLORREF>& colors = frame.Colors;
 					FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom1D(animation1D->GetDevice(), colors);
 					if (result.Result == 0)
@@ -1302,7 +1302,7 @@ extern "C"
 						LogError("PluginPreviewFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
-					FChromaSDKColorFrame2D frame = frames[frameIndex];
+					FChromaSDKColorFrame2D& frame = frames[frameIndex];
 					vector<FChromaSDKColors>& colors = frame.Colors;
 					FChromaSDKEffectResult result;
 					if (animation2D->UseChromaCustom())

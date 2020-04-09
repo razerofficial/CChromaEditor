@@ -76,6 +76,8 @@ public:
 
 	static void UnitTestsMeasureGetAnimationWithCaching();
 
+	static void UnitTestsFrameValidation();
+
 	static void Run();
 
 };
