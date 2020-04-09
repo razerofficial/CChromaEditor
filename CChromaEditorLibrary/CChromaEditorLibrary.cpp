@@ -587,6 +587,7 @@ void CMainViewDlg::RefreshGrid()
 						if (button)
 						{
 							COLORREF color = row.Colors[j];
+							color = color & 0xFFFFFF;
 							button->SetColor(color, color);
 							button->Invalidate();
 						}
