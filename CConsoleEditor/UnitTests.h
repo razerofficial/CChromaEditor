@@ -78,6 +78,8 @@ public:
 
 	static void UnitTestsFrameValidation();
 
+	static void UnitTestsCopyKeysColorAllFramesName();
+
 	static void Run();
 
 };

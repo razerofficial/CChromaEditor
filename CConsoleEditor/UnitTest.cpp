@@ -1516,6 +1516,36 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 	fprintf(stdout, "UnitTestsMeasureGetAnimationWithCaching: Complete!\r\n");
 }
 
+void UnitTests::UnitTestsCopyKeysColorAllFramesName()
+{
+	const char* baseLayer = "../../CConsoleEditor/Animations/Spiral_Keyboard.chroma";
+	const char* layer2 = "../../CConsoleEditor/Animations/Rainbow_Keyboard.chroma";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::CloseAnimationName(layer2);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+	ChromaAnimationAPI::GetAnimation(layer2);
+	int color1 = ChromaAnimationAPI::GetRGB(32, 32, 32);
+	int color2 = ChromaAnimationAPI::GetRGB(64, 64, 64);
+	ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesName(baseLayer, color1, color2);
+	int keys[] = {
+	 Keyboard::RZKEY::RZKEY_W,
+	 Keyboard::RZKEY::RZKEY_A,
+	 Keyboard::RZKEY::RZKEY_S,
+	 Keyboard::RZKEY::RZKEY_D,
+	 Keyboard::RZKEY::RZKEY_P,
+	 Keyboard::RZKEY::RZKEY_M,
+	 Keyboard::RZKEY::RZKEY_F1,
+	};
+	ChromaAnimationAPI::CopyKeysColorAllFramesName(layer2, baseLayer, keys, size(keys));
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+
+	printf("Done.\r\n");
+	Sleep(60000);
+}
+
 void UnitTests::UnitTestsFrameValidation()
 {
 	const char* path = "../../CConsoleEditor/Animations/FrameValidation_Keyboard.chroma";
@@ -1534,12 +1564,18 @@ void UnitTests::UnitTestsFrameValidation()
 	//ChromaAnimationAPI::PreviewFrameName(path, 23);
 	//Sleep(1000);
 
-	printf("Set Frame: 24\r\n");
-	ChromaAnimationAPI::SetCurrentFrameName(path, 24);
-	ChromaAnimationAPI::PreviewFrameName(path, 24);
-	Sleep(1000);
+	//printf("Set Frame: 24\r\n");
+	//ChromaAnimationAPI::SetCurrentFrameName(path, 24);
+	//ChromaAnimationAPI::PreviewFrameName(path, 24);
+	//Sleep(1000);
+
+	ChromaAnimationAPI::UsePreloadingName(path, false);
+
+	ChromaAnimationAPI::OverrideFrameDurationName(path, 0.033f);
+	ChromaAnimationAPI::PlayAnimationName(path, true);
 
 	printf("Done.\r\n");
+	Sleep(60000);
 }
 
 void UnitTests::Run()
@@ -1576,7 +1612,10 @@ void UnitTests::Run()
 	//UnitTestsMeasureGetAnimation();
 	//UnitTestsMeasureGetAnimationWithCaching();
 	//UnitTestsIdleAnimation();
-	UnitTestsFrameValidation();
+	//UnitTestsFrameValidation();
+
+	UnitTestsCopyKeysColorAllFramesName();
+
 	UnitTestsUninit();
 
 	while (true)

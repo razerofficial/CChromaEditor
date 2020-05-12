@@ -71,7 +71,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		return SafeReturn(-1);
 	}	
 
-#if DEBUG && RUN_UNIT_TESTS
+#if _DEBUG && RUN_UNIT_TESTS
 	UnitTests::Run();
 #else
 	RZRESULT result = ChromaAnimationAPI::Init();
@@ -81,7 +81,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		return SafeReturn(-1);
 	}
 
-#if DEBUG
+#if _DEBUG
 	if (argc <= 1)
 #else
 	LPWSTR* szArgList;
@@ -108,7 +108,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	}
 	else
 	{
-#if DEBUG
+#if _DEBUG
 		ChromaAnimationAPI::OpenEditorDialogAndPlay(argv[1]);
 #else
 		if (szArgList != NULL)
