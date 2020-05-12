@@ -621,7 +621,7 @@ void CMainViewDlg::RefreshFrames()
 
 	sprintf_s(bufferFrameInfo, "%d", currentFrame + 1);
 	GetControlFrameIndex()->SetWindowText(CString(bufferFrameInfo));
-
+	
 	sprintf_s(bufferFrameInfo, "%d of %d", currentFrame + 1, frameCount);
 	GetControlFrames()->SetWindowText(CString(bufferFrameInfo));
 
@@ -813,6 +813,11 @@ BOOL CMainViewDlg::OnInitDialog()
 
 void CMainViewDlg::OnTextChangeFrameIndex()
 {
+	if (GetControlFrameIndex() != GetControlFrameIndex()->GetFocus())
+	{
+		return; //changed through code
+	}
+
 	//update frames label
 	char bufferFrameInfo[48] = { 0 };
 	int currentFrame = GetCurrentFrame();
