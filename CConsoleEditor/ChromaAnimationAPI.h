@@ -259,35 +259,35 @@ typedef double		(*PLUGIN_COPY_KEY_COLOR_NAME_D)(const char* sourceAnimation, con
 	target animation for the given frame. Reference the source and target by 
 	id.
 */
-typedef void		(*PLUGIN_COPY_KEYS_COLOR)(int sourceAnimationId, int targetAnimationId, int frameId, int* keys, int size);
+typedef void		(*PLUGIN_COPY_KEYS_COLOR)(int sourceAnimationId, int targetAnimationId, int frameId, const int* keys, int size);
 /*
 	Copy animation color for a set of keys from the source animation to the 
 	target animation for all frames. Reference the source and target by id.
 */
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId, int* keys, int size);
+typedef void		(*PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId, const int* keys, int size);
 /*
 	Copy animation color for a set of keys from the source animation to the 
 	target animation for all frames. Reference the source and target by name.
 */
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation, int* keys, int size);
+typedef void		(*PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES_NAME)(const char* sourceAnimation, const char* targetAnimation, const int* keys, int size);
 /*
 	Copy animation color for a set of keys from the source animation to the 
 	target animation for the given frame. Reference the source and target by 
 	name.
 */
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int* keys, int size);
+typedef void		(*PLUGIN_COPY_KEYS_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, const int* keys, int size);
 /*
 	Copy animation color for a set of keys from the source animation to the 
 	target animation from the source frame to the target frame. Reference the 
 	source and target by id.
 */
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_OFFSET)(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, int* keys, int size);
+typedef void		(*PLUGIN_COPY_KEYS_COLOR_OFFSET)(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, const int* keys, int size);
 /*
 	Copy animation color for a set of keys from the source animation to the 
 	target animation from the source frame to the target frame. Reference the 
 	source and target by name.
 */
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, int* keys, int size);
+typedef void		(*PLUGIN_COPY_KEYS_COLOR_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, const int* keys, int size);
 /*
 	Copy source animation to target animation for the given frame. Source and 
 	target are referenced by id.
@@ -2452,6 +2452,9 @@ namespace ChromaSDK
 {
 	class ChromaAnimationAPI
 	{
+	private:
+		static bool _sIsInitializedAPI;
+
 	public:
 
 #pragma region API declare prototypes
@@ -4886,6 +4889,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_PRELOADING_NAME, UsePreloadingName);
 #pragma endregion
 
-static int InitAPI();
+		static int InitAPI();
+		static bool GetIsInitializedAPI();
 	};
 }

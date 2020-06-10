@@ -3050,7 +3050,7 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyKeysColor(int sourceAnimationId, int targetAnimationId, int frameId, int* keys, int size)
+	EXPORT_API void PluginCopyKeysColor(int sourceAnimationId, int targetAnimationId, int frameId, const int* keys, int size)
 	{
 		PluginStopAnimation(targetAnimationId);
 		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
@@ -3098,7 +3098,7 @@ extern "C"
 			targetFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = sourceFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)];
 		}
 	}
-	EXPORT_API void PluginCopyKeysColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int* keys, int size)
+	EXPORT_API void PluginCopyKeysColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, const int* keys, int size)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
@@ -3117,7 +3117,7 @@ extern "C"
 		PluginCopyKeysColor(sourceAnimationId, targetAnimationId, frameId, keys, size);
 	}
 
-	EXPORT_API void PluginCopyKeysColorAllFrames(int sourceAnimationId, int targetAnimationId, int* keys, int size)
+	EXPORT_API void PluginCopyKeysColorAllFrames(int sourceAnimationId, int targetAnimationId, const int* keys, int size)
 	{
 		PluginStopAnimation(targetAnimationId);
 		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
@@ -3161,7 +3161,7 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginCopyKeysColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, int* keys, int size)
+	EXPORT_API void PluginCopyKeysColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, const int* keys, int size)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
@@ -3180,7 +3180,7 @@ extern "C"
 		PluginCopyKeysColorAllFrames(sourceAnimationId, targetAnimationId, keys, size);
 	}
 
-	EXPORT_API void PluginCopyKeysColorOffset(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, int* keys, int size)
+	EXPORT_API void PluginCopyKeysColorOffset(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, const int* keys, int size)
 	{
 		PluginStopAnimation(targetAnimationId);
 		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
@@ -3228,7 +3228,7 @@ extern "C"
 			targetFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = sourceFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)];
 		}
 	}
-	EXPORT_API void PluginCopyKeysColorOffsetName(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, int* keys, int size)
+	EXPORT_API void PluginCopyKeysColorOffsetName(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, const int* keys, int size)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
