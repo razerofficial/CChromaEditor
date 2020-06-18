@@ -8,6 +8,8 @@ public:
 
 	static void UnitTestsInit();
 
+	static void UnitTestsInitSDK();
+
 	static void UnitTestsUninit();
 
 	static void UnitTestsPlayComposite();

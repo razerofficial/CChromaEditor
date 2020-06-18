@@ -74,8 +74,26 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 #if _DEBUG && RUN_UNIT_TESTS
 	UnitTests::Run();
 #else
-	RZRESULT result = ChromaAnimationAPI::Init();
-	if (result != 0)
+
+	APPINFOTYPE appInfo = {};
+
+	_tcscpy_s(appInfo.Title, 256, _T("Razer Chroma Editor"));
+	_tcscpy_s(appInfo.Description, 1024, _T("Standalone Editor for Chroma"));
+	_tcscpy_s(appInfo.Author.Name, 256, _T("Razer"));
+	_tcscpy_s(appInfo.Author.Contact, 256, _T("https://developer.razer.com/chroma"));
+
+	//appInfo.SupportedDevice = 
+	//    0x01 | // Keyboards
+	//    0x02 | // Mice
+	//    0x04 | // Headset
+	//    0x08 | // Mousepads
+	//    0x10 | // Keypads
+	//    0x20   // ChromaLink devices
+	appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
+	appInfo.Category = 1;
+
+	RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
+	if (result != RZRESULT_SUCCESS)
 	{
 		fprintf(stderr, "Failed to initialize Chroma! %d", result);
 		return SafeReturn(-1);

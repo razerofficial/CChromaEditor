@@ -20,6 +20,19 @@ namespace ChromaSDK
     //! Event notification Window message
     const UINT WM_CHROMA_EVENT = WM_APP+0x2000;
 
+    typedef struct APPINFOTYPE
+    {
+        TCHAR Title[256];
+        TCHAR Description[1024];
+        struct Author
+        {
+            TCHAR Name[256];
+            TCHAR Contact[256];
+        } Author;
+        DWORD SupportedDevice;
+        DWORD Category;
+    } APPINFOTYPE;
+
     //! Chroma generic effects. Note: Not all devices supported the listed effects.
     typedef enum EFFECT_TYPE
     {

@@ -22,6 +22,7 @@ bool RzChromaSDK::_sLoaded = false;
 
 // CORE API METHODS
 CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_INIT, Init);
+CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_INIT_SDK, InitSDK);
 CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_UNINIT, UnInit);
 CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_CREATE_EFFECT, CreateEffect);
 CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_CREATE_CHROMA_LINK_EFFECT, CreateChromaLinkEffect);
@@ -44,7 +45,7 @@ CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
 	_sMethod ## FieldName = (Signature) GetProcAddress(_sLibraryChroma, #FieldName); \
 	if (_sMethod ## FieldName == nullptr) \
 	{ \
-		return false; \
+		return RZRESULT_FAILED; \
 	} \
 }
 
@@ -57,6 +58,16 @@ RZRESULT RzChromaSDK::Init()
 		return state;
 	}
 	return _sMethodInit();
+}
+
+RZRESULT RzChromaSDK::InitSDK(ChromaSDK::APPINFOTYPE* AppInfo)
+{
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
+	{
+		return state;
+	}
+	return _sMethodInitSDK(AppInfo);
 }
 
 RZRESULT RzChromaSDK::UnInit()
@@ -231,6 +242,7 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 
 	// CORE API METHODS
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_INIT, Init);
+	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_INIT_SDK, InitSDK);
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_UNINIT, UnInit);
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_CREATE_EFFECT, CreateEffect);
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_CREATE_CHROMA_LINK_EFFECT, CreateChromaLinkEffect);

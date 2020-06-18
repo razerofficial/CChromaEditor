@@ -602,6 +602,10 @@ extern "C"
 	/*
 		Direct access to low level API.
 	*/
+	EXPORT_API RZRESULT PluginCoreInitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
+	/*
+		Direct access to low level API.
+	*/
 	EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
 	/*
 		Direct access to low level API.
@@ -1276,6 +1280,12 @@ extern "C"
 		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginInitD();
+	/*
+		Initialize the ChromaSDK. AppInfo populates the details in Synapse. Zero
+		indicates  success, otherwise failure. Many API methods auto initialize
+		the ChromaSDK if not already initialized.
+	*/
+	EXPORT_API RZRESULT PluginInitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
 	/*
 		Insert an animation delay by duplicating the frame by the delay number of
 		times. Animation is referenced by id.

@@ -40,6 +40,31 @@ void UnitTests::UnitTestsInit()
 	Sleep(1000);
 }
 
+void UnitTests::UnitTestsInitSDK()
+{
+	APPINFOTYPE appInfo = {};
+
+	_tcscpy_s(appInfo.Title, 256, _T("Razer Chroma Editor"));
+	_tcscpy_s(appInfo.Description, 1024, _T("Standalone Editor for Chroma"));
+	_tcscpy_s(appInfo.Author.Name, 256, _T("Razer"));
+	_tcscpy_s(appInfo.Author.Contact, 256, _T("https://developer.razer.com/chroma"));
+
+	//appInfo.SupportedDevice = 
+	//    0x01 | // Keyboards
+	//    0x02 | // Mice
+	//    0x04 | // Headset
+	//    0x08 | // Mousepads
+	//    0x10 | // Keypads
+	//    0x20   // ChromaLink devices
+	appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
+	appInfo.Category = 1;
+
+	RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
+	fprintf(stdout, "InitSDK result=%ld\r\n", result);
+
+	Sleep(1000);
+}
+
 void UnitTests::UnitTestsUninit()
 {
 	ChromaAnimationAPI::StopAll();
@@ -1581,7 +1606,8 @@ void UnitTests::UnitTestsFrameValidation()
 void UnitTests::Run()
 {
 	fprintf(stdout, "Start of unit tests...\r\n");
-	UnitTestsInit();
+	//UnitTestsInit();
+	UnitTestsInitSDK();
 
 	if (!ChromaAnimationAPI::IsInitialized())
 	{
@@ -1591,7 +1617,7 @@ void UnitTests::Run()
 
 	//UnitTestsLoadedAnimations();
 	//UnitTestsDamage();
-	//UnitTestFireKeyboard();
+	UnitTestFireKeyboard();
 	//UnitTestsOpenAnimationFromMemory();
 	//UnitTestsFadeStart();
 	//UnitTestsFadeEnd();
@@ -1614,7 +1640,7 @@ void UnitTests::Run()
 	//UnitTestsIdleAnimation();
 	//UnitTestsFrameValidation();
 
-	UnitTestsCopyKeysColorAllFramesName();
+	//UnitTestsCopyKeysColorAllFramesName();
 
 	UnitTestsUninit();
 

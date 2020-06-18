@@ -123,6 +123,10 @@ extern "C"
 	{
 		return RzChromaSDK::Init();
 	}
+	EXPORT_API RZRESULT PluginCoreInitSDK(ChromaSDK::APPINFOTYPE* AppInfo)
+	{
+		return RzChromaSDK::InitSDK(AppInfo);
+	}
 	EXPORT_API RZRESULT PluginCoreUnInit()
 	{
 		return RzChromaSDK::UnInit();
@@ -700,6 +704,20 @@ extern "C"
 		_gAnimationId = 0;
 
 		return RzChromaSDK::Init();
+	}
+
+	EXPORT_API RZRESULT PluginInitSDK(ChromaSDK::APPINFOTYPE* AppInfo)
+	{
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		PluginUseIdleAnimations(false);
+		PluginStopAll();
+		PluginCloseAll();
+
+		_gAnimationId = 0;
+
+		return RzChromaSDK::InitSDK(AppInfo);
 	}
 
 	EXPORT_API double PluginInitD()
