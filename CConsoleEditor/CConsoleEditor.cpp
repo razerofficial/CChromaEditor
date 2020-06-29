@@ -9,10 +9,6 @@
 using namespace ChromaSDK;
 using namespace std;
 
-#define TARGET_RESOLUTION  1
-
-static MMRESULT _sTimerResult = TIMERR_NOCANDO;
-
 int Init()
 {
 	//fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
@@ -21,17 +17,7 @@ int Init()
 		return -1;
 	}
 
-	return 0;
-}
-
-int SafeReturn(int val)
-{
-	if (_sTimerResult == TIMERR_NOERROR)
-	{
-		timeEndPeriod(TARGET_RESOLUTION);
-		fprintf(stdout, "Timer: [UNSET]\r\n");
-	}
-	return val;
+	return RZRESULT_SUCCESS;
 }
 
 #if _DEBUG
@@ -46,29 +32,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	fprintf(stderr, "App launched!\r\n");
 
 	
-	// ref: https://docs.microsoft.com/en-us/windows/win32/multimedia/obtaining-and-setting-timer-resolution
-	TIMECAPS tc;
-	UINT     wTimerRes;
-	if (timeGetDevCaps(&tc, sizeof(TIMECAPS)) == TIMERR_NOERROR)
+	if (Init() != RZRESULT_SUCCESS)
 	{
-		wTimerRes = min(max(tc.wPeriodMin, TARGET_RESOLUTION), tc.wPeriodMax);
-
-		//ref: https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timebeginperiod
-		_sTimerResult = timeBeginPeriod(wTimerRes);
-		if (_sTimerResult != TIMERR_NOERROR)
-		{
-			fprintf(stderr, "Failed to set timer!\r\n");
-		}
-		else
-		{
-			fprintf(stdout, "Timer: [SET]\r\n");
-		}
-	}
-
-
-	if (Init() != 0)
-	{
-		return SafeReturn(-1);
+		return -1;
 	}	
 
 #if _DEBUG && RUN_UNIT_TESTS
@@ -96,7 +62,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	if (result != RZRESULT_SUCCESS)
 	{
 		fprintf(stderr, "Failed to initialize Chroma! %d", result);
-		return SafeReturn(-1);
+		return -1;
 	}
 
 #if _DEBUG
@@ -148,5 +114,5 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	ChromaAnimationAPI::Uninit();
 	fprintf(stdout, "CConsoleEditor exited.\r\n");
 
-    return SafeReturn(0);
+    return RZRESULT_SUCCESS;
 }
