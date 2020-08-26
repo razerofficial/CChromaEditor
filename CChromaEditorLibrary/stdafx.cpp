@@ -7,6 +7,7 @@
 #include "ChromaThread.h"
 #include "RzChromaSDK.h"
 #include <map>
+#include <iostream>
 #include <sstream>
 #include <thread>
 
@@ -123,9 +124,20 @@ extern "C"
 	{
 		return RzChromaSDK::Init();
 	}
-	EXPORT_API RZRESULT PluginCoreInitSDK(ChromaSDK::APPINFOTYPE* AppInfo)
+	EXPORT_API RZRESULT PluginCoreInitSDK(ChromaSDK::APPINFOTYPE* appInfo)
 	{
-		return RzChromaSDK::InitSDK(AppInfo);
+#ifdef _DEBUG
+		if (appInfo != nullptr)
+		{
+			cout << "PluginCoreInitSDK: Title=" << appInfo->Title << endl;
+			cout << "PluginCoreInitSDK: Description=" << appInfo->Description << endl;
+			cout << "PluginCoreInitSDK: Author.Name=" << appInfo->Author.Name << endl;
+			cout << "PluginCoreInitSDK: Author.Contact=" << appInfo->Author.Contact << endl;
+			cout << "PluginCoreInitSDK: SupportedDevice=" << appInfo->SupportedDevice << endl;
+			cout << "PluginCoreInitSDK: Category=" << appInfo->Category << endl;
+		}
+#endif
+		return RzChromaSDK::InitSDK(appInfo);
 	}
 	EXPORT_API RZRESULT PluginCoreUnInit()
 	{
