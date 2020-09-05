@@ -42,6 +42,7 @@ namespace ChromaSDK
 		DE_Keyboard = 0,
 		DE_Keypad,
 		DE_Mouse,
+		DE_KeyboardExtended,
 	};
 
 	enum class EChromaSDKDeviceEnum
@@ -52,6 +53,7 @@ namespace ChromaSDK
 		DE_Keypad,
 		DE_Mouse,
 		DE_Mousepad,
+		DE_KeyboardExtended,
 		DE_MAX
 	};
 

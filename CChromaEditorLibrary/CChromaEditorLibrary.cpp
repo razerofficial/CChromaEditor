@@ -23,6 +23,7 @@
 #define DEVICE_CHROMA_LINK "ChromaLink"
 #define DEVICE_HEADSET "Headset"
 #define DEVICE_KEYBOARD "Keyboard"
+#define DEVICE_KEYBOARD_EXTENDED "KeyboardExtended"
 #define DEVICE_KEYPAD "Keypad"
 #define DEVICE_MOUSE "Mouse"
 #define DEVICE_MOUSEPAD "Mousepad"
@@ -390,6 +391,11 @@ void CMainViewDlg::RefreshDevice()
 	GetControlSetKeyCombo()->ShowWindow(show);
 	GetControlSetKeyButton()->ShowWindow(show);
 
+	show = _mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D && _mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_KeyboardExtended;
+	GetControlSetKeyLabel()->ShowWindow(show);
+	GetControlSetKeyCombo()->ShowWindow(show);
+	GetControlSetKeyButton()->ShowWindow(show);
+
 	show = _mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D && _mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Mouse;
 	GetControlSetLEDLabel()->ShowWindow(show);
 	GetControlSetLEDCombo()->ShowWindow(show);
@@ -399,6 +405,7 @@ void CMainViewDlg::RefreshDevice()
 	GetControlListTypes()->AddString(_T(DEVICE_CHROMA_LINK));
 	GetControlListTypes()->AddString(_T(DEVICE_HEADSET));
 	GetControlListTypes()->AddString(_T(DEVICE_KEYBOARD));
+	GetControlListTypes()->AddString(_T(DEVICE_KEYBOARD_EXTENDED));
 	GetControlListTypes()->AddString(_T(DEVICE_KEYPAD));
 	GetControlListTypes()->AddString(_T(DEVICE_MOUSE));
 	GetControlListTypes()->AddString(_T(DEVICE_MOUSEPAD));
@@ -410,13 +417,13 @@ void CMainViewDlg::RefreshDevice()
 		switch (_mEdit1D.GetDevice())
 		{
 		case EChromaSDKDevice1DEnum::DE_ChromaLink:
-			index = (int)EChromaSDKDeviceEnum::DE_ChromaLink;
+			index = 0;
 			break;
 		case EChromaSDKDevice1DEnum::DE_Headset:
-			index = (int)EChromaSDKDeviceEnum::DE_Headset;
+			index = 1;
 			break;
 		case EChromaSDKDevice1DEnum::DE_Mousepad:
-			index = (int)EChromaSDKDeviceEnum::DE_Mousepad;
+			index = 6;
 			break;
 		}
 		break;
@@ -424,13 +431,16 @@ void CMainViewDlg::RefreshDevice()
 		switch (_mEdit2D.GetDevice())
 		{
 		case EChromaSDKDevice2DEnum::DE_Keyboard:
-			index = (int)EChromaSDKDeviceEnum::DE_Keyboard;
+			index = 2;
+			break;
+		case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+			index = 3;
 			break;
 		case EChromaSDKDevice2DEnum::DE_Keypad:
-			index = (int)EChromaSDKDeviceEnum::DE_Keypad;
+			index = 4;
 			break;
 		case EChromaSDKDevice2DEnum::DE_Mouse:
-			index = (int)EChromaSDKDeviceEnum::DE_Mouse;
+			index = 5;
 			break;
 		}
 		break;
@@ -1487,24 +1497,27 @@ void CMainViewDlg::OnSelChangeListTypes()
 
 	EChromaSDKDeviceTypeEnum deviceType = EChromaSDKDeviceTypeEnum::DE_1D;
 	int index = GetControlListTypes()->GetCurSel();
-	switch ((EChromaSDKDeviceEnum)index)
+	switch (index)
 	{
-	case EChromaSDKDeviceEnum::DE_ChromaLink:
+	case 0: //ChromaLink
 		deviceType = EChromaSDKDeviceTypeEnum::DE_1D;
 		break;
-	case EChromaSDKDeviceEnum::DE_Headset:
+	case 1: //Headset
 		deviceType = EChromaSDKDeviceTypeEnum::DE_1D;
 		break;
-	case EChromaSDKDeviceEnum::DE_Keyboard:
+	case 2: //Keyboard
 		deviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 		break;
-	case EChromaSDKDeviceEnum::DE_Keypad:
+	case 3: //KeyboardExtended
 		deviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 		break;
-	case EChromaSDKDeviceEnum::DE_Mouse:
+	case 4: //Keypad
 		deviceType = EChromaSDKDeviceTypeEnum::DE_2D;
 		break;
-	case EChromaSDKDeviceEnum::DE_Mousepad:
+	case 5: //Mouse
+		deviceType = EChromaSDKDeviceTypeEnum::DE_2D;
+		break;
+	case 6: //Mousepad
 		deviceType = EChromaSDKDeviceTypeEnum::DE_1D;
 		break;
 	}
@@ -1534,24 +1547,34 @@ void CMainViewDlg::OnSelChangeListTypes()
 
 	EChromaSDKDevice1DEnum device1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
 	EChromaSDKDevice2DEnum device2D = EChromaSDKDevice2DEnum::DE_Keyboard;
-	switch ((EChromaSDKDeviceEnum)index)
+	switch (index)
 	{
-	case EChromaSDKDeviceEnum::DE_ChromaLink:
+	//chromalink
+	case 0:
 		device1D = EChromaSDKDevice1DEnum::DE_ChromaLink;
 		break;
-	case EChromaSDKDeviceEnum::DE_Headset:
+	//headset
+	case 1:
 		device1D = EChromaSDKDevice1DEnum::DE_Headset;
 		break;
-	case EChromaSDKDeviceEnum::DE_Keyboard:
+	//keyboard
+	case 2:
 		device2D = EChromaSDKDevice2DEnum::DE_Keyboard;
 		break;
-	case EChromaSDKDeviceEnum::DE_Keypad:
+	//keyboard extended
+	case 3:
+		device2D = EChromaSDKDevice2DEnum::DE_KeyboardExtended;
+		break;
+	// keypad
+	case 4:
 		device2D = EChromaSDKDevice2DEnum::DE_Keypad;
 		break;
-	case EChromaSDKDeviceEnum::DE_Mouse:
+	// mouse
+	case 5:
 		device2D = EChromaSDKDevice2DEnum::DE_Mouse;
 		break;
-	case EChromaSDKDeviceEnum::DE_Mousepad:
+	// mousepad
+	case 6:
 		device1D = EChromaSDKDevice1DEnum::DE_Mousepad;
 		break;
 	}
