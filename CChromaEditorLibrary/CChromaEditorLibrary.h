@@ -192,4 +192,8 @@ private:
 	bool _mWasPlaying;
 
 	bool _mDialogInitialized;
+
+	int _mIndexLed;
+	int _mIndexRow;
+	int _mIndexColumn;
 };

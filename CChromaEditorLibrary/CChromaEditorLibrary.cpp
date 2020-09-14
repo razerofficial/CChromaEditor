@@ -87,6 +87,9 @@ BOOL CCChromaEditorLibraryApp::InitInstance()
 CMainViewDlg::CMainViewDlg() : CDialogEx(IDD_MAIN_VIEW)
 {
 	_mDialogInitialized = false; //must be first
+	_mIndexLed = -1;
+	_mIndexRow = -1;
+	_mIndexColumn = -1;
 	SetPath("");
 	_mPlayOnOpen = false;
 }
@@ -386,6 +389,10 @@ float CMainViewDlg::GetDuration()
 
 void CMainViewDlg::RefreshDevice()
 {
+	_mIndexLed = -1;
+	_mIndexRow = -1;
+	_mIndexColumn = -1;
+
 	int show = _mDeviceType == EChromaSDKDeviceTypeEnum::DE_2D && _mEdit2D.GetDevice() == EChromaSDKDevice2DEnum::DE_Keyboard;
 	GetControlSetKeyLabel()->ShowWindow(show);
 	GetControlSetKeyCombo()->ShowWindow(show);
@@ -524,14 +531,28 @@ void CMainViewDlg::RefreshGrid()
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		{
 			int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds(_mEdit1D.GetDevice());
-			sprintf_s(buffer, "1 x %d", maxLeds);
+			if (_mIndexLed >= 0)
+			{
+				sprintf_s(buffer, "1 x %d (%d)", maxLeds, _mIndexLed);
+			}
+			else
+			{
+				sprintf_s(buffer, "1 x %d", maxLeds);
+			}
 		}
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		{
 			int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(_mEdit2D.GetDevice());
 			int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(_mEdit2D.GetDevice());
-			sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
+			if (_mIndexRow >= 0 && _mIndexColumn >= 0)
+			{
+				sprintf_s(buffer, "%d x %d (%d, %d)", maxRow, maxColumn, _mIndexRow, _mIndexColumn);
+			}
+			else
+			{
+				sprintf_s(buffer, "%d x %d", maxRow, maxColumn);
+			}
 		}
 		break;
 	}
@@ -563,6 +584,7 @@ void CMainViewDlg::RefreshGrid()
 					CColorButton* button = buttons[id];
 					if (button)
 					{
+						button->SetIndex(i, -1, -1);
 						COLORREF color = frame.Colors[i];
 						button->SetColor(color, color);
 						button->Invalidate();
@@ -596,6 +618,7 @@ void CMainViewDlg::RefreshGrid()
 						CColorButton* button = buttons[id];
 						if (button)
 						{
+							button->SetIndex(-1, i, j);
 							COLORREF color = row.Colors[j];
 							color = color & 0xFFFFFF;
 							button->SetColor(color, color);
@@ -1378,6 +1401,9 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 			{
 				COLORREF color = 0;
 				CColorButton* button = buttons[index];
+
+				button->GetIndex(_mIndexLed, _mIndexRow, _mIndexColumn);
+
 				if (!_mShiftModifier)
 				{
 					color = GetColor();

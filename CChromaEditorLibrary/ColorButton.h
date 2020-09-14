@@ -59,6 +59,10 @@ private:
 	COLORREF m_Highlight;
 	COLORREF m_Shadow;
 	COLORREF m_DarkShadow;
+
+	int m_IndexLed;
+	int m_IndexRow;
+	int m_IndexColumn;
 	
 // Operations
 public:
@@ -67,6 +71,9 @@ public:
 	void SetColor(COLORREF text, COLORREF bkgnd, COLORREF disabled, COLORREF light, COLORREF highlight, COLORREF shadow, COLORREF darkShadow);
 	void SetColorToWindowsDefault();
 	COLORREF GetBackgroundColor();
+
+	void SetIndex(const int led, const int row, const int column);
+	void GetIndex(int& led, int& row, int& column);
 	
 private:
 	void DrawFrame(CDC *pDC, CRect rc, int state);

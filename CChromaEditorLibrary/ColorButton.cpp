@@ -47,11 +47,19 @@ namespace clr
 // CColorButton
 CColorButton::CColorButton()
 {
+	m_IndexLed = -1;
+	m_IndexRow = -1;
+	m_IndexColumn = -1;
+
 	SetColorToWindowsDefault();
 }
 
 CColorButton::CColorButton(COLORREF text, COLORREF bkgnd)
 {
+	m_IndexLed = -1;
+	m_IndexRow = -1;
+	m_IndexColumn = -1;
+
 	m_TextColor				= text;
 	m_BkgndColor			= bkgnd; 
 	m_DisabledBkgndColor	= GetSysColor(COLOR_BTNFACE);
@@ -63,6 +71,10 @@ CColorButton::CColorButton(COLORREF text, COLORREF bkgnd)
 
 CColorButton::CColorButton(COLORREF text, COLORREF bkgnd, COLORREF disabled)
 {
+	m_IndexLed = -1;
+	m_IndexRow = -1;
+	m_IndexColumn = -1;
+
 	m_TextColor				= text;
 	m_BkgndColor			= bkgnd; 
 	m_DisabledBkgndColor	= disabled;
@@ -85,6 +97,20 @@ CColorButton::CColorButton(COLORREF text, COLORREF bkgnd, COLORREF disabled, COL
 
 CColorButton::~CColorButton()
 {
+}
+
+void CColorButton::SetIndex(const int led, const int row, const int column)
+{
+	m_IndexLed = led;
+	m_IndexRow = row;
+	m_IndexColumn = column;
+}
+
+void CColorButton::GetIndex(int& led, int& row, int& column)
+{
+	led = m_IndexLed;
+	row = m_IndexRow;
+	column = m_IndexColumn;
 }
 
 
