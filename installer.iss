@@ -1,6 +1,6 @@
 [Setup]
 AppName=Chroma Editor
-AppVerName=Chroma Editor 1.12
+AppVerName=Chroma Editor 1.13
 AppPublisher=Razer, Inc.
 AppPublisherURL=https://razerzone.com
 AppSupportURL=https://razerzone.com

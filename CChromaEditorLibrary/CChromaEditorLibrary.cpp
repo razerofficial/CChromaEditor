@@ -712,7 +712,7 @@ void CMainViewDlg::SetPath(const string& path)
 
 BOOL CMainViewDlg::OnInitDialog()
 {
-	GetControlVersion()->SetWindowTextW(_T("Version: 1.12"));
+	GetControlVersion()->SetWindowTextW(_T("Version: 1.13"));
 
 	_mDialogInitialized = true;
 
