@@ -1210,6 +1210,17 @@ extern "C"
 		return -1;
 	}
 
+	EXPORT_API int PluginUpdateFrameName(const char* path, int frameIndex, float duration, int* colors, int length)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginUpdateFrameName: Animation not found! %s\r\n", path);
+			return -1;
+		}
+		return PluginUpdateFrame(animationId, frameIndex, duration, colors, length);
+	}
+
 	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length)
 	{
 		PluginStopAnimation(animationId);
