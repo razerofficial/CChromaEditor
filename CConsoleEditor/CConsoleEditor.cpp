@@ -106,7 +106,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	while (ChromaAnimationAPI::IsDialogOpen())
 	{
-		Sleep(0);
+		Sleep(1);
 	}
 
 #endif
