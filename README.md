@@ -50,11 +50,15 @@
 <a name="prerequisites"></a>
 ## Prerequisites
 
-- Install [Synapse](http://developer.razerzone.com/works-with-chroma/download/)
+* Install [Synapse](https://www.razer.com/synapse-3)
 
-- Synapse will install the Chroma SDK when a Chroma enabled device is connected
+* Make sure the Chroma Connect module is installed.
 
-- Install [Microsoft Visual C++ Redistributable for Visual Studio 2017](https://www.visualstudio.com/downloads/)
+![image_5](images/image_5.png)
+
+* If you don't have Chroma hardware, you can see Chroma effects with the [Chroma Emulator](https://github.com/razerofficial/ChromaEmulator)
+
+- This library is full source and can build with VS 2015/2017/2019 so make sure you include the corresponding [Microsoft Visual C++ Redistributable for Visual Studio](https://www.visualstudio.com/downloads/) with your application for the versions that you build with. The core ChromaSDK is built with VS 2015, so you'll want that redistributable at a minimum.
 
 - To compile: Install [Visual Studio](https://www.visualstudio.com/)
 
