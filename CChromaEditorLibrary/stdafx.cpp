@@ -10448,4 +10448,152 @@ extern "C"
 		PluginStaticColor((int)deviceType, (int)device, (int)color);
 		return 0;
 	}
+
+	EXPORT_API RZRESULT PluginSetEffectCustom1D(const int device, const int* colors)
+	{
+		int maxLeds = ChromaSDKPlugin::GetInstance()->GetMaxLeds((EChromaSDKDevice1DEnum)device);
+
+		RZRESULT result = 0;
+		switch ((EChromaSDKDevice1DEnum)device)
+		{
+		case EChromaSDKDevice1DEnum::DE_ChromaLink:
+		{
+			ChromaLink::CUSTOM_EFFECT_TYPE pParam = {};
+			for (int i = 0; i < maxLeds; i++)
+			{
+				pParam.Color[i] = colors[i];
+			}
+			result = RzChromaSDK::CreateChromaLinkEffect(ChromaLink::CHROMA_CUSTOM, &pParam, nullptr);
+		}
+		break;
+		case EChromaSDKDevice1DEnum::DE_Headset:
+		{
+			Headset::CUSTOM_EFFECT_TYPE pParam = {};
+			for (int i = 0; i < maxLeds; i++)
+			{
+				pParam.Color[i] = colors[i];
+			}
+			result = RzChromaSDK::CreateHeadsetEffect(Headset::CHROMA_CUSTOM, &pParam, nullptr);
+		}
+		break;
+		case EChromaSDKDevice1DEnum::DE_Mousepad:
+		{
+			Mousepad::CUSTOM_EFFECT_TYPE pParam = {};
+			for (int i = 0; i < maxLeds; i++)
+			{
+				pParam.Color[i] = colors[i];
+			}
+			result = RzChromaSDK::CreateMousepadEffect(Mousepad::CHROMA_CUSTOM, &pParam, nullptr);
+		}
+		break;
+		default:
+			LogError("PluginSetEffectCustom1D Unsupported device used!\r\n");
+			return RZRESULT_FAILED;
+		}
+		return result;
+	}
+
+	EXPORT_API RZRESULT PluginSetEffectCustom2D(const int device, const int* colors)
+	{
+		int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow((EChromaSDKDevice2DEnum)device);
+		int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn((EChromaSDKDevice2DEnum)device);
+
+		RZRESULT result = 0;
+		switch ((EChromaSDKDevice2DEnum)device)
+		{
+		case EChromaSDKDevice2DEnum::DE_Keyboard:
+		{
+			Keyboard::CUSTOM_EFFECT_TYPE pParam = {};
+			int index = 0;
+			for (int i = 0; i < maxRow; i++)
+			{
+				for (int j = 0; j < maxColumn; j++)
+				{
+					pParam.Color[i][j] = colors[index];
+					++index;
+				}
+			}
+			result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM, &pParam, nullptr);
+		}
+		break;
+		case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+		{
+			Keyboard::v2::CUSTOM_EFFECT_TYPE pParam = {};
+			int index = 0;
+			for (int i = 0; i < maxRow; i++)
+			{
+				for (int j = 0; j < maxColumn; j++)
+				{
+					pParam.Color[i][j] = colors[index];
+					++index;
+				}
+			}
+			result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM2, &pParam, nullptr);
+		}
+		break;
+		case EChromaSDKDevice2DEnum::DE_Keypad:
+		{
+			Keypad::CUSTOM_EFFECT_TYPE pParam = {};
+			int index = 0;
+			for (int i = 0; i < maxRow; i++)
+			{
+				for (int j = 0; j < maxColumn; j++)
+				{
+					pParam.Color[i][j] = colors[index];
+					++index;
+				}
+			}
+			result = RzChromaSDK::CreateKeypadEffect(Keypad::CHROMA_CUSTOM, &pParam, nullptr);
+		}
+		break;
+		case EChromaSDKDevice2DEnum::DE_Mouse:
+		{
+			Mouse::CUSTOM_EFFECT_TYPE2 pParam = {};
+			int index = 0;
+			for (int i = 0; i < maxRow; i++)
+			{
+				for (int j = 0; j < maxColumn; j++)
+				{
+					pParam.Color[i][j] = colors[index];
+					++index;
+				}
+			}
+			result = RzChromaSDK::CreateMouseEffect(Mouse::CHROMA_CUSTOM2, &pParam, nullptr);
+		}
+		break;
+		default:
+			LogError("PluginSetEffectCustom2D Unsupported device used!\r\n");
+			return RZRESULT_FAILED;
+		}
+
+		return result;
+	}
+
+	EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(const int device, const int* colors)
+	{		
+		int maxRow = Keyboard::MAX_ROW;
+		int maxColumn = Keyboard::MAX_COLUMN;
+
+		RZRESULT result = 0;
+		switch ((EChromaSDKDevice2DEnum)device)
+		{
+			case EChromaSDKDevice2DEnum::DE_Keyboard:
+			{
+				Keyboard::CUSTOM_KEY_EFFECT_TYPE pParam = {};
+				int index = 0;
+				for (int i = 0; i < maxRow; i++)
+				{
+					for (int j = 0; j < maxColumn; j++)
+					{
+						pParam.Key[i][j] = colors[index];
+						++index;
+					}
+				}
+				result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, &pParam, nullptr);
+			}
+		}
+
+		return result;
+	}
+
 }

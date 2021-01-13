@@ -2029,6 +2029,19 @@ extern "C"
 	*/
 	EXPORT_API RZRESULT PluginSetEffect(const ChromaSDK::FChromaSDKGuid& effectId);
 	/*
+		SetEffectCustom1D will display the referenced colors immediately
+	*/
+	EXPORT_API RZRESULT PluginSetEffectCustom1D(const int device, const int* colors);
+	/*
+		SetEffectCustom2D will display the referenced colors immediately
+	*/
+	EXPORT_API RZRESULT PluginSetEffectCustom2D(const int device, const int* colors);
+	/*
+		SetEffectKeyboardCustom2D will display the referenced custom keyboard colors
+		immediately
+	*/
+	EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(const int device, const int* colors);
+	/*
 		When the idle animation is used, the named animation will play when no other
 		animations are playing. Reference the animation by id.
 	*/
