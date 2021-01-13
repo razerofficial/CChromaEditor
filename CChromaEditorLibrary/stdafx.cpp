@@ -10571,13 +10571,14 @@ extern "C"
 
 	EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(const int device, const int* colors)
 	{		
-		int maxRow = Keyboard::MAX_ROW;
-		int maxColumn = Keyboard::MAX_COLUMN;
+		int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow((EChromaSDKDevice2DEnum)device);
+		int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn((EChromaSDKDevice2DEnum)device);
 
 		RZRESULT result = 0;
 		switch ((EChromaSDKDevice2DEnum)device)
 		{
 			case EChromaSDKDevice2DEnum::DE_Keyboard:
+			case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
 			{
 				Keyboard::CUSTOM_KEY_EFFECT_TYPE pParam = {};
 				int index = 0;
@@ -10591,9 +10592,40 @@ extern "C"
 				}
 				result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, &pParam, nullptr);
 			}
+			default:
+				return RZRESULT_FAILED;
 		}
 
 		return result;
+	}
+
+	EXPORT_API RZRESULT PluginSetCustomColorFlag2D(int device, int* colors)
+	{
+		int maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow((EChromaSDKDevice2DEnum)device);
+		int maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn((EChromaSDKDevice2DEnum)device);
+
+		const int customFlag = 0x1 << 24;
+		RZRESULT result = 0;
+		switch ((EChromaSDKDevice2DEnum)device)
+		{
+		case EChromaSDKDevice2DEnum::DE_Keyboard:
+		case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+		{
+			int index = 0;
+			for (int i = 0; i < maxRow; i++)
+			{
+				for (int j = 0; j < maxColumn; j++)
+				{
+					colors[index] = colors[index] | customFlag;
+					++index;
+				}
+			}
+		}
+		default:
+			return RZRESULT_FAILED;
+		}
+
+		return RZRESULT_SUCCESS;
 	}
 
 }

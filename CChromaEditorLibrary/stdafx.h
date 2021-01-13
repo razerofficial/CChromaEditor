@@ -2019,6 +2019,10 @@ extern "C"
 	*/
 	EXPORT_API double PluginSetCurrentFrameNameD(const char* path, double frameId);
 	/*
+		Set the custom alpha flag on the color array
+	*/
+	EXPORT_API RZRESULT PluginSetCustomColorFlag2D(int device, int* colors);
+	/*
 		Changes the `deviceType` and `device` of a `Chroma` animation. If the device
 		is changed, the `Chroma` animation will be reset with 1 blank frame. Returns
 		the animation id upon success. Returns -1 upon failure.
