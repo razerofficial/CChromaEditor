@@ -2204,6 +2204,18 @@ extern "C"
 		PluginSetKeyColor(animationId, frameId, rzkey, color);
 	}
 
+	EXPORT_API void PluginSetKeyRowColumnColorName(const char* path, int frameId, int row, int column, int color)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginSetKeyColorName: Animation not found! %s\r\n", path);
+			return;
+		}
+		int rzkey = (row << 8) | column;
+		PluginSetKeyColor(animationId, frameId, rzkey, color);
+	}
+
 	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color)
 	{
 		PluginSetKeyColorName(path, (int)frameId, (int)rzkey, (int)color);

@@ -2138,6 +2138,10 @@ extern "C"
 	*/
 	EXPORT_API double PluginSetKeyNonZeroColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue);
 	/*
+		Set animation key by row and column to a static color for the given frame.
+	*/
+	EXPORT_API void PluginSetKeyRowColumnColorName(const char* path, int frameId, int row, int column, int color);
+	/*
 		Set an array of animation keys to a static color for the given frame. Animation
 		is referenced by id.
 	*/
