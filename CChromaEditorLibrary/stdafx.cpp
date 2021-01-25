@@ -10633,6 +10633,7 @@ extern "C"
 				}
 			}
 		}
+		break;
 		default:
 			return RZRESULT_FAILED;
 		}
