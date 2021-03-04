@@ -10455,6 +10455,16 @@ extern "C"
 		}
 	}
 
+	EXPORT_API void PluginStaticColorAll(int color)
+	{
+		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink, color);
+		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset, color);
+		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard, color);
+		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad, color);
+		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse, color);
+		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad, color);
+	}
+
 	EXPORT_API double PluginStaticColorD(double deviceType, double device, double color)
 	{
 		PluginStaticColor((int)deviceType, (int)device, (int)color);

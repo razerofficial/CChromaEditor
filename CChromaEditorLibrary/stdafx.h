@@ -2289,6 +2289,10 @@ extern "C"
 	*/
 	EXPORT_API void PluginStaticColor(int deviceType, int device, int color);
 	/*
+		`PluginStaticColorAll` sets all devices to the static color.
+	*/
+	EXPORT_API void PluginStaticColorAll(int color);
+	/*
 		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginStaticColorD(double deviceType, double device, double color);
