@@ -2285,11 +2285,19 @@ extern "C"
 	*/
 	EXPORT_API void PluginSetLogDelegate(DebugLogPtr fp);
 	/*
-		`PluginStaticColor` sets the target device to the static color.
+		Sets the target device to the static color.
+	*/
+	EXPORT_API void PluginSetStaticColor(int deviceType, int device, int color);
+	/*
+		Sets all devices to the static color.
+	*/
+	EXPORT_API void PluginSetStaticColorAll(int color);
+	/*
+		Sets the target device to the static color.
 	*/
 	EXPORT_API void PluginStaticColor(int deviceType, int device, int color);
 	/*
-		`PluginStaticColorAll` sets all devices to the static color.
+		Sets all devices to the static color.
 	*/
 	EXPORT_API void PluginStaticColorAll(int color);
 	/*

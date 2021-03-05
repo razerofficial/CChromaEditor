@@ -10430,7 +10430,7 @@ extern "C"
 		animation->UsePreloading(flag);
 	}
 
-	EXPORT_API void PluginStaticColor(int deviceType, int device, int color)
+	EXPORT_API void PluginSetStaticColor(int deviceType, int device, int color)
 	{
 		PluginStopAnimationType(deviceType, device);
 		FChromaSDKEffectResult result;
@@ -10455,14 +10455,24 @@ extern "C"
 		}
 	}
 
+	EXPORT_API void PluginSetStaticColorAll(int color)
+	{
+		PluginSetStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink, color);
+		PluginSetStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset, color);
+		PluginSetStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard, color);
+		PluginSetStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad, color);
+		PluginSetStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse, color);
+		PluginSetStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad, color);
+	}
+
+	EXPORT_API void PluginStaticColor(int deviceType, int device, int color)
+	{
+		PluginSetStaticColor(deviceType, device, color);
+	}
+
 	EXPORT_API void PluginStaticColorAll(int color)
 	{
-		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink, color);
-		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset, color);
-		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard, color);
-		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad, color);
-		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse, color);
-		PluginStaticColor((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad, color);
+		PluginSetStaticColorAll(color);
 	}
 
 	EXPORT_API double PluginStaticColorD(double deviceType, double device, double color)
