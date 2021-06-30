@@ -217,6 +217,16 @@ extern "C"
 	*/
 	EXPORT_API double PluginCloseCompositeD(const char* name);
 	/*
+		Copy source animation to target animation for the given frame. Source and
+		target are referenced by id.
+	*/
+	EXPORT_API void PluginCopyAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
+	/*
+		Copy source animation to target animation for the given frame. Source and
+		target are referenced by id.
+	*/
+	EXPORT_API void PluginCopyAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
+	/*
 		Copy animation to named target animation in memory. If target animation
 		exists, close first. Source is referenced by id.
 	*/
@@ -1689,6 +1699,12 @@ extern "C"
 	*/
 	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 	/*
+		Multiply the specific frame by the color lerp result between color 1 and
+		2 using the frame color value as the `t` value. Animation is referenced
+		by name.
+	*/
+	EXPORT_API void PluginMultiplyTargetColorLerpName(const char* path, int frameId, int color1, int color2);
+	/*
 		Offset all colors in the frame using the RGB offset. Use the range of -255
 		to 255 for red, green, and blue parameters. Negative values remove color.
 		Positive values add color.
@@ -2546,5 +2562,6 @@ extern "C"
 	*/
 	EXPORT_API void PluginUsePreloadingName(const char* path, bool flag);
 #pragma endregion
+
 	
 }
