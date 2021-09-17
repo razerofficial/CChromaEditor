@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "EditorAnimationBase.h"
+#include "ChromaLogger.h"
 #include "direct.h"
-#include <iostream>
 #include <fstream>
 
+using namespace ChromaSDK;
 using namespace std;
 
 int EditorAnimationBase::GetCurrentFrame()
@@ -96,13 +97,13 @@ void EditorAnimationBase::ImportTextureImageSequence()
 
 		int hasExtraDigits = filename.length() - strIndex.length();
 
-		std::cout << " path: " << path << '\n';
-		std::cout << " file: " << filename << '\n';
-		std::cout << " extension: " << extension << '\n';
-		std::cout << " index: " << index << '\n';
+		ChromaLogger::printf(" path: %s\r\n", path.c_str());
+		ChromaLogger::printf(" file: %s\r\n", filename.c_str());
+		ChromaLogger::printf(" extension: %s\r\n", extension.c_str());
+		ChromaLogger::printf(" index: %d\r\n", index);
 		if (hasExtraDigits > 0)
 		{
-			std::cout << " has extra digits: " << hasExtraDigits << " of " << filename.length() << '\n';
+			ChromaLogger::printf(" has extra digits: %d of %d\r\n", hasExtraDigits, filename.length());
 		}
 		bool firstFrame = true;
 		while (true)
@@ -129,7 +130,7 @@ void EditorAnimationBase::ImportTextureImageSequence()
 			{
 				break;
 			}
-			std::cout << " Importing... " << importPath << '\n';
+			ChromaLogger::printf(" Importing... %s\r\n", importPath.c_str());
 			ReadImage(importPath, false);
 			++index;
 

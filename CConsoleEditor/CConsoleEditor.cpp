@@ -59,8 +59,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
 	appInfo.Category = 1;
 
-	result = ChromaAnimationAPI::InitSDK(&appInfo);
-	if (result != RZRESULT_SUCCESS)
+	result = ChromaAnimationAPI::CoreInitSDK(&appInfo);
+ 	if (result != RZRESULT_SUCCESS)
 	{
 		ChromaLogger::fprintf(stderr, "Failed to initialize Chroma! %d", result);
 		return result;

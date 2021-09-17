@@ -131,12 +131,12 @@ extern "C"
 #ifdef _DEBUG
 		if (appInfo != nullptr)
 		{
-			cout << "PluginCoreInitSDK: Title=" << appInfo->Title << endl;
-			cout << "PluginCoreInitSDK: Description=" << appInfo->Description << endl;
-			cout << "PluginCoreInitSDK: Author.Name=" << appInfo->Author.Name << endl;
-			cout << "PluginCoreInitSDK: Author.Contact=" << appInfo->Author.Contact << endl;
-			cout << "PluginCoreInitSDK: SupportedDevice=" << appInfo->SupportedDevice << endl;
-			cout << "PluginCoreInitSDK: Category=" << appInfo->Category << endl;
+			wcout << "PluginCoreInitSDK: Title=" << appInfo->Title << endl;
+			wcout << "PluginCoreInitSDK: Description=" << appInfo->Description << endl;
+			wcout << "PluginCoreInitSDK: Author.Name=" << appInfo->Author.Name << endl;
+			wcout << "PluginCoreInitSDK: Author.Contact=" << appInfo->Author.Contact << endl;
+			wcout << "PluginCoreInitSDK: SupportedDevice=" << appInfo->SupportedDevice << endl;
+			wcout << "PluginCoreInitSDK: Category=" << appInfo->Category << endl;
 		}
 #endif
 		return RzChromaSDK::InitSDK(appInfo);
