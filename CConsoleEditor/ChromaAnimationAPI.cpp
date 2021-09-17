@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ChromaAnimationAPI.h"
+#include "ChromaLogger.h"
 #if false
 #include "..\CChromaEditorLibrary\VerifyLibrarySignature.h"
 #endif
@@ -520,7 +521,7 @@ CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_USE_PRELOADING_NAME, UsePreloadingName);
 #define CHROMASDK_VALIDATE_METHOD(Signature, FieldName) FieldName = (Signature) GetProcAddress(library, "Plugin" #FieldName); \
 if (FieldName == nullptr) \
 { \
-	fprintf(stderr, "Failed to find method: %s!\r\n", "Plugin" #FieldName); \
+	ChromaLogger::fprintf(stderr, "Failed to find method: %s!\r\n", "Plugin" #FieldName); \
 	return -1; \
 }
 
@@ -531,15 +532,15 @@ int ChromaAnimationAPI::InitAPI()
 	HMODULE library = LoadLibrary(CHROMA_EDITOR_DLL);
 	if (library == NULL)
 	{
-		fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
-		return -1;
+		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
+		return RZRESULT_DLL_NOT_FOUND;
 	}
 
 #if false
 	// when editor DLL is digitally signed
 	if (!VerifyLibrarySignature::VerifyModule(library))
 	{
-		fprintf(stderr, "Failed to load Chroma Editor Library reason: invalid signature!\r\n");
+		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library reason: invalid signature!\r\n");
 
 		// unload the library
 		FreeLibrary(library);
@@ -549,7 +550,7 @@ int ChromaAnimationAPI::InitAPI()
 	}
 #endif
 
-	//fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
+	//ChromaLogger::fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
 
 #pragma region API validation
 CHROMASDK_VALIDATE_METHOD(PLUGIN_ADD_FRAME, AddFrame);
@@ -1060,7 +1061,7 @@ CHROMASDK_VALIDATE_METHOD(PLUGIN_USE_PRELOADING, UsePreloading);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_USE_PRELOADING_NAME, UsePreloadingName);
 #pragma endregion
 
-	//fprintf(stdout, "Validated all DLL methods [success]\r\n");
+	//ChromaLogger::printf("Validated all DLL methods [success]\r\n");
 	_sIsInitializedAPI = true;
 	return 0;
 }

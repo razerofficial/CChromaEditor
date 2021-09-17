@@ -201,6 +201,7 @@
     <ClCompile Include="ChromaSDKPlugin.cpp" />
     <ClCompile Include="ColorButton.cpp" />
     <ClCompile Include="EditorAnimationBase.cpp" />
+    <ClCompile Include="ChromaLogger.cpp" />
     <ClCompile Include="RzChromaSDK.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -222,6 +223,7 @@
     <ClInclude Include="ChromaSDKPluginTypes.h" />
     <ClInclude Include="ColorButton.h" />
     <ClInclude Include="EditorAnimationBase.h" />
+    <ClInclude Include="ChromaLogger.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RzChromaSDK.h" />
     <ClInclude Include="RzChromaSDKDefines.h" />

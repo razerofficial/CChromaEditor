@@ -257,7 +257,7 @@ void ChromaThread::Start()
 	stringstream ss;
 	ss << _sThread->get_id();
 	string strId = ss.str();
-	fprintf(stdout, "ChromaThread: %s\r\n", strId.c_str());
+	ChromaLogger::printf("ChromaThread: %s\r\n", strId.c_str());
 	*/
 
 	_sThread->detach();

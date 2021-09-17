@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "ChromaAnimationAPI.h"
 #include "UnitTests.h"
+#include "ChromaLogger.h"
 #include <string>
 
 
@@ -11,7 +12,7 @@ using namespace std;
 
 int Init()
 {
-	//fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
+	//ChromaLogger::fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
 	if (ChromaAnimationAPI::InitAPI() != 0)
 	{
 		return -1;
@@ -29,12 +30,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	int       nCmdShow)
 #endif
 {
-	fprintf(stderr, "App launched!\r\n");
+	ChromaLogger::fprintf(stderr, "App launched!\r\n");
 
-	
-	if (Init() != RZRESULT_SUCCESS)
+	RZRESULT result = Init();
+	if (result != RZRESULT_SUCCESS)
 	{
-		return -1;
+		return result;
 	}	
 
 #if _DEBUG && RUN_UNIT_TESTS
@@ -58,11 +59,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
 	appInfo.Category = 1;
 
-	RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
+	result = ChromaAnimationAPI::InitSDK(&appInfo);
 	if (result != RZRESULT_SUCCESS)
 	{
-		fprintf(stderr, "Failed to initialize Chroma! %d", result);
-		return -1;
+		ChromaLogger::fprintf(stderr, "Failed to initialize Chroma! %d", result);
+		return result;
 	}
 
 #if _DEBUG
@@ -79,7 +80,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		if (_dupenv_s(&buffer, &sz, "USERPROFILE") == 0
 			&& buffer != nullptr)
 		{
-			//fprintf(stdout, "EnvVarName = %s\n", buffer);
+			//ChromaLogger::printf("EnvVarName = %s\n", buffer);
 			char path[256] = { 0 };
 			sprintf_s(path, "%s\\Desktop\\temp.chroma", buffer);		
 			free(buffer);
@@ -112,7 +113,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 #endif
 
 	ChromaAnimationAPI::Uninit();
-	fprintf(stdout, "CConsoleEditor exited.\r\n");
+	ChromaLogger::printf("CConsoleEditor exited.\r\n");
 
     return RZRESULT_SUCCESS;
 }

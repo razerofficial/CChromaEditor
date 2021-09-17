@@ -2,6 +2,7 @@
 #include "Animation1D.h"
 #include "ChromaSDKPlugin.h"
 #include "ChromaThread.h"
+#include "ChromaLogger.h"
 
 #define ANIMATION_VERSION 1
 
@@ -106,13 +107,13 @@ void Animation1D::Load()
 			FChromaSDKEffectResult effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom1D(_mDevice, frame.Colors);
 			if (effect.Result != 0)
 			{
-				fprintf(stderr, "Load: Failed to create effect!\r\n");
+				ChromaLogger::fprintf(stderr, "Load: Failed to create effect!\r\n");
 			}
 			_mEffects.push_back(effect);
 		}
 		catch (exception)
 		{
-			fprintf(stderr, "Load: Exception in create effect!\r\n");
+			ChromaLogger::fprintf(stderr, "Load: Exception in create effect!\r\n");
 			FChromaSDKEffectResult result = FChromaSDKEffectResult();
 			result.Result = -1;
 			_mEffects.push_back(result);
@@ -137,12 +138,12 @@ void Animation1D::Unload()
 			int result = ChromaSDKPlugin::GetInstance()->DeleteEffect(effect.EffectId);
 			if (result != 0)
 			{
-				fprintf(stderr, "Unload: Failed to delete effect!\r\n");
+				ChromaLogger::fprintf(stderr, "Unload: Failed to delete effect!\r\n");
 			}
 		}
 		catch (exception)
 		{
-			fprintf(stderr, "Unload: Exception in delete effect!\r\n");
+			ChromaLogger::fprintf(stderr, "Unload: Exception in delete effect!\r\n");
 		}
 	}
 	_mEffects.clear();
@@ -212,12 +213,12 @@ void Animation1D::InternalShowFrame()
 				int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
 				if (result != 0)
 				{
-					fprintf(stderr, "InternalShowFrame: Failed to set effect!\r\n");
+					ChromaLogger::fprintf(stderr, "InternalShowFrame: Failed to set effect!\r\n");
 				}
 			}
 			catch (exception)
 			{
-				fprintf(stderr, "InternalShowFrame: Exception in set effect!\r\n");
+				ChromaLogger::fprintf(stderr, "InternalShowFrame: Exception in set effect!\r\n");
 			}
 		}
 	}
@@ -238,7 +239,7 @@ void Animation1D::InternalShowFrame()
 			}
 			catch (exception)
 			{
-				fprintf(stderr, "InternalShowFrame: Exception in set effect!\r\n");
+				ChromaLogger::fprintf(stderr, "InternalShowFrame: Exception in set effect!\r\n");
 			}
 		}
 	}
@@ -272,7 +273,7 @@ void Animation1D::InternalUpdate(float deltaTime)
 				}
 				else
 				{
-					//fprintf(stdout, "Update: Animation Complete.\r\n");
+					//ChromaLogger::printf("Update: Animation Complete.\r\n");
 					_mIsPlaying = false;
 					_mTime = 0.0f;
 					_mCurrentFrame = 0;
@@ -302,7 +303,7 @@ int Animation1D::Save(const char* path)
 	int result = fopen_s(&stream, path, "wb");
 	if (result == 13)
 	{
-		fprintf(stderr, "Save: Permission denied! %s\r\n", path);
+		ChromaLogger::fprintf(stderr, "Save: Permission denied! %s\r\n", path);
 		return -1;
 	}
 	else if (0 == result &&
@@ -317,7 +318,7 @@ int Animation1D::Save(const char* path)
 		write = fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
-			fprintf(stderr, "Save: Failed to write version!\r\n");
+			ChromaLogger::fprintf(stderr, "Save: Failed to write version!\r\n");
 			std::fclose(stream);
 			return -1;
 		}

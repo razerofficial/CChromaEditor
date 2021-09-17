@@ -6,6 +6,8 @@
 #include "CChromaEditorLibrary.h"
 #include "ChromaThread.h"
 #include "RzChromaSDK.h"
+#include "ChromaLogger.h"
+
 #include <map>
 #include <iostream>
 #include <sstream>
@@ -1637,7 +1639,7 @@ extern "C"
 	{
 		if (animation == nullptr)
 		{
-			fprintf(stderr, "GetAnimationIdFromInstance: Invalid animation!\r\n");
+			ChromaLogger::fprintf(stderr, "GetAnimationIdFromInstance: Invalid animation!\r\n");
 			return -1;
 		}
 		for (auto iter = _gAnimations.begin(); iter != _gAnimations.end(); ++iter)

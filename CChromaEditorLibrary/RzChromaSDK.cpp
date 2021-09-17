@@ -2,6 +2,7 @@
 #include "RzChromaSDK.h"
 #include "RzErrors.h"
 #include "VerifyLibrarySignature.h"
+#include "ChromaLogger.h"
 #include <tchar.h>
 
 
@@ -10,6 +11,9 @@
 #else
 #define CHROMASDKDLL        _T("RzChromaSDK.dll")
 #endif
+
+
+using namespace ChromaSDK;
 
 
 HMODULE RzChromaSDK::_sLibraryChroma = NULL;
@@ -230,7 +234,7 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibraryChroma);
  		if (_sInvalidSignature)
 		{
-			fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
+			ChromaLogger::fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
 			
 			// unload the library
 			FreeLibrary(_sLibraryChroma);

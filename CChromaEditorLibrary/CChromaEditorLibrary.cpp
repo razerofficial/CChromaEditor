@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "CChromaEditorLibrary.h"
 #include "ColorButton.h"
+#include "..\CChromaEditorLibrary\ChromaLogger.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -114,7 +115,7 @@ void CMainViewDlg::LoadFile()
 {
 	if (_mPath.empty())
 	{
-		fprintf(stderr, "LoadFile: Path cannot be empty! Using `%s` instead.\r\n", TEMP_FILE);
+		ChromaLogger::fprintf(stderr, "LoadFile: Path cannot be empty! Using `%s` instead.\r\n", TEMP_FILE);
 		SetPath(TEMP_FILE);
 	}
 	
@@ -143,7 +144,7 @@ void CMainViewDlg::LoadFile()
 			delete animation;
 			break;
 		default:
-			fprintf(stderr, "LoadFile: Unexpected animation type!");
+			ChromaLogger::fprintf(stderr, "LoadFile: Unexpected animation type!");
 			return;
 		}
 	}
@@ -155,7 +156,7 @@ void CMainViewDlg::SaveFile()
 	int result = fopen_s(&stream, _mPath.c_str(), "wb");
 	if (result == 13)
 	{
-		fprintf(stderr, "SaveFile: Permission denied!\r\n");
+		ChromaLogger::fprintf(stderr, "SaveFile: Permission denied!\r\n");
 		return;
 	}
 	else if (0 == result &&
@@ -170,7 +171,7 @@ void CMainViewDlg::SaveFile()
 		write = fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
-			fprintf(stderr, "SaveFile: Failed to write version!\r\n");
+			ChromaLogger::fprintf(stderr, "SaveFile: Failed to write version!\r\n");
 			std::fclose(stream);
 			return;
 		}
@@ -1034,7 +1035,7 @@ BOOL CMainViewDlg::PreTranslateMessage(MSG* pMsg)
 				OnSliderBrushIntensity();
 				break;
 			default:
-				fprintf(stdout, "Pressed: %d\r\n", pMsg->wParam);
+				ChromaLogger::printf("Pressed: %d\r\n", pMsg->wParam);
 				break;
 			}
 		}
