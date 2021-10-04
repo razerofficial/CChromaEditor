@@ -15,7 +15,7 @@ void LogError(const char* text, ...);
 /* End of setup log mechanism */
 
 typedef unsigned char byte;
-                
+
 #pragma region API typedefs
 /*
 	Adds a frame to the `Chroma` animation and sets the `duration` (in seconds). 

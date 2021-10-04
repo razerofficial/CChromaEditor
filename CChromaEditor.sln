@@ -10,6 +10,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CConsoleEditor", "CConsoleE
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93} = {48DACD44-7EF3-45C8-B744-8D82390BAC93}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cpp_UnitTests", "Cpp_UnitTests\Cpp_UnitTests.vcxproj", "{8A175ECD-9591-4588-B71F-D62A31F743EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93} = {48DACD44-7EF3-45C8-B744-8D82390BAC93}
+		{5F081398-5620-4B7E-B045-D5AB6091B72B} = {5F081398-5620-4B7E-B045-D5AB6091B72B}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +40,14 @@ Global
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x64.Build.0 = Release|x64
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x86.ActiveCfg = Release|Win32
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x86.Build.0 = Release|Win32
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug|x64.ActiveCfg = Debug|x64
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug|x64.Build.0 = Debug|x64
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug|x86.ActiveCfg = Debug|Win32
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug|x86.Build.0 = Debug|Win32
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release|x64.ActiveCfg = Release|x64
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release|x64.Build.0 = Release|x64
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release|x86.ActiveCfg = Release|Win32
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

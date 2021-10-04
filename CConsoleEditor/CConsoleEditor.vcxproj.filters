@@ -27,9 +27,6 @@
     <ClInclude Include="ChromaAnimationAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UnitTests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChromaLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,15 +41,11 @@
     <ClCompile Include="ChromaAnimationAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UnitTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ChromaLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(OutDir)\CChromaEditorLibrary.dll" />
-    <None Include="Animations\FrameValidation_Keyboard.chroma" />
   </ItemGroup>
 </Project>

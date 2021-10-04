@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "CChromaEditorLibrary.h"
 #include "ColorButton.h"
-#include "..\CChromaEditorLibrary\ChromaLogger.h"
+#include "ChromaLogger.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

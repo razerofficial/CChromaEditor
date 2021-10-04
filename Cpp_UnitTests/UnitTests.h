@@ -8,7 +8,7 @@ public:
 
 	static void UnitTestsInit();
 
-	static void UnitTestsInitSDK();
+	static RZRESULT UnitTestsInitSDK();
 
 	static void UnitTestsUninit();
 

@@ -2,9 +2,10 @@
 
 #include "stdafx.h"
 #include "ChromaAnimationAPI.h"
-#include "UnitTests.h"
 #include "ChromaLogger.h"
+
 #include <string>
+#include <shellapi.h>
 
 
 using namespace ChromaSDK;
@@ -37,10 +38,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	{
 		return result;
 	}	
-
-#if _DEBUG && RUN_UNIT_TESTS
-	UnitTests::Run();
-#else
 
 	APPINFOTYPE appInfo = {};
 
@@ -109,8 +106,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	{
 		Sleep(1);
 	}
-
-#endif
 
 	ChromaAnimationAPI::Uninit();
 	ChromaLogger::printf("CConsoleEditor exited.\r\n");
