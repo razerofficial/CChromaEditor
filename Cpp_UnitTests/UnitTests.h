@@ -82,6 +82,8 @@ public:
 
 	static void UnitTestsCopyKeysColorAllFramesName();
 
+	static void UnitTestsSpecialCharacters();
+
 	static void Run();
 
 };

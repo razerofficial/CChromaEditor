@@ -163,6 +163,24 @@
     <None Include="$(OutDir)\CChromaEditorLibrary.dll">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Animations\André\Message_ChromaLink.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\André\Message_Headset.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\André\Message_Keyboard.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\André\Message_Keypad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\André\Message_Mouse.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Animations\André\Message_Mousepad.chroma">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Animations\Blank_ChromaLink.chroma" />
     <None Include="Animations\Blank_Headset.chroma" />
     <None Include="Animations\Blank_Keyboard.chroma" />

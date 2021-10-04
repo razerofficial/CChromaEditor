@@ -1609,6 +1609,13 @@ void UnitTests::UnitTestsFrameValidation()
 	Sleep(60000);
 }
 
+void UnitTests::UnitTestsSpecialCharacters()
+{
+	ChromaLogger::printf("Play animation with special characters in path.\r\n");
+	ChromaAnimationAPI::PlayComposite("Animations/André/Message", false);
+	Sleep(3000);
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::printf("Start of unit tests...\r\n");
@@ -1623,7 +1630,7 @@ void UnitTests::Run()
 
 	//UnitTestsLoadedAnimations();
 	//UnitTestsDamage();
-	UnitTestFireKeyboard();
+	//UnitTestFireKeyboard();
 	//UnitTestsOpenAnimationFromMemory();
 	//UnitTestsFadeStart();
 	//UnitTestsFadeEnd();
@@ -1647,6 +1654,8 @@ void UnitTests::Run()
 	//UnitTestsFrameValidation();
 
 	//UnitTestsCopyKeysColorAllFramesName();
+
+	UnitTestsSpecialCharacters();
 
 	UnitTestsUninit();
 

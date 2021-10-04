@@ -16,6 +16,9 @@
     <Filter Include="Animations">
       <UniqueIdentifier>{9edd4e99-ace7-49fb-8c7b-71ebb2307547}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Animations\André">
+      <UniqueIdentifier>{4ffb80d3-033c-4092-a3d5-62c9da470352}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnitTest.cpp">
@@ -178,6 +181,24 @@
     </None>
     <None Include="Animations\Sprite_Keyboard.chroma">
       <Filter>Animations</Filter>
+    </None>
+    <None Include="Animations\André\Message_ChromaLink.chroma">
+      <Filter>Animations\André</Filter>
+    </None>
+    <None Include="Animations\André\Message_Headset.chroma">
+      <Filter>Animations\André</Filter>
+    </None>
+    <None Include="Animations\André\Message_Keyboard.chroma">
+      <Filter>Animations\André</Filter>
+    </None>
+    <None Include="Animations\André\Message_Keypad.chroma">
+      <Filter>Animations\André</Filter>
+    </None>
+    <None Include="Animations\André\Message_Mouse.chroma">
+      <Filter>Animations\André</Filter>
+    </None>
+    <None Include="Animations\André\Message_Mousepad.chroma">
+      <Filter>Animations\André</Filter>
     </None>
   </ItemGroup>
 </Project>
