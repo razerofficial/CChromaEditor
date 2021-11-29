@@ -21,7 +21,7 @@ namespace ChromaSDK
 		int GetAnimationCount();
 		int GetAnimationId(int index);
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
-		void SetIdleAnimationName(const char* name);
+		void SetIdleAnimationName(const wchar_t* name);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
@@ -32,6 +32,6 @@ namespace ChromaSDK
 		static std::thread* _sThread;
 		static std::vector<AnimationBase*> _sAnimations;
 		static std::vector<bool> _sUseIdleAnimation;
-		static std::vector<std::string> _sIdleAnimation;
+		static std::vector<std::wstring> _sIdleAnimation;
 	};
 }

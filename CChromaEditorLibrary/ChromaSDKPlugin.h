@@ -39,14 +39,14 @@ namespace ChromaSDK
 		RZRESULT DeleteEffect(const FChromaSDKGuid& effectId);
 
 		// editor methods
-		const char* GetKeyboardChar(EChromaSDKKeyboardKey key);
-		const char* GetMouseChar(EChromaSDKMouseLED led);
+		const wchar_t* GetKeyboardChar(EChromaSDKKeyboardKey key);
+		const wchar_t* GetMouseChar(EChromaSDKMouseLED led);
 
-		AnimationBase* OpenAnimation(const std::string& path);
+		AnimationBase* OpenAnimation(const std::wstring& path);
 		AnimationBase* OpenAnimationFromMemory(const byte* data);
 
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
-		void SetIdleAnimationName(const char* path);
+		void SetIdleAnimationName(const wchar_t* path);
 
 	private:
 		ChromaSDKPlugin();
@@ -55,8 +55,8 @@ namespace ChromaSDK
 
 		//handle enum mapping
 		std::map<EChromaSDKKeyboardKey, int> _mKeyboardEnumMap;
-		std::map<EChromaSDKKeyboardKey, const char*> _mKeyboardCharMap;
+		std::map<EChromaSDKKeyboardKey, const wchar_t*> _mKeyboardCharMap;
 		std::map<EChromaSDKMouseLED, Mouse::RZLED2> _mMouseEnumMap;
-		std::map<EChromaSDKMouseLED, const char*> _mMouseCharMap;
+		std::map<EChromaSDKMouseLED, const wchar_t*> _mMouseCharMap;
 	};
 }

@@ -18,22 +18,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CChromaEditorLibrary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColorButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ChromaSDKPlugin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorAnimation1D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorAnimation2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Animation1D.cpp">
@@ -46,9 +34,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AnimationBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorAnimationBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChromaThread.cpp">
@@ -65,19 +50,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CChromaEditorLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ColorButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RzChromaSDKDefines.h">
@@ -95,12 +71,6 @@
     <ClInclude Include="ChromaSDKPluginTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EditorAnimation1D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorAnimation2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Animation1D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -108,9 +78,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AnimationBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorAnimationBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChromaThread.h">
@@ -125,18 +92,5 @@
     <ClInclude Include="ChromaLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CChromaEditorLibrary.def">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="res\CChromaEditorLibrary.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="CChromaEditorLibrary.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

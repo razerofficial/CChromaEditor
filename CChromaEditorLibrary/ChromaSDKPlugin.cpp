@@ -22,10 +22,10 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 {
 	if (RzChromaSDK::GetLibraryLoadedState() != RZRESULT_SUCCESS)
 	{
-		LogError("ChromaSDKPlugin failed to load!\r\n");
+		LogError(L"ChromaSDKPlugin failed to load!\r\n");
 		return;
 	}
-	//LogDebug("ChromaSDKPlugin loaded.\r\n");	
+	//LogDebug(L"ChromaSDKPlugin loaded.\r\n");	
 
 	// keyboard mapping
 	_mKeyboardEnumMap[EChromaSDKKeyboardKey::KK_ESC] = Keyboard::RZKEY::RZKEY_ESC;
@@ -155,131 +155,131 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	_mKeyboardEnumMap[EChromaSDKKeyboardKey::KK_INVALID] = Keyboard::RZKEY::RZKEY_INVALID;
 
 	// keyboard char mapping
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_ESC] = "Esc (VK_ESCAPE)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F1] = "F1 (VK_F1)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F2] = "F2 (VK_F2)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F3] = "F3 (VK_F3)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F4] = "F4 (VK_F4)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F5] = "F5 (VK_F5)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F6] = "F6 (VK_F6)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F7] = "F7 (VK_F7)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F8] = "F8 (VK_F8)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F9] = "F9 (VK_F9)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F10] = "F10 (VK_F10)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F11] = "F11 (VK_F11)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F12] = "F12 (VK_F12)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_1] = "1 (VK_1)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_2] = "2 (VK_2)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_3] = "3 (VK_3)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_4] = "4 (VK_4)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_5] = "5 (VK_5)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_6] = "6 (VK_6)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_7] = "7 (VK_7)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_8] = "8 (VK_8)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_9] = "9 (VK_9)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_0] = "0 (VK_0)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_A] = "A (VK_A)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_B] = "B (VK_B)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_C] = "C (VK_C)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_D] = "D (VK_D)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_E] = "E (VK_E)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F] = "F (VK_F)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_G] = "G (VK_G)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_H] = "H (VK_H)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_I] = "I (VK_I)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_J] = "J (VK_J)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_K] = "K (VK_K)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_L] = "L (VK_L)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_M] = "M (VK_M)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_N] = "N (VK_N)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_O] = "O (VK_O)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_P] = "P (VK_P)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_Q] = "Q (VK_Q)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_R] = "R (VK_R)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_S] = "S (VK_S)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_T] = "T (VK_T)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_U] = "U (VK_U)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_V] = "V (VK_V)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_W] = "W (VK_W)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_X] = "X (VK_X)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_Y] = "Y (VK_Y)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_Z] = "Z (VK_Z)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMLOCK] = "Numlock (VK_NUMLOCK)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD0] = "Numpad 0 (VK_NUMPAD0)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD1] = "Numpad 1 (VK_NUMPAD1)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD2] = "Numpad 2 (VK_NUMPAD2)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD3] = "Numpad 3 (VK_NUMPAD3)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD4] = "Numpad 4 (VK_NUMPAD4)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD5] = "Numpad 5 (VK_NUMPAD5)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD6] = "Numpad 6 (VK_NUMPAD6)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD7] = "Numpad 7 (VK_NUMPAD7)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD8] = "Numpad 8 (VK_NUMPAD8)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD9] = "Numpad 9 (VK_ NUMPAD9)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_DIVIDE] = "Divide (VK_DIVIDE)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_MULTIPLY] = "Multiply (VK_MULTIPLY)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_SUBTRACT] = "Subtract (VK_SUBTRACT)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_ADD] = "Add (VK_ADD)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_ENTER] = "Enter (VK_RETURN - Extended)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_DECIMAL] = "Decimal (VK_DECIMAL)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_PRINTSCREEN] = "Print Screen (VK_PRINT)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_SCROLL] = "Scroll Lock (VK_SCROLL)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_PAUSE] = "Pause (VK_PAUSE)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_INSERT] = "Insert (VK_INSERT)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_HOME] = "Home (VK_HOME)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_PAGEUP] = "Page Up (VK_PRIOR)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_DELETE] = "Delete (VK_DELETE)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_END] = "End (VK_END)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_PAGEDOWN] = "Page Down (VK_NEXT)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_UP] = "Up (VK_UP)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LEFT] = "Left (VK_LEFT)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_DOWN] = "Down (VK_DOWN)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RIGHT] = "Right (VK_RIGHT)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_TAB] = "Tab (VK_TAB)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_CAPSLOCK] = "Caps Lock(VK_CAPITAL)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_BACKSPACE] = "Backspace (VK_BACK)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_ENTER] = "Enter (VK_RETURN)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LCTRL] = "Left Control(VK_LCONTROL)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LWIN] = "Left Window (VK_LWIN)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LALT] = "Left Alt (VK_LMENU)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_SPACE] = "Spacebar (VK_SPACE)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RALT] = "Right Alt (VK_RMENU)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_FN] = "Function key";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RMENU] = "Right Menu (VK_APPS)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RCTRL] = "Right Control (VK_RCONTROL)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LSHIFT] = "Left Shift (VK_LSHIFT)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RSHIFT] = "Right Shift (VK_RSHIFT)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO1] = "Macro Key 1";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO2] = "Macro Key 2";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO3] = "Macro Key 3";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO4] = "Macro Key 4";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO5] = "Macro Key 5";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_1] = "~ (tilde)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_2] = "-- (minus) (VK_OEM_MINUS)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_3] = "= (equal) (VK_OEM_PLUS)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_4] = "[ (left sqaure bracket) (VK_OEM_4)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_5] = "] (right square bracket) (VK_OEM_6)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_6] = "\ (backslash) (VK_OEM_5)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_7] = "; (semi-colon) (VK_OEM_1)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_8] = "' (apostrophe) (VK_OEM_7)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_9] = ", (comma) (VK_OEM_COMMA)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_10] = ". (period) (VK_OEM_PERIOD)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_11] = "/ (forward slash) (VK_OEM_2)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_EUR_1] = "KK_EUR_1";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_EUR_2] = "KK_EUR_2";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_1] = "KK_JPN_1";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_2] = "KK_JPN_2";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_3] = "KK_JPN_3";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_4] = "KK_JPN_4";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_5] = "KK_JPN_5";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_1] = "KK_KOR_1";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_2] = "KK_KOR_2";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_3] = "KK_KOR_3";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_4] = "KK_KOR_4";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_5] = "KK_KOR_5";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_6] = "KK_KOR_6";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_7] = "KK_KOR_7";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LOGO] = "Razer logo";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_INVALID] = "Invalid keys.";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_ESC] = L"Esc (VK_ESCAPE)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F1] = L"F1 (VK_F1)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F2] = L"F2 (VK_F2)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F3] = L"F3 (VK_F3)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F4] = L"F4 (VK_F4)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F5] = L"F5 (VK_F5)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F6] = L"F6 (VK_F6)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F7] = L"F7 (VK_F7)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F8] = L"F8 (VK_F8)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F9] = L"F9 (VK_F9)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F10] = L"F10 (VK_F10)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F11] = L"F11 (VK_F11)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F12] = L"F12 (VK_F12)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_1] = L"1 (VK_1)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_2] = L"2 (VK_2)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_3] = L"3 (VK_3)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_4] = L"4 (VK_4)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_5] = L"5 (VK_5)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_6] = L"6 (VK_6)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_7] = L"7 (VK_7)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_8] = L"8 (VK_8)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_9] = L"9 (VK_9)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_0] = L"0 (VK_0)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_A] = L"A (VK_A)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_B] = L"B (VK_B)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_C] = L"C (VK_C)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_D] = L"D (VK_D)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_E] = L"E (VK_E)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_F] = L"F (VK_F)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_G] = L"G (VK_G)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_H] = L"H (VK_H)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_I] = L"I (VK_I)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_J] = L"J (VK_J)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_K] = L"K (VK_K)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_L] = L"L (VK_L)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_M] = L"M (VK_M)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_N] = L"N (VK_N)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_O] = L"O (VK_O)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_P] = L"P (VK_P)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_Q] = L"Q (VK_Q)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_R] = L"R (VK_R)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_S] = L"S (VK_S)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_T] = L"T (VK_T)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_U] = L"U (VK_U)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_V] = L"V (VK_V)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_W] = L"W (VK_W)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_X] = L"X (VK_X)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_Y] = L"Y (VK_Y)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_Z] = L"Z (VK_Z)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMLOCK] = L"Numlock (VK_NUMLOCK)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD0] = L"Numpad 0 (VK_NUMPAD0)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD1] = L"Numpad 1 (VK_NUMPAD1)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD2] = L"Numpad 2 (VK_NUMPAD2)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD3] = L"Numpad 3 (VK_NUMPAD3)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD4] = L"Numpad 4 (VK_NUMPAD4)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD5] = L"Numpad 5 (VK_NUMPAD5)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD6] = L"Numpad 6 (VK_NUMPAD6)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD7] = L"Numpad 7 (VK_NUMPAD7)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD8] = L"Numpad 8 (VK_NUMPAD8)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD9] = L"Numpad 9 (VK_ NUMPAD9)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_DIVIDE] = L"Divide (VK_DIVIDE)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_MULTIPLY] = L"Multiply (VK_MULTIPLY)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_SUBTRACT] = L"Subtract (VK_SUBTRACT)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_ADD] = L"Add (VK_ADD)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_ENTER] = L"Enter (VK_RETURN - Extended)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_NUMPAD_DECIMAL] = L"Decimal (VK_DECIMAL)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_PRINTSCREEN] = L"Print Screen (VK_PRINT)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_SCROLL] = L"Scroll Lock (VK_SCROLL)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_PAUSE] = L"Pause (VK_PAUSE)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_INSERT] = L"Insert (VK_INSERT)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_HOME] = L"Home (VK_HOME)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_PAGEUP] = L"Page Up (VK_PRIOR)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_DELETE] = L"Delete (VK_DELETE)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_END] = L"End (VK_END)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_PAGEDOWN] = L"Page Down (VK_NEXT)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_UP] = L"Up (VK_UP)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LEFT] = L"Left (VK_LEFT)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_DOWN] = L"Down (VK_DOWN)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RIGHT] = L"Right (VK_RIGHT)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_TAB] = L"Tab (VK_TAB)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_CAPSLOCK] = L"Caps Lock(VK_CAPITAL)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_BACKSPACE] = L"Backspace (VK_BACK)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_ENTER] = L"Enter (VK_RETURN)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LCTRL] = L"Left Control(VK_LCONTROL)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LWIN] = L"Left Window (VK_LWIN)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LALT] = L"Left Alt (VK_LMENU)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_SPACE] = L"Spacebar (VK_SPACE)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RALT] = L"Right Alt (VK_RMENU)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_FN] = L"Function key";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RMENU] = L"Right Menu (VK_APPS)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RCTRL] = L"Right Control (VK_RCONTROL)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LSHIFT] = L"Left Shift (VK_LSHIFT)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_RSHIFT] = L"Right Shift (VK_RSHIFT)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO1] = L"Macro Key 1";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO2] = L"Macro Key 2";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO3] = L"Macro Key 3";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO4] = L"Macro Key 4";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_MACRO5] = L"Macro Key 5";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_1] = L"~ (tilde)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_2] = L"-- (minus) (VK_OEM_MINUS)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_3] = L"= (equal) (VK_OEM_PLUS)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_4] = L"[ (left sqaure bracket) (VK_OEM_4)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_5] = L"] (right square bracket) (VK_OEM_6)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_6] = L"\ (backslash) (VK_OEM_5)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_7] = L"; (semi-colon) (VK_OEM_1)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_8] = L"' (apostrophe) (VK_OEM_7)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_9] = L", (comma) (VK_OEM_COMMA)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_10] = L". (period) (VK_OEM_PERIOD)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_11] = L"/ (forward slash) (VK_OEM_2)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_EUR_1] = L"KK_EUR_1";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_EUR_2] = L"KK_EUR_2";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_1] = L"KK_JPN_1";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_2] = L"KK_JPN_2";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_3] = L"KK_JPN_3";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_4] = L"KK_JPN_4";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_JPN_5] = L"KK_JPN_5";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_1] = L"KK_KOR_1";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_2] = L"KK_KOR_2";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_3] = L"KK_KOR_3";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_4] = L"KK_KOR_4";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_5] = L"KK_KOR_5";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_6] = L"KK_KOR_6";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_KOR_7] = L"KK_KOR_7";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_LOGO] = L"Razer logo";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_INVALID] = L"Invalid keys.";
 
 	// mouse mapping
 	_mMouseEnumMap[EChromaSDKMouseLED::ML_SCROLLWHEEL] = Mouse::RZLED2::RZLED2_SCROLLWHEEL;
@@ -306,28 +306,28 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	_mMouseEnumMap[EChromaSDKMouseLED::ML_RIGHT_SIDE7] = Mouse::RZLED2::RZLED2_RIGHT_SIDE7;
 
 	// mouse char mapping
-	_mMouseCharMap[EChromaSDKMouseLED::ML_SCROLLWHEEL] = "Scroll Wheel LED";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_LOGO] = "Logo LED";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_BACKLIGHT] = "Backlight LED";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE1] = "Left LED 1";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE2] = "Left LED 2";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE3] = "Left LED 3";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE4] = "Left LED 4";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE5] = "Left LED 5";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE6] = "Left LED 6";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE7] = "Left LED 7";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM1] = "Bottom LED 1";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM2] = "Bottom LED 2";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM3] = "Bottom LED 3";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM4] = "Bottom LED 4";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM5] = "Bottom LED 5";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE1] = "Right LED 1";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE2] = "Right LED 2";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE3] = "Right LED 3";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE4] = "Right LED 4";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE5] = "Right LED 5";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE6] = "Right LED 6";
-	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE7] = "Right LED 7";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_SCROLLWHEEL] = L"Scroll Wheel LED";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LOGO] = L"Logo LED";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BACKLIGHT] = L"Backlight LED";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE1] = L"Left LED 1";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE2] = L"Left LED 2";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE3] = L"Left LED 3";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE4] = L"Left LED 4";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE5] = L"Left LED 5";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE6] = L"Left LED 6";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_LEFT_SIDE7] = L"Left LED 7";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM1] = L"Bottom LED 1";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM2] = L"Bottom LED 2";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM3] = L"Bottom LED 3";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM4] = L"Bottom LED 4";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_BOTTOM5] = L"Bottom LED 5";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE1] = L"Right LED 1";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE2] = L"Right LED 2";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE3] = L"Right LED 3";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE4] = L"Right LED 4";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE5] = L"Right LED 5";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE6] = L"Right LED 6";
+	_mMouseCharMap[EChromaSDKMouseLED::ML_RIGHT_SIDE7] = L"Right LED 7";
 }
 
 ChromaSDKPlugin::~ChromaSDKPlugin()
@@ -501,7 +501,7 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetKeyboardKeyColor(const EChro
 		colors.size() == 0 ||
 		maxColumn != colors[0].Colors.size())
 	{
-		LogError("ChromaSDKPlugin::SetKeyboardKeyColor Array size mismatch row: %d==%d column: %d==%d!\r\n",
+		LogError(L"ChromaSDKPlugin::SetKeyboardKeyColor Array size mismatch row: %d==%d column: %d==%d!\r\n",
 			maxRow,
 			colors.size(),
 			maxColumn,
@@ -525,7 +525,7 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetMouseLEDColor(const EChromaS
 		colors.size() == 0 ||
 		maxColumn != colors[0].Colors.size())
 	{
-		LogError("ChromaSDKPlugin::SetMouseLedColor Array size mismatch row: %d==%d column: %d==%d!\r\n",
+		LogError(L"ChromaSDKPlugin::SetMouseLedColor Array size mismatch row: %d==%d column: %d==%d!\r\n",
 			maxRow,
 			colors.size(),
 			maxColumn,
@@ -540,7 +540,7 @@ const vector<FChromaSDKColors>& ChromaSDKPlugin::SetMouseLEDColor(const EChromaS
 
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffect(RZDEVICEID deviceId, EFFECT_TYPE effect, const vector<FChromaSDKColors>& colors)
 {
-	//LogDebug("ChromaSDKPlugin::CreateEffect Invoke.\r\n");
+	//LogDebug(L"ChromaSDKPlugin::CreateEffect Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -562,7 +562,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffect(RZDEVICEID deviceId, EFFECT
 
 	if (data.Result != 0)
 	{
-		LogDebug("ChromaSDKPlugin::CreateEffect Result=%d.\r\n", data.Result);
+		LogDebug(L"ChromaSDKPlugin::CreateEffect Result=%d.\r\n", data.Result);
 	}
 
 	return data;
@@ -570,7 +570,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffect(RZDEVICEID deviceId, EFFECT
 
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevice1DEnum& device)
 {
-	//LogDebug("ChromaSDKPlugin::CreateEffectNone1D Invoke.\r\n");
+	//LogDebug(L"ChromaSDKPlugin::CreateEffectNone1D Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -588,7 +588,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevic
 		result = RzChromaSDK::CreateMousepadEffect(Mousepad::CHROMA_NONE, NULL, &effectId);
 		break;
 	default:
-		LogError("ChromaSDKPlugin::CreateEffectNone1D Unsupported device used!\r\n");
+		LogError(L"ChromaSDKPlugin::CreateEffectNone1D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -596,7 +596,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevic
 
 	if (data.Result != 0)
 	{
-		LogDebug("ChromaSDKPlugin::CreateEffectNone1D Result=%d.\r\n", data.Result);
+		LogDebug(L"ChromaSDKPlugin::CreateEffectNone1D Result=%d.\r\n", data.Result);
 	}
 
 	return data;
@@ -604,7 +604,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone1D(const EChromaSDKDevic
 
 FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevice2DEnum& device)
 {
-	//LogDebug("ChromaSDKPlugin::CreateEffectNone2D Invoke.\r\n");
+	//LogDebug(L"ChromaSDKPlugin::CreateEffectNone2D Invoke.\r\n");
 
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -623,7 +623,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevic
 		result = RzChromaSDK::CreateMouseEffect(Mouse::CHROMA_NONE, NULL, &effectId);
 		break;
 	default:
-		LogError("ChromaSDKPlugin::CreateEffectNone2D Unsupported device used!\r\n");
+		LogError(L"ChromaSDKPlugin::CreateEffectNone2D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -631,7 +631,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectNone2D(const EChromaSDKDevic
 
 	if (data.Result != 0)
 	{
-		LogDebug("ChromaSDKPlugin::CreateEffectNone2D Result=%d.\r\n", data.Result);
+		LogDebug(L"ChromaSDKPlugin::CreateEffectNone2D Result=%d.\r\n", data.Result);
 	}
 
 	return data;
@@ -667,7 +667,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic1D(const EChromaSDKDev
 	}
 	break;
 	default:
-		LogError("ChromaSDKPlugin::CreateEffectStatic1D Unsupported device used!\r\n");
+		LogError(L"ChromaSDKPlugin::CreateEffectStatic1D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -708,7 +708,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectStatic2D(const EChromaSDKDev
 	}
 	break;
 	default:
-		LogError("ChromaSDKPlugin::CreateEffectStatic2D Unsupported device used!\r\n");
+		LogError(L"ChromaSDKPlugin::CreateEffectStatic2D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -731,7 +731,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		maxLeds = ChromaLink::MAX_LEDS;
 		if (maxLeds != colors.size())
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+			LogError(L"ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
 				maxLeds,
 				colors.size());
 			break;
@@ -749,7 +749,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		maxLeds = Headset::MAX_LEDS;
 		if (maxLeds != colors.size())
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+			LogError(L"ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
 				maxLeds,
 				colors.size());
 			break;
@@ -767,7 +767,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 		maxLeds = Mousepad::MAX_LEDS;
 		if (maxLeds != colors.size())
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
+			LogError(L"ChromaSDKPlugin::CreateEffectCustom1D Array size mismatch elements: %d==%d!\r\n",
 				maxLeds,
 				colors.size());
 			break;
@@ -781,7 +781,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 	}
 	break;
 	default:
-		LogError("ChromaSDKPlugin::CreateEffectCustom1D Unsupported device used!\r\n");
+		LogError(L"ChromaSDKPlugin::CreateEffectCustom1D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -808,7 +808,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError(L"ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -835,7 +835,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError(L"ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -862,7 +862,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError(L"ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -889,7 +889,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError(L"ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -909,7 +909,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 	}
 	break;
 	default:
-		LogError("ChromaSDKPlugin::CreateEffectCustom2D Unsupported device used!\r\n");
+		LogError(L"ChromaSDKPlugin::CreateEffectCustom2D Unsupported device used!\r\n");
 		break;
 	}
 	data.EffectId.Data = effectId;
@@ -931,7 +931,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vecto
 		(colors.size() > 0 &&
 		maxColumn != colors[0].Colors.size()))
 	{
-		LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+		LogError(L"ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
 			maxRow,
 			colors.size(),
 			maxColumn,
@@ -959,46 +959,46 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vecto
 
 RZRESULT ChromaSDKPlugin::SetEffect(const FChromaSDKGuid& effectId)
 {
-	//LogDebug("ChromaSDKPlugin::SetEffect Invoke.\r\n");
+	//LogDebug(L"ChromaSDKPlugin::SetEffect Invoke.\r\n");
 	RZRESULT result = RzChromaSDK::SetEffect(effectId.Data);
 	if (result != 0)
 	{
-		LogError("ChromaSDKPlugin::SetEffect Result=%d.\r\n", result);
+		LogError(L"ChromaSDKPlugin::SetEffect Result=%d.\r\n", result);
 	}
 	return result;
 }
 
 RZRESULT ChromaSDKPlugin::DeleteEffect(const FChromaSDKGuid& effectId)
 {
-	//LogDebug("ChromaSDKPlugin::DeleteEffect Invoke.\r\n");
+	//LogDebug(L"ChromaSDKPlugin::DeleteEffect Invoke.\r\n");
 	RZRESULT result = RzChromaSDK::DeleteEffect(effectId.Data);
 	if (result != 0)
 	{
-		LogError("ChromaSDKPlugin::DeleteEffect Result=%d.\r\n", result);
+		LogError(L"ChromaSDKPlugin::DeleteEffect Result=%d.\r\n", result);
 	}
 	return result;
 }
 
-const char* ChromaSDKPlugin::GetKeyboardChar(EChromaSDKKeyboardKey key)
+const wchar_t* ChromaSDKPlugin::GetKeyboardChar(EChromaSDKKeyboardKey key)
 {
 	return _mKeyboardCharMap[key];
 }
 
-const char* ChromaSDKPlugin::GetMouseChar(EChromaSDKMouseLED led)
+const wchar_t* ChromaSDKPlugin::GetMouseChar(EChromaSDKMouseLED led)
 {
 	return _mMouseCharMap[led];
 }
 
-AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
+AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 {
 	AnimationBase* animation = nullptr;
 
-	//LogDebug("OpenAnimation: %s\r\n", path.c_str());
+	//LogDebug(L"OpenAnimation: %s\r\n", path.c_str());
 	FILE* stream = nullptr;
-	if (0 != fopen_s(&stream, path.c_str(), "rb") ||
+	if (0 != _wfopen_s(&stream, path.c_str(), L"rb") ||
 		stream == nullptr)
 	{
-		//LogError("OpenAnimation: Failed to open animation! %s\r\n", path.c_str());
+		//LogError(L"OpenAnimation: Failed to open animation! %s\r\n", path.c_str());
 	}
 	else
 	{
@@ -1012,18 +1012,18 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 		read = fread(&version, expectedSize, 1, stream);
 		if (read != expectedRead)
 		{
-			LogError("OpenAnimation: Failed to read version!\r\n");
+			LogError(L"OpenAnimation: Failed to read version!\r\n");
 			std::fclose(stream);
 			return nullptr;
 		}
 		if (version != ANIMATION_VERSION)
 		{
-			LogError("OpenAnimation: Unexpected Version!\r\n");
+			LogError(L"OpenAnimation: Unexpected Version!\r\n");
 			std::fclose(stream);
 			return nullptr;
 		}
 
-		//LogDebug("OpenAnimation: Version: %d\r\n", version);
+		//LogDebug(L"OpenAnimation: Version: %d\r\n", version);
 
 		//device
 		byte device = 0;
@@ -1034,7 +1034,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 		read = fread(&deviceType, expectedSize, 1, stream);
 		if (read != expectedRead)
 		{
-			LogError("OpenAnimation: Unexpected DeviceType!\r\n");
+			LogError(L"OpenAnimation: Unexpected DeviceType!\r\n");
 			std::fclose(stream);
 			return nullptr;
 		}
@@ -1044,13 +1044,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 			switch ((EChromaSDKDeviceTypeEnum)deviceType)
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
-				//LogDebug("OpenAnimation: DeviceType: 1D\r\n");
+				//LogDebug(L"OpenAnimation: DeviceType: 1D\r\n");
 				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
-				//LogDebug("OpenAnimation: DeviceType: 2D\r\n");
+				//LogDebug(L"OpenAnimation: DeviceType: 2D\r\n");
 				break;
 			default:
-				LogError("OpenAnimation: Unexpected DeviceType!\r\n");
+				LogError(L"OpenAnimation: Unexpected DeviceType!\r\n");
 				std::fclose(stream);
 				return nullptr;
 			}
@@ -1061,7 +1061,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 				read = fread(&device, expectedSize, 1, stream);
 				if (read != expectedRead)
 				{
-					LogError("OpenAnimation: Unexpected Device!\r\n");
+					LogError(L"OpenAnimation: Unexpected Device!\r\n");
 					std::fclose(stream);
 					return nullptr;
 				}
@@ -1070,13 +1070,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					switch ((EChromaSDKDevice1DEnum)device)
 					{
 					case EChromaSDKDevice1DEnum::DE_ChromaLink:
-						//LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
+						//LogDebug(L"OpenAnimation: Device: DE_ChromaLink\r\n");
 						break;
 					case EChromaSDKDevice1DEnum::DE_Headset:
-						//LogDebug("OpenAnimation: Device: DE_Headset\r\n");
+						//LogDebug(L"OpenAnimation: Device: DE_Headset\r\n");
 						break;
 					case EChromaSDKDevice1DEnum::DE_Mousepad:
-						//LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
+						//LogDebug(L"OpenAnimation: Device: DE_Mousepad\r\n");
 						break;
 					}
 
@@ -1093,7 +1093,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					read = fread(&frameCount, expectedSize, 1, stream);
 					if (read != expectedRead)
 					{
-						LogError("OpenAnimation: Error detected reading frame count!\r\n");
+						LogError(L"OpenAnimation: Error detected reading frame count!\r\n");
 						delete animation1D;
 						std::fclose(stream);
 						return nullptr;
@@ -1112,7 +1112,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							read = fread(&duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
-								LogError("OpenAnimation: Error detected reading duration!\r\n");
+								LogError(L"OpenAnimation: Error detected reading duration!\r\n");
 								delete animation1D;
 								std::fclose(stream);
 								return nullptr;
@@ -1136,7 +1136,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 									read = fread(&color, expectedSize, 1, stream);
 									if (read != expectedRead)
 									{
-										LogError("OpenAnimation: Error detected reading color!\r\n");
+										LogError(L"OpenAnimation: Error detected reading color!\r\n");
 										delete animation1D;
 										std::fclose(stream);
 										return nullptr;
@@ -1163,7 +1163,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 				read = fread(&device, expectedSize, 1, stream);
 				if (read != expectedRead)
 				{
-					LogError("OpenAnimation: Unexpected Device!\r\n");
+					LogError(L"OpenAnimation: Unexpected Device!\r\n");
 					std::fclose(stream);
 					return nullptr;
 				}
@@ -1172,16 +1172,16 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					switch ((EChromaSDKDevice2DEnum)device)
 					{
 					case EChromaSDKDevice2DEnum::DE_Keyboard:
-						//LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
+						//LogDebug(L"OpenAnimation: Device: DE_Keyboard\r\n");
 						break;
 					case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
-						//LogDebug("OpenAnimation: Device: DE_KeyboardExtended\r\n");
+						//LogDebug(L"OpenAnimation: Device: DE_KeyboardExtended\r\n");
 						break;
 					case EChromaSDKDevice2DEnum::DE_Keypad:
-						//LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
+						//LogDebug(L"OpenAnimation: Device: DE_Keypad\r\n");
 						break;
 					case EChromaSDKDevice2DEnum::DE_Mouse:
-						//LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
+						//LogDebug(L"OpenAnimation: Device: DE_Mouse\r\n");
 						break;
 					}
 
@@ -1198,7 +1198,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 					read = fread(&frameCount, expectedSize, 1, stream);
 					if (read != expectedRead)
 					{
-						LogError("OpenAnimation: Error detected reading frame count!\r\n");
+						LogError(L"OpenAnimation: Error detected reading frame count!\r\n");
 						delete animation2D;
 						std::fclose(stream);
 						return nullptr;
@@ -1218,7 +1218,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 							read = fread(&duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
-								LogError("OpenAnimation: Error detected reading duration!\r\n");
+								LogError(L"OpenAnimation: Error detected reading duration!\r\n");
 								delete animation2D;
 								std::fclose(stream);
 								return nullptr;
@@ -1245,7 +1245,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 										read = fread(&color, expectedSize, 1, stream);
 										if (read != expectedRead)
 										{
-											LogError("OpenAnimation: Error detected reading color!\r\n");
+											LogError(L"OpenAnimation: Error detected reading color!\r\n");
 											delete animation2D;
 											std::fclose(stream);
 											return nullptr;
@@ -1274,7 +1274,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 		}
 
 		std::fclose(stream);
-		//LogDebug("OpenAnimation: Loaded %s\r\n", path.c_str());
+		//LogDebug(L"OpenAnimation: Loaded %s\r\n", path.c_str());
 	}
 
 	return animation;
@@ -1287,7 +1287,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 
 	if (0 == data)
 	{
-		LogError("OpenAnimationFromMemory: Failed to open animation!\r\n");
+		LogError(L"OpenAnimationFromMemory: Failed to open animation!\r\n");
 		return nullptr;
 	}
 
@@ -1302,11 +1302,11 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	pointer += expectedSize;
 	if (version != ANIMATION_VERSION)
 	{
-		LogError("OpenAnimationFromMemory: Unexpected Version!\r\n");
+		LogError(L"OpenAnimationFromMemory: Unexpected Version!\r\n");
 		return nullptr;
 	}
 
-	//LogDebug("OpenAnimationFromMemory: Version: %d\r\n", version);
+	//LogDebug(L"OpenAnimationFromMemory: Version: %d\r\n", version);
 
 	//device
 	byte device = 0;
@@ -1321,13 +1321,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	switch ((EChromaSDKDeviceTypeEnum)deviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
-		//LogDebug("OpenAnimation: DeviceType: 1D\r\n");
+		//LogDebug(L"OpenAnimation: DeviceType: 1D\r\n");
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
-		//LogDebug("OpenAnimation: DeviceType: 2D\r\n");
+		//LogDebug(L"OpenAnimation: DeviceType: 2D\r\n");
 		break;
 	default:
-		LogError("OpenAnimationFromMemory: Unexpected DeviceType!\r\n");
+		LogError(L"OpenAnimationFromMemory: Unexpected DeviceType!\r\n");
 		return nullptr;
 	}
 
@@ -1342,13 +1342,13 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 		switch ((EChromaSDKDevice1DEnum)device)
 		{
 		case EChromaSDKDevice1DEnum::DE_ChromaLink:
-			//LogDebug("OpenAnimation: Device: DE_ChromaLink\r\n");
+			//LogDebug(L"OpenAnimation: Device: DE_ChromaLink\r\n");
 			break;
 		case EChromaSDKDevice1DEnum::DE_Headset:
-			//LogDebug("OpenAnimation: Device: DE_Headset\r\n");
+			//LogDebug(L"OpenAnimation: Device: DE_Headset\r\n");
 			break;
 		case EChromaSDKDevice1DEnum::DE_Mousepad:
-			//LogDebug("OpenAnimation: Device: DE_Mousepad\r\n");
+			//LogDebug(L"OpenAnimation: Device: DE_Mousepad\r\n");
 			break;
 		}
 
@@ -1416,16 +1416,16 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 		switch ((EChromaSDKDevice2DEnum)device)
 		{
 		case EChromaSDKDevice2DEnum::DE_Keyboard:
-			//LogDebug("OpenAnimation: Device: DE_Keyboard\r\n");
+			//LogDebug(L"OpenAnimation: Device: DE_Keyboard\r\n");
 			break;
 		case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
-			//LogDebug("OpenAnimation: Device: DE_KeyboardExtended\r\n");
+			//LogDebug(L"OpenAnimation: Device: DE_KeyboardExtended\r\n");
 			break;
 		case EChromaSDKDevice2DEnum::DE_Keypad:
-			//LogDebug("OpenAnimation: Device: DE_Keypad\r\n");
+			//LogDebug(L"OpenAnimation: Device: DE_Keypad\r\n");
 			break;
 		case EChromaSDKDevice2DEnum::DE_Mouse:
-			//LogDebug("OpenAnimation: Device: DE_Mouse\r\n");
+			//LogDebug(L"OpenAnimation: Device: DE_Mouse\r\n");
 			break;
 		}
 
@@ -1492,7 +1492,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	break;
 	}
 
-	//LogDebug("OpenAnimationFromMemory: Loaded %s\r\n", path.c_str());
+	//LogDebug(L"OpenAnimationFromMemory: Loaded %s\r\n", path.c_str());
 
 	return animation;
 }
@@ -1505,7 +1505,7 @@ void ChromaSDKPlugin::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
 	}
 }
 
-void ChromaSDKPlugin::SetIdleAnimationName(const char* path)
+void ChromaSDKPlugin::SetIdleAnimationName(const wchar_t* path)
 {
 	if (ChromaThread::Instance())
 	{

@@ -16,7 +16,7 @@ bool ChromaThread::_sWaitForExit = true;
 thread* ChromaThread::_sThread = nullptr;
 vector<AnimationBase*> ChromaThread::_sAnimations;
 vector<bool> ChromaThread::_sUseIdleAnimation;
-vector<std::string> ChromaThread::_sIdleAnimation;
+vector<std::wstring> ChromaThread::_sIdleAnimation;
 
 ChromaThread::ChromaThread()
 {
@@ -25,7 +25,7 @@ ChromaThread::ChromaThread()
 	for (int i = 0; i < (int)EChromaSDKDeviceEnum::DE_MAX; ++i)
 	{
 		_sUseIdleAnimation.push_back(false);
-		_sIdleAnimation.push_back("");
+		_sIdleAnimation.push_back(L"");
 	}	
 }
 
@@ -56,7 +56,7 @@ void ChromaThread::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
 		break;
 	}
 }
-void ChromaThread::SetIdleAnimationName(const char* name)
+void ChromaThread::SetIdleAnimationName(const wchar_t* name)
 {
 	lock_guard<mutex> guard(_sMutex);
 	AnimationBase* animation = GetAnimationInstanceName(name);
@@ -271,7 +271,7 @@ void ChromaThread::Stop()
 	for (int i = 0; i < (int)EChromaSDKDeviceEnum::DE_MAX; ++i)
 	{
 		_sUseIdleAnimation[i] = false;
-		_sIdleAnimation[i] = "";
+		_sIdleAnimation[i] = L"";
 	}
 	_sAnimations.clear();
 

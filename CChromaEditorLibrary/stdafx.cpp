@@ -3,7 +3,9 @@
 // stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
-#include "CChromaEditorLibrary.h"
+#include "Animation1D.h"
+#include "Animation2D.h"
+#include "ChromaSDKPlugin.h"
 #include "ChromaThread.h"
 #include "RzChromaSDK.h"
 #include "ChromaLogger.h"
@@ -18,58 +20,57 @@ using namespace std;
 
 /* Setup log mechanism */
 static DebugLogPtr _gDebugLogPtr;
-void LogDebug(const char* format, ...)
+void LogDebug(const wchar_t* format, ...)
 {
 	if (NULL == _gDebugLogPtr)
 	{
 		va_list args;
 		va_start(args, format);
-		vfprintf_s(stdout, format, args);
+		vfwprintf_s(stdout, format, args);
 		va_end(args);
 	}
 	else if (NULL == format)
 	{
-		_gDebugLogPtr("");
+		_gDebugLogPtr(L"");
 	}
 	else
 	{
-		char buffer[1024] = { 0 };
+		wchar_t buffer[1024] = { 0 };
 		va_list args;
 		va_start(args, format);
-		vsprintf_s(buffer, format, args);
+		vswprintf_s(buffer, format, args);
 		va_end(args);
 		_gDebugLogPtr(&buffer[0]);
 	}
 }
-void LogError(const char* format, ...)
+void LogError(const wchar_t* format, ...)
 {
 	if (NULL == _gDebugLogPtr)
 	{
 		va_list args;
 		va_start(args, format);
-		vfprintf_s(stderr, format, args);
+		vfwprintf_s(stderr, format, args);
 		va_end(args);
 	}
 	else if (NULL == format)
 	{
-		_gDebugLogPtr("");
+		_gDebugLogPtr(L"");
 	}
 	else
 	{
-		char buffer[1024] = { 0 };
+		wchar_t buffer[1024] = { 0 };
 		va_list args;
 		va_start(args, format);
-		vsprintf_s(buffer, format, args);
+		vswprintf_s(buffer, format, args);
 		va_end(args);
 		_gDebugLogPtr(&buffer[0]);
 	}
 }
 /* End of setup log mechanism */
 
-bool _gDialogIsOpen = false;
-string _gPath = "";
+wstring _gPath = L"";
 int _gAnimationId = 0;
-map<string, int> _gAnimationMapID;
+map<wstring, int> _gAnimationMapID;
 map<int, AnimationBase*> _gAnimations;
 map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
 map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
@@ -92,30 +93,6 @@ void StopChromaThread()
 	{
 		ChromaThread::Instance()->Stop();
 	}
-}
-
-void ThreadOpenEditorDialog(bool playOnOpen)
-{
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	// normal function body here
-
-	//LogError("CChromaEditorLibrary::ThreadOpenEditorDialog %s\r\n", _gPath.c_str());
-
-	// dialog instance
-	CMainViewDlg mainViewDlg;
-
-	mainViewDlg.OpenOrCreateAnimation(_gPath);
-
-	if (playOnOpen)
-	{
-		mainViewDlg.PlayAnimationOnOpen();
-	}
-
-	// keep dialog focused
-	mainViewDlg.DoModal();
-
-	// dialog is closed
-	_gDialogIsOpen = false;
 }
 
 extern "C"
@@ -245,85 +222,18 @@ extern "C"
 	EXPORT_API double PluginGetRGBD(double red, double green, double blue)
 	{
 		return (double)PluginGetRGB((int)red, (int)green, (int)blue);
-	}
+	}	
 
-	EXPORT_API bool PluginIsDialogOpen()
-	{
-		return _gDialogIsOpen;
-	}
-
-	EXPORT_API double PluginIsDialogOpenD()
-	{
-		if (PluginIsDialogOpen())
-		{
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-
-	EXPORT_API int PluginOpenEditorDialog(const char* path)
-	{
-		PluginIsInitialized();
-
-		//LogDebug("PluginOpenEditorDialog %s\r\n", path);
-
-		if (_gDialogIsOpen)
-		{
-			LogError("PluginOpenEditorDialog: Dialog is already open!\r\n");
-			return -1;
-		}
-
-		_gDialogIsOpen = true;
-		_gPath = path;
-		thread newThread(ThreadOpenEditorDialog, false);
-		newThread.detach();
-
-		return 0;
-	}
-
-	EXPORT_API double PluginOpenEditorDialogD(const char* path)
-	{
-		return PluginOpenEditorDialog(path);
-	}
-
-	EXPORT_API int PluginOpenEditorDialogAndPlay(const char* path)
-	{
-		PluginIsInitialized();
-
-		//LogDebug("PluginOpenEditorDialogAndPlay %s\r\n", path);
-
-		if (_gDialogIsOpen)
-		{
-			LogError("PluginOpenEditorDialogAndPlay: Dialog is already open!\r\n");
-			return -1;
-		}
-
-		_gDialogIsOpen = true;
-		_gPath = path;
-		thread newThread(ThreadOpenEditorDialog, true);
-		newThread.detach();
-
-		return 0;
-	}
-
-	EXPORT_API double PluginOpenEditorDialogAndPlayD(const char* path)
-	{
-		return PluginOpenEditorDialogAndPlay(path);
-	}
-
-	EXPORT_API const char* PluginGetAnimationName(int animationId)
+	EXPORT_API const wchar_t* PluginGetAnimationName(int animationId)
 	{
 		if (animationId < 0)
 		{
-			return "";
+			return L"";
 		}
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (animation == nullptr)
 		{
-			return "";
+			return L"";
 		}
 		return animation->GetName().c_str();
 	}
@@ -382,7 +292,7 @@ extern "C"
 	EXPORT_API int PluginGetAnimationId(int index)
 	{
 		int i = 0;
-		for (std::map<string, int>::iterator it = _gAnimationMapID.begin(); it != _gAnimationMapID.end(); ++it)
+		for (std::map<wstring, int>::iterator it = _gAnimationMapID.begin(); it != _gAnimationMapID.end(); ++it)
 		{
 			if (index == i)
 			{
@@ -411,7 +321,7 @@ extern "C"
 		return ChromaThread::Instance()->GetAnimationId(index);
 	}
 
-	EXPORT_API int PluginOpenAnimation(const char* path)
+	EXPORT_API int PluginOpenAnimation(const wchar_t* path)
 	{
 		try
 		{
@@ -421,7 +331,7 @@ extern "C"
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
 			if (animation == nullptr)
 			{
-				//LogError("PluginOpenAnimation: Animation is null! name=%s\r\n", path);
+				//LogError(L"PluginOpenAnimation: Animation is null! name=%s\r\n", path);
 				return -1;
 			}
 			else
@@ -436,12 +346,12 @@ extern "C"
 		}
 		catch (exception)
 		{
-			LogError("PluginOpenAnimation: Exception path=%s\r\n", path);
+			LogError(L"PluginOpenAnimation: Exception path=%s\r\n", path);
 			return -1;
 		}
 	}
 
-	EXPORT_API int PluginOpenAnimationFromMemory(const byte* data, const char* name)
+	EXPORT_API int PluginOpenAnimationFromMemory(const byte* data, const wchar_t* name)
 	{
 		try
 		{
@@ -451,7 +361,7 @@ extern "C"
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimationFromMemory(data);
 			if (animation == nullptr)
 			{
-				//LogError("PluginOpenAnimationFromMemory: Animation is null! name=%s\r\n", name);
+				//LogError(L"PluginOpenAnimationFromMemory: Animation is null! name=%s\r\n", name);
 				return -1;
 			}
 			else
@@ -466,12 +376,12 @@ extern "C"
 		}
 		catch (exception)
 		{
-			LogError("PluginOpenAnimationFromMemory: Exception path=%s\r\n", name);
+			LogError(L"PluginOpenAnimationFromMemory: Exception path=%s\r\n", name);
 			return -1;
 		}
 	}
 
-	EXPORT_API double PluginOpenAnimationD(const char* path)
+	EXPORT_API double PluginOpenAnimationD(const wchar_t* path)
 	{
 		return PluginOpenAnimation(path);
 	}
@@ -485,7 +395,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginLoadAnimation: Animation is null! id=%d\r\n", animationId);
+					LogError(L"PluginLoadAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				animation->Load();
@@ -494,17 +404,17 @@ extern "C"
 		}
 		catch (exception)
 		{
-			LogError("PluginLoadAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError(L"PluginLoadAnimation: Exception animationId=%d\r\n", (int)animationId);
 		}
 		return -1;
 	}
 
-	EXPORT_API void PluginLoadAnimationName(const char* path)
+	EXPORT_API void PluginLoadAnimationName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginLoadAnimationName: Animation not found! %s\r\n", path);
+			LogError(L"PluginLoadAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginLoadAnimation(animationId);
@@ -524,7 +434,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginUnloadAnimation: Animation is null! id=%d\r\n", animationId);
+					LogError(L"PluginUnloadAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				animation->Unload();
@@ -533,17 +443,17 @@ extern "C"
 		}
 		catch (exception)
 		{
-			LogError("PluginUnloadAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError(L"PluginUnloadAnimation: Exception animationId=%d\r\n", (int)animationId);
 		}
 		return -1;
 	}
 
-	EXPORT_API void PluginUnloadAnimationName(const char* path)
+	EXPORT_API void PluginUnloadAnimationName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginUnloadAnimationName: Animation not found! %s\r\n", path);
+			LogError(L"PluginUnloadAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginUnloadAnimation(animationId);
@@ -563,7 +473,7 @@ extern "C"
 
 			if (!PluginIsInitialized())
 			{
-				LogError("PluginPlayAnimation: Plugin is not initialized!\r\n");
+				LogError(L"PluginPlayAnimation: Plugin is not initialized!\r\n");
 				return -1;
 			}
 
@@ -572,7 +482,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginPlayAnimation: Animation is null! id=%d\r\n", animationId);
+					LogError(L"PluginPlayAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				PluginStopAnimationType(animation->GetDeviceTypeId(), animation->GetDeviceId());
@@ -595,7 +505,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			LogError("PluginPlayAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError(L"PluginPlayAnimation: Exception animationId=%d\r\n", (int)animationId);
 		}
 		return -1;
 	}
@@ -614,7 +524,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginIsPlaying: Animation is null! id=%d\r\n", animationId);
+					LogError(L"PluginIsPlaying: Animation is null! id=%d\r\n", animationId);
 					return false;
 				}
 				return animation->IsPlaying();
@@ -622,7 +532,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			LogError("PluginIsPlaying: Exception animationId=%d\r\n", (int)animationId);
+			LogError(L"PluginIsPlaying: Exception animationId=%d\r\n", (int)animationId);
 		}
 		return false;
 	}
@@ -648,7 +558,7 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginStopAnimation: Animation is null! id=%d\r\n", animationId);
+					LogError(L"PluginStopAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				animation->Stop();
@@ -657,7 +567,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			LogError("PluginStopAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError(L"PluginStopAnimation: Exception animationId=%d\r\n", (int)animationId);
 		}
 		return -1;
 	}
@@ -676,12 +586,12 @@ extern "C"
 				AnimationBase* animation = _gAnimations[animationId];
 				if (animation == nullptr)
 				{
-					LogError("PluginCloseAnimation: Animation is null! id=%d\r\n", animationId);
+					LogError(L"PluginCloseAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
 				animation->Stop();
 				animation->Unload();
-				string animationName = animation->GetName();
+				wstring animationName = animation->GetName();
 				if (_gAnimationMapID.find(animationName) != _gAnimationMapID.end())
 				{
 					_gAnimationMapID.erase(animationName);
@@ -696,7 +606,7 @@ extern "C"
 		}
 		catch (exception)
 		{
-			LogError("PluginCloseAnimation: Exception animationId=%d\r\n", (int)animationId);
+			LogError(L"PluginCloseAnimation: Exception animationId=%d\r\n", (int)animationId);
 		}
 		return -1;
 	}
@@ -807,7 +717,7 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginCreateAnimation(const char* path, int deviceType, int device)
+	EXPORT_API int PluginCreateAnimation(const wchar_t* path, int deviceType, int device)
 	{
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
 		{
@@ -843,7 +753,7 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginSaveAnimation(int animationId, const char* path)
+	EXPORT_API int PluginSaveAnimation(int animationId, const wchar_t* path)
 	{
 		PluginStopAnimation(animationId);
 
@@ -852,7 +762,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginSaveAnimation: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginSaveAnimation: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			animation->Save(path);
@@ -861,12 +771,12 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginSaveAnimationName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API int PluginSaveAnimationName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int animationId = PluginGetAnimation(sourceAnimation);
 		if (animationId < 0)
 		{
-			LogError("PluginSaveAnimationName: Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginSaveAnimationName: Animation not found! %s\r\n", sourceAnimation);
 			return -1;
 		}
 		return PluginSaveAnimation(animationId, targetAnimation);
@@ -881,7 +791,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginResetAnimation: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginResetAnimation: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			animation->ResetFrames();
@@ -896,24 +806,24 @@ extern "C"
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
 		{
-			LogError("PluginGetFrameCount: Animation is null! id=%d\r\n", animationId);
+			LogError(L"PluginGetFrameCount: Animation is null! id=%d\r\n", animationId);
 			return -1;
 		}
 		return animation->GetFrameCount();
 	}
 
-	EXPORT_API int PluginGetFrameCountName(const char* path)
+	EXPORT_API int PluginGetFrameCountName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetFrameCountName: Animation not found! %s\r\n", path);
+			LogError(L"PluginGetFrameCountName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginGetFrameCount(animationId);
 	}
 
-	EXPORT_API double PluginGetFrameCountNameD(const char* path)
+	EXPORT_API double PluginGetFrameCountNameD(const wchar_t* path)
 	{
 		return (double)PluginGetFrameCountName(path);
 	}
@@ -923,24 +833,24 @@ extern "C"
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
 		{
-			LogError("PluginGetCurrentFrame: Animation is null! id=%d", animationId);
+			LogError(L"PluginGetCurrentFrame: Animation is null! id=%d", animationId);
 			return -1;
 		}
 		return animation->GetCurrentFrame();
 	}
 
-	EXPORT_API int PluginGetCurrentFrameName(const char* path)
+	EXPORT_API int PluginGetCurrentFrameName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetCurrentFrameName: Animation not found! %s\r\n", path);
+			LogError(L"PluginGetCurrentFrameName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginGetCurrentFrame(animationId);
 	}
 
-	EXPORT_API double PluginGetCurrentFrameNameD(const char* path)
+	EXPORT_API double PluginGetCurrentFrameNameD(const wchar_t* path)
 	{
 		return (double)PluginGetCurrentFrameName(path);
 	}
@@ -952,7 +862,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginGetDeviceType: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginGetDeviceType: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			return (int)animation->GetDeviceType();
@@ -961,18 +871,18 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginGetDeviceTypeName(const char* path)
+	EXPORT_API int PluginGetDeviceTypeName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetDeviceTypeName: Animation not found! %s\r\n", path);
+			LogError(L"PluginGetDeviceTypeName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginGetDeviceType(animationId);
 	}
 
-	EXPORT_API double PluginGetDeviceTypeNameD(const char* path)
+	EXPORT_API double PluginGetDeviceTypeNameD(const wchar_t* path)
 	{
 		return (double)PluginGetDeviceTypeName(path);
 	}
@@ -984,7 +894,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginGetDevice: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginGetDevice: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1007,18 +917,18 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginGetDeviceName(const char* path)
+	EXPORT_API int PluginGetDeviceName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetDeviceName: Animation not found! %s\r\n", path);
+			LogError(L"PluginGetDeviceName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginGetDevice(animationId);
 	}
 
-	EXPORT_API double PluginGetDeviceNameD(const char* path)
+	EXPORT_API double PluginGetDeviceNameD(const wchar_t* path)
 	{
 		return (double)PluginGetDeviceName(path);
 	}
@@ -1030,10 +940,10 @@ extern "C"
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
 		{
-			LogError("PluginSetDevice: Animation is null! id=%d\r\n", animationId);
+			LogError(L"PluginSetDevice: Animation is null! id=%d\r\n", animationId);
 			return -1;
 		}
-		string path = animation->GetName();
+		wstring path = animation->GetName();
 		PluginCloseAnimation(animationId);
 		return PluginCreateAnimation(path.c_str(), deviceType, device);
 	}
@@ -1077,7 +987,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginAddFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginAddFrame: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1145,7 +1055,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginUpdateFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginUpdateFrame: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1157,7 +1067,7 @@ extern "C"
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginUpdateFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
+						LogError(L"PluginUpdateFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame1D& frame = frames[frameIndex];
@@ -1182,7 +1092,7 @@ extern "C"
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginUpdateFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
+						LogError(L"PluginUpdateFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame2D& frame = frames[frameIndex];
@@ -1212,12 +1122,12 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API int PluginUpdateFrameName(const char* path, int frameIndex, float duration, int* colors, int length)
+	EXPORT_API int PluginUpdateFrameName(const wchar_t* path, int frameIndex, float duration, int* colors, int length)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginUpdateFrameName: Animation not found! %s\r\n", path);
+			LogError(L"PluginUpdateFrameName: Animation not found! %s\r\n", path);
 			return -1;
 		}
 		return PluginUpdateFrame(animationId, frameIndex, duration, colors, length);
@@ -1232,7 +1142,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginGetFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginGetFrame: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1244,7 +1154,7 @@ extern "C"
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginGetFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
+						LogError(L"PluginGetFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame1D& frame = frames[frameIndex];
@@ -1264,7 +1174,7 @@ extern "C"
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginGetFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
+						LogError(L"PluginGetFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame2D& frame = frames[frameIndex];
@@ -1300,7 +1210,7 @@ extern "C"
 
 		if (!PluginIsInitialized())
 		{
-			LogError("PluginPreviewFrame: Plugin is not initialized!\r\n");
+			LogError(L"PluginPreviewFrame: Plugin is not initialized!\r\n");
 			return -1;
 		}
 
@@ -1309,7 +1219,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginPreviewFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginPreviewFrame: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1321,7 +1231,7 @@ extern "C"
 					vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginPreviewFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
+						LogError(L"PluginPreviewFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame1D& frame = frames[frameIndex];
@@ -1342,7 +1252,7 @@ extern "C"
 					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 					if (frameIndex < 0 || frameIndex >= int(frames.size()))
 					{
-						LogError("PluginPreviewFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
+						LogError(L"PluginPreviewFrame: frame index is invalid! %d of %d\r\n", frameIndex, int(frames.size()));
 						return -1;
 					}
 					FChromaSDKColorFrame2D& frame = frames[frameIndex];
@@ -1370,12 +1280,12 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API void PluginPreviewFrameName(const char* path, int frameIndex)
+	EXPORT_API void PluginPreviewFrameName(const wchar_t* path, int frameIndex)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPreviewFrameName: Animation not found! %s\r\n", path);
+			LogError(L"PluginPreviewFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPreviewFrame(animationId, frameIndex);
@@ -1395,7 +1305,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginOverrideFrameDuration: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginOverrideFrameDuration: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1437,12 +1347,12 @@ extern "C"
 		return -1;
 	}
 
-	EXPORT_API void PluginOverrideFrameDurationName(const char* path, float duration)
+	EXPORT_API void PluginOverrideFrameDurationName(const wchar_t* path, float duration)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOverrideFrameDurationName: Animation not found! %s\r\n", path);
+			LogError(L"PluginOverrideFrameDurationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOverrideFrameDuration(animationId, duration);
@@ -1462,7 +1372,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginReverse: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginReverse: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1519,7 +1429,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginMirrorHorizontally: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginMirrorHorizontally: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1584,7 +1494,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginMirrorVertically: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginMirrorVertically: Animation is null! id=%d\r\n", animationId);
 				return -1;
 			}
 			switch (animation->GetDeviceType())
@@ -1622,7 +1532,7 @@ extern "C"
 	{
 		if (animation == nullptr)
 		{
-			LogError("PluginGetAnimationIdFromInstance: Invalid animation!\r\n");
+			LogError(L"PluginGetAnimationIdFromInstance: Invalid animation!\r\n");
 			return -1;
 		}
 		for (int index = 0; index < int(_gAnimations.size()); ++index)
@@ -1639,7 +1549,7 @@ extern "C"
 	{
 		if (animation == nullptr)
 		{
-			ChromaLogger::fprintf(stderr, "GetAnimationIdFromInstance: Invalid animation!\r\n");
+			ChromaLogger::fwprintf(stderr, L"GetAnimationIdFromInstance: Invalid animation!\r\n");
 			return -1;
 		}
 		for (auto iter = _gAnimations.begin(); iter != _gAnimations.end(); ++iter)
@@ -1661,29 +1571,29 @@ extern "C"
 		return nullptr;
 	}
 
-	AnimationBase* GetAnimationInstanceName(const char* path)
+	AnimationBase* GetAnimationInstanceName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			//LogError("GetAnimationInstanceName: Animation not found! %s\r\n", path);
+			//LogError(L"GetAnimationInstanceName: Animation not found! %s\r\n", path);
 			return nullptr;
 		}
 		return GetAnimationInstance(animationId);
 	}
 
-	ChromaSDK::AnimationBase* GetAnimationInstanceIfOpenName(const char* path)
+	ChromaSDK::AnimationBase* GetAnimationInstanceIfOpenName(const wchar_t* path)
 	{
 		auto it = _gAnimationMapID.find(path);
 		if (it != _gAnimationMapID.end())
 		{
 			return GetAnimationInstance(it->second);
 		}
-		//LogError("GetAnimationInstanceIfOpenName: Animation not found! %s\r\n", path);
+		//LogError(L"GetAnimationInstanceIfOpenName: Animation not found! %s\r\n", path);
 		return nullptr;
 	}
 
-	EXPORT_API int PluginGetAnimation(const char* name)
+	EXPORT_API int PluginGetAnimation(const wchar_t* name)
 	{
 		if (_gAnimationMapID.find(name) != _gAnimationMapID.end())
 		{
@@ -1692,12 +1602,12 @@ extern "C"
 		return PluginOpenAnimation(name);
 	}
 
-	EXPORT_API double PluginGetAnimationD(const char* name)
+	EXPORT_API double PluginGetAnimationD(const wchar_t* name)
 	{
 		return PluginGetAnimation(name);
 	}
 
-	EXPORT_API void PluginCloseAnimationName(const char* path)
+	EXPORT_API void PluginCloseAnimationName(const wchar_t* path)
 	{
 		if (_gAnimationMapID.find(path) != _gAnimationMapID.end())
 		{
@@ -1707,12 +1617,12 @@ extern "C"
 		/*
 		else
 		{
-			LogError("PluginCloseAnimationName: Animation not found! %s\r\n", path);
+			LogError(L"PluginCloseAnimationName: Animation not found! %s\r\n", path);
 		}
 		*/
 	}
 
-	EXPORT_API double PluginCloseAnimationNameD(const char* path)
+	EXPORT_API double PluginCloseAnimationNameD(const wchar_t* path)
 	{
 		PluginCloseAnimationName(path);
 		return 0;
@@ -1734,7 +1644,7 @@ extern "C"
 
 		if (!PluginIsInitialized())
 		{
-			LogError("PluginPlayAnimationLoop: Plugin is not initialized!\r\n");
+			LogError(L"PluginPlayAnimationLoop: Plugin is not initialized!\r\n");
 			return;
 		}
 
@@ -1743,7 +1653,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginPlayAnimationLoop: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginPlayAnimationLoop: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
@@ -1765,19 +1675,19 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop)
+	EXPORT_API void PluginPlayAnimationName(const wchar_t* path, bool loop)
 	{
 
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPlayAnimationName: Animation not found! %s\r\n", path);
+			LogError(L"PluginPlayAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPlayAnimationLoop(animationId, loop);
 	}
 
-	EXPORT_API double PluginPlayAnimationNameD(const char* path, double loop)
+	EXPORT_API double PluginPlayAnimationNameD(const wchar_t* path, double loop)
 	{
 		if (loop == 0)
 		{
@@ -1797,7 +1707,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginPlayAnimationFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginPlayAnimationFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
@@ -1820,18 +1730,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginPlayAnimationFrameName(const char* path, int frameId, bool loop)
+	EXPORT_API void PluginPlayAnimationFrameName(const wchar_t* path, int frameId, bool loop)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPlayAnimationFrameName: Animation not found! %s\r\n", path);
+			LogError(L"PluginPlayAnimationFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPlayAnimationFrame(animationId, frameId, loop);
 	}
 
-	EXPORT_API double PluginPlayAnimationFrameNameD(const char* path, double frameId, double loop)
+	EXPORT_API double PluginPlayAnimationFrameNameD(const wchar_t* path, double frameId, double loop)
 	{
 		if (loop == 0)
 		{
@@ -1844,18 +1754,18 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API void PluginStopAnimationName(const char* path)
+	EXPORT_API void PluginStopAnimationName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginStopAnimationName: Animation not found! %s\r\n", path);
+			LogError(L"PluginStopAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginStopAnimation(animationId);
 	}
 
-	EXPORT_API double PluginStopAnimationNameD(const char* path)
+	EXPORT_API double PluginStopAnimationNameD(const wchar_t* path)
 	{
 		PluginStopAnimationName(path);
 		return 0;
@@ -1900,18 +1810,18 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API bool PluginIsPlayingName(const char* path)
+	EXPORT_API bool PluginIsPlayingName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginIsPlayingName: Animation not found! %s\r\n", path);
+			LogError(L"PluginIsPlayingName: Animation not found! %s\r\n", path);
 			return false;
 		}
 		return PluginIsPlaying(animationId);
 	}
 
-	EXPORT_API double PluginIsPlayingNameD(const char* path)
+	EXPORT_API double PluginIsPlayingNameD(const wchar_t* path)
 	{
 		if (PluginIsPlayingName(path))
 		{
@@ -1967,40 +1877,40 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginLoadComposite(const char* name)
+	EXPORT_API void PluginLoadComposite(const wchar_t* name)
 	{
-		string baseName = name;
-		PluginLoadAnimationName((baseName + "_ChromaLink.chroma").c_str());
-		PluginLoadAnimationName((baseName + "_Headset.chroma").c_str());
-		PluginLoadAnimationName((baseName + "_Keyboard.chroma").c_str());
-		PluginLoadAnimationName((baseName + "_Keypad.chroma").c_str());
-		PluginLoadAnimationName((baseName + "_Mouse.chroma").c_str());
-		PluginLoadAnimationName((baseName + "_Mousepad.chroma").c_str());
+		wstring baseName = name;
+		PluginLoadAnimationName((baseName + L"_ChromaLink.chroma").c_str());
+		PluginLoadAnimationName((baseName + L"_Headset.chroma").c_str());
+		PluginLoadAnimationName((baseName + L"_Keyboard.chroma").c_str());
+		PluginLoadAnimationName((baseName + L"_Keypad.chroma").c_str());
+		PluginLoadAnimationName((baseName + L"_Mouse.chroma").c_str());
+		PluginLoadAnimationName((baseName + L"_Mousepad.chroma").c_str());
 	}
 
-	EXPORT_API void PluginUnloadComposite(const char* name)
+	EXPORT_API void PluginUnloadComposite(const wchar_t* name)
 	{
-		string baseName = name;
-		PluginUnloadAnimationName((baseName + "_ChromaLink.chroma").c_str());
-		PluginUnloadAnimationName((baseName + "_Headset.chroma").c_str());
-		PluginUnloadAnimationName((baseName + "_Keyboard.chroma").c_str());
-		PluginUnloadAnimationName((baseName + "_Keypad.chroma").c_str());
-		PluginUnloadAnimationName((baseName + "_Mouse.chroma").c_str());
-		PluginUnloadAnimationName((baseName + "_Mousepad.chroma").c_str());
+		wstring baseName = name;
+		PluginUnloadAnimationName((baseName + L"_ChromaLink.chroma").c_str());
+		PluginUnloadAnimationName((baseName + L"_Headset.chroma").c_str());
+		PluginUnloadAnimationName((baseName + L"_Keyboard.chroma").c_str());
+		PluginUnloadAnimationName((baseName + L"_Keypad.chroma").c_str());
+		PluginUnloadAnimationName((baseName + L"_Mouse.chroma").c_str());
+		PluginUnloadAnimationName((baseName + L"_Mousepad.chroma").c_str());
 	}
 
-	EXPORT_API void PluginPlayComposite(const char* name, bool loop)
+	EXPORT_API void PluginPlayComposite(const wchar_t* name, bool loop)
 	{
-		string baseName = name;
-		PluginPlayAnimationName((baseName + "_ChromaLink.chroma").c_str(), loop);
-		PluginPlayAnimationName((baseName + "_Headset.chroma").c_str(), loop);
-		PluginPlayAnimationName((baseName + "_Keyboard.chroma").c_str(), loop);
-		PluginPlayAnimationName((baseName + "_Keypad.chroma").c_str(), loop);
-		PluginPlayAnimationName((baseName + "_Mouse.chroma").c_str(), loop);
-		PluginPlayAnimationName((baseName + "_Mousepad.chroma").c_str(), loop);
+		wstring baseName = name;
+		PluginPlayAnimationName((baseName + L"_ChromaLink.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + L"_Headset.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + L"_Keyboard.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + L"_Keypad.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + L"_Mouse.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + L"_Mousepad.chroma").c_str(), loop);
 	}
 
-	EXPORT_API double PluginPlayCompositeD(const char* name, double loop)
+	EXPORT_API double PluginPlayCompositeD(const wchar_t* name, double loop)
 	{
 		if (loop == 0)
 		{
@@ -2013,35 +1923,35 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API void PluginStopComposite(const char* name)
+	EXPORT_API void PluginStopComposite(const wchar_t* name)
 	{
-		string baseName = name;
-		PluginStopAnimationName((baseName + "_ChromaLink.chroma").c_str());
-		PluginStopAnimationName((baseName + "_Headset.chroma").c_str());
-		PluginStopAnimationName((baseName + "_Keyboard.chroma").c_str());
-		PluginStopAnimationName((baseName + "_Keypad.chroma").c_str());
-		PluginStopAnimationName((baseName + "_Mouse.chroma").c_str());
-		PluginStopAnimationName((baseName + "_Mousepad.chroma").c_str());
+		wstring baseName = name;
+		PluginStopAnimationName((baseName + L"_ChromaLink.chroma").c_str());
+		PluginStopAnimationName((baseName + L"_Headset.chroma").c_str());
+		PluginStopAnimationName((baseName + L"_Keyboard.chroma").c_str());
+		PluginStopAnimationName((baseName + L"_Keypad.chroma").c_str());
+		PluginStopAnimationName((baseName + L"_Mouse.chroma").c_str());
+		PluginStopAnimationName((baseName + L"_Mousepad.chroma").c_str());
 	}
 
-	EXPORT_API double PluginStopCompositeD(const char* name)
+	EXPORT_API double PluginStopCompositeD(const wchar_t* name)
 	{
 		PluginStopComposite(name);
 		return 0;
 	}
 
-	EXPORT_API void PluginCloseComposite(const char* name)
+	EXPORT_API void PluginCloseComposite(const wchar_t* name)
 	{
-		string baseName = name;
-		PluginCloseAnimationName((baseName + "_ChromaLink.chroma").c_str());
-		PluginCloseAnimationName((baseName + "_Headset.chroma").c_str());
-		PluginCloseAnimationName((baseName + "_Keyboard.chroma").c_str());
-		PluginCloseAnimationName((baseName + "_Keypad.chroma").c_str());
-		PluginCloseAnimationName((baseName + "_Mouse.chroma").c_str());
-		PluginCloseAnimationName((baseName + "_Mousepad.chroma").c_str());
+		wstring baseName = name;
+		PluginCloseAnimationName((baseName + L"_ChromaLink.chroma").c_str());
+		PluginCloseAnimationName((baseName + L"_Headset.chroma").c_str());
+		PluginCloseAnimationName((baseName + L"_Keyboard.chroma").c_str());
+		PluginCloseAnimationName((baseName + L"_Keypad.chroma").c_str());
+		PluginCloseAnimationName((baseName + L"_Mouse.chroma").c_str());
+		PluginCloseAnimationName((baseName + L"_Mousepad.chroma").c_str());
 	}
 
-	EXPORT_API double PluginCloseCompositeD(const char* name)
+	EXPORT_API double PluginCloseCompositeD(const wchar_t* name)
 	{
 		PluginCloseComposite(name);
 		return 0;
@@ -2069,18 +1979,18 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API int PluginGetKeyColorName(const char* path, int frameId, int rzkey)
+	EXPORT_API int PluginGetKeyColorName(const wchar_t* path, int frameId, int rzkey)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGetKeyColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginGetKeyColorName: Animation not found! %s\r\n", path);
 			return 0;
 		}
 		return PluginGetKeyColor(animationId, frameId, rzkey);
 	}
 
-	EXPORT_API double PluginGetKeyColorD(const char* path, double frameId, double rzkey)
+	EXPORT_API double PluginGetKeyColorD(const wchar_t* path, double frameId, double rzkey)
 	{
 		return (double)PluginGetKeyColorName(path, (int)frameId, (int)rzkey);
 	}
@@ -2110,18 +2020,18 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API int PluginGet1DColorName(const char* path, int frameId, int index)
+	EXPORT_API int PluginGet1DColorName(const wchar_t* path, int frameId, int index)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGet1DColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginGet1DColorName: Animation not found! %s\r\n", path);
 			return 0;
 		}
 		return PluginGet1DColor(animationId, frameId, index);
 	}
 
-	EXPORT_API double PluginGet1DColorNameD(const char* path, double frameId, double index)
+	EXPORT_API double PluginGet1DColorNameD(const wchar_t* path, double frameId, double index)
 	{
 		return (double)PluginGet1DColorName(path, (int)frameId, (int)index);
 	}
@@ -2156,18 +2066,18 @@ extern "C"
 		return 0;
 	}
 
-	EXPORT_API int PluginGet2DColorName(const char* path, int frameId, int row, int column)
+	EXPORT_API int PluginGet2DColorName(const wchar_t* path, int frameId, int row, int column)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginGet2DColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginGet2DColorName: Animation not found! %s\r\n", path);
 			return 0;
 		}
 		return PluginGet2DColor(animationId, frameId, row, column);
 	}
 
-	EXPORT_API double PluginGet2DColorNameD(const char* path, double frameId, double row, double column)
+	EXPORT_API double PluginGet2DColorNameD(const wchar_t* path, double frameId, double row, double column)
 	{
 		return (double)PluginGet2DColorName(path, (int)frameId, (int)row, (int)column);
 	}
@@ -2195,30 +2105,30 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeyColorName(const char* path, int frameId, int rzkey, int color)
+	EXPORT_API void PluginSetKeyColorName(const wchar_t* path, int frameId, int rzkey, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyColor(animationId, frameId, rzkey, color);
 	}
 
-	EXPORT_API void PluginSetKeyRowColumnColorName(const char* path, int frameId, int row, int column, int color)
+	EXPORT_API void PluginSetKeyRowColumnColorName(const wchar_t* path, int frameId, int row, int column, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		int rzkey = (row << 8) | column;
 		PluginSetKeyColor(animationId, frameId, rzkey, color);
 	}
 
-	EXPORT_API double PluginSetKeyColorNameD(const char* path, double frameId, double rzkey, double color)
+	EXPORT_API double PluginSetKeyColorNameD(const wchar_t* path, double frameId, double rzkey, double color)
 	{
 		PluginSetKeyColorName(path, (int)frameId, (int)rzkey, (int)color);
 		return 0;
@@ -2248,18 +2158,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeyColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue)
+	EXPORT_API void PluginSetKeyColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyColorRGB(animationId, frameId, rzkey, red, green, blue);
 	}
 
-	EXPORT_API double PluginSetKeyColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue)
+	EXPORT_API double PluginSetKeyColorRGBNameD(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue)
 	{
 		PluginSetKeyColorRGBName(path, (int)frameId, (int)rzkey, (int)red, (int)green, (int)blue);
 		return 0;
@@ -2287,18 +2197,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeyColorAllFramesName(const char* path, int rzkey, int color)
+	EXPORT_API void PluginSetKeyColorAllFramesName(const wchar_t* path, int rzkey, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyColorAllFrames(animationId, rzkey, color);
 	}
 
-	EXPORT_API double PluginSetKeyColorAllFramesNameD(const char* path, double rzkey, double color)
+	EXPORT_API double PluginSetKeyColorAllFramesNameD(const wchar_t* path, double rzkey, double color)
 	{
 		PluginSetKeyColorAllFramesName(path, (int)rzkey, (int)color);
 		return 0;
@@ -2327,18 +2237,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeyColorAllFramesRGBName(const char* path, int rzkey, int red, int green, int blue)
+	EXPORT_API void PluginSetKeyColorAllFramesRGBName(const wchar_t* path, int rzkey, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyColorAllFramesRGB(animationId, rzkey, red, green, blue);
 	}
 
-	EXPORT_API double PluginSetKeyColorAllFramesRGBNameD(const char* path, double rzkey, double red, double green, double blue)
+	EXPORT_API double PluginSetKeyColorAllFramesRGBNameD(const wchar_t* path, double rzkey, double red, double green, double blue)
 	{
 		PluginSetKeyColorAllFramesRGBName(path, (int)rzkey, (int)red, (int)green, (int)blue);
 		return 0;
@@ -2371,12 +2281,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color)
+	EXPORT_API void PluginSetKeysColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysColor(animationId, frameId, rzkeys, keyCount, color);
@@ -2410,12 +2320,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysColorRGBName(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
+	EXPORT_API void PluginSetKeysColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyColorRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysColorRGB(animationId, frameId, rzkeys, keyCount, red, green, blue);
@@ -2447,12 +2357,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysColorAllFramesName(const char* path, const int* rzkeys, int keyCount, int color)
+	EXPORT_API void PluginSetKeysColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeysColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysColorAllFrames(animationId, rzkeys, keyCount, color);
@@ -2485,12 +2395,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysColorAllFramesRGBName(const char* path, const int* rzkeys, int keyCount, int red, int green, int blue)
+	EXPORT_API void PluginSetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysColorAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeysColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysColorAllFramesRGB(animationId, rzkeys, keyCount, red, green, blue);
@@ -2522,18 +2432,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeyNonZeroColorName(const char* path, int frameId, int rzkey, int color)
+	EXPORT_API void PluginSetKeyNonZeroColorName(const wchar_t* path, int frameId, int rzkey, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyNonZeroColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyNonZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyNonZeroColor(animationId, frameId, rzkey, color);
 	}
 
-	EXPORT_API double PluginSetKeyNonZeroColorNameD(const char* path, double frameId, double rzkey, double color)
+	EXPORT_API double PluginSetKeyNonZeroColorNameD(const wchar_t* path, double frameId, double rzkey, double color)
 	{
 		PluginSetKeyNonZeroColorName(path, (int)frameId, (int)rzkey, (int)color);
 		return 0;
@@ -2566,18 +2476,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeyNonZeroColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue)
+	EXPORT_API void PluginSetKeyNonZeroColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyNonZeroColorRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyNonZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyNonZeroColorRGB(animationId, frameId, rzkey, red, green, blue);
 	}
 
-	EXPORT_API double PluginSetKeyNonZeroColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue)
+	EXPORT_API double PluginSetKeyNonZeroColorRGBNameD(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue)
 	{
 		PluginSetKeyNonZeroColorRGBName(path, (int)frameId, (int)rzkey, (int)red, (int)green, (int)blue);
 		return 0;
@@ -2609,18 +2519,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeyZeroColorName(const char* path, int frameId, int rzkey, int color)
+	EXPORT_API void PluginSetKeyZeroColorName(const wchar_t* path, int frameId, int rzkey, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyZeroColor(animationId, frameId, rzkey, color);
 	}
 
-	EXPORT_API double PluginSetKeyZeroColorNameD(const char* path, double frameId, double rzkey, double color)
+	EXPORT_API double PluginSetKeyZeroColorNameD(const wchar_t* path, double frameId, double rzkey, double color)
 	{
 		PluginSetKeyZeroColorName(path, (int)frameId, (int)rzkey, (int)color);
 		return 0;
@@ -2653,18 +2563,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeyZeroColorRGBName(const char* path, int frameId, int rzkey, int red, int green, int blue)
+	EXPORT_API void PluginSetKeyZeroColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyZeroColorRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeyZeroColorRGB(animationId, frameId, rzkey, red, green, blue);
 	}
 
-	EXPORT_API double PluginSetKeyZeroColorRGBNameD(const char* path, double frameId, double rzkey, double red, double green, double blue)
+	EXPORT_API double PluginSetKeyZeroColorRGBNameD(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue)
 	{
 		PluginSetKeyZeroColorRGBName(path, (int)frameId, (int)rzkey, (int)red, (int)green, (int)blue);
 		return 0;
@@ -2700,12 +2610,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysNonZeroColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color)
+	EXPORT_API void PluginSetKeysNonZeroColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyNonZeroColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyNonZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysNonZeroColor(animationId, frameId, rzkeys, keyCount, color);
@@ -2742,12 +2652,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysNonZeroColorRGBName(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
+	EXPORT_API void PluginSetKeysNonZeroColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyNonZeroColorRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyNonZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysNonZeroColorRGB(animationId, frameId, rzkeys, keyCount, red, green, blue);
@@ -2783,12 +2693,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysZeroColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color)
+	EXPORT_API void PluginSetKeysZeroColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysZeroColor(animationId, frameId, rzkeys, keyCount, color);
@@ -2825,12 +2735,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysZeroColorRGBName(const char* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
+	EXPORT_API void PluginSetKeysZeroColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysZeroColorRGB(animationId, frameId, rzkeys, keyCount, red, green, blue);
@@ -2865,12 +2775,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysNonZeroColorAllFramesName(const char* path, const int* rzkeys, int keyCount, int color)
+	EXPORT_API void PluginSetKeysNonZeroColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysNonZeroColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeysNonZeroColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysNonZeroColorAllFrames(animationId, rzkeys, keyCount, color);
@@ -2905,12 +2815,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysZeroColorAllFramesName(const char* path, const int* rzkeys, int keyCount, int color)
+	EXPORT_API void PluginSetKeysZeroColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysZeroColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeysZeroColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysZeroColorAllFrames(animationId, rzkeys, keyCount, color);
@@ -2946,12 +2856,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetKeysZeroColorAllFramesRGBName(const char* path, const int* rzkeys, int keyCount, int red, int green, int blue)
+	EXPORT_API void PluginSetKeysZeroColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetKeysZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetKeysZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetKeysZeroColorAllFramesRGB(animationId, rzkeys, keyCount, red, green, blue);
@@ -2983,18 +2893,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSet1DColorName(const char* path, int frameId, int index, int color)
+	EXPORT_API void PluginSet1DColorName(const wchar_t* path, int frameId, int index, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSet1DColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSet1DColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSet1DColor(animationId, frameId, index, color);
 	}
 
-	EXPORT_API double PluginSet1DColorNameD(const char* path, double frameId, double index, double color)
+	EXPORT_API double PluginSet1DColorNameD(const wchar_t* path, double frameId, double index, double color)
 	{
 		PluginSet1DColorName(path, (int)frameId, (int)index, (int)color);
 		return 0;
@@ -3030,19 +2940,19 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSet2DColorName(const char* path, int frameId, int row, int column, int color)
+	EXPORT_API void PluginSet2DColorName(const wchar_t* path, int frameId, int row, int column, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSet2DColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSet2DColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSet2DColor(animationId, frameId, row, column, color);
 	}
 
 	// GMS only allows 4 params when string datatype is used
-	EXPORT_API double PluginSet2DColorNameD(const char* path, double frameId, double rowColumnIndex, double color)
+	EXPORT_API double PluginSet2DColorNameD(const wchar_t* path, double frameId, double rowColumnIndex, double color)
 	{
 		int device = PluginGetDeviceName(path);
 		if (device == -1)
@@ -3153,19 +3063,19 @@ extern "C"
 			targetFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = sourceFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)];
 		}
 	}
-	EXPORT_API void PluginCopyKeysColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, const int* keys, int size)
+	EXPORT_API void PluginCopyKeysColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, const int* keys, int size)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeysColorName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyKeysColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeysColorName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyKeysColorName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3216,19 +3126,19 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginCopyKeysColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, const int* keys, int size)
+	EXPORT_API void PluginCopyKeysColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeysColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyKeysColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeysColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyKeysColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3283,45 +3193,45 @@ extern "C"
 			targetFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = sourceFrame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)];
 		}
 	}
-	EXPORT_API void PluginCopyKeysColorOffsetName(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, const int* keys, int size)
+	EXPORT_API void PluginCopyKeysColorOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int sourceFrameId, int targetFrameId, const int* keys, int size)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeysColorOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyKeysColorOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeysColorOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyKeysColorOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyKeysColorOffset(sourceAnimationId, targetAnimationId, sourceFrameId, targetFrameId, keys, size);
 	}
 
-	EXPORT_API void PluginCopyKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey)
+	EXPORT_API void PluginCopyKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
 	}
 
-	EXPORT_API double PluginCopyKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey)
+	EXPORT_API double PluginCopyKeyColorNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey)
 	{
 		PluginCopyKeyColorName(sourceAnimation, targetAnimation, (int)frameId, (int)rzkey);
 		return 0;
@@ -3398,26 +3308,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyKeyColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, int rzkey)
+	EXPORT_API void PluginCopyKeyColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int rzkey)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyKeyColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyKeyColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyKeyColorAllFrames(sourceAnimationId, targetAnimationId, rzkey);
 	}
 
-	EXPORT_API double PluginCopyKeyColorAllFramesNameD(const char* sourceAnimation, const char* targetAnimation, double rzkey)
+	EXPORT_API double PluginCopyKeyColorAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double rzkey)
 	{
 		PluginCopyKeyColorAllFramesName(sourceAnimation, targetAnimation, (int)rzkey);
 		return 0;
@@ -3445,26 +3355,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyKeyColorAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset)
+	EXPORT_API void PluginCopyKeyColorAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int rzkey, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyKeyColorAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyKeyColorAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyKeyColorAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyKeyColorAllFramesOffset(sourceAnimationId, targetAnimationId, rzkey, offset);
 	}
 
-	EXPORT_API double PluginCopyKeyColorAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double rzkey, double offset)
+	EXPORT_API double PluginCopyKeyColorAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double rzkey, double offset)
 	{
 		PluginCopyKeyColorAllFramesOffsetName(sourceAnimation, targetAnimation, (int)rzkey, (int)offset);
 		return 0;
@@ -3547,19 +3457,19 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId)
+	EXPORT_API void PluginCopyAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
@@ -3649,26 +3559,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId)
+	EXPORT_API void PluginCopyNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroAllKeys(sourceAnimationId, targetAnimationId, frameId);
 	}
 
-	EXPORT_API double PluginCopyNonZeroAllKeysNameD(const char* sourceAnimation, const char* targetAnimation, double frameId)
+	EXPORT_API double PluginCopyNonZeroAllKeysNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId)
 	{
 		PluginCopyNonZeroAllKeysName(sourceAnimation, targetAnimation, (int)frameId);
 		return 0;
@@ -3730,26 +3640,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset)
+	EXPORT_API void PluginCopyNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroAllKeysOffset(sourceAnimationId, targetAnimationId, frameId, offset);
 	}
 
-	EXPORT_API double PluginCopyNonZeroAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset)
+	EXPORT_API double PluginCopyNonZeroAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset)
 	{
 		PluginCopyNonZeroAllKeysOffsetName(sourceAnimation, targetAnimation, (int)frameId, (int)offset);
 		return 0;
@@ -3812,26 +3722,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroTargetAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset)
+	EXPORT_API void PluginCopyNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroTargetAllKeysOffset(sourceAnimationId, targetAnimationId, frameId, offset);
 	}
 
-	EXPORT_API double PluginCopyNonZeroTargetAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset)
+	EXPORT_API double PluginCopyNonZeroTargetAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset)
 	{
 		PluginCopyNonZeroTargetAllKeysOffsetName(sourceAnimation, targetAnimation, (int)frameId, (int)offset);
 		return 0;
@@ -3907,26 +3817,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginAddNonZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset)
+	EXPORT_API void PluginAddNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginAddNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginAddNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginAddNonZeroAllKeysOffset(sourceAnimationId, targetAnimationId, frameId, offset);
 	}
 
-	EXPORT_API double PluginAddNonZeroAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset)
+	EXPORT_API double PluginAddNonZeroAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset)
 	{
 		PluginAddNonZeroAllKeysOffsetName(sourceAnimation, targetAnimation, (int)frameId, (int)offset);
 		return 0;
@@ -4003,26 +3913,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginAddNonZeroTargetAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset)
+	EXPORT_API void PluginAddNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginAddNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginAddNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginAddNonZeroTargetAllKeysOffset(sourceAnimationId, targetAnimationId, frameId, offset);
 	}
 
-	EXPORT_API double PluginAddNonZeroTargetAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset)
+	EXPORT_API double PluginAddNonZeroTargetAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset)
 	{
 		PluginAddNonZeroTargetAllKeysOffsetName(sourceAnimation, targetAnimation, (int)frameId, (int)offset);
 		return 0;
@@ -4098,26 +4008,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSubtractNonZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset)
+	EXPORT_API void PluginSubtractNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginSubtractNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginSubtractNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginSubtractNonZeroAllKeysOffset(sourceAnimationId, targetAnimationId, frameId, offset);
 	}
 
-	EXPORT_API double PluginSubtractNonZeroAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset)
+	EXPORT_API double PluginSubtractNonZeroAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset)
 	{
 		PluginSubtractNonZeroAllKeysOffsetName(sourceAnimation, targetAnimation, (int)frameId, (int)offset);
 		return 0;
@@ -4194,26 +4104,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSubtractNonZeroTargetAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset)
+	EXPORT_API void PluginSubtractNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginSubtractNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginSubtractNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginSubtractNonZeroTargetAllKeysOffset(sourceAnimationId, targetAnimationId, frameId, offset);
 	}
 
-	EXPORT_API double PluginSubtractNonZeroTargetAllKeysOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double offset)
+	EXPORT_API double PluginSubtractNonZeroTargetAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset)
 	{
 		PluginSubtractNonZeroTargetAllKeysOffsetName(sourceAnimation, targetAnimation, (int)frameId, (int)offset);
 		return 0;
@@ -4302,26 +4212,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginCopyNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -4397,26 +4307,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginAddNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginAddNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginAddNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginAddNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginAddNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginAddNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -4492,26 +4402,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginSubtractNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginSubtractNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginSubtractNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginSubtractNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -4573,26 +4483,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset)
+	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroAllKeysAllFramesOffset(sourceAnimationId, targetAnimationId, offset);
 	}
 
-	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset)
+	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset)
 	{
 		PluginCopyNonZeroAllKeysAllFramesOffsetName(sourceAnimation, targetAnimation, (int)offset);
 		return 0;
@@ -4683,26 +4593,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset)
+	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroTargetAllKeysAllFramesOffset(sourceAnimationId, targetAnimationId, offset);
 	}
 
-	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset)
+	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset)
 	{
 		PluginCopyNonZeroTargetAllKeysAllFramesOffsetName(sourceAnimation, targetAnimation, (int)offset);
 		return 0;
@@ -4778,26 +4688,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset)
+	EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginAddNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginAddNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginAddNonZeroAllKeysAllFramesOffset(sourceAnimationId, targetAnimationId, offset);
 	}
 
-	EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset)
+	EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset)
 	{
 		PluginAddNonZeroAllKeysAllFramesOffsetName(sourceAnimation, targetAnimation, (int)offset);
 		return 0;
@@ -4916,26 +4826,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginAddNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginAddNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginAddNonZeroTargetAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginAddNonZeroTargetAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -5054,26 +4964,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset)
+	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginAddNonZeroTargetAllKeysAllFramesOffset(sourceAnimationId, targetAnimationId, offset);
 	}
 
-	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset)
+	EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset)
 	{
 		PluginAddNonZeroTargetAllKeysAllFramesOffsetName(sourceAnimation, targetAnimation, (int)offset);
 		return 0;
@@ -5149,26 +5059,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset)
+	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginSubtractNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginSubtractNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginSubtractNonZeroAllKeysAllFramesOffset(sourceAnimationId, targetAnimationId, offset);
 	}
 
-	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset)
+	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset)
 	{
 		PluginSubtractNonZeroAllKeysAllFramesOffsetName(sourceAnimation, targetAnimation, (int)offset);
 		return 0;
@@ -5287,26 +5197,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginSubtractNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginSubtractNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginSubtractNonZeroTargetAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginSubtractNonZeroTargetAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -5425,26 +5335,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset)
+	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginSubtractNonZeroTargetAllKeysAllFramesOffset(sourceAnimationId, targetAnimationId, offset);
 	}
 
-	EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset)
+	EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset)
 	{
 		PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName(sourceAnimation, targetAnimation, (int)offset);
 		return 0;
@@ -5506,26 +5416,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginCopyZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginCopyZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginCopyZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginCopyZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -5587,26 +5497,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyZeroAllKeysAllFramesOffsetName(const char* sourceAnimation, const char* targetAnimation, int offset)
+	EXPORT_API void PluginCopyZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyZeroAllKeysAllFramesOffset(sourceAnimationId, targetAnimationId, offset);
 	}
 
-	EXPORT_API double PluginCopyZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset)
+	EXPORT_API double PluginCopyZeroAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset)
 	{
 		PluginCopyZeroAllKeysAllFramesOffsetName(sourceAnimation, targetAnimation, (int)offset);
 		return 0;
@@ -5696,25 +5606,25 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginCopyNonZeroTargetAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId)
+	EXPORT_API void PluginCopyNonZeroTargetAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroTargetAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroTargetAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroTargetAllKeys(sourceAnimationId, targetAnimationId, frameId);
 	}
-	EXPORT_API double PluginCopyNonZeroTargetAllKeysNameD(const char* sourceAnimation, const char* targetAnimation, double frameId)
+	EXPORT_API double PluginCopyNonZeroTargetAllKeysNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId)
 	{
 		PluginCopyNonZeroTargetAllKeysName(sourceAnimation, targetAnimation, (int)frameId);
 		return 0;
@@ -5805,26 +5715,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroTargetAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginCopyNonZeroTargetAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -5915,26 +5825,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroTargetZeroAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginCopyNonZeroTargetZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroTargetZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroTargetZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroTargetZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroTargetZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginCopyNonZeroTargetZeroAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginCopyNonZeroTargetZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginCopyNonZeroTargetZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -5997,26 +5907,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyZeroTargetAllKeysAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginCopyZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyZeroTargetAllKeysAllFrames(sourceAnimationId, targetAnimationId);
 	}
 
-	EXPORT_API double PluginCopyZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginCopyZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginCopyZeroTargetAllKeysAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -6074,26 +5984,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyNonZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey)
+	EXPORT_API void PluginCopyNonZeroKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyNonZeroKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyNonZeroKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyNonZeroKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyNonZeroKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
 	}
 
-	EXPORT_API double PluginCopyNonZeroKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey)
+	EXPORT_API double PluginCopyNonZeroKeyColorNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey)
 	{
 		PluginCopyNonZeroKeyColorName(sourceAnimation, targetAnimation, (int)frameId, (int)rzkey);
 		return 0;
@@ -6151,26 +6061,26 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginCopyZeroKeyColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey)
+	EXPORT_API void PluginCopyZeroKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyZeroKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyZeroKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginCopyZeroKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginCopyZeroKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 
 		PluginCopyZeroKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
 	}
 
-	EXPORT_API double PluginCopyZeroKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey)
+	EXPORT_API double PluginCopyZeroKeyColorNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey)
 	{
 		PluginCopyZeroKeyColorName(sourceAnimation, targetAnimation, (int)frameId, (int)rzkey);
 		return 0;
@@ -6228,18 +6138,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillColorName(const char* path, int frameId, int color)
+	EXPORT_API void PluginFillColorName(const wchar_t* path, int frameId, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillColor(animationId, frameId, color);
 	}
 
-	EXPORT_API double PluginFillColorNameD(const char* path, double frameId, double color)
+	EXPORT_API double PluginFillColorNameD(const wchar_t* path, double frameId, double color)
 	{
 		PluginFillColorName(path, (int)frameId, (int)color);
 		return 0;
@@ -6319,18 +6229,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillThresholdColorsName(const char* path, int frameId, int threshold, int color)
+	EXPORT_API void PluginFillThresholdColorsName(const wchar_t* path, int frameId, int threshold, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillThresholdColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColors(animationId, frameId, threshold, color);
 	}
 
-	EXPORT_API double PluginFillThresholdColorsNameD(const char* path, double frameId, double threshold, double color)
+	EXPORT_API double PluginFillThresholdColorsNameD(const wchar_t* path, double frameId, double threshold, double color)
 	{
 		PluginFillThresholdColorsName(path, (int)frameId, (int)threshold, (int)color);
 		return 0;
@@ -6389,18 +6299,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillColorRGBName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillColorRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillColorRGB(animationId, frameId, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillColorRGBNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginFillColorRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue)
 	{
 		PluginFillColorRGBName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
@@ -6481,18 +6391,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillThresholdColorsRGBName(const char* path, int frameId, int threshold, int red, int green, int blue)
+	EXPORT_API void PluginFillThresholdColorsRGBName(const wchar_t* path, int frameId, int threshold, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillThresholdColorsRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsRGB(animationId, frameId, threshold, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillThresholdColorsRGBNameD(const char* path, double frameId, double threshold, double red, double green, double blue)
+	EXPORT_API double PluginFillThresholdColorsRGBNameD(const wchar_t* path, double frameId, double threshold, double red, double green, double blue)
 	{
 		PluginFillThresholdColorsRGBName(path, (int)frameId, (int)threshold, (int)red, (int)green, (int)blue);
 		return 0;
@@ -6572,17 +6482,17 @@ extern "C"
 		break;
 		}
 	}
-	EXPORT_API void PluginFillThresholdRGBColorsRGBName(const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
+	EXPORT_API void PluginFillThresholdRGBColorsRGBName(const wchar_t* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdRGBColorsRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillThresholdRGBColorsRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdRGBColorsRGB(animationId, frameId, redThreshold, greenThreshold, blueThreshold, red, green, blue);
 	}
-	EXPORT_API double PluginFillThresholdRGBColorsRGBNameD(const char* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue)
+	EXPORT_API double PluginFillThresholdRGBColorsRGBNameD(const wchar_t* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue)
 	{
 		PluginFillThresholdRGBColorsRGBName(path, (int)frameId, (int)redThreshold, (int)greenThreshold, (int)blueThreshold, (int)red, (int)green, (int)blue);
 		return 0;
@@ -6678,18 +6588,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillThresholdColorsMinMaxRGBName(const char* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
+	EXPORT_API void PluginFillThresholdColorsMinMaxRGBName(const wchar_t* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsMinMaxRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillThresholdColorsMinMaxRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsMinMaxRGB(animationId, frameId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
 	}
 
-	EXPORT_API double PluginFillThresholdColorsMinMaxRGBNameD(const char* path, double frameId, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue)
+	EXPORT_API double PluginFillThresholdColorsMinMaxRGBNameD(const wchar_t* path, double frameId, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue)
 	{
 		PluginFillThresholdColorsMinMaxRGBName(path, (int)frameId, (int)minThreshold, (int)minRed, (int)minGreen, (int)minBlue, (int)maxThreshold, (int)maxRed, (int)maxGreen, (int)maxBlue);
 		return 0;
@@ -6711,18 +6621,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillColorAllFramesName(const char* path, int color)
+	EXPORT_API void PluginFillColorAllFramesName(const wchar_t* path, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillColorAllFrames(animationId, color);
 	}
 
-	EXPORT_API double PluginFillColorAllFramesNameD(const char* path, double color)
+	EXPORT_API double PluginFillColorAllFramesNameD(const wchar_t* path, double color)
 	{
 		PluginFillColorAllFramesName(path, (int)color);
 		return 0;
@@ -6744,18 +6654,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillThresholdColorsAllFramesName(const char* path, int threshold, int color)
+	EXPORT_API void PluginFillThresholdColorsAllFramesName(const wchar_t* path, int threshold, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillThresholdColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsAllFrames(animationId, threshold, color);
 	}
 
-	EXPORT_API double PluginFillThresholdColorsAllFramesNameD(const char* path, double threshold, double color)
+	EXPORT_API double PluginFillThresholdColorsAllFramesNameD(const wchar_t* path, double threshold, double color)
 	{
 		PluginFillThresholdColorsAllFramesName(path, (int)threshold, (int)color);
 		return 0;
@@ -6777,18 +6687,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillColorAllFramesRGBName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginFillColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillColorAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillColorAllFramesRGB(animationId, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillColorAllFramesRGBNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginFillColorAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue)
 	{
 		PluginFillColorAllFramesRGBName(path, (int)red, (int)green, (int)blue);
 		return 0;
@@ -6810,18 +6720,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillThresholdColorsAllFramesRGBName(const char* path, int threshold, int red, int green, int blue)
+	EXPORT_API void PluginFillThresholdColorsAllFramesRGBName(const wchar_t* path, int threshold, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsAllFramesRGB(animationId, threshold, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(const char* path, double threshold, double red, double green, double blue)
+	EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(const wchar_t* path, double threshold, double red, double green, double blue)
 	{
 		PluginFillThresholdColorsAllFramesRGBName(path, (int)threshold, (int)red, (int)green, (int)blue);
 		return 0;
@@ -6843,18 +6753,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGBName(const char* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
+	EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGBName(const wchar_t* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdRGBColorsAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillThresholdRGBColorsAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdRGBColorsAllFramesRGB(animationId, redThreshold, greenThreshold, blueThreshold, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillThresholdRGBColorsAllFramesRGBNameD(const char* path, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue)
+	EXPORT_API double PluginFillThresholdRGBColorsAllFramesRGBNameD(const wchar_t* path, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue)
 	{
 		PluginFillThresholdRGBColorsAllFramesRGBName(path, (int)redThreshold, (int)greenThreshold, (int)blueThreshold, (int)red, (int)green, (int)blue);
 		return 0;
@@ -6876,18 +6786,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGBName(const char* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
+	EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillThresholdColorsMinMaxAllFramesRGB(animationId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
 	}
 
-	EXPORT_API double PluginFillThresholdColorsMinMaxAllFramesRGBNameD(const char* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue)
+	EXPORT_API double PluginFillThresholdColorsMinMaxAllFramesRGBNameD(const wchar_t* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue)
 	{
 		PluginFillThresholdColorsMinMaxAllFramesRGBName(path, (int)minThreshold, (int)minRed, (int)minGreen, (int)minBlue, (int)maxThreshold, (int)maxRed, (int)maxGreen, (int)maxBlue);
 		return 0;
@@ -6951,18 +6861,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillNonZeroColorName(const char* path, int frameId, int color)
+	EXPORT_API void PluginFillNonZeroColorName(const wchar_t* path, int frameId, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillNonZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillNonZeroColor(animationId, frameId, color);
 	}
 
-	EXPORT_API double PluginFillNonZeroColorNameD(const char* path, double frameId, double color)
+	EXPORT_API double PluginFillNonZeroColorNameD(const wchar_t* path, double frameId, double color)
 	{
 		PluginFillNonZeroColorName(path, (int)frameId, (int)color);
 		return 0;
@@ -7032,18 +6942,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillNonZeroColorRGBName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillNonZeroColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillNonZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillNonZeroColorRGB(animationId, frameId, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillNonZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginFillNonZeroColorRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue)
 	{
 		PluginFillNonZeroColorRGBName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
@@ -7107,18 +7017,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillZeroColorName(const char* path, int frameId, int color)
+	EXPORT_API void PluginFillZeroColorName(const wchar_t* path, int frameId, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillZeroColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillZeroColor(animationId, frameId, color);
 	}
 
-	EXPORT_API double PluginFillZeroColorNameD(const char* path, double frameId, double color)
+	EXPORT_API double PluginFillZeroColorNameD(const wchar_t* path, double frameId, double color)
 	{
 		PluginFillZeroColorName(path, (int)frameId, (int)color);
 		return 0;
@@ -7188,18 +7098,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillZeroColorRGBName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginFillZeroColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillZeroColorRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillZeroColorRGB(animationId, frameId, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillZeroColorRGBNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginFillZeroColorRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue)
 	{
 		PluginFillZeroColorRGBName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
@@ -7221,18 +7131,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillNonZeroColorAllFramesName(const char* path, int color)
+	EXPORT_API void PluginFillNonZeroColorAllFramesName(const wchar_t* path, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillNonZeroColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillNonZeroColorAllFrames(animationId, color);
 	}
 
-	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const char* path, double color)
+	EXPORT_API double PluginFillNonZeroColorAllFramesNameD(const wchar_t* path, double color)
 	{
 		PluginFillNonZeroColorAllFramesName(path, (int)color);
 		return 0;
@@ -7254,18 +7164,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillNonZeroColorAllFramesRGBName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginFillNonZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillNonZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillNonZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillNonZeroColorAllFramesRGB(animationId, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillNonZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginFillNonZeroColorAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue)
 	{
 		PluginFillNonZeroColorAllFramesRGBName(path, (int)red, (int)green, (int)blue);
 		return 0;
@@ -7287,18 +7197,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillZeroColorAllFramesName(const char* path, int color)
+	EXPORT_API void PluginFillZeroColorAllFramesName(const wchar_t* path, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillZeroColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillZeroColorAllFrames(animationId, color);
 	}
 
-	EXPORT_API double PluginFillZeroColorAllFramesNameD(const char* path, double color)
+	EXPORT_API double PluginFillZeroColorAllFramesNameD(const wchar_t* path, double color)
 	{
 		PluginFillZeroColorAllFramesName(path, (int)color);
 		return 0;
@@ -7320,18 +7230,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillZeroColorAllFramesRGBName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginFillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillZeroColorAllFramesRGB(animationId, red, green, blue);
 	}
 
-	EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue)
 	{
 		PluginFillZeroColorAllFramesRGBName(path, (int)red, (int)green, (int)blue);
 		return 0;
@@ -7379,18 +7289,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillRandomColorsName(const char* path, int frameId)
+	EXPORT_API void PluginFillRandomColorsName(const wchar_t* path, int frameId)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillRandomColorsName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillRandomColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillRandomColors(animationId, frameId);
 	}
 
-	EXPORT_API double PluginFillRandomColorsNameD(const char* path, double frameId)
+	EXPORT_API double PluginFillRandomColorsNameD(const wchar_t* path, double frameId)
 	{
 		PluginFillRandomColorsName(path, (int)frameId);
 		return 0;
@@ -7438,18 +7348,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillRandomColorsAllFramesName(const char* path)
+	EXPORT_API void PluginFillRandomColorsAllFramesName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillRandomColorsAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillRandomColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillRandomColorsAllFrames(animationId);
 	}
 
-	EXPORT_API double PluginFillRandomColorsAllFramesNameD(const char* path)
+	EXPORT_API double PluginFillRandomColorsAllFramesNameD(const wchar_t* path)
 	{
 		PluginFillRandomColorsAllFramesName(path);
 		return 0;
@@ -7497,18 +7407,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillRandomColorsBlackAndWhiteName(const char* path, int frameId)
+	EXPORT_API void PluginFillRandomColorsBlackAndWhiteName(const wchar_t* path, int frameId)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillRandomColorsBlackAndWhiteName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillRandomColorsBlackAndWhiteName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillRandomColorsBlackAndWhite(animationId, frameId);
 	}
 
-	EXPORT_API double PluginFillRandomColorsBlackAndWhiteNameD(const char* path, double frameId)
+	EXPORT_API double PluginFillRandomColorsBlackAndWhiteNameD(const wchar_t* path, double frameId)
 	{
 		PluginFillRandomColorsBlackAndWhiteName(path, (int)frameId);
 		return 0;
@@ -7556,18 +7466,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(const char* path)
+	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFillRandomColorsBlackAndWhiteNameAllFrames: Animation not found! %s\r\n", path);
+			LogError(L"PluginFillRandomColorsBlackAndWhiteNameAllFrames: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFillRandomColorsBlackAndWhiteAllFrames(animationId);
 	}
 
-	EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const char* path)
+	EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const wchar_t* path)
 	{
 		PluginFillRandomColorsBlackAndWhiteAllFramesName(path);
 		return 0;
@@ -7639,18 +7549,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginInvertColorsName(const char* path, int frameId)
+	EXPORT_API void PluginInvertColorsName(const wchar_t* path, int frameId)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginInvertColorsName: Animation not found! %s\r\n", path);
+			LogError(L"PluginInvertColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginInvertColors(animationId, frameId);
 	}
 
-	EXPORT_API double PluginInvertColorsNameD(const char* path, double frameId)
+	EXPORT_API double PluginInvertColorsNameD(const wchar_t* path, double frameId)
 	{
 		PluginInvertColorsName(path, (int)frameId);
 		return 0;
@@ -7722,18 +7632,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginInvertColorsAllFramesName(const char* path)
+	EXPORT_API void PluginInvertColorsAllFramesName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginInvertColorsAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginInvertColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginInvertColorsAllFrames(animationId);
 	}
 
-	EXPORT_API double PluginInvertColorsAllFramesNameD(const char* path)
+	EXPORT_API double PluginInvertColorsAllFramesNameD(const wchar_t* path)
 	{
 		PluginInvertColorsAllFramesName(path);
 		return 0;
@@ -7807,18 +7717,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginOffsetColorsName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginOffsetColorsName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOffsetColorsName: Animation not found! %s\r\n", path);
+			LogError(L"PluginOffsetColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOffsetColors(animationId, frameId, red, green, blue);
 	}
 
-	EXPORT_API double PluginOffsetColorsNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginOffsetColorsNameD(const wchar_t* path, double frameId, double red, double green, double blue)
 	{
 		PluginOffsetColorsName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
@@ -7840,18 +7750,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginOffsetColorsAllFramesName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginOffsetColorsAllFramesName(const wchar_t* path, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOffsetColorsAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginOffsetColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOffsetColorsAllFrames(animationId, red, green, blue);
 	}
 
-	EXPORT_API double PluginOffsetColorsAllFramesNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginOffsetColorsAllFramesNameD(const wchar_t* path, double red, double green, double blue)
 	{
 		PluginOffsetColorsAllFramesName(path, (int)red, (int)green, (int)blue);
 		return 0;
@@ -7931,18 +7841,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginOffsetNonZeroColorsName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginOffsetNonZeroColorsName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOffsetNonZeroColorsName: Animation not found! %s\r\n", path);
+			LogError(L"PluginOffsetNonZeroColorsName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOffsetNonZeroColors(animationId, frameId, red, green, blue);
 	}
 
-	EXPORT_API double PluginOffsetNonZeroColorsNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginOffsetNonZeroColorsNameD(const wchar_t* path, double frameId, double red, double green, double blue)
 	{
 		PluginOffsetNonZeroColorsName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
@@ -7964,18 +7874,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(const wchar_t* path, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginOffsetNonZeroColorsAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginOffsetNonZeroColorsAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginOffsetNonZeroColorsAllFrames(animationId, red, green, blue);
 	}
 
-	EXPORT_API double PluginOffsetNonZeroColorsAllFramesNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginOffsetNonZeroColorsAllFramesNameD(const wchar_t* path, double red, double green, double blue)
 	{
 		PluginOffsetNonZeroColorsAllFramesName(path, (int)red, (int)green, (int)blue);
 		return 0;
@@ -8049,18 +7959,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMultiplyIntensityName(const char* path, int frameId, float intensity)
+	EXPORT_API void PluginMultiplyIntensityName(const wchar_t* path, int frameId, float intensity)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyIntensityName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensity(animationId, frameId, intensity);
 	}
 
-	EXPORT_API double PluginMultiplyIntensityNameD(const char* path, double frameId, double intensity)
+	EXPORT_API double PluginMultiplyIntensityNameD(const wchar_t* path, double frameId, double intensity)
 	{
 		PluginMultiplyIntensityName(path, (int)frameId, (float)intensity);
 		return 0;
@@ -8141,18 +8051,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMultiplyIntensityColorName(const char* path, int frameId, int color)
+	EXPORT_API void PluginMultiplyIntensityColorName(const wchar_t* path, int frameId, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityColorName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyIntensityColorName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityColor(animationId, frameId, color);
 	}
 
-	EXPORT_API double PluginMultiplyIntensityColorNameD(const char* path, double frameId, double color)
+	EXPORT_API double PluginMultiplyIntensityColorNameD(const wchar_t* path, double frameId, double color)
 	{
 		PluginMultiplyIntensityColorName(path, (int)frameId, (int)color);
 		return 0;
@@ -8174,18 +8084,18 @@ extern "C"
 		}		
 	}
 
-	EXPORT_API void PluginMultiplyIntensityColorAllFramesName(const char* path, int color)
+	EXPORT_API void PluginMultiplyIntensityColorAllFramesName(const wchar_t* path, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyIntensityColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityColorAllFrames(animationId, color);
 	}
 
-	EXPORT_API double PluginMultiplyIntensityColorAllFramesNameD(const char* path, double color)
+	EXPORT_API double PluginMultiplyIntensityColorAllFramesNameD(const wchar_t* path, double color)
 	{
 		PluginMultiplyIntensityColorAllFramesName(path, (int)color);
 		return 0;
@@ -8263,18 +8173,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMultiplyIntensityRGBName(const char* path, int frameId, int red, int green, int blue)
+	EXPORT_API void PluginMultiplyIntensityRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyIntensityRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityRGB(animationId, frameId, red, green, blue);
 	}
 
-	EXPORT_API double PluginMultiplyIntensityRGBNameD(const char* path, double frameId, double red, double green, double blue)
+	EXPORT_API double PluginMultiplyIntensityRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue)
 	{
 		PluginMultiplyIntensityRGBName(path, (int)frameId, (int)red, (int)green, (int)blue);
 		return 0;
@@ -8296,18 +8206,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMultiplyIntensityAllFramesName(const char* path, float intensity)
+	EXPORT_API void PluginMultiplyIntensityAllFramesName(const wchar_t* path, float intensity)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyIntensityAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityAllFrames(animationId, intensity);
 	}
 
-	EXPORT_API double PluginMultiplyIntensityAllFramesNameD(const char* path, double intensity)
+	EXPORT_API double PluginMultiplyIntensityAllFramesNameD(const wchar_t* path, double intensity)
 	{
 		PluginMultiplyIntensityAllFramesName(path, (float)intensity);
 		return 0;
@@ -8329,18 +8239,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMultiplyIntensityAllFramesRGBName(const char* path, int red, int green, int blue)
+	EXPORT_API void PluginMultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyIntensityAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyIntensityAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyIntensityAllFramesRGB(animationId, red, green, blue);
 	}
 
-	EXPORT_API double PluginMultiplyIntensityAllFramesRGBNameD(const char* path, double red, double green, double blue)
+	EXPORT_API double PluginMultiplyIntensityAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue)
 	{
 		PluginMultiplyIntensityAllFramesRGBName(path, (int)red, (int)green, (int)blue);
 		return 0;
@@ -8422,12 +8332,12 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMultiplyTargetColorLerpName(const char* path, int frameId, int color1, int color2)
+	EXPORT_API void PluginMultiplyTargetColorLerpName(const wchar_t* path, int frameId, int color1, int color2)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyTargetColorLerpName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyTargetColorLerpName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyTargetColorLerp(animationId, frameId, color1, color2);
@@ -8515,17 +8425,17 @@ extern "C"
 			PluginMultiplyTargetColorLerp(animationId, frameId, color1, color2);
 		}
 	}
-	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesName(const char* path, int color1, int color2)
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyTargetColorLerpAllFrames(animationId, color1, color2);
 	}
-	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(const char* path, double color1, double color2)
+	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(const wchar_t* path, double color1, double color2)
 	{
 		PluginMultiplyTargetColorLerpAllFramesName(path, (int)color1, (int)color2);
 		return 0;
@@ -8548,17 +8458,17 @@ extern "C"
 			PluginMultiplyIntensityColor(animationId, frameId, color);
 		}
 	}
-	EXPORT_API void PluginMultiplyColorLerpAllFramesName(const char* path, int color1, int color2)
+	EXPORT_API void PluginMultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyColorLerpAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyColorLerpAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyColorLerpAllFrames(animationId, color1, color2);
 	}
-	EXPORT_API double PluginMultiplyColorLerpAllFramesNameD(const char* path, double color1, double color2)
+	EXPORT_API double PluginMultiplyColorLerpAllFramesNameD(const wchar_t* path, double color1, double color2)
 	{
 		PluginMultiplyColorLerpAllFramesName(path, (int)color1, (int)color2);
 		return 0;
@@ -8581,17 +8491,17 @@ extern "C"
 			PluginMultiplyTargetColorLerp(animationId, frameId, color1, color2);
 		}
 	}
-	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2)
+	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(const wchar_t* path, int red1, int green1, int blue1, int red2, int green2, int blue2)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyTargetColorLerpAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyTargetColorLerpAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyTargetColorLerpAllFramesRGB(animationId, red1, green1, blue1, red2, green2, blue2);
 	}
-	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2)
+	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(const wchar_t* path, double red1, double green1, double blue1, double red2, double green2, double blue2)
 	{
 		PluginMultiplyTargetColorLerpAllFramesRGBName(path, (int)red1, (int)green1, (int)blue1, (int)red2, (int)green2, (int)blue2);
 		return 0;
@@ -8612,17 +8522,17 @@ extern "C"
 			PluginMultiplyNonZeroTargetColorLerp(animationId, frameId, color1, color2);
 		}
 	}
-	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesName(const char* path, int color1, int color2)
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyNonZeroTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyNonZeroTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyNonZeroTargetColorLerpAllFrames(animationId, color1, color2);
 	}
-	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesNameD(const char* path, double color1, double color2)
+	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesNameD(const wchar_t* path, double color1, double color2)
 	{
 		PluginMultiplyNonZeroTargetColorLerpAllFramesName(path, (int)color1, (int)color2);
 		return 0;
@@ -8645,17 +8555,17 @@ extern "C"
 			PluginMultiplyNonZeroTargetColorLerp(animationId, frameId, color1, color2);
 		}
 	}
-	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(const char* path, int red1, int green1, int blue1, int red2, int green2, int blue2)
+	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(const wchar_t* path, int red1, int green1, int blue1, int red2, int green2, int blue2)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMultiplyNonZeroTargetColorLerpAllFramesRGB(animationId, red1, green1, blue1, red2, green2, blue2);
 	}
-	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD(const char* path, double red1, double green1, double blue1, double red2, double green2, double blue2)
+	EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD(const wchar_t* path, double red1, double green1, double blue1, double red2, double green2, double blue2)
 	{
 		PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(path, (int)red1, (int)green1, (int)blue1, (int)red2, (int)green2, (int)blue2);
 		return 0;
@@ -8689,18 +8599,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginReverseAllFramesName(const char* path)
+	EXPORT_API void PluginReverseAllFramesName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginReverseAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginReverseAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginReverseAllFrames(animationId);
 	}
 
-	EXPORT_API double PluginReverseAllFramesNameD(const char* path)
+	EXPORT_API double PluginReverseAllFramesNameD(const wchar_t* path)
 	{
 		PluginReverseAllFramesName(path);
 		return 0;
@@ -8717,18 +8627,18 @@ extern "C"
 		animation->SetCurrentFrame(frameId);
 	}
 
-	EXPORT_API void PluginSetCurrentFrameName(const char* path, int frameId)
+	EXPORT_API void PluginSetCurrentFrameName(const wchar_t* path, int frameId)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetCurrentFrameName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetCurrentFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetCurrentFrame(animationId, frameId);
 	}
 
-	EXPORT_API double PluginSetCurrentFrameNameD(const char* path, double frameId)
+	EXPORT_API double PluginSetCurrentFrameNameD(const wchar_t* path, double frameId)
 	{
 		PluginSetCurrentFrameName(path, (int)frameId);
 		return 0;
@@ -8744,18 +8654,18 @@ extern "C"
 		animation->Pause();
 	}
 
-	EXPORT_API void PluginPauseAnimationName(const char* path)
+	EXPORT_API void PluginPauseAnimationName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPauseAnimationName: Animation not found! %s\r\n", path);
+			LogError(L"PluginPauseAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPauseAnimation(animationId);
 	}
 
-	EXPORT_API double PluginPauseAnimationNameD(const char* path)
+	EXPORT_API double PluginPauseAnimationNameD(const wchar_t* path)
 	{
 		PluginPauseAnimationName(path);
 		return 0;
@@ -8771,18 +8681,18 @@ extern "C"
 		return animation->IsPaused();
 	}
 
-	EXPORT_API bool PluginIsAnimationPausedName(const char* path)
+	EXPORT_API bool PluginIsAnimationPausedName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginIsAnimationPausedName: Animation not found! %s\r\n", path);
+			LogError(L"PluginIsAnimationPausedName: Animation not found! %s\r\n", path);
 			return false;
 		}
 		return PluginIsAnimationPaused(animationId);
 	}
 
-	EXPORT_API double PluginIsAnimationPausedNameD(const char* path)
+	EXPORT_API double PluginIsAnimationPausedNameD(const wchar_t* path)
 	{
 		if (PluginIsAnimationPausedName(path))
 		{
@@ -8804,18 +8714,18 @@ extern "C"
 		return animation->HasLoop();
 	}
 
-	EXPORT_API bool PluginHasAnimationLoopName(const char* path)
+	EXPORT_API bool PluginHasAnimationLoopName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginHasAnimationLoopName: Animation not found! %s\r\n", path);
+			LogError(L"PluginHasAnimationLoopName: Animation not found! %s\r\n", path);
 			return false;
 		}
 		return PluginHasAnimationLoop(animationId);
 	}
 
-	EXPORT_API double PluginHasAnimationLoopNameD(const char* path)
+	EXPORT_API double PluginHasAnimationLoopNameD(const wchar_t* path)
 	{
 		if (PluginHasAnimationLoopName(path))
 		{
@@ -8837,18 +8747,18 @@ extern "C"
 		animation->Resume(loop);
 	}
 
-	EXPORT_API void PluginResumeAnimationName(const char* path, bool loop)
+	EXPORT_API void PluginResumeAnimationName(const wchar_t* path, bool loop)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginResumeAnimationName: Animation not found! %s\r\n", path);
+			LogError(L"PluginResumeAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginResumeAnimation(animationId, loop);
 	}
 
-	EXPORT_API double PluginResumeAnimationNameD(const char* path, double loop)
+	EXPORT_API double PluginResumeAnimationNameD(const wchar_t* path, double loop)
 	{
 		if (loop == 0)
 		{
@@ -8881,18 +8791,18 @@ extern "C"
 		animation2D->SetChromaCustom(flag);
 	}
 
-	EXPORT_API void PluginSetChromaCustomFlagName(const char* path, bool flag)
+	EXPORT_API void PluginSetChromaCustomFlagName(const wchar_t* path, bool flag)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginKeyboardUseChromaCustomName: Animation not found! %s\r\n", path);
+			LogError(L"PluginKeyboardUseChromaCustomName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetChromaCustomFlag(animationId, flag);
 	}
 
-	EXPORT_API double PluginSetChromaCustomFlagNameD(const char* path, double flag)
+	EXPORT_API double PluginSetChromaCustomFlagNameD(const wchar_t* path, double flag)
 	{
 		if (flag == 0)
 		{
@@ -8945,18 +8855,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginSetChromaCustomColorAllFramesName(const char* path)
+	EXPORT_API void PluginSetChromaCustomColorAllFramesName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginSetChromaCustomColorAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginSetChromaCustomColorAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginSetChromaCustomColorAllFrames(animationId);
 	}
 
-	EXPORT_API double PluginSetChromaCustomColorAllFramesNameD(const char* path)
+	EXPORT_API double PluginSetChromaCustomColorAllFramesNameD(const wchar_t* path)
 	{
 		PluginSetChromaCustomColorAllFramesName(path);
 		return 0;
@@ -9014,18 +8924,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMakeBlankFramesName(const char* path, int frameCount, float duration, int color)
+	EXPORT_API void PluginMakeBlankFramesName(const wchar_t* path, int frameCount, float duration, int color)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMakeBlankFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMakeBlankFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMakeBlankFrames(animationId, frameCount, duration, color);
 	}
 
-	EXPORT_API double PluginMakeBlankFramesNameD(const char* path, double frameCount, double duration, double color)
+	EXPORT_API double PluginMakeBlankFramesNameD(const wchar_t* path, double frameCount, double duration, double color)
 	{
 		PluginMakeBlankFramesName(path, (int)frameCount, (float)duration, (int)color);
 		return 0;
@@ -9084,18 +8994,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMakeBlankFramesRGBName(const char* path, int frameCount, float duration, int red, int green, int blue)
+	EXPORT_API void PluginMakeBlankFramesRGBName(const wchar_t* path, int frameCount, float duration, int red, int green, int blue)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMakeBlankFramesRGBName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMakeBlankFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMakeBlankFramesRGB(animationId, frameCount, duration, red, green, blue);
 	}
 
-	EXPORT_API double PluginMakeBlankFramesRGBNameD(const char* path, double frameCount, double duration, double red, double green, double blue)
+	EXPORT_API double PluginMakeBlankFramesRGBNameD(const wchar_t* path, double frameCount, double duration, double red, double green, double blue)
 	{
 		PluginMakeBlankFramesRGBName(path, (int)frameCount, (float)duration, (int)red, (int)green, (int)blue);
 		return 0;
@@ -9162,18 +9072,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMakeBlankFramesRandomName(const char* path, int frameCount, float duration)
+	EXPORT_API void PluginMakeBlankFramesRandomName(const wchar_t* path, int frameCount, float duration)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMakeBlankFramesRandomName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMakeBlankFramesRandomName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMakeBlankFramesRandom(animationId, frameCount, duration);
 	}
 
-	EXPORT_API double PluginMakeBlankFramesRandomNameD(const char* path, double frameCount, double duration)
+	EXPORT_API double PluginMakeBlankFramesRandomNameD(const wchar_t* path, double frameCount, double duration)
 	{
 		PluginMakeBlankFramesRandomName(path, (int)frameCount, (float)duration);
 		return 0;
@@ -9236,18 +9146,18 @@ extern "C"
 		}
 	}
 
-	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhiteName(const char* path, int frameCount, float duration)
+	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhiteName(const wchar_t* path, int frameCount, float duration)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginMakeBlankFramesRandomBlackAndWhiteName: Animation not found! %s\r\n", path);
+			LogError(L"PluginMakeBlankFramesRandomBlackAndWhiteName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginMakeBlankFramesRandomBlackAndWhite(animationId, frameCount, duration);
 	}
 
-	EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(const char* path, double frameCount, double duration)
+	EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(const wchar_t* path, double frameCount, double duration)
 	{
 		PluginMakeBlankFramesRandomBlackAndWhiteName(path, (int)frameCount, (float)duration);
 		return 0;
@@ -9263,7 +9173,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginDuplicateFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginDuplicateFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -9312,17 +9222,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginDuplicateFramesName(const char* path)
+	EXPORT_API void PluginDuplicateFramesName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginDuplicateFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginDuplicateFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginDuplicateFrames(animationId);
 	}
-	EXPORT_API double PluginDuplicateFramesNameD(const char* path)
+	EXPORT_API double PluginDuplicateFramesNameD(const wchar_t* path)
 	{
 		PluginDuplicateFramesName(path);
 		return 0;
@@ -9338,12 +9248,12 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginDuplicateFirstFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginDuplicateFirstFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (PluginGetFrameCount(animationId) == 0)
 			{
-				LogError("PluginDuplicateFirstFrame: Animation has no frames! id=%d\r\n", animationId);
+				LogError(L"PluginDuplicateFirstFrame: Animation has no frames! id=%d\r\n", animationId);
 				return;
 			}
 			switch (animation->GetDeviceType())
@@ -9375,17 +9285,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginDuplicateFirstFrameName(const char* path, int frameCount)
+	EXPORT_API void PluginDuplicateFirstFrameName(const wchar_t* path, int frameCount)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginDuplicateFirstFrameName: Animation not found! %s\r\n", path);
+			LogError(L"PluginDuplicateFirstFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginDuplicateFirstFrame(animationId, frameCount);
 	}
-	EXPORT_API double PluginDuplicateFirstFrameNameD(const char* path, double frameCount)
+	EXPORT_API double PluginDuplicateFirstFrameNameD(const wchar_t* path, double frameCount)
 	{
 		PluginDuplicateFirstFrameName(path, (int)frameCount);
 		return 0;
@@ -9401,13 +9311,13 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginDuplicateMirrorFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginDuplicateMirrorFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
 			if (frameCount == 0)
 			{
-				LogError("PluginDuplicateMirrorFrames: Animation has no frames! id=%d\r\n", animationId);
+				LogError(L"PluginDuplicateMirrorFrames: Animation has no frames! id=%d\r\n", animationId);
 				return;
 			}
 			switch (animation->GetDeviceType())
@@ -9437,17 +9347,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginDuplicateMirrorFramesName(const char* path)
+	EXPORT_API void PluginDuplicateMirrorFramesName(const wchar_t* path)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginDuplicateMirrorFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginDuplicateMirrorFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginDuplicateMirrorFrames(animationId);
 	}
-	EXPORT_API double PluginDuplicateMirrorFramesNameD(const char* path)
+	EXPORT_API double PluginDuplicateMirrorFramesNameD(const wchar_t* path)
 	{
 		PluginDuplicateMirrorFramesName(path);
 		return 0;
@@ -9463,7 +9373,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginInsertFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginInsertFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -9530,17 +9440,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginInsertFrameName(const char* path, int sourceFrame, int targetFrame)
+	EXPORT_API void PluginInsertFrameName(const wchar_t* path, int sourceFrame, int targetFrame)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginInsertFrameName: Animation not found! %s\r\n", path);
+			LogError(L"PluginInsertFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginInsertFrame(animationId, sourceFrame, targetFrame);
 	}
-	EXPORT_API double PluginInsertFrameNameD(const char* path, double sourceFrame, double targetFrame)
+	EXPORT_API double PluginInsertFrameNameD(const wchar_t* path, double sourceFrame, double targetFrame)
 	{
 		PluginInsertFrameName(path, (int)sourceFrame, (int)targetFrame);
 		return 0;
@@ -9556,7 +9466,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginInsertFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginInsertFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -9620,17 +9530,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginInsertDelayName(const char* path, int frameId, int delay)
+	EXPORT_API void PluginInsertDelayName(const wchar_t* path, int frameId, int delay)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginInsertDelayName: Animation not found! %s\r\n", path);
+			LogError(L"PluginInsertDelayName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginInsertDelay(animationId, frameId, delay);
 	}
-	EXPORT_API double PluginInsertDelayNameD(const char* path, double frameId, double delay)
+	EXPORT_API double PluginInsertDelayNameD(const wchar_t* path, double frameId, double delay)
 	{
 		PluginInsertDelayName(path, (int)frameId, (int)delay);
 		return 0;
@@ -9646,7 +9556,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginReduceFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginReduceFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (n <= 0)
@@ -9715,17 +9625,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginReduceFramesName(const char* path, int n)
+	EXPORT_API void PluginReduceFramesName(const wchar_t* path, int n)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginReduceFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginReduceFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginReduceFrames(animationId, n);
 	}
-	EXPORT_API double PluginReduceFramesNameD(const char* path, double n)
+	EXPORT_API double PluginReduceFramesNameD(const wchar_t* path, double n)
 	{
 		PluginReduceFramesName(path, (int)n);
 		return 0;
@@ -9741,7 +9651,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginTrimFrame: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginTrimFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -9792,17 +9702,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginTrimFrameName(const char* path, int frameId)
+	EXPORT_API void PluginTrimFrameName(const wchar_t* path, int frameId)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginTrimFrameName: Animation not found! %s\r\n", path);
+			LogError(L"PluginTrimFrameName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginTrimFrame(animationId, frameId);
 	}
-	EXPORT_API double PluginTrimFrameNameD(const char* path, double frameId)
+	EXPORT_API double PluginTrimFrameNameD(const wchar_t* path, double frameId)
 	{
 		PluginTrimFrameName(path, (int)frameId);
 		return 0;
@@ -9818,7 +9728,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginTrimStartFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginTrimStartFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (numberOfFrames < 0)
@@ -9867,17 +9777,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginTrimStartFramesName(const char* path, int numberOfFrames)
+	EXPORT_API void PluginTrimStartFramesName(const wchar_t* path, int numberOfFrames)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginTrimStartFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginTrimStartFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginTrimStartFrames(animationId, numberOfFrames);
 	}
-	EXPORT_API double PluginTrimStartFramesNameD(const char* path, double numberOfFrames)
+	EXPORT_API double PluginTrimStartFramesNameD(const wchar_t* path, double numberOfFrames)
 	{
 		PluginTrimStartFramesName(path, (int)numberOfFrames);
 		return 0;
@@ -9893,7 +9803,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginTrimEndFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginTrimEndFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (lastFrameId <= 0)
@@ -9926,17 +9836,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginTrimEndFramesName(const char* path, int lastFrameId)
+	EXPORT_API void PluginTrimEndFramesName(const wchar_t* path, int lastFrameId)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginTrimEndFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginTrimEndFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginTrimEndFrames(animationId, lastFrameId);
 	}
-	EXPORT_API double PluginTrimEndFramesNameD(const char* path, double lastFrameId)
+	EXPORT_API double PluginTrimEndFramesNameD(const wchar_t* path, double lastFrameId)
 	{
 		PluginTrimEndFramesName(path, (int)lastFrameId);
 		return 0;
@@ -9952,7 +9862,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginTrimStartFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginTrimStartFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (fade <= 0)
@@ -9967,17 +9877,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginFadeStartFramesName(const char* path, int fade)
+	EXPORT_API void PluginFadeStartFramesName(const wchar_t* path, int fade)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFadeStartFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFadeStartFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFadeStartFrames(animationId, fade);
 	}
-	EXPORT_API double PluginFadeStartFramesNameD(const char* path, double fade)
+	EXPORT_API double PluginFadeStartFramesNameD(const wchar_t* path, double fade)
 	{
 		PluginFadeStartFramesName(path, (int)fade);
 		return 0;
@@ -9993,7 +9903,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginFadeEndFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginFadeEndFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			if (fade <= 0)
@@ -10009,17 +9919,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginFadeEndFramesName(const char* path, int fade)
+	EXPORT_API void PluginFadeEndFramesName(const wchar_t* path, int fade)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginFadeEndFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginFadeEndFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginFadeEndFrames(animationId, fade);
 	}
-	EXPORT_API double PluginFadeEndFramesNameD(const char* path, double fade)
+	EXPORT_API double PluginFadeEndFramesNameD(const wchar_t* path, double fade)
 	{
 		PluginFadeEndFramesName(path, (int)fade);
 		return 0;
@@ -10035,7 +9945,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginCopyRedChannelAllFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginCopyRedChannelAllFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -10095,17 +10005,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginCopyRedChannelAllFramesName(const char* path, float greenIntensity, float blueIntensity)
+	EXPORT_API void PluginCopyRedChannelAllFramesName(const wchar_t* path, float greenIntensity, float blueIntensity)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginCopyRedChannelAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginCopyRedChannelAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginCopyRedChannelAllFrames(animationId, greenIntensity, blueIntensity);
 	}
-	EXPORT_API double PluginCopyRedChannelAllFramesNameD(const char* path, double greenIntensity, double blueIntensity)
+	EXPORT_API double PluginCopyRedChannelAllFramesNameD(const wchar_t* path, double greenIntensity, double blueIntensity)
 	{
 		PluginCopyRedChannelAllFramesName(path, (float)greenIntensity, (float)blueIntensity);
 		return 0;
@@ -10121,7 +10031,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginCopyGreenChannelAllFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginCopyGreenChannelAllFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -10181,17 +10091,17 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginCopyGreenChannelAllFramesName(const char* path, float redIntensity, float blueIntensity)
+	EXPORT_API void PluginCopyGreenChannelAllFramesName(const wchar_t* path, float redIntensity, float blueIntensity)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginCopyGreenChannelAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginCopyGreenChannelAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginCopyGreenChannelAllFrames(animationId, redIntensity, blueIntensity);
 	}
-	EXPORT_API double PluginCopyGreenChannelAllFramesNameD(const char* path, double redIntensity, double blueIntensity)
+	EXPORT_API double PluginCopyGreenChannelAllFramesNameD(const wchar_t* path, double redIntensity, double blueIntensity)
 	{
 		PluginCopyGreenChannelAllFramesName(path, (float)redIntensity, (float)blueIntensity);
 		return 0;
@@ -10207,7 +10117,7 @@ extern "C"
 			AnimationBase* animation = _gAnimations[animationId];
 			if (animation == nullptr)
 			{
-				LogError("PluginCopyBlueChannelAllFrames: Animation is null! id=%d\r\n", animationId);
+				LogError(L"PluginCopyBlueChannelAllFrames: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
 			int frameCount = PluginGetFrameCount(animationId);
@@ -10267,24 +10177,24 @@ extern "C"
 			}
 		}
 	}
-	EXPORT_API void PluginCopyBlueChannelAllFramesName(const char* path, float redIntensity, float greenIntensity)
+	EXPORT_API void PluginCopyBlueChannelAllFramesName(const wchar_t* path, float redIntensity, float greenIntensity)
 	{
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginCopyBlueChannelAllFramesName: Animation not found! %s\r\n", path);
+			LogError(L"PluginCopyBlueChannelAllFramesName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginCopyBlueChannelAllFrames(animationId, redIntensity, greenIntensity);
 	}
-	EXPORT_API double PluginCopyBlueChannelAllFramesNameD(const char* path, double redIntensity, double greenIntensity)
+	EXPORT_API double PluginCopyBlueChannelAllFramesNameD(const wchar_t* path, double redIntensity, double greenIntensity)
 	{
 		PluginCopyBlueChannelAllFramesName(path, (float)redIntensity, (float)greenIntensity);
 		return 0;
 	}
 
 
-	EXPORT_API int PluginCopyAnimation(int sourceAnimationId, const char* targetAnimation)
+	EXPORT_API int PluginCopyAnimation(int sourceAnimationId, const wchar_t* targetAnimation)
 	{
 		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
 		if (nullptr == sourceAnimation)
@@ -10348,17 +10258,17 @@ extern "C"
 		}
 		return -1;
 	}
-	EXPORT_API void PluginCopyAnimationName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginCopyAnimationName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginCopyAnimationName: Source animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginCopyAnimationName: Source animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 		PluginCopyAnimation(sourceAnimationId, targetAnimation);
 	}
-	EXPORT_API double PluginCopyAnimationNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginCopyAnimationNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginCopyAnimationName(sourceAnimation, targetAnimation);
 		return 0;
@@ -10415,23 +10325,23 @@ extern "C"
 		break;
 		}
 	}
-	EXPORT_API void PluginAppendAllFramesName(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API void PluginAppendAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
-			LogError("PluginAppendAllFramesName: Source animation not found! %s\r\n", sourceAnimation);
+			LogError(L"PluginAppendAllFramesName: Source animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 		int targetAnimationId = PluginGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
-			LogError("PluginAppendAllFramesName: Target animation not found! %s\r\n", targetAnimation);
+			LogError(L"PluginAppendAllFramesName: Target animation not found! %s\r\n", targetAnimation);
 			return;
 		}
 		PluginAppendAllFrames(sourceAnimationId, targetAnimationId);
 	}
-	EXPORT_API double PluginAppendAllFramesNameD(const char* sourceAnimation, const char* targetAnimation)
+	EXPORT_API double PluginAppendAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
 		PluginAppendAllFramesName(sourceAnimation, targetAnimation);
 		return 0;
@@ -10521,14 +10431,14 @@ extern "C"
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
 		{
-			LogError("PluginSetIdleAnimation: Animation is null! id=%d\r\n", animationId);
+			LogError(L"PluginSetIdleAnimation: Animation is null! id=%d\r\n", animationId);
 			return;
 		}
 
 		ChromaSDKPlugin::GetInstance()->SetIdleAnimationName(animation->GetName().c_str());
 	}
 
-	EXPORT_API void PluginSetIdleAnimationName(const char* path)
+	EXPORT_API void PluginSetIdleAnimationName(const wchar_t* path)
 	{
 		// Chroma thread plays animations
 		SetupChromaThread();
@@ -10544,14 +10454,14 @@ extern "C"
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
 		{
-			LogError("PluginUsePreloading: Animation is null! id=%d\r\n", animationId);
+			LogError(L"PluginUsePreloading: Animation is null! id=%d\r\n", animationId);
 			return;
 		}
 
 		animation->UsePreloading(flag);
 	}
 
-	EXPORT_API void PluginUsePreloadingName(const char* path, bool flag)
+	EXPORT_API void PluginUsePreloadingName(const wchar_t* path, bool flag)
 	{
 		// Chroma thread plays animations
 		SetupChromaThread();
@@ -10559,7 +10469,7 @@ extern "C"
 		AnimationBase* animation = GetAnimationInstanceName(path);
 		if (nullptr == animation)
 		{
-			LogError("PluginUsePreloadingName: Animation is null! %s\r\n", path);
+			LogError(L"PluginUsePreloadingName: Animation is null! %s\r\n", path);
 			return;
 		}
 
@@ -10655,7 +10565,7 @@ extern "C"
 		}
 		break;
 		default:
-			LogError("PluginSetEffectCustom1D Unsupported device used!\r\n");
+			LogError(L"PluginSetEffectCustom1D Unsupported device used!\r\n");
 			return RZRESULT_FAILED;
 		}
 		return result;
@@ -10730,7 +10640,7 @@ extern "C"
 		}
 		break;
 		default:
-			LogError("PluginSetEffectCustom2D Unsupported device used!\r\n");
+			LogError(L"PluginSetEffectCustom2D Unsupported device used!\r\n");
 			return RZRESULT_FAILED;
 		}
 

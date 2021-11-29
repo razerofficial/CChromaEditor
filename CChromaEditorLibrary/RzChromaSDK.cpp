@@ -234,7 +234,7 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibraryChroma);
  		if (_sInvalidSignature)
 		{
-			ChromaLogger::fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
+			ChromaLogger::fwprintf(stderr, L"Failed to load Chroma library with invalid signature!\r\n");
 			
 			// unload the library
 			FreeLibrary(_sLibraryChroma);

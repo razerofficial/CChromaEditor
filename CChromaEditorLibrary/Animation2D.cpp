@@ -118,13 +118,13 @@ void Animation2D::Load()
 			}
 			if (effect.Result != 0)
 			{
-				ChromaLogger::fprintf(stderr, "Load: Failed to create effect!\r\n");
+				ChromaLogger::fwprintf(stderr, L"Load: Failed to create effect!\r\n");
 			}
 			_mEffects.push_back(effect);
 		}
 		catch (exception)
 		{
-			ChromaLogger::fprintf(stderr, "Load: Exception in create effect!\r\n");
+			ChromaLogger::fwprintf(stderr, L"Load: Exception in create effect!\r\n");
 			FChromaSDKEffectResult result = FChromaSDKEffectResult();
 			result.Result = -1;
 			_mEffects.push_back(result);
@@ -149,12 +149,12 @@ void Animation2D::Unload()
 			int result = ChromaSDKPlugin::GetInstance()->DeleteEffect(effect.EffectId);
 			if (result != 0)
 			{
-				ChromaLogger::fprintf(stderr, "Unload: Failed to delete effect!\r\n");
+				ChromaLogger::fwprintf(stderr, L"Unload: Failed to delete effect!\r\n");
 			}
 		}
 		catch (exception)
 		{
-			ChromaLogger::fprintf(stderr, "Unload: Exception in delete effect!\r\n");
+			ChromaLogger::fwprintf(stderr, L"Unload: Exception in delete effect!\r\n");
 		}
 	}
 	_mEffects.clear();
@@ -224,12 +224,12 @@ void Animation2D::InternalShowFrame()
 				int result = ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
 				if (result != 0)
 				{
-					ChromaLogger::fprintf(stderr, "InternalShowFrame: Failed to set effect!\r\n");
+					ChromaLogger::fwprintf(stderr, L"InternalShowFrame: Failed to set effect!\r\n");
 				}
 			}
 			catch (exception)
 			{
-				ChromaLogger::fprintf(stderr, "InternalShowFrame: Exception in set effect!\r\n");
+				ChromaLogger::fwprintf(stderr, L"InternalShowFrame: Exception in set effect!\r\n");
 			}
 		}
 	}
@@ -259,7 +259,7 @@ void Animation2D::InternalShowFrame()
 			}
 			catch (exception)
 			{
-				ChromaLogger::fprintf(stderr, "InternalShowFrame: Exception in set effect!\r\n");
+				ChromaLogger::fwprintf(stderr, L"InternalShowFrame: Exception in set effect!\r\n");
 			}
 		}
 	}
@@ -317,13 +317,13 @@ void Animation2D::ResetFrames()
 	_mFrames.push_back(frame);
 }
 
-int Animation2D::Save(const char* path)
+int Animation2D::Save(const wchar_t* path)
 {
 	FILE* stream;
-	int result = fopen_s(&stream, path, "wb");
+	int result = _wfopen_s(&stream, path, L"wb");
 	if (result == 13)
 	{
-		ChromaLogger::fprintf(stderr, "Save: Permission denied! %s\r\n", path);
+		ChromaLogger::fwprintf(stderr, L"Save: Permission denied! %s\r\n", path);
 		return - 1;
 	}
 	else if (0 == result &&
@@ -338,7 +338,7 @@ int Animation2D::Save(const char* path)
 		write = fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
-			ChromaLogger::fprintf(stderr, "Save: Failed to write version!\r\n");
+			ChromaLogger::fwprintf(stderr, L"Save: Failed to write version!\r\n");
 			std::fclose(stream);
 			return -1;
 		}
@@ -351,10 +351,10 @@ int Animation2D::Save(const char* path)
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
 		{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
-			LogDebug("Save: DeviceType: 1D\r\n");
+			LogDebug(L"Save: DeviceType: 1D\r\n");
 			break;
 		case EChromaSDKDeviceTypeEnum::DE_2D:
-			LogDebug("Save: DeviceType: 2D\r\n");
+			LogDebug(L"Save: DeviceType: 2D\r\n");
 			break;
 		}
 
@@ -365,13 +365,13 @@ int Animation2D::Save(const char* path)
 		switch ((EChromaSDKDevice2DEnum)device)
 		{
 		case EChromaSDKDevice2DEnum::DE_Keyboard:
-			LogDebug("Save: Device: DE_Keyboard\r\n");
+			LogDebug(L"Save: Device: DE_Keyboard\r\n");
 			break;
 		case EChromaSDKDevice2DEnum::DE_Keypad:
-			LogDebug("Save: Device: DE_Keypad\r\n");
+			LogDebug(L"Save: Device: DE_Keypad\r\n");
 			break;
 		case EChromaSDKDevice2DEnum::DE_Mouse:
-			LogDebug("Save: Device: DE_Mouse\r\n");
+			LogDebug(L"Save: Device: DE_Mouse\r\n");
 			break;
 		}
 
@@ -380,7 +380,7 @@ int Animation2D::Save(const char* path)
 		expectedSize = sizeof(unsigned int);
 		fwrite(&frameCount, expectedSize, 1, stream);
 
-		LogDebug("Save: FrameCount: %d\r\n", frameCount);
+		LogDebug(L"Save: FrameCount: %d\r\n", frameCount);
 
 		//frames
 		COLORREF color = RGB(0, 0, 0);

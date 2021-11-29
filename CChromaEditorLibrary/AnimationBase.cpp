@@ -6,7 +6,7 @@ using namespace std;
 
 AnimationBase::AnimationBase()
 {
-	_mName = "";
+	_mName = L"";
 	_mCurrentFrame = 0;
 	_mIsLoaded = false;
 	_mIsPlaying = false;
@@ -15,12 +15,12 @@ AnimationBase::AnimationBase()
 	_mUsePreloading = true;
 }
 
-const string& AnimationBase::GetName()
+const wstring& AnimationBase::GetName()
 {
 	return _mName;
 }
 
-void AnimationBase::SetName(const std::string& name)
+void AnimationBase::SetName(const std::wstring& name)
 {
 	_mName = name;
 }

@@ -26,7 +26,7 @@ namespace ChromaSDK
 		void Stop();
 		void Update(float deltaTime);
 		void ResetFrames();
-		int Save(const char* path);
+		int Save(const wchar_t* path);
 		void SetChromaCustom(bool flag);
 		bool UseChromaCustom();
 

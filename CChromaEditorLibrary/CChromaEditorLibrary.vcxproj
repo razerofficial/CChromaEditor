@@ -193,14 +193,9 @@
     <ClCompile Include="Animation1D.cpp" />
     <ClCompile Include="Animation2D.cpp" />
     <ClCompile Include="AnimationBase.cpp" />
-    <ClCompile Include="CChromaEditorLibrary.cpp" />
     <ClCompile Include="ChromaSDKPluginTypes.cpp" />
     <ClCompile Include="ChromaThread.cpp" />
-    <ClCompile Include="EditorAnimation1D.cpp" />
-    <ClCompile Include="EditorAnimation2D.cpp" />
     <ClCompile Include="ChromaSDKPlugin.cpp" />
-    <ClCompile Include="ColorButton.cpp" />
-    <ClCompile Include="EditorAnimationBase.cpp" />
     <ClCompile Include="ChromaLogger.cpp" />
     <ClCompile Include="RzChromaSDK.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -215,16 +210,10 @@
     <ClInclude Include="Animation1D.h" />
     <ClInclude Include="Animation2D.h" />
     <ClInclude Include="AnimationBase.h" />
-    <ClInclude Include="CChromaEditorLibrary.h" />
     <ClInclude Include="ChromaThread.h" />
-    <ClInclude Include="EditorAnimation1D.h" />
-    <ClInclude Include="EditorAnimation2D.h" />
     <ClInclude Include="ChromaSDKPlugin.h" />
     <ClInclude Include="ChromaSDKPluginTypes.h" />
-    <ClInclude Include="ColorButton.h" />
-    <ClInclude Include="EditorAnimationBase.h" />
     <ClInclude Include="ChromaLogger.h" />
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="RzChromaSDK.h" />
     <ClInclude Include="RzChromaSDKDefines.h" />
     <ClInclude Include="RzChromaSDKTypes.h" />
@@ -232,13 +221,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="VerifyLibrarySignature.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CChromaEditorLibrary.def" />
-    <None Include="res\CChromaEditorLibrary.rc2" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="CChromaEditorLibrary.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

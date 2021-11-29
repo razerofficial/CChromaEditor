@@ -10,8 +10,8 @@ namespace ChromaSDK
 	{
 	public:
 		AnimationBase();
-		const std::string& GetName();
-		void SetName(const std::string& name);
+		const std::wstring& GetName();
+		void SetName(const std::wstring& name);
 		virtual EChromaSDKDeviceTypeEnum GetDeviceType() = 0;
 		int GetDeviceTypeId();
 		virtual int GetDeviceId() = 0;
@@ -29,7 +29,7 @@ namespace ChromaSDK
 		virtual void Stop() = 0;
 		virtual void Update(float deltaTime) = 0;
 		virtual void ResetFrames() = 0;
-		virtual int Save(const char* path) = 0;
+		virtual int Save(const wchar_t* path) = 0;
 		void UsePreloading(bool flag);
 		bool HasUsePreloading();
 
@@ -49,7 +49,7 @@ namespace ChromaSDK
 		virtual void InternalShowFrame() = 0;
 
 	protected:
-		std::string _mName;
+		std::wstring _mName;
 		int _mCurrentFrame;
 		bool _mIsLoaded;
 		bool _mIsPlaying;
