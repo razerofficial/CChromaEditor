@@ -5,23 +5,11 @@
 #include <tchar.h>
 #include <stdio.h>
 
-//#define DEBUG_WITH_DEV_BUILD
-#ifdef DEBUG_WITH_DEV_BUILD
-
-#if _DEBUG
-#define CHROMA_STREAMING_DLL        _T("C:\\Razer\\chroma-sdk-core-component-streaming-jira\\bin\\Win32\\Debug\\RzChromaStreamPlugin.dll")
-#else
-#define CHROMA_STREAMING_DLL        _T("C:\\Razer\\chroma-sdk-core-component-streaming-jira\\bin\\Win32\\Release\\RzChromaStreamPlugin.dll")
-#endif
-
-#else
 
 #ifdef _WIN64
 #define CHROMA_STREAMING_DLL        _T("RzChromaStreamPlugin64.dll")
 #else
 #define CHROMA_STREAMING_DLL        _T("RzChromaStreamPlugin.dll")
-#endif
-
 #endif
 
 
