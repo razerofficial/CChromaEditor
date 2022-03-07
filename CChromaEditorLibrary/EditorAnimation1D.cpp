@@ -105,9 +105,9 @@ void EditorAnimation1D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
 
 	//scale pixels
 	std::vector<COLORREF>& colors = _mFrameCopy.Colors;
-	for (int i = 0; i < _mFrameCopy.Colors.size(); ++i)
+	for (unsigned int i = 0; i < _mFrameCopy.Colors.size(); ++i)
 	{
-		int b = (i / (float)_mFrameCopy.Colors.size()) * width;
+		int b = (int)(i / (float)_mFrameCopy.Colors.size()) * width;
 		colors[i] = rows[height/2][b];
 	}
 

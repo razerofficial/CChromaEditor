@@ -258,7 +258,7 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_3] = "= (equal) (VK_OEM_PLUS)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_4] = "[ (left sqaure bracket) (VK_OEM_4)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_5] = "] (right square bracket) (VK_OEM_6)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_6] = "\ (backslash) (VK_OEM_5)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_6] = "\\ (backslash) (VK_OEM_5)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_7] = "; (semi-colon) (VK_OEM_1)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_8] = "' (apostrophe) (VK_OEM_7)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_9] = ", (comma) (VK_OEM_COMMA)";

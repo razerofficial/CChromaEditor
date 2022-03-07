@@ -46,9 +46,11 @@ public:
 	// Extra methods
 	static RZRESULT GetLibraryLoadedState(); // call to preload the library
 
+	static void Unload();
+
 private:
 
-	static HMODULE _sLibraryChroma;
+	static HMODULE _sLibrary;
 	static bool _sInvalidSignature;
 	static bool _sLoaded;
 

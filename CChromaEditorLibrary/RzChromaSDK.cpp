@@ -16,7 +16,7 @@
 using namespace ChromaSDK;
 
 
-HMODULE RzChromaSDK::_sLibraryChroma = NULL;
+HMODULE RzChromaSDK::_sLibrary = NULL;
 bool RzChromaSDK::_sInvalidSignature = false;
 bool RzChromaSDK::_sLoaded = false;
 
@@ -46,9 +46,12 @@ CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
 #undef CHROMASDK_VALIDATE_METHOD
 #define CHROMASDK_VALIDATE_METHOD(Signature, FieldName) if (_sMethod ## FieldName == nullptr) \
 { \
-	_sMethod ## FieldName = (Signature) GetProcAddress(_sLibraryChroma, #FieldName); \
+	_sMethod ## FieldName = (Signature) GetProcAddress(_sLibrary, #FieldName); \
 	if (_sMethod ## FieldName == nullptr) \
 	{ \
+		fprintf(stderr, "RzChromaSDK: Method not available! %s\r\n", #FieldName); \
+		FreeLibrary(_sLibrary); \
+		_sLibrary = NULL; \
 		return RZRESULT_FAILED; \
 	} \
 }
@@ -221,24 +224,24 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 	}
 
 	// load the library if previously not loaded
-	if (_sLibraryChroma == NULL)
+	if (_sLibrary == NULL)
 	{
 		// load the library
-		_sLibraryChroma = LoadLibrary(CHROMASDKDLL);
-		if (_sLibraryChroma == NULL)
+		_sLibrary = LoadLibrary(CHROMASDKDLL);
+		if (_sLibrary == NULL)
 		{
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 
 		// verify the library has a valid signature
-		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibraryChroma);
+		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibrary);
  		if (_sInvalidSignature)
 		{
 			ChromaLogger::fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
 			
 			// unload the library
-			FreeLibrary(_sLibraryChroma);
-			_sLibraryChroma = NULL;
+			FreeLibrary(_sLibrary);
+			_sLibrary = NULL;
 
 			return RZRESULT_DLL_INVALID_SIGNATURE;
 		}
@@ -263,4 +266,19 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 
 	_sLoaded = true;
 	return RZRESULT_SUCCESS;
+}
+
+void RzChromaSDK::Unload()
+{
+	if (!_sLoaded)
+	{
+		return;
+	}
+
+	if (_sLibrary != nullptr)
+	{
+		FreeLibrary(_sLibrary);
+		_sLibrary = nullptr;
+	}
+	_sLoaded = false;
 }
