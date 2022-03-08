@@ -177,11 +177,11 @@ void CMainViewDlg::SaveFile()
 		}
 
 		//device
-		byte device = 0;
+		BYTE device = 0;
 
 		//device type
-		byte deviceType = (byte)_mDeviceType;
-		expectedSize = sizeof(byte);
+		BYTE deviceType = (BYTE)_mDeviceType;
+		expectedSize = sizeof(BYTE);
 		fwrite(&deviceType, expectedSize, 1, stream);
 
 		//device

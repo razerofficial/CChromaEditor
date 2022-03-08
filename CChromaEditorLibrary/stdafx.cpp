@@ -451,7 +451,7 @@ extern "C"
 
 	EXPORT_API int PluginGetAnimationCount()
 	{
-		return _gAnimationMapID.size();
+		return (int)_gAnimationMapID.size();
 	}
 
 	EXPORT_API int PluginGetAnimationId(int index)
@@ -516,7 +516,7 @@ extern "C"
 		}
 	}
 
-	EXPORT_API int PluginOpenAnimationFromMemory(const byte* data, const char* name)
+	EXPORT_API int PluginOpenAnimationFromMemory(const BYTE* data, const char* name)
 	{
 		try
 		{

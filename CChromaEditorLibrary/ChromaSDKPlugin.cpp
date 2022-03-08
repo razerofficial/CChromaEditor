@@ -1004,7 +1004,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 	{
 		long read = 0;
 		long expectedRead = 1;
-		long expectedSize = sizeof(byte);
+		long expectedSize = sizeof(BYTE);
 
 		//version
 		int version = 0;
@@ -1026,11 +1026,11 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 		//LogDebug("OpenAnimation: Version: %d\r\n", version);
 
 		//device
-		byte device = 0;
+		BYTE device = 0;
 
 		// device type
-		byte deviceType = 0;
-		expectedSize = sizeof(byte);
+		BYTE deviceType = 0;
+		expectedSize = sizeof(BYTE);
 		read = fread(&deviceType, expectedSize, 1, stream);
 		if (read != expectedRead)
 		{
@@ -1280,9 +1280,9 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 	return animation;
 }
 
-AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
+AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const BYTE* data)
 {
-	const byte* pointer = data;
+	const BYTE* pointer = data;
 	AnimationBase* animation = nullptr;
 
 	if (0 == data)
@@ -1293,7 +1293,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 
 	long read = 0;
 	long expectedRead = 1;
-	long expectedSize = sizeof(byte);
+	long expectedSize = sizeof(BYTE);
 
 	//version
 	int version = 0;
@@ -1309,11 +1309,11 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	//LogDebug("OpenAnimationFromMemory: Version: %d\r\n", version);
 
 	//device
-	byte device = 0;
+	BYTE device = 0;
 
 	// device type
-	byte deviceType = 0;
-	expectedSize = sizeof(byte);
+	BYTE deviceType = 0;
+	expectedSize = sizeof(BYTE);
 	memcpy(&deviceType, pointer, expectedSize);
 	pointer += expectedSize;
 
@@ -1335,7 +1335,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 	{
-		expectedSize = sizeof(byte);
+		expectedSize = sizeof(BYTE);
 		memcpy(&device, pointer, expectedSize);
 		pointer += expectedSize;
 
@@ -1409,7 +1409,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 	{
-		expectedSize = sizeof(byte);
+		expectedSize = sizeof(BYTE);
 		memcpy(&device, pointer, expectedSize);
 		pointer += expectedSize;
 

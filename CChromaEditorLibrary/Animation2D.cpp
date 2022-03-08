@@ -344,8 +344,8 @@ int Animation2D::Save(const char* path)
 		}
 
 		//device type
-		byte deviceType = (byte)EChromaSDKDeviceTypeEnum::DE_2D;
-		expectedSize = sizeof(byte);
+		BYTE deviceType = (BYTE)EChromaSDKDeviceTypeEnum::DE_2D;
+		expectedSize = sizeof(BYTE);
 		fwrite(&deviceType, expectedSize, 1, stream);
 
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
@@ -359,7 +359,7 @@ int Animation2D::Save(const char* path)
 		}
 
 		//device
-		byte device = (byte)_mDevice;
+		BYTE device = (BYTE)_mDevice;
 		fwrite(&device, expectedSize, 1, stream);
 
 		switch ((EChromaSDKDevice2DEnum)device)

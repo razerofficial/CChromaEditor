@@ -7,10 +7,13 @@
 
 
 #ifdef _WIN64
-#define CHROMA_STREAMING_DLL        _T("RzChromaStreamPlugin64.dll")
+#define CHROMA_STREAMING_DLL        _T("C:\\Program Files\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin64.dll")
 #else
-#define CHROMA_STREAMING_DLL        _T("RzChromaStreamPlugin.dll")
+#define CHROMA_STREAMING_DLL        _T("C:\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin.dll")
 #endif
+
+
+using namespace ChromaSDK;
 
 
 HMODULE RzChromaStreamPlugin::_sLibrary = NULL;
@@ -70,6 +73,12 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 	// load the library if previously not loaded
 	if (_sLibrary == NULL)
 	{
+		// check the library file version
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(CHROMA_STREAMING_DLL, 0, 1, 2, 21))
+		{
+			return RZRESULT_DLL_NOT_FOUND;
+		}
+
 		// load the library
 		_sLibrary = LoadLibrary(CHROMA_STREAMING_DLL);
 		if (_sLibrary == NULL)

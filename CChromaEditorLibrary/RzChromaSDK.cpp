@@ -7,9 +7,9 @@
 
 
 #ifdef _WIN64
-#define CHROMASDKDLL        _T("RzChromaSDK64.dll")
+#define CHROMASDKDLL        _T("C:\\Program Files\\Razer Chroma SDK\\bin\\RzChromaSDK64.dll")
 #else
-#define CHROMASDKDLL        _T("RzChromaSDK.dll")
+#define CHROMASDKDLL        _T("C:\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzChromaSDK.dll")
 #endif
 
 
@@ -226,6 +226,12 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 	// load the library if previously not loaded
 	if (_sLibrary == NULL)
 	{
+		// check the library file version
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(CHROMASDKDLL, 3, 7, 3, 130))
+		{
+			return RZRESULT_DLL_NOT_FOUND;
+		}
+		
 		// load the library
 		_sLibrary = LoadLibrary(CHROMASDKDLL);
 		if (_sLibrary == NULL)

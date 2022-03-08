@@ -1,4 +1,11 @@
 #include "stdafx.h"
+#include "ChromaLogger.h"
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include <iostream>
+#include <fstream>
+#include <cstdint>
+#include <filesystem>
 #include "VerifyLibrarySignature.h"
 #include <psapi.h>
 #include <wintrust.h>
@@ -9,6 +16,8 @@
 #pragma comment (lib, "Psapi")
 #pragma comment(lib, "crypt32")
 #pragma comment(lib, "ShLwApi")
+
+using namespace std;
 
 namespace ChromaSDK
 {
@@ -318,6 +327,74 @@ namespace ChromaSDK
 			&WinTrustData);
 
 		return bResult;
+	}
+
+	BOOL VerifyLibrarySignature::IsFileVersionSameOrNewer(PTCHAR szFileName, const int minMajor, const int minMinor, const int minRevision, const int minBuild)
+	{
+		wstring fileName = szFileName;
+		std::filesystem::path p = fileName.c_str();
+		if (!std::filesystem::exists(p))
+		{
+			return false;
+		}
+
+		bool result = false;
+
+		DWORD  verHandle = 0;
+		UINT   size = 0;
+		LPBYTE lpBuffer = NULL;
+		DWORD  verSize = GetFileVersionInfoSize(fileName.c_str(), &verHandle);
+
+		if (verSize)
+		{
+			LPSTR verData = (LPSTR)malloc(verSize);
+
+			if (GetFileVersionInfo(fileName.c_str(), verHandle, verSize, verData))
+			{
+				if (VerQueryValue(verData, L"\\", (VOID FAR * FAR*) & lpBuffer, &size))
+				{
+					if (size)
+					{
+						VS_FIXEDFILEINFO* verInfo = (VS_FIXEDFILEINFO*)lpBuffer;
+						if (verInfo->dwSignature == 0xfeef04bd)
+						{
+							const int major = (verInfo->dwProductVersionMS >> 16) & 0xffff;
+							const int minor = (verInfo->dwProductVersionMS >> 0) & 0xffff;
+							const int revision = (verInfo->dwProductVersionMS >> 16) & 0xffff;
+							const int build = (verInfo->dwProductVersionMS >> 0) & 0xffff;
+
+							ChromaLogger::fprintf(stdout, "Product Version: %d.%d.%d.%d\n", major, minor, revision, build);
+
+							// Anything less than the min version returns false
+
+							if (major < minMajor) // Less than X
+							{
+								result = false;
+							}
+							else if (major == minMajor && minor < minMinor) // Less than major.X
+							{
+								result = false;
+							}
+							else if (major == minMajor && minor == minMinor && revision < minRevision) // Less than major.minor.X
+							{
+								result = false;
+							}
+							else if (major == minMajor && minor == minMinor && revision == minRevision && build < minBuild) // Less than major.minor.revision.X
+							{
+								result = false;
+							}
+							else
+							{
+								result = true; // production version or better
+							}
+						}
+					}
+				}
+			}
+			free(verData);
+		}
+
+		return result;
 	}
 
 }
