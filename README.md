@@ -12,6 +12,7 @@
 * [Security](#security)
 * [Assets](#assets)
 * [Dialog](dialog)
+* [Streaming](Streaming)
 * [API](#api)
 * [File Format](#file-format)
 
@@ -31,7 +32,7 @@
 
 ## Frameworks supported
 
-- Windows ChromaSDK (32-bit)
+* Windows ChromaSDK (32-bit)
 
 * Windows ChromaSDK (64-bit)
 
@@ -56,6 +57,8 @@
 * To compile: Install `Templates->Other Languages->Visual C++->Visual C++ 2015 Tools for Windows Desktop` which can be installed through the `Visual Studio New Project Dialog`
 
 ![image_42](images/image_2.png)
+
+* Use retarget solution to select an available Windows SDK.
 
 ---
 
@@ -130,7 +133,7 @@ if (result != RZSUCCESS)
 
 **Running the editor application**
 
-1 Run the [Chroma Editor Installer](https://github.com/razerofficial/CChromaEditor/releases/tag/1.0) to associate `.chroma` animations with the editor.
+1 Run the [Chroma Editor Installer](https://github.com/razerofficial/CChromaEditor/releases/) to associate `.chroma` animations with the editor.
 
 2 Double-click a `.chroma` animation file to open in the editor
 
@@ -146,11 +149,13 @@ if (result != RZSUCCESS)
 
 ## Assets
 
-This library supports the `Chroma` animation exports from [UE4](https://github.com/razerofficial/UE4ChromaSDK), [Unity](https://github.com/razerofficial/UnityNativeChromaSDK/), and [GameMaker](https://github.com/razerofficial/GameMakerChromaExtension).
+The `chroma` binary file format is supported in multiple engines and can even play on websites. Authoring tools like the [Web Chroma Editor](https://chroma.razer.com/ChromaEditor) can easily record animations for the full device set which can be downloaded in a zip file. The `Web Chroma Editor` is also able to embed `chroma` animation files into code for specific languages.
 
 <a name="dialog"></a>
 
 ## Dialog
+
+The standalone Chroma editor has a MFC dialog that can be used to create Chroma animations for the set of devices.
 
 ![image_1](images/image_1.png)
 
@@ -182,10 +187,102 @@ Open a file dialog and save the open animation
 
 Import a BMP, JPG, or PNG texture into the grid layout. The images will be stretched to fit the grid.
 
+**Import Image Sequence**
+
+Import a numbered set of images as an animation.
+
 **Import Animation**
 
 Import a GIF animation into the grid layout. Multiple frames will be added if they exist in the GIF. The image will be stretched to fit the grid.
 <br/>
+
+<a name="streaming"></a>
+
+## Streaming
+
+The [Razer Streaming Portal](https://stream.razer.com/) supports streaming Chroma RGB on video streaming platforms and can be embedded on any 3rd party site. In order to stream Chroma RGB, you'll need the latest Synapse and Chroma Connect module. No other software is required to control streaming from the browser or the API below.
+
+**Login**
+
+The first step is to login into the [Razer Streaming Portal](https://stream.razer.com/) with Razer ID.
+
+![image_6](images/image_6.png)
+
+**Profile**
+
+Navigate to the user profile by clicking `MY STREAMS`.
+
+![image_7](images/image_7.png)
+
+**Stream Source**
+
+Create a `Stream Source` to broadcast `Chroma RGB` events.
+
+![image_8](images/image_8.png)
+
+**Name Your Stream Source**
+
+Enter the name of your stream source and enter name of the game to generate the stream thumbnail. Make sure `GO LIVE` is turned on. The `Mature` toggle is optional and can be filtered.
+
+![image_9](images/image_9.png)
+
+**Source**
+
+PC games set the source to `PC`. `Cloud Gaming`, `Console`, and `Mobile` games set the `Source` to `Other`.
+
+![image_10](images/image_10.png)
+
+**Authorize**
+
+Authorizing a shortcode is used to allow the broadcast to be toggled on sites outside the `Razer Streaming Portal` or by games using the [API](#api) to authorize a `ShortCode`. Once the `Shortcode` is authorized, the `Stream Id` and `Stream Key` can be obtained before releasing the `ShortCode`.
+
+![image_11](images/image_11.png)
+
+**Link Stream Source**
+
+The `Stream Source` can be linked to several social platforms.  Enable the toggle for social platforms to appear on your `Stream Source` tile. Pick a `default` social platform for yuour `Stream Source` tile.
+
+![image_12](images/image_12.png)
+
+**Embed**
+
+`Chroma RGB` streaming can be an `Embed` on a 3rd party webpage. Click the `Embed` clipboard icon to add the HTML5 iframe snippet to the clipboard which can be pasted into a 3rd party webpage. The `Embed` URL must match the URL of the 3rd party webpage address.
+
+**Twitch**
+
+Add the [Razer Streaming Panel](https://dashboard.twitch.tv/extensions/5z0l5bgwb0r0xcqritj8leqgo06l9j) Twitch Extension to stream Chroam RGB on Twitch. There's a easily link by clicking the Twitch gear icon.
+
+![image_18](images/image_18.png)
+
+**Save**
+
+Save the `Stream Source` settings when finished. You can rename your `Stream Source` and save the changes. You can reuse the same `Stream Source` for multiple games by changing the game title / thumbnail. You can create multiple `Stream Sources` for mulitple games. You can always delete a `Stream Source` to keep things tidy. If you've accidentally streamed your `Stream Key` to viewers, you can always delete the `Stream Source` and create a new `Stream Source` to generate a new `Stream Id` and `Stream Key`.
+
+![image_13](images/image_13.png)
+
+**Broadcast**
+
+Once a `Stream Source` has been created, the toggle can be used to `Broadcast` to the social platforms that have been linked. Browse the [Chroma Workshop](https://www.razer.com/chroma-workshop#--games) to find games that have `Chroma RGB` integration. The broadcast toggle for `Chroma RGB` can be used before launching a game or after, either will work.
+
+![image_14](images/image_14.png)
+
+**Streams**
+
+When the `Chroma RGB` broadcast is active and game `Chroma RGB` events are detected, the `Stream Source` tile will appear on the main page of the portal. The `Stream Source` can appear in the `Favorite Streamers` section if the associated streamer has been favorited. The `Stream Source` can appear in the `Favorite Games` section if the associated game has been favorited. The `Stream Source` appears in the `Available Stream` section sorted by view count and can be found through pagination.
+
+![image_15](images/image_15.png)
+
+**Favorite Streamers**
+
+Clicking the streamer link on the `Stream Source` navigates to a page where favorites can be toggled via the star icon.
+
+![image_16](images/image_16.png)
+
+**Favorite Games**
+
+Clicking the game link on the `Stream Source` navigates to a page where favorites can be toggled via the heart icon.
+
+![image_17](images/image_17.png)
 
 <a name="api"></a>
 
@@ -9251,6 +9348,7 @@ double result = ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGBNameD(
 **PluginTrimEndFrames**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
+
 * 1. Reference the animation by id.
 
 ```C++
@@ -9268,6 +9366,7 @@ ChromaAnimationAPI::TrimEndFrames(
 **PluginTrimEndFramesName**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
+
 * 1. Reference the animation by name.
 
 ```C++
@@ -9622,7 +9721,6 @@ ChromaAnimationAPI::UsePreloadingName(
  const char* path, bool flag);
 ```
 
-
 <br/><br/>
 
 <hr/>
@@ -9630,10 +9728,6 @@ ChromaAnimationAPI::UsePreloadingName(
 *(End of automation)*
 
 <br/><br/>
-
-
-
-
 
 <a name="PluginPlayComposite"></a>
 **PluginPlayComposite**
@@ -9652,7 +9746,6 @@ EXPORT_API void PluginPlayComposite(const char* name, bool loop);
 // PluginPlayAnimationName("Random_Mousepad.chroma", loop);
 ```
 
-
 <a name="PluginStopComposite"></a>
 **PluginStopComposite**
 
@@ -9669,7 +9762,6 @@ EXPORT_API void PluginStopComposite(const char* name);
 // PluginStopAnimationName("Random_Mouse.chroma");
 // PluginStopAnimationName("Random_Mousepad.chroma");
 ```
-
 
 <a name="PluginCloseComposite"></a>
 **PluginCloseComposite**
@@ -9688,8 +9780,6 @@ EXPORT_API void PluginCloseComposite(const char* name);
 // PluginCloseAnimationName("Random_Mousepad.chroma");
 ```
 
-
-
 <a name="EChromaSDKDeviceTypeEnum"></a>
 **EChromaSDKDeviceTypeEnum**
 
@@ -9702,7 +9792,6 @@ enum EChromaSDKDeviceTypeEnum
     DE_2D,
 };
 ```
-
 
 <a name="EChromaSDKDevice1DEnum"></a>
 **EChromaSDKDevice1DEnum**
@@ -9717,7 +9806,6 @@ enum EChromaSDKDevice1DEnum
     DE_Mousepad,
 };
 ```
-
 
 <a name="EChromaSDKDevice2DEnum"></a>
 **EChromaSDKDevice2DEnum**
@@ -9734,7 +9822,6 @@ enum EChromaSDKDevice2DEnum
 ```
 
 (Auto-documentation needs sample snippet section)
-
 
 <a name="PluginSetKeysColorName"></a>
 **PluginSetKeysColorName**
@@ -9764,7 +9851,6 @@ for (int i = 0; i < frameCount; ++i)
 }
 _gMethodPlayAnimationName(animationName, false);
 ```
-
 
 <a name="PluginSetKeysNonZeroColorName"></a>
 **PluginSetKeysNonZeroColorName**
@@ -9796,8 +9882,8 @@ for (int i = 0; i < frameCount; ++i)
 _gMethodPlayAnimationName(animationName, false);
 ```
 
-
 <a name="file-format"></a>
+
 ## File Format
 
 **Version: (int)**
@@ -9842,7 +9928,6 @@ struct FChromaSDKColorFrame1D
 **Duration: (float)**
 
 **Color Array: (int[])**
-
 
 **2D File Format**
 
