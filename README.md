@@ -254,6 +254,20 @@ Add the [Razer Streaming Panel](https://dashboard.twitch.tv/extensions/5z0l5bgwb
 
 ![image_18](images/image_18.png)
 
+**Twitch Panel**
+
+In order to broadcast via the Twitch panel, use the `Authenticate` link to authorize the automatic shortcode.
+
+![image_20](images/image_20.png)
+
+The shortcode will appear in the code activation popup and then click the `AUTHORIZE SHORTCODE` button. After the `Stream Source` has been authorized, the window can be closed.
+
+![image_21](images/image_21.png)
+
+If the `Stream Source` is associated with the logged in `Razer ID`, authorization will give access to Twitch to allow the broadcast toggle to be used from the Twitch panel.
+
+![image_22](images/image_22.png)
+
 **Save**
 
 Save the `Stream Source` settings when finished. You can rename your `Stream Source` and save the changes. You can reuse the same `Stream Source` for multiple games by changing the game title / thumbnail. You can create multiple `Stream Sources` for mulitple games. You can always delete a `Stream Source` to keep things tidy. If you've accidentally streamed your `Stream Key` to viewers, you can always delete the `Stream Source` and create a new `Stream Source` to generate a new `Stream Id` and `Stream Key`.
