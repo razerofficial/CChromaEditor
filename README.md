@@ -268,6 +268,10 @@ If the `Stream Source` is associated with the logged in `Razer ID`, authorizatio
 
 ![image_22](images/image_22.png)
 
+Viewers of a live Twitch channel will automatically tune into the `Chroma RGB` from the broadcast. The streamer and viewers' hardware will be in sync.
+
+![image_23](images/image_23.png)
+
 **Save**
 
 Save the `Stream Source` settings when finished. You can rename your `Stream Source` and save the changes. You can reuse the same `Stream Source` for multiple games by changing the game title / thumbnail. You can create multiple `Stream Sources` for mulitple games. You can always delete a `Stream Source` to keep things tidy. If you've accidentally streamed your `Stream Key` to viewers, you can always delete the `Stream Source` and create a new `Stream Source` to generate a new `Stream Id` and `Stream Key`.
