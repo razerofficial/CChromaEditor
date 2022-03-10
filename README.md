@@ -284,6 +284,12 @@ Clicking the game link on the `Stream Source` navigates to a page where favorite
 
 ![image_17](images/image_17.png)
 
+**Watch**
+
+Clicking a `Stream Source` tile opens the watch page. The watch page streams `Chroma RGB` including audio and video with live chat (if available) when linked to the `Stream Source`. `Chroma` is initialized when the page receives focus, and uninitializes `Chroma` when the page loses focus. The watch page also has a drop down to switch between social channels that are linked with the stream.
+
+![image_19](images/image_19.png)
+
 <a name="api"></a>
 
 ## API
