@@ -11,8 +11,8 @@
 * [Prerequisites](#prerequisites)
 * [Security](#security)
 * [Assets](#assets)
-* [Dialog](dialog)
-* [Streaming](Streaming)
+* [Dialog](#dialog)
+* [Streaming](#streaming)
 * [API](#api)
 * [File Format](#file-format)
 
