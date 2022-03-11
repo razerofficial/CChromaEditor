@@ -13,6 +13,7 @@
 * [Assets](#assets)
 * [Dialog](#dialog)
 * [Streaming](#streaming)
+* [Streaming Logic Flow](#streaming-logic-flow)
 * [API](#api)
 * [File Format](#file-format)
 
@@ -308,7 +309,9 @@ Clicking a `Stream Source` tile opens the watch page. The watch page streams `Ch
 
 ![image_19](images/image_19.png)
 
-**Streaming Logic Flow**
+<a name="streaming-logic-flow"></a>
+
+## Streaming Logic Flow
 
 Games are able to control streaming via the API. Streaming can either broadcast or watch a `Chroma RGB` stream. The API supports broadcasting or watching but not both at the same time.
 
