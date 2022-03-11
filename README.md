@@ -308,6 +308,32 @@ Clicking a `Stream Source` tile opens the watch page. The watch page streams `Ch
 
 ![image_19](images/image_19.png)
 
+**Streaming Logic Flow**
+
+Games are able to control streaming via the API. Streaming can either broadcast or watch a `Chroma RGB` stream. The API supports broadcasting or watching but not both at the same time.
+
+Step 1. At any time, the game can use `StreamGetStatus` to get the streaming current status to display to the user.
+
+Step 2. To prepare for broadcasting, the streamer creates a `Stream Source` on the [profile page](https://stream.razer.com/profile).
+
+Step 3. The game invokes `StreamGetAuthShortcode` to display a six digit alpha-numeric shortcode to the streamer.
+
+Step 4. The game invokes `StreamGetId` and `StreamGetKey` on a 3-second interval while waiting on user authorization.
+
+Step 5. The streamer can edit any `Stream Source` on the [profile page](https://stream.razer.com/profile) and click `AUTHORIZE SHORT CODE`.
+
+![image_11](images/image_11.png)
+
+Step 6. The streamer enters the shortcode and clicks `AUTHORIZE SHORT CODE`.
+
+![image_21](images/image_21.png)
+
+Step 7. At this point `StreamGetId` and `StreamGetKey` return valid data to the game. The `Stream Id` and `Stream Key` should be saved in the user settings for feature streaming. To complete the authorization, invoke `StreamReleaseShortcode` which will prevent any other users from obtaining the auth details corresponding to the shortcode.
+
+Step 8. The game can now invoke `StreamBroadcast` to begin broadcasting `Chroma RGB`. Both the `Stream Id` and `Stream Key` are needed to broadcast. `StreamBroadcastEnd` will end the broadcast.
+
+Step 9. The game can invoke `StreamWatch` to watch the `Chroma RGB` stream for a given `Stream Id`. Watching a stream will end by invoking `StreamWatchEnd`.
+
 <a name="api"></a>
 
 ## API
