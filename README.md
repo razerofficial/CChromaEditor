@@ -313,7 +313,7 @@ Clicking a `Stream Source` tile opens the watch page. The watch page streams `Ch
 
 ## Streaming Logic Flow
 
-Games are able to control streaming via the API. Streaming can either broadcast or watch a `Chroma RGB` stream. The API supports broadcasting or watching but not both at the same time. It's recommended that games have a `Chroma RGB` toggle in the game settings that is on by default. For streaming `Chroma RGB`, games should be able to display a `shortcode` for stream authorization and a `broadcast toggle`.
+By default, any game that implements `Chroma RGB` on PC is compatible with streaming that can be controlled from the [Razer Streaming Portal](https://stream.razer.com/). Games are also able to control streaming via the API. Using the streaming API is most useful when the instance of the game is running within `Cloud Gaming`. Streaming can either broadcast or watch a `Chroma RGB` stream. The API supports broadcasting or watching but not both at the same time. It's recommended that games have a `Chroma RGB` toggle in the game settings that is on by default. For streaming `Chroma RGB`, games should be able to display a `shortcode` for stream authorization and a `broadcast toggle`.
 
 Step 1. At any time, the game can use `StreamGetStatus` to get the streaming current status to display to the user.
 
