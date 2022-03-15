@@ -321,6 +321,17 @@ Step 2. To prepare for broadcasting, the streamer creates a `Stream Source` on t
 
 Step 3. The game invokes `StreamGetAuthShortcode` to display a six digit alpha-numeric `shortcode` to the streamer. The `shortcode` will expire within 5 minutes.
 
+On PC, the only streaming platform is `"PC"`.
+
+Cloud gaming platforms are specified below.
+
+```
+"GEFORCE_NOW"
+"LUNA"
+"STADIA"
+"XBOX_GAME_PASS"
+```
+
 Step 4. The game invokes `StreamGetId` and `StreamGetKey` on a 3-second interval while waiting on user authorization.
 
 Step 5. The streamer can edit any `Stream Source` on the [profile page](https://stream.razer.com/profile) and click `AUTHORIZE SHORT CODE`.
