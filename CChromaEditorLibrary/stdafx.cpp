@@ -221,7 +221,7 @@ extern "C"
 	}
 
 	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length,
-		const char* platform, const char* title)
+		const wchar_t* platform, const wchar_t* title)
 	{
 		RzChromaStreamPlugin::StreamGetAuthShortcode(shortcode, length, platform, title);
 	}

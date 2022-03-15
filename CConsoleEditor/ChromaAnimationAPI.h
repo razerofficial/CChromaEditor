@@ -601,7 +601,7 @@ typedef bool		(*PLUGIN_CORE_STREAM_BROADCAST_END)();
 	so they can associate the stream with their Razer ID  StreamGetStatus() 
 	should return the READY status before invoking this method.
 */
-typedef void		(*PLUGIN_CORE_STREAM_GET_AUTH_SHORTCODE)(char* shortcode, unsigned char* length, const char* platform, const char* title);
+typedef void		(*PLUGIN_CORE_STREAM_GET_AUTH_SHORTCODE)(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 /*
 	focus: Pass the address of a preallocated character buffer to get the stream 
 	focus. The buffer should have a length of 48  length: Length will return 

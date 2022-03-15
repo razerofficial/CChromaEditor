@@ -647,7 +647,7 @@ extern "C"
 		so they can associate the stream with their Razer ID  StreamGetStatus()
 		should return the READY status before invoking this method.
 	*/
-	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length, const char* platform, const char* title);
+	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 	/*
 		focus: Pass the address of a preallocated character buffer to get the stream
 		focus. The buffer should have a length of 48  length: Length will return

@@ -155,7 +155,7 @@ bool RzChromaStreamPlugin::StreamBroadcastEnd()
 	return _sMethodStreamBroadcastEnd();
 }
 void RzChromaStreamPlugin::StreamGetAuthShortcode(char* shortcode, unsigned char* length,
-	const char* platform, const char* title)
+	const wchar_t* platform, const wchar_t* title)
 {
 	RZRESULT state = GetLibraryLoadedState();
 	if (state != RZRESULT_SUCCESS)

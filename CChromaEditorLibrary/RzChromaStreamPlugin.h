@@ -9,7 +9,7 @@
 typedef bool(*CHROMA_SDK_STREAM_BROADCAST)(const char* streamId, const char* streamKey);
 typedef bool(*CHROMA_SDK_STREAM_BROADCAST_END)();
 typedef void(*CHROMA_SDK_STREAM_GET_AUTH_SHORTCODE)(char* shortcode, unsigned char* length,
-	const char* platform, const char* title);
+	const wchar_t* platform, const wchar_t* title);
 typedef bool(*CHROMA_SDK_STREAM_GET_FOCUS)(char* focus, unsigned char* length);
 typedef void(*CHROMA_SDK_STREAM_GET_ID)(const char* shortcode, char* streamId, unsigned char* length);
 typedef void(*CHROMA_SDK_STREAM_GET_KEY)(const char* shortcode, char* streamKey, unsigned char* length);
@@ -35,7 +35,7 @@ public:
 	static bool StreamBroadcast(const char* streamId, const char* streamKey);
 	static bool StreamBroadcastEnd();
 	static void StreamGetAuthShortcode(char* shortcode, unsigned char* length,
-		const char* platform, const char* title);
+		const wchar_t* platform, const wchar_t* title);
 	static bool StreamGetFocus(char* focus, unsigned char* length);
 	static void StreamGetId(const char* shortcode, char* streamId, unsigned char* length);
 	static void StreamGetKey(const char* shortcode, char* streamKey, unsigned char* length);
