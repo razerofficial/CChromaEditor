@@ -74,7 +74,7 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 	if (_sLibrary == NULL)
 	{
 		// check the library file version
-		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(CHROMA_STREAMING_DLL, 0, 1, 2, 21))
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(CHROMA_STREAMING_DLL, 0, 1, 2, 22))
 		{
 			return RZRESULT_DLL_NOT_FOUND;
 		}
@@ -87,7 +87,7 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 		}
 
 		// verify the library has a valid signature
-		//_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibrary);
+		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibrary);
  		if (_sInvalidSignature)
 		{
 			fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
