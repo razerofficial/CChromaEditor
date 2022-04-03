@@ -358,12 +358,12 @@ namespace ChromaSDK
 						VS_FIXEDFILEINFO* verInfo = (VS_FIXEDFILEINFO*)lpBuffer;
 						if (verInfo->dwSignature == 0xfeef04bd)
 						{
-							const int major = (verInfo->dwProductVersionMS >> 16) & 0xffff;
-							const int minor = (verInfo->dwProductVersionMS >> 0) & 0xffff;
-							const int revision = (verInfo->dwProductVersionMS >> 16) & 0xffff;
-							const int build = (verInfo->dwProductVersionMS >> 0) & 0xffff;
+							const int major = (verInfo->dwFileVersionMS >> 16) & 0xffff;
+							const int minor = (verInfo->dwFileVersionMS >> 0) & 0xffff;
+							const int revision = (verInfo->dwFileVersionLS >> 16) & 0xffff;
+							const int build = (verInfo->dwFileVersionLS >> 0) & 0xffff;
 
-							ChromaLogger::fprintf(stdout, "Product Version: %d.%d.%d.%d\n", major, minor, revision, build);
+							ChromaLogger::fprintf(stdout, "File Version: %d.%d.%d.%d\n", major, minor, revision, build);
 
 							// Anything less than the min version returns false
 
