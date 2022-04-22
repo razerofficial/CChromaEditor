@@ -168,7 +168,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CConsoleEditor.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ChromaAnimationAPI.cpp" />
     <ClCompile Include="ChromaLogger.cpp" />
     <ClCompile Include="stdafx.cpp" />

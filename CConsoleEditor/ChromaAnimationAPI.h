@@ -14,8 +14,6 @@ void LogDebug(const char* text, ...);
 void LogError(const char* text, ...);
 /* End of setup log mechanism */
                 
-typedef unsigned char byte;
-                
 #pragma region API typedefs
 /*
 	Return the sum of colors
@@ -1840,12 +1838,12 @@ typedef int			(*PLUGIN_OPEN_ANIMATION)(const char* path);
 typedef double		(*PLUGIN_OPEN_ANIMATION_D)(const char* path);
 /*
 	Opens a `Chroma` animation data from memory so that it can be played. `Data` 
-	is a pointer to byte array of the loaded animation in memory. `Name` will 
+	is a pointer to BYTE array of the loaded animation in memory. `Name` will 
 	be assigned to the animation when loaded. Returns an animation id >= 0 
 	upon success. Returns -1 if there was a failure. The animation id is used 
 	in most of the API methods.
 */
-typedef int			(*PLUGIN_OPEN_ANIMATION_FROM_MEMORY)(const byte* data, const char* name);
+typedef int			(*PLUGIN_OPEN_ANIMATION_FROM_MEMORY)(const BYTE* data, const char* name);
 /*
 	Opens a `Chroma` animation file with the `.chroma` extension. Returns zero 
 	upon success. Returns -1 if there was a failure.
@@ -2671,6 +2669,7 @@ namespace ChromaSDK
 	{
 	private:
 		static bool _sIsInitializedAPI;
+		static HMODULE _sLibrary;
 
 	public:
 
@@ -4498,7 +4497,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION_D, OpenAnimationD);
 		/*
 			Opens a `Chroma` animation data from memory so that it can be played. `Data` 
-			is a pointer to byte array of the loaded animation in memory. `Name` will 
+			is a pointer to BYTE array of the loaded animation in memory. `Name` will 
 			be assigned to the animation when loaded. Returns an animation id >= 0 
 			upon success. Returns -1 if there was a failure. The animation id is used 
 			in most of the API methods.
@@ -5322,6 +5321,7 @@ namespace ChromaSDK
 #pragma endregion
 
 		static int InitAPI();
+		static int UninitAPI();
 		static bool GetIsInitializedAPI();
 	};
 }

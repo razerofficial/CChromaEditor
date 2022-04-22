@@ -4,6 +4,8 @@
 
 #pragma once
 
+//#define USE_CHROMA_CLOUD
+
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN            // Exclude rarely-used stuff from Windows headers
 #endif
@@ -1886,12 +1888,12 @@ extern "C"
 	EXPORT_API double PluginOpenAnimationD(const char* path);
 	/*
 		Opens a `Chroma` animation data from memory so that it can be played. `Data`
-		is a pointer to byte array of the loaded animation in memory. `Name` will
+		is a pointer to BYTE array of the loaded animation in memory. `Name` will
 		be assigned to the animation when loaded. Returns an animation id >= 0
 		upon success. Returns -1 if there was a failure. The animation id is used
 		in most of the API methods.
 	*/
-	EXPORT_API int PluginOpenAnimationFromMemory(const byte* data, const char* name);
+	EXPORT_API int PluginOpenAnimationFromMemory(const BYTE* data, const char* name);
 	/*
 		Opens a `Chroma` animation file with the `.chroma` extension. Returns zero
 		upon success. Returns -1 if there was a failure.

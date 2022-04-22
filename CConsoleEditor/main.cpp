@@ -59,6 +59,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	result = ChromaAnimationAPI::CoreInitSDK(&appInfo);
  	if (result != RZRESULT_SUCCESS)
 	{
+		ChromaAnimationAPI::UninitAPI();
 		ChromaLogger::fprintf(stderr, "Failed to initialize Chroma! %d", result);
 		return result;
 	}
@@ -108,6 +109,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	}
 
 	ChromaAnimationAPI::Uninit();
+	ChromaAnimationAPI::UninitAPI();
 	ChromaLogger::printf("CConsoleEditor exited.\r\n");
 
     return RZRESULT_SUCCESS;
