@@ -6,10 +6,26 @@
 #include <stdio.h>
 
 
+#ifdef USE_CHROMA_CLOUD
+
+
+#ifdef _WIN64
+#define CHROMA_STREAMING_DLL        _T("RzChromaStreamPlugin64.dll")
+#else
+#define CHROMA_STREAMING_DLL        _T("RzChromaStreamPlugin.dll")
+#endif
+
+
+#else
+
+
 #ifdef _WIN64
 #define CHROMA_STREAMING_DLL        _T("C:\\Program Files\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin64.dll")
 #else
 #define CHROMA_STREAMING_DLL        _T("C:\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin.dll")
+#endif
+
+
 #endif
 
 
@@ -73,11 +89,13 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 	// load the library if previously not loaded
 	if (_sLibrary == NULL)
 	{
+#ifndef USE_CHROMA_CLOUD
 		// check the library file version
 		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(CHROMA_STREAMING_DLL, 0, 1, 2, 22))
 		{
 			return RZRESULT_DLL_NOT_FOUND;
 		}
+#endif
 
 		// load the library
 		_sLibrary = LoadLibrary(CHROMA_STREAMING_DLL);
@@ -86,6 +104,7 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 
+#ifndef USE_CHROMA_CLOUD
 		// verify the library has a valid signature
 		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibrary);
  		if (_sInvalidSignature)
@@ -98,6 +117,7 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 
 			return RZRESULT_DLL_INVALID_SIGNATURE;
 		}
+#endif
 	}
 
 #pragma region Streaming
