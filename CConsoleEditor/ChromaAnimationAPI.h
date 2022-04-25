@@ -2,12 +2,6 @@
 
 #include "ChromaSDKPluginTypes.h"
 
-# ifdef _WIN64
-#define CHROMA_EDITOR_DLL	_T("CChromaEditorLibrary64.dll")
-#else
-#define CHROMA_EDITOR_DLL	_T("CChromaEditorLibrary.dll")
-#endif
-
 /* Setup log mechanism */
 typedef void(*DebugLogPtr)(const char*);
 void LogDebug(const char* text, ...);
@@ -2669,6 +2663,7 @@ namespace ChromaSDK
 	{
 	private:
 		static bool _sIsInitializedAPI;
+		static bool _sInvalidSignature;
 		static HMODULE _sLibrary;
 
 	public:

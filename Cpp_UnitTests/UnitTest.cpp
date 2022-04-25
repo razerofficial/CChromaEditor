@@ -1046,19 +1046,19 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 
 		ChromaLogger::printf("UnitTestsOpenAnimationFromMemory: Reading animation file contents...\r\n");
 
-		vector<byte> lstBuffer;
+		vector<BYTE> lstBuffer;
 
-		byte data = 0;
+		BYTE data = 0;
 		size_t read = 0;
 		do
 		{
-			read = fread(&data, sizeof(byte), 1, stream);
+			read = fread(&data, sizeof(BYTE), 1, stream);
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
  		ChromaLogger::fprintf(stderr, "UnitTestsOpenAnimationFromMemory: File size is! %d\r\n", (int)lstBuffer.size());
 
-		byte* buffer = new byte[lstBuffer.size()];
+		BYTE* buffer = new BYTE[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
 
 		ChromaLogger::printf("UnitTestsOpenAnimationFromMemory: Opening file from buffer...\r\n");
@@ -1345,19 +1345,19 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 
 		ChromaLogger::printf("UnitTestsMeasurePreloadingWithCaching: Reading animation file contents...\r\n");
 
-		vector<byte> lstBuffer;
+		vector<BYTE> lstBuffer;
 
-		byte data = 0;
+		BYTE data = 0;
 		size_t read = 0;
 		do
 		{
-			read = fread(&data, sizeof(byte), 1, stream);
+			read = fread(&data, sizeof(BYTE), 1, stream);
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
 		ChromaLogger::fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: File size is! %d\r\n", (int)lstBuffer.size());
 
-		byte* buffer = new byte[lstBuffer.size()];
+		BYTE* buffer = new BYTE[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
 
 		ChromaLogger::printf("UnitTestsMeasurePreloadingWithCaching: Opening file from buffer...\r\n");
@@ -1483,19 +1483,19 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 
 		ChromaLogger::printf("UnitTestsMeasureGetAnimationWithCaching: Reading animation file contents...\r\n");
 
-		vector<byte> lstBuffer;
+		vector<BYTE> lstBuffer;
 
-		byte data = 0;
+		BYTE data = 0;
 		size_t read = 0;
 		do
 		{
-			read = fread(&data, sizeof(byte), 1, stream);
+			read = fread(&data, sizeof(BYTE), 1, stream);
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
 		ChromaLogger::fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: File size is! %d\r\n", (int)lstBuffer.size());
 
-		byte* buffer = new byte[lstBuffer.size()];
+		BYTE* buffer = new BYTE[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
 
 		ChromaLogger::printf("UnitTestsMeasureGetAnimationWithCaching: Opening file from buffer...\r\n");
@@ -1567,7 +1567,7 @@ void UnitTests::UnitTestsCopyKeysColorAllFramesName()
 	 Keyboard::RZKEY::RZKEY_M,
 	 Keyboard::RZKEY::RZKEY_F1,
 	};
-	ChromaAnimationAPI::CopyKeysColorAllFramesName(layer2, baseLayer, keys, size(keys));
+	ChromaAnimationAPI::CopyKeysColorAllFramesName(layer2, baseLayer, keys, (int)size(keys));
 	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
 	ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
 	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);

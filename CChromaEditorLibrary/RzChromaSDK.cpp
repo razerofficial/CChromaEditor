@@ -10,9 +10,9 @@
 
 
 #ifdef _WIN64
-#define CHROMASDKDLL        _T("RzChromaSDK64.dll")
+#define CHROMASDKDLL        L"RzChromaSDK64.dll"
 #else
-#define CHROMASDKDLL        _T("RzChromaSDK.dll")
+#define CHROMASDKDLL        L"RzChromaSDK.dll"
 #endif
 
 
@@ -20,9 +20,9 @@
 
 
 #ifdef _WIN64
-#define CHROMASDKDLL        _T("C:\\Program Files\\Razer Chroma SDK\\bin\\RzChromaSDK64.dll")
+#define CHROMASDKDLL        L"C:\\Program Files\\Razer Chroma SDK\\bin\\RzChromaSDK64.dll"
 #else
-#define CHROMASDKDLL        _T("C:\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzChromaSDK.dll")
+#define CHROMASDKDLL        L"C:\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzChromaSDK.dll"
 #endif
 
 
@@ -241,35 +241,53 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 	// load the library if previously not loaded
 	if (_sLibrary == NULL)
 	{
+#ifdef USE_CHROMA_CLOUD
+		wchar_t filename[MAX_PATH]; //this is a char buffer
+		GetModuleFileNameW(NULL, filename, sizeof(filename));
+
+		std::wstring path;
+		const size_t last_slash_idx = std::wstring(filename).rfind('\\');
+		if (std::string::npos != last_slash_idx)
+		{
+			path = std::wstring(filename).substr(0, last_slash_idx);
+		}
+
+		path += L"\\";
+		path += CHROMASDKDLL;
+#else
+		std::wstring path = CHROMASDKDLL;
+#endif
+
 #ifndef USE_CHROMA_CLOUD
 		// check the library file version
-		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(CHROMASDKDLL, 3, 7, 3, 130))
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 3, 7, 3, 130))
 		{
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 #endif
 		
 		// load the library
-		_sLibrary = LoadLibrary(CHROMASDKDLL);
-		if (_sLibrary == NULL)
+		HMODULE library = LoadLibrary(path.c_str());
+		if (library == NULL)
 		{
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 
 #ifndef USE_CHROMA_CLOUD
 		// verify the library has a valid signature
-		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibrary);
+		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(library, true);
  		if (_sInvalidSignature)
 		{
 			ChromaLogger::fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
 			
 			// unload the library
-			FreeLibrary(_sLibrary);
-			_sLibrary = NULL;
+			FreeLibrary(library);
+			library = NULL;
 
 			return RZRESULT_DLL_INVALID_SIGNATURE;
 		}
 #endif
+		_sLibrary = library;
 	}
 
 	// CORE API METHODS

@@ -4,10 +4,19 @@
 #include <iostream>
 #include <tchar.h>
 
+
+# ifdef _WIN64
+#define CHROMA_EDITOR_DLL	_T("CChromaEditorLibrary64.dll")
+#else
+#define CHROMA_EDITOR_DLL	_T("CChromaEditorLibrary.dll")
+#endif
+
+
 using namespace ChromaSDK;
 using namespace std;
 
 HMODULE ChromaAnimationAPI::_sLibrary = nullptr;
+bool ChromaAnimationAPI::_sInvalidSignature = false;
 bool ChromaAnimationAPI::_sIsInitializedAPI = false;
 
 #define CHROMASDK_DECLARE_METHOD_IMPL(Signature, FieldName) Signature ChromaAnimationAPI::FieldName = nullptr;
@@ -556,21 +565,47 @@ if (FieldName == nullptr) \
 
 int ChromaAnimationAPI::InitAPI()
 {
+	// abort load if an invalid signature was detected
+	if (_sInvalidSignature)
+	{
+		return RZRESULT_DLL_INVALID_SIGNATURE;
+	}
+
 	if (_sIsInitializedAPI)
 	{
 		return 0;
 	}
 
-	HMODULE library = LoadLibrary(CHROMA_EDITOR_DLL);
+	wchar_t filename[MAX_PATH]; //this is a char buffer
+	GetModuleFileNameW(NULL, filename, sizeof(filename));
+
+	std::wstring path;
+	const size_t last_slash_idx = std::wstring(filename).rfind('\\');
+	if (std::string::npos != last_slash_idx)
+	{
+		path = std::wstring(filename).substr(0, last_slash_idx);
+	}
+
+	path += L"\\";
+	path += CHROMA_EDITOR_DLL;
+
+	// check the library file version
+#ifdef USE_CHROMA_CLOUD
+	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 1, 0, 0, 1))
+	{
+		return RZRESULT_DLL_NOT_FOUND;
+	}
+#endif
+
+	HMODULE library = LoadLibrary(path.c_str());
 	if (library == NULL)
 	{
 		//ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
         return RZRESULT_DLL_NOT_FOUND;
 	}
 
-#if false
-	// when editor DLL is digitally signed
-	if (!VerifyLibrarySignature::VerifyModule(library))
+	//_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(library, false);
+	if (_sInvalidSignature)
 	{
 		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library reason: invalid signature!\r\n");
 
@@ -580,7 +615,6 @@ int ChromaAnimationAPI::InitAPI()
 
 		return -1;
 	}
-#endif
 
 	_sLibrary = library;
 	

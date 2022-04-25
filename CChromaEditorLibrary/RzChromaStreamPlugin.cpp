@@ -10,9 +10,9 @@
 
 
 #ifdef _WIN64
-#define CHROMA_STREAMING_DLL        _T("RzChromaStreamPlugin64.dll")
+#define CHROMA_STREAMING_DLL        L"RzChromaStreamPlugin64.dll"
 #else
-#define CHROMA_STREAMING_DLL        _T("RzChromaStreamPlugin.dll")
+#define CHROMA_STREAMING_DLL        L"RzChromaStreamPlugin.dll"
 #endif
 
 
@@ -20,9 +20,9 @@
 
 
 #ifdef _WIN64
-#define CHROMA_STREAMING_DLL        _T("C:\\Program Files\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin64.dll")
+#define CHROMA_STREAMING_DLL        L"C:\\Program Files\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin64.dll"
 #else
-#define CHROMA_STREAMING_DLL        _T("C:\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin.dll")
+#define CHROMA_STREAMING_DLL        L"C:\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin.dll"
 #endif
 
 
@@ -89,35 +89,51 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 	// load the library if previously not loaded
 	if (_sLibrary == NULL)
 	{
-#ifndef USE_CHROMA_CLOUD
+#ifdef USE_CHROMA_CLOUD
+		wchar_t filename[MAX_PATH]; //this is a char buffer
+		GetModuleFileNameW(NULL, filename, sizeof(filename));
+
+		std::wstring path;
+		const size_t last_slash_idx = std::wstring(filename).rfind('\\');
+		if (std::string::npos != last_slash_idx)
+		{
+			path = std::wstring(filename).substr(0, last_slash_idx);
+		}
+
+		path += L"\\";
+		path += CHROMA_STREAMING_DLL;
+#else
+		std::wstring path = CHROMA_STREAMING_DLL;
+#endif
+
 		// check the library file version
-		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(CHROMA_STREAMING_DLL, 0, 1, 2, 22))
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 0, 1, 2, 22))
 		{
 			return RZRESULT_DLL_NOT_FOUND;
 		}
-#endif
 
 		// load the library
-		_sLibrary = LoadLibrary(CHROMA_STREAMING_DLL);
-		if (_sLibrary == NULL)
+		HMODULE library = LoadLibrary(path.c_str());
+		if (library == NULL)
 		{
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 
 #ifndef USE_CHROMA_CLOUD
 		// verify the library has a valid signature
-		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibrary);
+		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(library, true);
  		if (_sInvalidSignature)
 		{
-			fprintf(stderr, "Failed to load Chroma library with invalid signature!\r\n");
+			fprintf(stderr, "Failed to load Chroma stream library with invalid signature!\r\n");
 			
 			// unload the library
-			FreeLibrary(_sLibrary);
-			_sLibrary = NULL;
+			FreeLibrary(library);
+			library = NULL;
 
 			return RZRESULT_DLL_INVALID_SIGNATURE;
 		}
 #endif
+		_sLibrary = library;
 	}
 
 #pragma region Streaming

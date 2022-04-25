@@ -30,6 +30,9 @@
     <ClInclude Include="ChromaLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VerifyLibrarySignature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -44,8 +47,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VerifyLibrarySignature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(OutDir)\CChromaEditorLibrary.dll" />
+    <None Include="$(OutDir)\CChromaEditorLibrary64.dll" />
   </ItemGroup>
 </Project>
