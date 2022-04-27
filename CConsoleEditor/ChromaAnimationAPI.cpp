@@ -6,9 +6,9 @@
 
 
 # ifdef _WIN64
-#define CHROMA_EDITOR_DLL	_T("CChromaEditorLibrary64.dll")
+#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary64.dll"
 #else
-#define CHROMA_EDITOR_DLL	_T("CChromaEditorLibrary.dll")
+#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary.dll"
 #endif
 
 
@@ -590,24 +590,25 @@ int ChromaAnimationAPI::InitAPI()
 	path += CHROMA_EDITOR_DLL;
 
 	// check the library file version
-#ifdef USE_CHROMA_CLOUD
 	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 1, 0, 0, 1))
 	{
+		ChromaLogger::fprintf(stderr, "Detected old version of Chroma Editor Library!\r\n");
 		return RZRESULT_DLL_NOT_FOUND;
 	}
-#endif
 
 	HMODULE library = LoadLibrary(path.c_str());
 	if (library == NULL)
-	{
-		//ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
+	{ 
+		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
         return RZRESULT_DLL_NOT_FOUND;
 	}
 
-	//_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(library, false);
-	if (_sInvalidSignature)
+#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
+	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
+#endif
+ 	if (_sInvalidSignature)
 	{
-		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library reason: invalid signature!\r\n");
+		ChromaLogger::fprintf(stderr, "Chroma Editor Library has invalid signature!\r\n");
 
 		// unload the library
 		FreeLibrary(library);

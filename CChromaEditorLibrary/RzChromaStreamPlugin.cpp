@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "RzChromaStreamPlugin.h"
+#include "ChromaLogger.h"
 #include "RzErrors.h"
 #include "VerifyLibrarySignature.h"
 #include <tchar.h>
@@ -106,25 +107,35 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 		std::wstring path = CHROMA_STREAMING_DLL;
 #endif
 
+#ifdef USE_CHROMA_CLOUD
+		// check the library file version
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 1, 0, 0, 1))
+		{
+			ChromaLogger::fprintf(stderr, "Detected old version of Chroma Stream Library!\r\n");
+			return RZRESULT_DLL_NOT_FOUND;
+		}
+#else
 		// check the library file version
 		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 0, 1, 2, 22))
 		{
+			ChromaLogger::fprintf(stderr, "Detected old version of Chroma Stream Library!\r\n");
 			return RZRESULT_DLL_NOT_FOUND;
 		}
+#endif
 
 		// load the library
 		HMODULE library = LoadLibrary(path.c_str());
 		if (library == NULL)
 		{
+			ChromaLogger::fprintf(stderr, "Failed to load Chroma Stream Library!\r\n");
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 
-#ifndef USE_CHROMA_CLOUD
 		// verify the library has a valid signature
-		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(library, true);
+		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, true);
  		if (_sInvalidSignature)
 		{
-			fprintf(stderr, "Failed to load Chroma stream library with invalid signature!\r\n");
+			ChromaLogger::fprintf(stderr, "Chroma Stream Library has an invalid signature!\r\n");
 			
 			// unload the library
 			FreeLibrary(library);
@@ -132,7 +143,7 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 
 			return RZRESULT_DLL_INVALID_SIGNATURE;
 		}
-#endif
+
 		_sLibrary = library;
 	}
 

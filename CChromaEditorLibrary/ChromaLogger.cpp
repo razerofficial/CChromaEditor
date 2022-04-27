@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ChromaLogger.h"
+#include <stdarg.h>
 
 using namespace ChromaSDK;
 
