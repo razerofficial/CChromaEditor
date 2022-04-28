@@ -608,7 +608,7 @@ int ChromaAnimationAPI::InitAPI()
 #endif
  	if (_sInvalidSignature)
 	{
-		ChromaLogger::fprintf(stderr, "Chroma Editor Library has invalid signature!\r\n");
+		ChromaLogger::fprintf(stderr, "Chroma Editor Library has an invalid signature!\r\n");
 
 		// unload the library
 		FreeLibrary(library);
