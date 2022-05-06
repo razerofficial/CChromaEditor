@@ -11,3 +11,10 @@ x64/
 Release/
 Output/
 CConsoleEditor/CConsoleEditor.vcxproj.user
+CChromaEditorLibrary/Debug_Cloud/
+CChromaEditorLibrary/Release_Cloud/
+CConsoleEditor/Debug_Cloud/
+CConsoleEditor/Release_Cloud/
+Cpp_UnitTests/Debug_Cloud/
+Cpp_UnitTests/Release_Cloud/
+Win32/
