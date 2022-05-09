@@ -373,7 +373,7 @@ namespace ChromaSDK
 							const int revision = (verInfo->dwFileVersionLS >> 16) & 0xffff;
 							const int build = (verInfo->dwFileVersionLS >> 0) & 0xffff;
 
-							ChromaLogger::fprintf(stdout, "File Version: %d.%d.%d.%d\r\n", major, minor, revision, build);
+							ChromaLogger::wprintf(L"File Version: %d.%d.%d.%d %s\r\n", major, minor, revision, build, szFileName);
 
 							// Anything less than the min version returns false
 
