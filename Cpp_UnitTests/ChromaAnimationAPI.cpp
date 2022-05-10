@@ -598,7 +598,7 @@ int ChromaAnimationAPI::InitAPI()
 
 	HMODULE library = LoadLibrary(path.c_str());
 	if (library == NULL)
-	{
+	{ 
 		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
         return RZRESULT_DLL_NOT_FOUND;
 	}
@@ -606,7 +606,7 @@ int ChromaAnimationAPI::InitAPI()
 #ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
 	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
 #endif
-	if (_sInvalidSignature)
+ 	if (_sInvalidSignature)
 	{
 		ChromaLogger::fprintf(stderr, "Chroma Editor Library has an invalid signature!\r\n");
 

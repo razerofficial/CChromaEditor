@@ -132,7 +132,11 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 		}
 
 		// verify the library has a valid signature
+#ifdef USE_CHROMA_CLOUD
+		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
+#else
 		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, true);
+#endif
  		if (_sInvalidSignature)
 		{
 			ChromaLogger::fprintf(stderr, "Chroma Stream Library has an invalid signature!\r\n");
