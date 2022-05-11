@@ -13,7 +13,7 @@ using namespace std;
 
 int Init()
 {
-	//ChromaLogger::fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
+	//ChromaLogger::fprintf(stdout, "Loaded Chroma Editor DLL!\r\n");
 	if (ChromaAnimationAPI::InitAPI() != 0)
 	{
 		return -1;
@@ -31,7 +31,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	int       nCmdShow)
 #endif
 {
-	ChromaLogger::fprintf(stderr, "App launched!\r\n");
+	ChromaLogger::fprintf(stdout, "App launched!\r\n");
 
 	RZRESULT result = Init();
 	if (result != RZRESULT_SUCCESS)
@@ -59,6 +59,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	result = ChromaAnimationAPI::CoreInitSDK(&appInfo);
  	if (result != RZRESULT_SUCCESS)
 	{
+		ChromaAnimationAPI::UninitAPI();
 		ChromaLogger::fprintf(stderr, "Failed to initialize Chroma! %d", result);
 		return result;
 	}
@@ -108,6 +109,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	}
 
 	ChromaAnimationAPI::Uninit();
+	ChromaAnimationAPI::UninitAPI();
 	ChromaLogger::printf("CConsoleEditor exited.\r\n");
 
     return RZRESULT_SUCCESS;

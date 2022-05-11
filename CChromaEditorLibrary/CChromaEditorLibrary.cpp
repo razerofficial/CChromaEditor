@@ -177,11 +177,11 @@ void CMainViewDlg::SaveFile()
 		}
 
 		//device
-		byte device = 0;
+		BYTE device = 0;
 
 		//device type
-		byte deviceType = (byte)_mDeviceType;
-		expectedSize = sizeof(byte);
+		BYTE deviceType = (BYTE)_mDeviceType;
+		expectedSize = sizeof(BYTE);
 		fwrite(&deviceType, expectedSize, 1, stream);
 
 		//device
@@ -765,7 +765,7 @@ BOOL CMainViewDlg::OnInitDialog()
 	GetControlSetKeyCombo()->SetCurSel(0);
 
 	// setup mouse chars
-	for (int led = EChromaSDKMouseLED::ML_SCROLLWHEEL; led <= EChromaSDKMouseLED::ML_RIGHT_SIDE7; ++led)
+	for (int led = (int)EChromaSDKMouseLED::ML_SCROLLWHEEL; led <= (int)EChromaSDKMouseLED::ML_RIGHT_SIDE7; ++led)
 	{
 		const char* strLed = ChromaSDKPlugin::GetInstance()->GetMouseChar((EChromaSDKMouseLED)led);
 		GetControlSetLEDCombo()->AddString(CString(strLed));

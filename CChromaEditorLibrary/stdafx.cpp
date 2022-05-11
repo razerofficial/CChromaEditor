@@ -7,7 +7,7 @@
 #include "ChromaThread.h"
 #include "RzChromaSDK.h"
 #include "ChromaLogger.h"
-
+#include "RzChromaStreamPlugin.h"
 #include <map>
 #include <iostream>
 #include <sstream>
@@ -121,6 +121,16 @@ void ThreadOpenEditorDialog(bool playOnOpen)
 extern "C"
 {
 
+	EXPORT_API void PluginUnloadLibrarySDK()
+	{
+		RzChromaSDK::Unload();
+	}
+
+	EXPORT_API void PluginUnloadLibraryStreamingPlugin()
+	{
+		RzChromaStreamPlugin::Unload();
+	}
+
 #pragma region Core API
 	EXPORT_API RZRESULT PluginCoreInit()
 	{
@@ -184,6 +194,71 @@ extern "C"
 	EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo)
 	{
 		return RzChromaSDK::QueryDevice(DeviceId, DeviceInfo);
+	}
+
+	EXPORT_API bool PluginCoreStreamSetFocus(const char* focus)
+	{
+		return RzChromaStreamPlugin::StreamSetFocus(focus);
+	}
+	EXPORT_API bool PluginCoreStreamGetFocus(char* focus, unsigned char* length)
+	{
+		return RzChromaStreamPlugin::StreamGetFocus(focus, length);
+	}
+
+
+	EXPORT_API bool PluginCoreStreamSupportsStreaming()
+	{
+		return RzChromaStreamPlugin::GetLibraryLoadedState() == RZRESULT_SUCCESS;
+	}
+	EXPORT_API bool PluginCoreStreamBroadcast(const char* streamId, const char* streamKey)
+	{
+		return RzChromaStreamPlugin::StreamBroadcast(streamId, streamKey);
+	}
+
+	EXPORT_API bool PluginCoreStreamBroadcastEnd()
+	{
+		return RzChromaStreamPlugin::StreamBroadcastEnd();
+	}
+
+	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length,
+		const wchar_t* platform, const wchar_t* title)
+	{
+		RzChromaStreamPlugin::StreamGetAuthShortcode(shortcode, length, platform, title);
+	}
+
+	EXPORT_API void PluginCoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length)
+	{
+		RzChromaStreamPlugin::StreamGetId(shortcode, streamId, length);
+	}
+
+	EXPORT_API void PluginCoreStreamGetKey(const char* shortcode, char* streamKey, unsigned char* length)
+	{
+		RzChromaStreamPlugin::StreamGetKey(shortcode, streamKey, length);
+	}
+
+	EXPORT_API Stream::StreamStatusType PluginCoreStreamGetStatus()
+	{
+		return RzChromaStreamPlugin::StreamGetStatus();
+	}
+
+	EXPORT_API const char* PluginCoreStreamGetStatusString(ChromaSDK::Stream::StreamStatusType status)
+	{
+		return RzChromaStreamPlugin::StreamGetStatusString(status);
+	}
+
+	EXPORT_API bool PluginCoreStreamReleaseShortcode(const char* shortcode)
+	{
+		return RzChromaStreamPlugin::StreamReleaseShortcode(shortcode);
+	}
+
+	EXPORT_API bool PluginCoreStreamWatch(const char* streamId, unsigned long long timestamp)
+	{
+		return RzChromaStreamPlugin::StreamWatch(streamId, timestamp);
+	}
+
+	EXPORT_API bool PluginCoreStreamWatchEnd()
+	{
+		return RzChromaStreamPlugin::StreamWatchEnd();
 	}
 #pragma endregion
 
@@ -376,7 +451,7 @@ extern "C"
 
 	EXPORT_API int PluginGetAnimationCount()
 	{
-		return _gAnimationMapID.size();
+		return (int)_gAnimationMapID.size();
 	}
 
 	EXPORT_API int PluginGetAnimationId(int index)
@@ -441,7 +516,7 @@ extern "C"
 		}
 	}
 
-	EXPORT_API int PluginOpenAnimationFromMemory(const byte* data, const char* name)
+	EXPORT_API int PluginOpenAnimationFromMemory(const BYTE* data, const char* name)
 	{
 		try
 		{
@@ -10797,4 +10872,174 @@ extern "C"
 		return RZRESULT_SUCCESS;
 	}
 
+	EXPORT_API int PluginAddColor(const int color1, const int color2)
+	{
+		int red1 = color1 & 0xFF;
+		int green1 = (color1 & 0xFF00) >> 8;
+		int blue1 = (color1 & 0xFF0000) >> 16;
+
+		int red2 = color2 & 0xFF;
+		int green2 = (color2 & 0xFF00) >> 8;
+		int blue2 = (color2 & 0xFF0000) >> 16;
+
+		int red = min(255, max(0, red1 + red2)) & 0xFF;
+		int green = min(255, max(0, green1 + green2)) & 0xFF;
+		int blue = min(255, max(0, blue1 + blue2)) & 0xFF;
+
+		int newColor = red | (green << 8) | (blue << 16);
+		return newColor;
+	}
+
+	EXPORT_API int PluginSubtractColor(const int color1, const int color2)
+	{
+		int red1 = color1 & 0xFF;
+		int green1 = (color1 & 0xFF00) >> 8;
+		int blue1 = (color1 & 0xFF0000) >> 16;
+
+		int red2 = color2 & 0xFF;
+		int green2 = (color2 & 0xFF00) >> 8;
+		int blue2 = (color2 & 0xFF0000) >> 16;
+
+		int red = min(255, max(0, red1 - red2)) & 0xFF;
+		int green = min(255, max(0, green1 - green2)) & 0xFF;
+		int blue = min(255, max(0, blue1 - blue2)) & 0xFF;
+
+		int newColor = red | (green << 8) | (blue << 16);
+		return newColor;
+	}
+
+	EXPORT_API void PluginSubtractThresholdColorsMinMaxRGB(const int animationId, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue)
+	{
+		PluginStopAnimation(animationId);
+		int minColor = PluginGetRGB(minRed, minGreen, minBlue);
+		int maxColor = PluginGetRGB(maxRed, maxGreen, maxBlue);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = (Animation1D*)(animation);
+			vector<FChromaSDKColorFrame1D>& frames = animation1D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < (int)frames.size())
+			{
+				FChromaSDKColorFrame1D& frame = frames[frameId];
+				int maxLeds = PluginGetMaxLeds((int)animation1D->GetDevice());
+				vector<COLORREF>& colors = frame.Colors;
+				for (int i = 0; i < maxLeds; ++i)
+				{
+					int oldColor = colors[i];
+					int red = oldColor & 0xFF;
+					int green = (oldColor & 0xFF00) >> 8;
+					int blue = (oldColor & 0xFF0000) >> 16;
+					if (red != 0 ||
+						green != 0 ||
+						blue != 0)
+					{
+						if (red <= minThreshold &&
+							green <= minThreshold &&
+							blue <= minThreshold) {
+
+							colors[i] = PluginSubtractColor(oldColor, minColor);
+						}
+						else if (red >= maxThreshold ||
+							green >= maxThreshold ||
+							blue >= maxThreshold) {
+							colors[i] = PluginSubtractColor(oldColor, maxColor);
+						}
+					}
+				}
+			}
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = (Animation2D*)(animation);
+			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+			if (frameId >= 0 &&
+				frameId < (int)frames.size())
+			{
+				FChromaSDKColorFrame2D& frame = frames[frameId];
+				int maxRow = PluginGetMaxRow((int)animation2D->GetDevice());
+				int maxColumn = PluginGetMaxColumn((int)animation2D->GetDevice());
+				for (int i = 0; i < maxRow; ++i)
+				{
+					FChromaSDKColors& row = frame.Colors[i];
+					for (int j = 0; j < maxColumn; ++j)
+					{
+						int oldColor = row.Colors[j];
+						int red = oldColor & 0xFF;
+						int green = (oldColor & 0xFF00) >> 8;
+						int blue = (oldColor & 0xFF0000) >> 16;
+						if (red != 0 ||
+							green != 0 ||
+							blue != 0)
+						{
+							if (red <= minThreshold &&
+								green <= minThreshold &&
+								blue <= minThreshold) {
+								row.Colors[j] = PluginSubtractColor(oldColor, minColor);
+							}
+							else if (red >= maxThreshold ||
+								green >= maxThreshold ||
+								blue >= maxThreshold) {
+								row.Colors[j] = PluginSubtractColor(oldColor, maxColor);
+							}
+						}
+					}
+				}
+			}
+		}
+		break;
+		}
+	}
+	EXPORT_API void PluginSubtractThresholdColorsMinMaxRGBName(const char* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			ChromaLogger::fprintf(stderr, "PluginSubtractThresholdColorsMinMaxRGBName: Animation not found! %s\r\n", path);
+			return;
+		}
+		return PluginSubtractThresholdColorsMinMaxRGB(animationId, frameId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
+	}
+	EXPORT_API double PluginSubtractThresholdColorsMinMaxRGBNameD(const char* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue)
+	{
+		PluginSubtractThresholdColorsMinMaxRGBName(path, (int)minThreshold, (int)frameId, (int)minRed, (int)minGreen, (int)minBlue, (int)maxThreshold, (int)maxRed, (int)maxGreen, (int)maxBlue);
+		return 0;
+	}
+
+	EXPORT_API void PluginSubtractThresholdColorsMinMaxAllFramesRGB(const int animationId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue)
+	{
+		PluginStopAnimation(animationId);
+		AnimationBase* animation = GetAnimationInstance(animationId);
+		if (nullptr == animation)
+		{
+			return;
+		}
+		int frameCount = animation->GetFrameCount();
+		for (int frameId = 0; frameId < frameCount; ++frameId)
+		{
+			PluginSubtractThresholdColorsMinMaxRGB(animationId, frameId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
+		}
+	}
+	EXPORT_API void PluginSubtractThresholdColorsMinMaxAllFramesRGBName(const char* path, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			ChromaLogger::fprintf(stderr, "PluginSubtractThresholdColorsMinMaxAllFramesRGBName: Animation not found! %s\r\n", path);
+			return;
+		}
+		return PluginSubtractThresholdColorsMinMaxAllFramesRGB(animationId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
+	}
+	EXPORT_API double PluginSubtractThresholdColorsMinMaxAllFramesRGBNameD(const char* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue)
+	{
+		PluginSubtractThresholdColorsMinMaxAllFramesRGBName(path, (int)minThreshold, (int)minRed, (int)minGreen, (int)minBlue, (int)maxThreshold, (int)maxRed, (int)maxGreen, (int)maxBlue);
+		return 0;
+	}
 }

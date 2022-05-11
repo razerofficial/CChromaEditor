@@ -43,7 +43,7 @@ namespace ChromaSDK
 		const char* GetMouseChar(EChromaSDKMouseLED led);
 
 		AnimationBase* OpenAnimation(const std::string& path);
-		AnimationBase* OpenAnimationFromMemory(const byte* data);
+		AnimationBase* OpenAnimationFromMemory(const BYTE* data);
 
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
 		void SetIdleAnimationName(const char* path);
