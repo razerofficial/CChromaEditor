@@ -612,7 +612,7 @@ typedef bool		(*PLUGIN_CORE_STREAM_GET_FOCUS)(char* focus, unsigned char* length
 	Retrieve the stream id after authorizing the shortcode. The authorization 
 	window will expire in 5 minutes. Be sure to save the stream key before 
 	the window expires.  platform: is the null terminated string that identifies 
-	the source of the stream: { GEFORCE_NOW, LUNA, STADIA, XBOX_GAME_PASS } 
+	the source of the stream: { GEFORCE_NOW, LUNA, STADIA, GAME_PASS } 
 	StreamGetStatus() should return the READY status to use this method.
 */
 typedef void		(*PLUGIN_CORE_STREAM_GET_ID)(const char* shortcode, char* streamId, unsigned char* length);
@@ -3272,7 +3272,7 @@ namespace ChromaSDK
 			Retrieve the stream id after authorizing the shortcode. The authorization 
 			window will expire in 5 minutes. Be sure to save the stream key before 
 			the window expires.  platform: is the null terminated string that identifies 
-			the source of the stream: { GEFORCE_NOW, LUNA, STADIA, XBOX_GAME_PASS } 
+			the source of the stream: { GEFORCE_NOW, LUNA, STADIA, GAME_PASS } 
 			StreamGetStatus() should return the READY status to use this method.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_ID, CoreStreamGetId);
