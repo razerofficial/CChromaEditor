@@ -362,12 +362,14 @@ Methods:
 
 * [PluginAddColor](#PluginAddColor)
 * [PluginAddFrame](#PluginAddFrame)
+* [PluginAddNonZeroAllKeys](#PluginAddNonZeroAllKeys)
 * [PluginAddNonZeroAllKeysAllFrames](#PluginAddNonZeroAllKeysAllFrames)
 * [PluginAddNonZeroAllKeysAllFramesName](#PluginAddNonZeroAllKeysAllFramesName)
 * [PluginAddNonZeroAllKeysAllFramesNameD](#PluginAddNonZeroAllKeysAllFramesNameD)
 * [PluginAddNonZeroAllKeysAllFramesOffset](#PluginAddNonZeroAllKeysAllFramesOffset)
 * [PluginAddNonZeroAllKeysAllFramesOffsetName](#PluginAddNonZeroAllKeysAllFramesOffsetName)
 * [PluginAddNonZeroAllKeysAllFramesOffsetNameD](#PluginAddNonZeroAllKeysAllFramesOffsetNameD)
+* [PluginAddNonZeroAllKeysName](#PluginAddNonZeroAllKeysName)
 * [PluginAddNonZeroAllKeysOffset](#PluginAddNonZeroAllKeysOffset)
 * [PluginAddNonZeroAllKeysOffsetName](#PluginAddNonZeroAllKeysOffsetName)
 * [PluginAddNonZeroAllKeysOffsetNameD](#PluginAddNonZeroAllKeysOffsetNameD)
@@ -451,18 +453,24 @@ Methods:
 * [PluginCopyRedChannelAllFrames](#PluginCopyRedChannelAllFrames)
 * [PluginCopyRedChannelAllFramesName](#PluginCopyRedChannelAllFramesName)
 * [PluginCopyRedChannelAllFramesNameD](#PluginCopyRedChannelAllFramesNameD)
+* [PluginCopyZeroAllKeys](#PluginCopyZeroAllKeys)
 * [PluginCopyZeroAllKeysAllFrames](#PluginCopyZeroAllKeysAllFrames)
 * [PluginCopyZeroAllKeysAllFramesName](#PluginCopyZeroAllKeysAllFramesName)
 * [PluginCopyZeroAllKeysAllFramesNameD](#PluginCopyZeroAllKeysAllFramesNameD)
 * [PluginCopyZeroAllKeysAllFramesOffset](#PluginCopyZeroAllKeysAllFramesOffset)
 * [PluginCopyZeroAllKeysAllFramesOffsetName](#PluginCopyZeroAllKeysAllFramesOffsetName)
 * [PluginCopyZeroAllKeysAllFramesOffsetNameD](#PluginCopyZeroAllKeysAllFramesOffsetNameD)
+* [PluginCopyZeroAllKeysName](#PluginCopyZeroAllKeysName)
+* [PluginCopyZeroAllKeysOffset](#PluginCopyZeroAllKeysOffset)
+* [PluginCopyZeroAllKeysOffsetName](#PluginCopyZeroAllKeysOffsetName)
 * [PluginCopyZeroKeyColor](#PluginCopyZeroKeyColor)
 * [PluginCopyZeroKeyColorName](#PluginCopyZeroKeyColorName)
 * [PluginCopyZeroKeyColorNameD](#PluginCopyZeroKeyColorNameD)
+* [PluginCopyZeroTargetAllKeys](#PluginCopyZeroTargetAllKeys)
 * [PluginCopyZeroTargetAllKeysAllFrames](#PluginCopyZeroTargetAllKeysAllFrames)
 * [PluginCopyZeroTargetAllKeysAllFramesName](#PluginCopyZeroTargetAllKeysAllFramesName)
 * [PluginCopyZeroTargetAllKeysAllFramesNameD](#PluginCopyZeroTargetAllKeysAllFramesNameD)
+* [PluginCopyZeroTargetAllKeysName](#PluginCopyZeroTargetAllKeysName)
 * [PluginCoreCreateChromaLinkEffect](#PluginCoreCreateChromaLinkEffect)
 * [PluginCoreCreateEffect](#PluginCoreCreateEffect)
 * [PluginCoreCreateHeadsetEffect](#PluginCoreCreateHeadsetEffect)
@@ -845,12 +853,14 @@ Methods:
 * [PluginStopComposite](#PluginStopComposite)
 * [PluginStopCompositeD](#PluginStopCompositeD)
 * [PluginSubtractColor](#PluginSubtractColor)
+* [PluginSubtractNonZeroAllKeys](#PluginSubtractNonZeroAllKeys)
 * [PluginSubtractNonZeroAllKeysAllFrames](#PluginSubtractNonZeroAllKeysAllFrames)
 * [PluginSubtractNonZeroAllKeysAllFramesName](#PluginSubtractNonZeroAllKeysAllFramesName)
 * [PluginSubtractNonZeroAllKeysAllFramesNameD](#PluginSubtractNonZeroAllKeysAllFramesNameD)
 * [PluginSubtractNonZeroAllKeysAllFramesOffset](#PluginSubtractNonZeroAllKeysAllFramesOffset)
 * [PluginSubtractNonZeroAllKeysAllFramesOffsetName](#PluginSubtractNonZeroAllKeysAllFramesOffsetName)
 * [PluginSubtractNonZeroAllKeysAllFramesOffsetNameD](#PluginSubtractNonZeroAllKeysAllFramesOffsetNameD)
+* [PluginSubtractNonZeroAllKeysName](#PluginSubtractNonZeroAllKeysName)
 * [PluginSubtractNonZeroAllKeysOffset](#PluginSubtractNonZeroAllKeysOffset)
 * [PluginSubtractNonZeroAllKeysOffsetName](#PluginSubtractNonZeroAllKeysOffsetName)
 * [PluginSubtractNonZeroAllKeysOffsetNameD](#PluginSubtractNonZeroAllKeysOffsetNameD)
@@ -902,11 +912,11 @@ Return the sum of colors
 ```C++
 // DLL Interface
 EXPORT_API int PluginAddColor(
- const int color1, const int color2);
+	const int color1, const int color2);
 
 // Class Plugin
 int result = ChromaAnimationAPI::AddColor(
- const int color1, const int color2);
+	const int color1, const int color2);
 ```
 
 ---
@@ -923,11 +933,28 @@ success. Returns -1 upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginAddFrame(
- int animationId, float duration, int* colors, int length);
+	int animationId, float duration, int* colors, int length);
 
 // Class Plugin
 int result = ChromaAnimationAPI::AddFrame(
- int animationId, float duration, int* colors, int length);
+	int animationId, float duration, int* colors, int length);
+```
+
+---
+<a name="PluginAddNonZeroAllKeys"></a>
+**PluginAddNonZeroAllKeys**
+
+Add source color to target where color is not black for frame id, reference
+source and target by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginAddNonZeroAllKeys(
+	int sourceAnimationId, int targetAnimationId, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::AddNonZeroAllKeys(
+	int sourceAnimationId, int targetAnimationId, int frameId);
 ```
 
 ---
@@ -940,11 +967,11 @@ source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -957,11 +984,11 @@ source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -973,11 +1000,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::AddNonZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -991,11 +1018,11 @@ id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 ```
 
 ---
@@ -1009,11 +1036,11 @@ name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 ```
 
 ---
@@ -1025,11 +1052,28 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
+```
+
+---
+<a name="PluginAddNonZeroAllKeysName"></a>
+**PluginAddNonZeroAllKeysName**
+
+Add source color to target where color is not black for frame id, reference
+source and target by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginAddNonZeroAllKeysName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::AddNonZeroAllKeysName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -1042,11 +1086,11 @@ and target offset frame, reference source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 ```
 
 ---
@@ -1059,11 +1103,11 @@ and target offset frame, reference source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 ```
 
 ---
@@ -1075,13 +1119,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::AddNonZeroAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 ---
@@ -1094,11 +1138,11 @@ reference source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -1111,11 +1155,11 @@ reference source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -1127,11 +1171,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -1145,11 +1189,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 ```
 
 ---
@@ -1163,11 +1207,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 ```
 
 ---
@@ -1179,11 +1223,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroTargetAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 ```
 
 ---
@@ -1196,11 +1240,11 @@ frame to the target offset frame, reference source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroTargetAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 ```
 
 ---
@@ -1213,11 +1257,11 @@ frame to the target offset frame, reference source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAddNonZeroTargetAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::AddNonZeroTargetAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 ```
 
 ---
@@ -1229,13 +1273,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginAddNonZeroTargetAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 ---
@@ -1248,11 +1292,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAppendAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::AppendAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -1265,11 +1309,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginAppendAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::AppendAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -1281,11 +1325,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginAppendAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::AppendAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -1311,11 +1355,11 @@ ChromaAnimationAPI::ClearAll();
 ```C++
 // DLL Interface
 EXPORT_API void PluginClearAnimationType(
- int deviceType, int device);
+	int deviceType, int device);
 
 // Class Plugin
 ChromaAnimationAPI::ClearAnimationType(
- int deviceType, int device);
+	int deviceType, int device);
 ```
 
 ---
@@ -1432,11 +1476,11 @@ target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyAllKeys(
- int sourceAnimationId, int targetAnimationId, int frameId);
+	int sourceAnimationId, int targetAnimationId, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyAllKeys(
- int sourceAnimationId, int targetAnimationId, int frameId);
+	int sourceAnimationId, int targetAnimationId, int frameId);
 ```
 
 ---
@@ -1449,11 +1493,11 @@ target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyAllKeysName(
- const char* sourceAnimation, const char* targetAnimation, int frameId);
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyAllKeysName(
- const char* sourceAnimation, const char* targetAnimation, int frameId);
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -1466,11 +1510,11 @@ exists, close first. Source is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API int PluginCopyAnimation(
- int sourceAnimationId, const char* targetAnimation);
+	int sourceAnimationId, const char* targetAnimation);
 
 // Class Plugin
 int result = ChromaAnimationAPI::CopyAnimation(
- int sourceAnimationId, const char* targetAnimation);
+	int sourceAnimationId, const char* targetAnimation);
 ```
 
 ---
@@ -1483,11 +1527,11 @@ exists, close first. Source is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyAnimationName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::CopyAnimationName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -1499,11 +1543,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyAnimationNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyAnimationNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -1516,11 +1560,11 @@ to 1.0. Reference the animation by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyBlueChannelAllFrames(
- int animationId, float redIntensity, float greenIntensity);
+	int animationId, float redIntensity, float greenIntensity);
 
 // Class Plugin
 ChromaAnimationAPI::CopyBlueChannelAllFrames(
- int animationId, float redIntensity, float greenIntensity);
+	int animationId, float redIntensity, float greenIntensity);
 ```
 
 ---
@@ -1533,11 +1577,11 @@ to 1.0. Reference the animation by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyBlueChannelAllFramesName(
- const char* path, float redIntensity, float greenIntensity);
+	const char* path, float redIntensity, float greenIntensity);
 
 // Class Plugin
 ChromaAnimationAPI::CopyBlueChannelAllFramesName(
- const char* path, float redIntensity, float greenIntensity);
+	const char* path, float redIntensity, float greenIntensity);
 ```
 
 ---
@@ -1549,11 +1593,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyBlueChannelAllFramesNameD(
- const char* path, double redIntensity, double greenIntensity);
+	const char* path, double redIntensity, double greenIntensity);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyBlueChannelAllFramesNameD(
- const char* path, double redIntensity, double greenIntensity);
+	const char* path, double redIntensity, double greenIntensity);
 ```
 
 ---
@@ -1566,11 +1610,11 @@ Copy green channel to other channels for all frames. Intensity range is
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyGreenChannelAllFrames(
- int animationId, float redIntensity, float blueIntensity);
+	int animationId, float redIntensity, float blueIntensity);
 
 // Class Plugin
 ChromaAnimationAPI::CopyGreenChannelAllFrames(
- int animationId, float redIntensity, float blueIntensity);
+	int animationId, float redIntensity, float blueIntensity);
 ```
 
 ---
@@ -1583,11 +1627,11 @@ Copy green channel to other channels for all frames. Intensity range is
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyGreenChannelAllFramesName(
- const char* path, float redIntensity, float blueIntensity);
+	const char* path, float redIntensity, float blueIntensity);
 
 // Class Plugin
 ChromaAnimationAPI::CopyGreenChannelAllFramesName(
- const char* path, float redIntensity, float blueIntensity);
+	const char* path, float redIntensity, float blueIntensity);
 ```
 
 ---
@@ -1599,11 +1643,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyGreenChannelAllFramesNameD(
- const char* path, double redIntensity, double blueIntensity);
+	const char* path, double redIntensity, double blueIntensity);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyGreenChannelAllFramesNameD(
- const char* path, double redIntensity, double blueIntensity);
+	const char* path, double redIntensity, double blueIntensity);
 ```
 
 ---
@@ -1616,11 +1660,11 @@ for the given frame. Reference the source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeyColor(
- int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+	int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeyColor(
- int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+	int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 ```
 
 ---
@@ -1633,11 +1677,11 @@ for all frames. Reference the source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeyColorAllFrames(
- int sourceAnimationId, int targetAnimationId, int rzkey);
+	int sourceAnimationId, int targetAnimationId, int rzkey);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeyColorAllFrames(
- int sourceAnimationId, int targetAnimationId, int rzkey);
+	int sourceAnimationId, int targetAnimationId, int rzkey);
 ```
 
 ---
@@ -1650,11 +1694,11 @@ for all frames. Reference the source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeyColorAllFramesName(
- const char* sourceAnimation, const char* targetAnimation, int rzkey);
+	const char* sourceAnimation, const char* targetAnimation, int rzkey);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeyColorAllFramesName(
- const char* sourceAnimation, const char* targetAnimation, int rzkey);
+	const char* sourceAnimation, const char* targetAnimation, int rzkey);
 ```
 
 ---
@@ -1666,11 +1710,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyKeyColorAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation, double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double rzkey);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyKeyColorAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation, double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double rzkey);
 ```
 
 ---
@@ -1684,11 +1728,11 @@ Source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeyColorAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int rzkey, int offset);
+	int sourceAnimationId, int targetAnimationId, int rzkey, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeyColorAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int rzkey, int offset);
+	int sourceAnimationId, int targetAnimationId, int rzkey, int offset);
 ```
 
 ---
@@ -1702,11 +1746,11 @@ Source and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeyColorAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeyColorAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int rzkey, int offset);
 ```
 
 ---
@@ -1718,11 +1762,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyKeyColorAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double rzkey, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double rzkey, double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyKeyColorAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double rzkey, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double rzkey, double offset);
 ```
 
 ---
@@ -1735,11 +1779,11 @@ for the given frame.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeyColorName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeyColorName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 ```
 
 ---
@@ -1751,13 +1795,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyKeyColorNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyKeyColorNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
 ```
 
 ---
@@ -1771,13 +1815,13 @@ id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeysColor(
- int sourceAnimationId, int targetAnimationId, int frameId, const int* keys,
- int size);
+	int sourceAnimationId, int targetAnimationId, int frameId, const int* keys,
+	int size);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeysColor(
- int sourceAnimationId, int targetAnimationId, int frameId, const int* keys,
- int size);
+	int sourceAnimationId, int targetAnimationId, int frameId, const int* keys,
+	int size);
 ```
 
 ---
@@ -1790,11 +1834,11 @@ target animation for all frames. Reference the source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeysColorAllFrames(
- int sourceAnimationId, int targetAnimationId, const int* keys, int size);
+	int sourceAnimationId, int targetAnimationId, const int* keys, int size);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeysColorAllFrames(
- int sourceAnimationId, int targetAnimationId, const int* keys, int size);
+	int sourceAnimationId, int targetAnimationId, const int* keys, int size);
 ```
 
 ---
@@ -1807,13 +1851,13 @@ target animation for all frames. Reference the source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeysColorAllFramesName(
- const char* sourceAnimation, const char* targetAnimation, const int* keys,
- int size);
+	const char* sourceAnimation, const char* targetAnimation, const int* keys,
+	int size);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeysColorAllFramesName(
- const char* sourceAnimation, const char* targetAnimation, const int* keys,
- int size);
+	const char* sourceAnimation, const char* targetAnimation, const int* keys,
+	int size);
 ```
 
 ---
@@ -1827,13 +1871,13 @@ name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeysColorName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, const int* keys,
- int size);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, const int* keys,
+	int size);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeysColorName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, const int* keys,
- int size);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, const int* keys,
+	int size);
 ```
 
 ---
@@ -1847,13 +1891,13 @@ source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeysColorOffset(
- int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId,
- const int* keys, int size);
+	int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId,
+	const int* keys, int size);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeysColorOffset(
- int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId,
- const int* keys, int size);
+	int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId,
+	const int* keys, int size);
 ```
 
 ---
@@ -1867,13 +1911,13 @@ source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyKeysColorOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int sourceFrameId,
- int targetFrameId, const int* keys, int size);
+	const char* sourceAnimation, const char* targetAnimation, int sourceFrameId,
+	int targetFrameId, const int* keys, int size);
 
 // Class Plugin
 ChromaAnimationAPI::CopyKeysColorOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int sourceFrameId,
- int targetFrameId, const int* keys, int size);
+	const char* sourceAnimation, const char* targetAnimation, int sourceFrameId,
+	int targetFrameId, const int* keys, int size);
 ```
 
 ---
@@ -1886,11 +1930,11 @@ target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroAllKeys(
- int sourceAnimationId, int targetAnimationId, int frameId);
+	int sourceAnimationId, int targetAnimationId, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroAllKeys(
- int sourceAnimationId, int targetAnimationId, int frameId);
+	int sourceAnimationId, int targetAnimationId, int frameId);
 ```
 
 ---
@@ -1903,11 +1947,11 @@ frames. Reference source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -1920,11 +1964,11 @@ frames. Reference source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -1936,11 +1980,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -1954,11 +1998,11 @@ source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 ```
 
 ---
@@ -1972,11 +2016,11 @@ source and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 ```
 
 ---
@@ -1988,11 +2032,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 ```
 
 ---
@@ -2005,11 +2049,11 @@ frame. Source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroAllKeysName(
- const char* sourceAnimation, const char* targetAnimation, int frameId);
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroAllKeysName(
- const char* sourceAnimation, const char* targetAnimation, int frameId);
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -2021,11 +2065,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroAllKeysNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId);
+	const char* sourceAnimation, const char* targetAnimation, double frameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroAllKeysNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId);
+	const char* sourceAnimation, const char* targetAnimation, double frameId);
 ```
 
 ---
@@ -2039,11 +2083,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 ```
 
 ---
@@ -2057,11 +2101,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 ```
 
 ---
@@ -2073,13 +2117,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 ---
@@ -2092,11 +2136,11 @@ for the given frame where color is not zero.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroKeyColor(
- int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+	int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroKeyColor(
- int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+	int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 ```
 
 ---
@@ -2109,11 +2153,11 @@ for the given frame where color is not zero.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroKeyColorName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroKeyColorName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 ```
 
 ---
@@ -2125,13 +2169,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroKeyColorNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroKeyColorNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
 ```
 
 ---
@@ -2145,11 +2189,11 @@ are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetAllKeys(
- int sourceAnimationId, int targetAnimationId, int frameId);
+	int sourceAnimationId, int targetAnimationId, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetAllKeys(
- int sourceAnimationId, int targetAnimationId, int frameId);
+	int sourceAnimationId, int targetAnimationId, int frameId);
 ```
 
 ---
@@ -2163,11 +2207,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -2181,11 +2225,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -2197,11 +2241,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -2215,11 +2259,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 ```
 
 ---
@@ -2234,11 +2278,11 @@ referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 ```
 
 ---
@@ -2250,11 +2294,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 ```
 
 ---
@@ -2268,11 +2312,11 @@ are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetAllKeysName(
- const char* sourceAnimation, const char* targetAnimation, int frameId);
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetAllKeysName(
- const char* sourceAnimation, const char* targetAnimation, int frameId);
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -2284,11 +2328,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroTargetAllKeysNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId);
+	const char* sourceAnimation, const char* targetAnimation, double frameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroTargetAllKeysNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId);
+	const char* sourceAnimation, const char* targetAnimation, double frameId);
 ```
 
 ---
@@ -2302,11 +2346,11 @@ frame. The source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 ```
 
 ---
@@ -2320,11 +2364,11 @@ frame. The source and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 ```
 
 ---
@@ -2336,13 +2380,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroTargetAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroTargetAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 ---
@@ -2356,11 +2400,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -2374,11 +2418,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyNonZeroTargetZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::CopyNonZeroTargetZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -2390,11 +2434,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyNonZeroTargetZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyNonZeroTargetZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -2407,11 +2451,11 @@ to 1.0. Reference the animation by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyRedChannelAllFrames(
- int animationId, float greenIntensity, float blueIntensity);
+	int animationId, float greenIntensity, float blueIntensity);
 
 // Class Plugin
 ChromaAnimationAPI::CopyRedChannelAllFrames(
- int animationId, float greenIntensity, float blueIntensity);
+	int animationId, float greenIntensity, float blueIntensity);
 ```
 
 ---
@@ -2424,11 +2468,11 @@ Copy green channel to other channels for all frames. Intensity range is
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyRedChannelAllFramesName(
- const char* path, float greenIntensity, float blueIntensity);
+	const char* path, float greenIntensity, float blueIntensity);
 
 // Class Plugin
 ChromaAnimationAPI::CopyRedChannelAllFramesName(
- const char* path, float greenIntensity, float blueIntensity);
+	const char* path, float greenIntensity, float blueIntensity);
 ```
 
 ---
@@ -2440,11 +2484,28 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyRedChannelAllFramesNameD(
- const char* path, double greenIntensity, double blueIntensity);
+	const char* path, double greenIntensity, double blueIntensity);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyRedChannelAllFramesNameD(
- const char* path, double greenIntensity, double blueIntensity);
+	const char* path, double greenIntensity, double blueIntensity);
+```
+
+---
+<a name="PluginCopyZeroAllKeys"></a>
+**PluginCopyZeroAllKeys**
+
+Copy zero colors from source animation to target animation for the frame.
+Source and target are referenced by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroAllKeys(
+	int sourceAnimationId, int targetAnimationId, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroAllKeys(
+	int sourceAnimationId, int targetAnimationId, int frameId);
 ```
 
 ---
@@ -2457,11 +2518,11 @@ Source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -2474,11 +2535,11 @@ Source and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::CopyZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -2490,11 +2551,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -2508,11 +2569,11 @@ and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyZeroAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyZeroAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 ```
 
 ---
@@ -2526,11 +2587,11 @@ and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyZeroAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::CopyZeroAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 ```
 
 ---
@@ -2542,11 +2603,64 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyZeroAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyZeroAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
+```
+
+---
+<a name="PluginCopyZeroAllKeysName"></a>
+**PluginCopyZeroAllKeysName**
+
+Copy zero colors from source animation to target animation for the frame.
+Source and target are referenced by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroAllKeysName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroAllKeysName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
+```
+
+---
+<a name="PluginCopyZeroAllKeysOffset"></a>
+**PluginCopyZeroAllKeysOffset**
+
+Copy zero colors from source animation to target animation for the frame
+id starting at the target offset for the length of the source animation.
+Source and target are referenced by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroAllKeysOffset(
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroAllKeysOffset(
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+```
+
+---
+<a name="PluginCopyZeroAllKeysOffsetName"></a>
+**PluginCopyZeroAllKeysOffsetName**
+
+Copy zero colors from source animation to target animation for the frame
+id starting at the target offset for the length of the source animation.
+Source and target are referenced by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroAllKeysOffsetName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroAllKeysOffsetName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 ```
 
 ---
@@ -2559,11 +2673,11 @@ frame. Source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyZeroKeyColor(
- int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+	int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 
 // Class Plugin
 ChromaAnimationAPI::CopyZeroKeyColor(
- int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
+	int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 ```
 
 ---
@@ -2576,11 +2690,11 @@ frame. Source and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyZeroKeyColorName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 
 // Class Plugin
 ChromaAnimationAPI::CopyZeroKeyColorName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int rzkey);
 ```
 
 ---
@@ -2592,13 +2706,30 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyZeroKeyColorNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyZeroKeyColorNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double rzkey);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double rzkey);
+```
+
+---
+<a name="PluginCopyZeroTargetAllKeys"></a>
+**PluginCopyZeroTargetAllKeys**
+
+Copy nonzero color from source animation to target animation where target
+is zero for the frame. Source and target are referenced by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroTargetAllKeys(
+	int sourceAnimationId, int targetAnimationId, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroTargetAllKeys(
+	int sourceAnimationId, int targetAnimationId, int frameId);
 ```
 
 ---
@@ -2611,11 +2742,11 @@ is zero for all frames. Source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyZeroTargetAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::CopyZeroTargetAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -2628,11 +2759,11 @@ is zero for all frames. Source and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCopyZeroTargetAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::CopyZeroTargetAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -2644,11 +2775,28 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginCopyZeroTargetAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::CopyZeroTargetAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
+```
+
+---
+<a name="PluginCopyZeroTargetAllKeysName"></a>
+**PluginCopyZeroTargetAllKeysName**
+
+Copy nonzero color from source animation to target animation where target
+is zero for the frame. Source and target are referenced by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroTargetAllKeysName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroTargetAllKeysName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -2660,11 +2808,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateChromaLinkEffect(
- ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreCreateChromaLinkEffect(
- ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 ```
 
 ---
@@ -2676,11 +2824,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateEffect(
- RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreCreateEffect(
- RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 ```
 
 ---
@@ -2692,11 +2840,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateHeadsetEffect(
- ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreCreateHeadsetEffect(
- ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 ```
 
 ---
@@ -2708,11 +2856,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateKeyboardEffect(
- ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreCreateKeyboardEffect(
- ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 ```
 
 ---
@@ -2724,11 +2872,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateKeypadEffect(
- ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreCreateKeypadEffect(
- ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 ```
 
 ---
@@ -2740,11 +2888,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateMouseEffect(
- ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreCreateMouseEffect(
- ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 ```
 
 ---
@@ -2756,11 +2904,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreCreateMousepadEffect(
- ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreCreateMousepadEffect(
- ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
+	ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 ```
 
 ---
@@ -2800,11 +2948,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreInitSDK(
- ChromaSDK::APPINFOTYPE* AppInfo);
+	ChromaSDK::APPINFOTYPE* AppInfo);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreInitSDK(
- ChromaSDK::APPINFOTYPE* AppInfo);
+	ChromaSDK::APPINFOTYPE* AppInfo);
 ```
 
 ---
@@ -2816,11 +2964,11 @@ Direct access to low level API.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCoreQueryDevice(
- RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+	RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CoreQueryDevice(
- RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+	RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
 ```
 
 ---
@@ -2850,11 +2998,11 @@ return the READY status to use this method.
 ```C++
 // DLL Interface
 EXPORT_API bool PluginCoreStreamBroadcast(
- const char* streamId, const char* streamKey);
+	const char* streamId, const char* streamKey);
 
 // Class Plugin
 bool result = ChromaAnimationAPI::CoreStreamBroadcast(
- const char* streamId, const char* streamKey);
+	const char* streamId, const char* streamKey);
 ```
 
 ---
@@ -2882,16 +3030,19 @@ Length will return as zero if the streaming auth code could not be obtained.
 If length is greater than zero, it will be the length of the returned streaming
 auth code.  Once you have the shortcode, it should be shown to the user
 so they can associate the stream with their Razer ID  StreamGetStatus()
-should return the READY status before invoking this method.
+should return the READY status before invoking this method. platform: is
+the null terminated string that identifies the source of the stream: {
+GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string
+that identifies the application or game.
 
 ```C++
 // DLL Interface
 EXPORT_API void PluginCoreStreamGetAuthShortcode(
- char* shortcode, unsigned char* length, const char* platform, const char* title);
+	char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 
 // Class Plugin
 ChromaAnimationAPI::CoreStreamGetAuthShortcode(
- char* shortcode, unsigned char* length, const char* platform, const char* title);
+	char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 ```
 
 ---
@@ -2906,11 +3057,11 @@ than zero, it will be the length of the returned stream focus.
 ```C++
 // DLL Interface
 EXPORT_API bool PluginCoreStreamGetFocus(
- char* focus, unsigned char* length);
+	char* focus, unsigned char* length);
 
 // Class Plugin
 bool result = ChromaAnimationAPI::CoreStreamGetFocus(
- char* focus, unsigned char* length);
+	char* focus, unsigned char* length);
 ```
 
 ---
@@ -2926,18 +3077,17 @@ Length will return zero if the key could not be obtained. If the length
 is greater than zero, it will be the length of the returned streaming id.
 Retrieve the stream id after authorizing the shortcode. The authorization
 window will expire in 5 minutes. Be sure to save the stream key before
-the window expires.  platform: is the null terminated string that identifies
-the source of the stream: { GEFORCE_NOW, LUNA, STADIA, GAME_PASS }
-StreamGetStatus() should return the READY status to use this method.
+the window expires. StreamGetStatus() should return the READY status to
+use this method.
 
 ```C++
 // DLL Interface
 EXPORT_API void PluginCoreStreamGetId(
- const char* shortcode, char* streamId, unsigned char* length);
+	const char* shortcode, char* streamId, unsigned char* length);
 
 // Class Plugin
 ChromaAnimationAPI::CoreStreamGetId(
- const char* shortcode, char* streamId, unsigned char* length);
+	const char* shortcode, char* streamId, unsigned char* length);
 ```
 
 ---
@@ -2961,11 +3111,11 @@ method.
 ```C++
 // DLL Interface
 EXPORT_API void PluginCoreStreamGetKey(
- const char* shortcode, char* streamKey, unsigned char* length);
+	const char* shortcode, char* streamKey, unsigned char* length);
 
 // Class Plugin
 ChromaAnimationAPI::CoreStreamGetKey(
- const char* shortcode, char* streamKey, unsigned char* length);
+	const char* shortcode, char* streamKey, unsigned char* length);
 ```
 
 ---
@@ -2991,11 +3141,11 @@ Convert StreamStatusType to a printable string
 ```C++
 // DLL Interface
 EXPORT_API const char* PluginCoreStreamGetStatusString(
- ChromaSDK::Stream::StreamStatusType status);
+	ChromaSDK::Stream::StreamStatusType status);
 
 // Class Plugin
 const char* result = ChromaAnimationAPI::CoreStreamGetStatusString(
- ChromaSDK::Stream::StreamStatusType status);
+	ChromaSDK::Stream::StreamStatusType status);
 ```
 
 ---
@@ -3010,11 +3160,11 @@ returns success when shortcode has been released
 ```C++
 // DLL Interface
 EXPORT_API bool PluginCoreStreamReleaseShortcode(
- const char* shortcode);
+	const char* shortcode);
 
 // Class Plugin
 bool result = ChromaAnimationAPI::CoreStreamReleaseShortcode(
- const char* shortcode);
+	const char* shortcode);
 ```
 
 ---
@@ -3059,11 +3209,11 @@ to use this method.
 ```C++
 // DLL Interface
 EXPORT_API bool PluginCoreStreamWatch(
- const char* streamId, unsigned long long timestamp);
+	const char* streamId, unsigned long long timestamp);
 
 // Class Plugin
 bool result = ChromaAnimationAPI::CoreStreamWatch(
- const char* streamId, unsigned long long timestamp);
+	const char* streamId, unsigned long long timestamp);
 ```
 
 ---
@@ -3110,11 +3260,11 @@ failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginCreateAnimation(
- const char* path, int deviceType, int device);
+	const char* path, int deviceType, int device);
 
 // Class Plugin
 int result = ChromaAnimationAPI::CreateAnimation(
- const char* path, int deviceType, int device);
+	const char* path, int deviceType, int device);
 ```
 
 ---
@@ -3131,11 +3281,11 @@ Returns -1 upon failure. Returns the animation id upon success. Returns
 ```C++
 // DLL Interface
 EXPORT_API int PluginCreateAnimationInMemory(
- int deviceType, int device);
+	int deviceType, int device);
 
 // Class Plugin
 int result = ChromaAnimationAPI::CreateAnimationInMemory(
- int deviceType, int device);
+	int deviceType, int device);
 ```
 
 ---
@@ -3147,13 +3297,13 @@ Create a device specific effect.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginCreateEffect(
- RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size,
- ChromaSDK::FChromaSDKGuid* effectId);
+	RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size,
+	ChromaSDK::FChromaSDKGuid* effectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::CreateEffect(
- RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size,
- ChromaSDK::FChromaSDKGuid* effectId);
+	RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size,
+	ChromaSDK::FChromaSDKGuid* effectId);
 ```
 
 ---
@@ -3165,11 +3315,11 @@ Delete an effect given the effect id.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginDeleteEffect(
- const ChromaSDK::FChromaSDKGuid& effectId);
+	const ChromaSDK::FChromaSDKGuid& effectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::DeleteEffect(
- const ChromaSDK::FChromaSDKGuid& effectId);
+	const ChromaSDK::FChromaSDKGuid& effectId);
 ```
 
 ---
@@ -3182,11 +3332,11 @@ the frame count. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginDuplicateFirstFrame(
- int animationId, int frameCount);
+	int animationId, int frameCount);
 
 // Class Plugin
 ChromaAnimationAPI::DuplicateFirstFrame(
- int animationId, int frameCount);
+	int animationId, int frameCount);
 ```
 
 ---
@@ -3199,11 +3349,11 @@ the frame count. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginDuplicateFirstFrameName(
- const char* path, int frameCount);
+	const char* path, int frameCount);
 
 // Class Plugin
 ChromaAnimationAPI::DuplicateFirstFrameName(
- const char* path, int frameCount);
+	const char* path, int frameCount);
 ```
 
 ---
@@ -3215,11 +3365,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginDuplicateFirstFrameNameD(
- const char* path, double frameCount);
+	const char* path, double frameCount);
 
 // Class Plugin
 double result = ChromaAnimationAPI::DuplicateFirstFrameNameD(
- const char* path, double frameCount);
+	const char* path, double frameCount);
 ```
 
 ---
@@ -3322,11 +3472,11 @@ of the animation. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFadeEndFrames(
- int animationId, int fade);
+	int animationId, int fade);
 
 // Class Plugin
 ChromaAnimationAPI::FadeEndFrames(
- int animationId, int fade);
+	int animationId, int fade);
 ```
 
 ---
@@ -3339,11 +3489,11 @@ of the animation. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFadeEndFramesName(
- const char* path, int fade);
+	const char* path, int fade);
 
 // Class Plugin
 ChromaAnimationAPI::FadeEndFramesName(
- const char* path, int fade);
+	const char* path, int fade);
 ```
 
 ---
@@ -3355,11 +3505,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFadeEndFramesNameD(
- const char* path, double fade);
+	const char* path, double fade);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FadeEndFramesNameD(
- const char* path, double fade);
+	const char* path, double fade);
 ```
 
 ---
@@ -3372,11 +3522,11 @@ index. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFadeStartFrames(
- int animationId, int fade);
+	int animationId, int fade);
 
 // Class Plugin
 ChromaAnimationAPI::FadeStartFrames(
- int animationId, int fade);
+	int animationId, int fade);
 ```
 
 ---
@@ -3389,11 +3539,11 @@ index. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFadeStartFramesName(
- const char* path, int fade);
+	const char* path, int fade);
 
 // Class Plugin
 ChromaAnimationAPI::FadeStartFramesName(
- const char* path, int fade);
+	const char* path, int fade);
 ```
 
 ---
@@ -3405,11 +3555,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFadeStartFramesNameD(
- const char* path, double fade);
+	const char* path, double fade);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FadeStartFramesNameD(
- const char* path, double fade);
+	const char* path, double fade);
 ```
 
 ---
@@ -3422,11 +3572,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillColor(
- int animationId, int frameId, int color);
+	int animationId, int frameId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillColor(
- int animationId, int frameId, int color);
+	int animationId, int frameId, int color);
 ```
 
 ---
@@ -3439,11 +3589,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillColorAllFrames(
- int animationId, int color);
+	int animationId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillColorAllFrames(
- int animationId, int color);
+	int animationId, int color);
 ```
 
 ---
@@ -3456,11 +3606,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillColorAllFramesName(
- const char* path, int color);
+	const char* path, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillColorAllFramesName(
- const char* path, int color);
+	const char* path, int color);
 ```
 
 ---
@@ -3472,11 +3622,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillColorAllFramesNameD(
- const char* path, double color);
+	const char* path, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillColorAllFramesNameD(
- const char* path, double color);
+	const char* path, double color);
 ```
 
 ---
@@ -3489,11 +3639,11 @@ for red, green, and blue parameters. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillColorAllFramesRGB(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillColorAllFramesRGB(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 ```
 
 ---
@@ -3506,11 +3656,11 @@ for red, green, and blue parameters. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillColorAllFramesRGBName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillColorAllFramesRGBName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 ```
 
 ---
@@ -3522,11 +3672,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillColorAllFramesRGBNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillColorAllFramesRGBNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 ```
 
 ---
@@ -3539,11 +3689,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillColorName(
- const char* path, int frameId, int color);
+	const char* path, int frameId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillColorName(
- const char* path, int frameId, int color);
+	const char* path, int frameId, int color);
 ```
 
 ---
@@ -3555,11 +3705,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillColorNameD(
- const char* path, double frameId, double color);
+	const char* path, double frameId, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillColorNameD(
- const char* path, double frameId, double color);
+	const char* path, double frameId, double color);
 ```
 
 ---
@@ -3572,11 +3722,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillColorRGB(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillColorRGB(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -3589,11 +3739,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillColorRGBName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillColorRGBName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -3605,11 +3755,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillColorRGBNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillColorRGBNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 ```
 
 ---
@@ -3623,11 +3773,11 @@ frame. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillNonZeroColor(
- int animationId, int frameId, int color);
+	int animationId, int frameId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillNonZeroColor(
- int animationId, int frameId, int color);
+	int animationId, int frameId, int color);
 ```
 
 ---
@@ -3641,11 +3791,11 @@ Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillNonZeroColorAllFrames(
- int animationId, int color);
+	int animationId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillNonZeroColorAllFrames(
- int animationId, int color);
+	int animationId, int color);
 ```
 
 ---
@@ -3659,11 +3809,11 @@ Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillNonZeroColorAllFramesName(
- const char* path, int color);
+	const char* path, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillNonZeroColorAllFramesName(
- const char* path, int color);
+	const char* path, int color);
 ```
 
 ---
@@ -3675,11 +3825,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillNonZeroColorAllFramesNameD(
- const char* path, double color);
+	const char* path, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillNonZeroColorAllFramesNameD(
- const char* path, double color);
+	const char* path, double color);
 ```
 
 ---
@@ -3694,11 +3844,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillNonZeroColorAllFramesRGB(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillNonZeroColorAllFramesRGB(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 ```
 
 ---
@@ -3713,11 +3863,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillNonZeroColorAllFramesRGBName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillNonZeroColorAllFramesRGBName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 ```
 
 ---
@@ -3729,11 +3879,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillNonZeroColorAllFramesRGBNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillNonZeroColorAllFramesRGBNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 ```
 
 ---
@@ -3747,11 +3897,11 @@ frame. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillNonZeroColorName(
- const char* path, int frameId, int color);
+	const char* path, int frameId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillNonZeroColorName(
- const char* path, int frameId, int color);
+	const char* path, int frameId, int color);
 ```
 
 ---
@@ -3763,11 +3913,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillNonZeroColorNameD(
- const char* path, double frameId, double color);
+	const char* path, double frameId, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillNonZeroColorNameD(
- const char* path, double frameId, double color);
+	const char* path, double frameId, double color);
 ```
 
 ---
@@ -3782,11 +3932,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillNonZeroColorRGB(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillNonZeroColorRGB(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -3801,11 +3951,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillNonZeroColorRGBName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillNonZeroColorRGBName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -3817,11 +3967,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillNonZeroColorRGBNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillNonZeroColorRGBNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 ```
 
 ---
@@ -3834,11 +3984,11 @@ referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillRandomColors(
- int animationId, int frameId);
+	int animationId, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::FillRandomColors(
- int animationId, int frameId);
+	int animationId, int frameId);
 ```
 
 ---
@@ -3895,11 +4045,11 @@ Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillRandomColorsBlackAndWhite(
- int animationId, int frameId);
+	int animationId, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::FillRandomColorsBlackAndWhite(
- int animationId, int frameId);
+	int animationId, int frameId);
 ```
 
 ---
@@ -3956,11 +4106,11 @@ Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillRandomColorsBlackAndWhiteName(
- const char* path, int frameId);
+	const char* path, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::FillRandomColorsBlackAndWhiteName(
- const char* path, int frameId);
+	const char* path, int frameId);
 ```
 
 ---
@@ -3972,11 +4122,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillRandomColorsBlackAndWhiteNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillRandomColorsBlackAndWhiteNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 ```
 
 ---
@@ -3989,11 +4139,11 @@ referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillRandomColorsName(
- const char* path, int frameId);
+	const char* path, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::FillRandomColorsName(
- const char* path, int frameId);
+	const char* path, int frameId);
 ```
 
 ---
@@ -4005,11 +4155,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillRandomColorsNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillRandomColorsNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 ```
 
 ---
@@ -4022,11 +4172,11 @@ than the RGB threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColors(
- int animationId, int frameId, int threshold, int color);
+	int animationId, int frameId, int threshold, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColors(
- int animationId, int frameId, int threshold, int color);
+	int animationId, int frameId, int threshold, int color);
 ```
 
 ---
@@ -4039,11 +4189,11 @@ RGB threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsAllFrames(
- int animationId, int threshold, int color);
+	int animationId, int threshold, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsAllFrames(
- int animationId, int threshold, int color);
+	int animationId, int threshold, int color);
 ```
 
 ---
@@ -4056,11 +4206,11 @@ RGB threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsAllFramesName(
- const char* path, int threshold, int color);
+	const char* path, int threshold, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsAllFramesName(
- const char* path, int threshold, int color);
+	const char* path, int threshold, int color);
 ```
 
 ---
@@ -4072,11 +4222,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdColorsAllFramesNameD(
- const char* path, double threshold, double color);
+	const char* path, double threshold, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillThresholdColorsAllFramesNameD(
- const char* path, double threshold, double color);
+	const char* path, double threshold, double color);
 ```
 
 ---
@@ -4089,11 +4239,11 @@ threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsAllFramesRGB(
- int animationId, int threshold, int red, int green, int blue);
+	int animationId, int threshold, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsAllFramesRGB(
- int animationId, int threshold, int red, int green, int blue);
+	int animationId, int threshold, int red, int green, int blue);
 ```
 
 ---
@@ -4106,11 +4256,11 @@ threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsAllFramesRGBName(
- const char* path, int threshold, int red, int green, int blue);
+	const char* path, int threshold, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsAllFramesRGBName(
- const char* path, int threshold, int red, int green, int blue);
+	const char* path, int threshold, int red, int green, int blue);
 ```
 
 ---
@@ -4122,11 +4272,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdColorsAllFramesRGBNameD(
- const char* path, double threshold, double red, double green, double blue);
+	const char* path, double threshold, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillThresholdColorsAllFramesRGBNameD(
- const char* path, double threshold, double red, double green, double blue);
+	const char* path, double threshold, double red, double green, double blue);
 ```
 
 ---
@@ -4140,13 +4290,13 @@ more than the max threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGB(
- int animationId, int minThreshold, int minRed, int minGreen, int minBlue,
- int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	int animationId, int minThreshold, int minRed, int minGreen, int minBlue,
+	int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsMinMaxAllFramesRGB(
- int animationId, int minThreshold, int minRed, int minGreen, int minBlue,
- int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	int animationId, int minThreshold, int minRed, int minGreen, int minBlue,
+	int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 ```
 
 ---
@@ -4160,13 +4310,13 @@ more than the max threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGBName(
- const char* path, int minThreshold, int minRed, int minGreen, int minBlue,
- int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	const char* path, int minThreshold, int minRed, int minGreen, int minBlue,
+	int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsMinMaxAllFramesRGBName(
- const char* path, int minThreshold, int minRed, int minGreen, int minBlue,
- int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	const char* path, int minThreshold, int minRed, int minGreen, int minBlue,
+	int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 ```
 
 ---
@@ -4178,13 +4328,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdColorsMinMaxAllFramesRGBNameD(
- const char* path, double minThreshold, double minRed, double minGreen, double minBlue,
- double maxThreshold, double maxRed, double maxGreen, double maxBlue);
+	const char* path, double minThreshold, double minRed, double minGreen, double minBlue,
+	double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillThresholdColorsMinMaxAllFramesRGBNameD(
- const char* path, double minThreshold, double minRed, double minGreen, double minBlue,
- double maxThreshold, double maxRed, double maxGreen, double maxBlue);
+	const char* path, double minThreshold, double minRed, double minGreen, double minBlue,
+	double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 ```
 
 ---
@@ -4198,13 +4348,13 @@ is more than the max threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsMinMaxRGB(
- int animationId, int frameId, int minThreshold, int minRed, int minGreen,
- int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	int animationId, int frameId, int minThreshold, int minRed, int minGreen,
+	int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsMinMaxRGB(
- int animationId, int frameId, int minThreshold, int minRed, int minGreen,
- int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	int animationId, int frameId, int minThreshold, int minRed, int minGreen,
+	int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 ```
 
 ---
@@ -4218,13 +4368,13 @@ is more than the max threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsMinMaxRGBName(
- const char* path, int frameId, int minThreshold, int minRed, int minGreen,
- int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	const char* path, int frameId, int minThreshold, int minRed, int minGreen,
+	int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsMinMaxRGBName(
- const char* path, int frameId, int minThreshold, int minRed, int minGreen,
- int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+	const char* path, int frameId, int minThreshold, int minRed, int minGreen,
+	int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 ```
 
 ---
@@ -4236,13 +4386,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdColorsMinMaxRGBNameD(
- const char* path, double frameId, double minThreshold, double minRed, double minGreen,
- double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
+	const char* path, double frameId, double minThreshold, double minRed, double minGreen,
+	double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillThresholdColorsMinMaxRGBNameD(
- const char* path, double frameId, double minThreshold, double minRed, double minGreen,
- double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
+	const char* path, double frameId, double minThreshold, double minRed, double minGreen,
+	double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 ```
 
 ---
@@ -4255,11 +4405,11 @@ than the RGB threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsName(
- const char* path, int frameId, int threshold, int color);
+	const char* path, int frameId, int threshold, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsName(
- const char* path, int frameId, int threshold, int color);
+	const char* path, int frameId, int threshold, int color);
 ```
 
 ---
@@ -4271,11 +4421,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdColorsNameD(
- const char* path, double frameId, double threshold, double color);
+	const char* path, double frameId, double threshold, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillThresholdColorsNameD(
- const char* path, double frameId, double threshold, double color);
+	const char* path, double frameId, double threshold, double color);
 ```
 
 ---
@@ -4288,11 +4438,11 @@ than the RGB threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsRGB(
- int animationId, int frameId, int threshold, int red, int green, int blue);
+	int animationId, int frameId, int threshold, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsRGB(
- int animationId, int frameId, int threshold, int red, int green, int blue);
+	int animationId, int frameId, int threshold, int red, int green, int blue);
 ```
 
 ---
@@ -4305,11 +4455,11 @@ than the RGB threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdColorsRGBName(
- const char* path, int frameId, int threshold, int red, int green, int blue);
+	const char* path, int frameId, int threshold, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdColorsRGBName(
- const char* path, int frameId, int threshold, int red, int green, int blue);
+	const char* path, int frameId, int threshold, int red, int green, int blue);
 ```
 
 ---
@@ -4321,13 +4471,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdColorsRGBNameD(
- const char* path, double frameId, double threshold, double red, double green,
- double blue);
+	const char* path, double frameId, double threshold, double red, double green,
+	double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillThresholdColorsRGBNameD(
- const char* path, double frameId, double threshold, double red, double green,
- double blue);
+	const char* path, double frameId, double threshold, double red, double green,
+	double blue);
 ```
 
 ---
@@ -4340,13 +4490,13 @@ RGB threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGB(
- int animationId, int redThreshold, int greenThreshold, int blueThreshold,
- int red, int green, int blue);
+	int animationId, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdRGBColorsAllFramesRGB(
- int animationId, int redThreshold, int greenThreshold, int blueThreshold,
- int red, int green, int blue);
+	int animationId, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 ```
 
 ---
@@ -4359,13 +4509,13 @@ RGB threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGBName(
- const char* path, int redThreshold, int greenThreshold, int blueThreshold,
- int red, int green, int blue);
+	const char* path, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdRGBColorsAllFramesRGBName(
- const char* path, int redThreshold, int greenThreshold, int blueThreshold,
- int red, int green, int blue);
+	const char* path, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 ```
 
 ---
@@ -4377,13 +4527,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdRGBColorsAllFramesRGBNameD(
- const char* path, double redThreshold, double greenThreshold, double blueThreshold,
- double red, double green, double blue);
+	const char* path, double redThreshold, double greenThreshold, double blueThreshold,
+	double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillThresholdRGBColorsAllFramesRGBNameD(
- const char* path, double redThreshold, double greenThreshold, double blueThreshold,
- double red, double green, double blue);
+	const char* path, double redThreshold, double greenThreshold, double blueThreshold,
+	double red, double green, double blue);
 ```
 
 ---
@@ -4396,13 +4546,13 @@ than the RGB threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdRGBColorsRGB(
- int animationId, int frameId, int redThreshold, int greenThreshold, int blueThreshold,
- int red, int green, int blue);
+	int animationId, int frameId, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdRGBColorsRGB(
- int animationId, int frameId, int redThreshold, int greenThreshold, int blueThreshold,
- int red, int green, int blue);
+	int animationId, int frameId, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 ```
 
 ---
@@ -4415,13 +4565,13 @@ than the RGB threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillThresholdRGBColorsRGBName(
- const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold,
- int red, int green, int blue);
+	const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillThresholdRGBColorsRGBName(
- const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold,
- int red, int green, int blue);
+	const char* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold,
+	int red, int green, int blue);
 ```
 
 ---
@@ -4433,13 +4583,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillThresholdRGBColorsRGBNameD(
- const char* path, double frameId, double redThreshold, double greenThreshold,
- double blueThreshold, double red, double green, double blue);
+	const char* path, double frameId, double redThreshold, double greenThreshold,
+	double blueThreshold, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillThresholdRGBColorsRGBNameD(
- const char* path, double frameId, double redThreshold, double greenThreshold,
- double blueThreshold, double red, double green, double blue);
+	const char* path, double frameId, double redThreshold, double greenThreshold,
+	double blueThreshold, double red, double green, double blue);
 ```
 
 ---
@@ -4452,11 +4602,11 @@ Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillZeroColor(
- int animationId, int frameId, int color);
+	int animationId, int frameId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillZeroColor(
- int animationId, int frameId, int color);
+	int animationId, int frameId, int color);
 ```
 
 ---
@@ -4469,11 +4619,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillZeroColorAllFrames(
- int animationId, int color);
+	int animationId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillZeroColorAllFrames(
- int animationId, int color);
+	int animationId, int color);
 ```
 
 ---
@@ -4486,11 +4636,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillZeroColorAllFramesName(
- const char* path, int color);
+	const char* path, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillZeroColorAllFramesName(
- const char* path, int color);
+	const char* path, int color);
 ```
 
 ---
@@ -4502,11 +4652,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillZeroColorAllFramesNameD(
- const char* path, double color);
+	const char* path, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillZeroColorAllFramesNameD(
- const char* path, double color);
+	const char* path, double color);
 ```
 
 ---
@@ -4519,11 +4669,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillZeroColorAllFramesRGB(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillZeroColorAllFramesRGB(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 ```
 
 ---
@@ -4536,11 +4686,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillZeroColorAllFramesRGBName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillZeroColorAllFramesRGBName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 ```
 
 ---
@@ -4552,11 +4702,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillZeroColorAllFramesRGBNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 ```
 
 ---
@@ -4569,11 +4719,11 @@ Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillZeroColorName(
- const char* path, int frameId, int color);
+	const char* path, int frameId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::FillZeroColorName(
- const char* path, int frameId, int color);
+	const char* path, int frameId, int color);
 ```
 
 ---
@@ -4585,11 +4735,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillZeroColorNameD(
- const char* path, double frameId, double color);
+	const char* path, double frameId, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillZeroColorNameD(
- const char* path, double frameId, double color);
+	const char* path, double frameId, double color);
 ```
 
 ---
@@ -4602,11 +4752,11 @@ Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillZeroColorRGB(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillZeroColorRGB(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -4619,11 +4769,11 @@ Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginFillZeroColorRGBName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::FillZeroColorRGBName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -4635,11 +4785,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginFillZeroColorRGBNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::FillZeroColorRGBNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 ```
 
 ---
@@ -4653,11 +4803,11 @@ referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGet1DColor(
- int animationId, int frameId, int led);
+	int animationId, int frameId, int led);
 
 // Class Plugin
 int result = ChromaAnimationAPI::Get1DColor(
- int animationId, int frameId, int led);
+	int animationId, int frameId, int led);
 ```
 
 ---
@@ -4671,11 +4821,11 @@ referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGet1DColorName(
- const char* path, int frameId, int led);
+	const char* path, int frameId, int led);
 
 // Class Plugin
 int result = ChromaAnimationAPI::Get1DColorName(
- const char* path, int frameId, int led);
+	const char* path, int frameId, int led);
 ```
 
 ---
@@ -4687,11 +4837,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginGet1DColorNameD(
- const char* path, double frameId, double led);
+	const char* path, double frameId, double led);
 
 // Class Plugin
 double result = ChromaAnimationAPI::Get1DColorNameD(
- const char* path, double frameId, double led);
+	const char* path, double frameId, double led);
 ```
 
 ---
@@ -4706,11 +4856,11 @@ Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGet2DColor(
- int animationId, int frameId, int row, int column);
+	int animationId, int frameId, int row, int column);
 
 // Class Plugin
 int result = ChromaAnimationAPI::Get2DColor(
- int animationId, int frameId, int row, int column);
+	int animationId, int frameId, int row, int column);
 ```
 
 ---
@@ -4725,11 +4875,11 @@ Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGet2DColorName(
- const char* path, int frameId, int row, int column);
+	const char* path, int frameId, int row, int column);
 
 // Class Plugin
 int result = ChromaAnimationAPI::Get2DColorName(
- const char* path, int frameId, int row, int column);
+	const char* path, int frameId, int row, int column);
 ```
 
 ---
@@ -4741,11 +4891,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginGet2DColorNameD(
- const char* path, double frameId, double row, double column);
+	const char* path, double frameId, double row, double column);
 
 // Class Plugin
 double result = ChromaAnimationAPI::Get2DColorNameD(
- const char* path, double frameId, double row, double column);
+	const char* path, double frameId, double row, double column);
 ```
 
 ---
@@ -4969,11 +5119,11 @@ COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGetFrame(
- int animationId, int frameIndex, float* duration, int* colors, int length);
+	int animationId, int frameIndex, float* duration, int* colors, int length);
 
 // Class Plugin
 int result = ChromaAnimationAPI::GetFrame(
- int animationId, int frameIndex, float* duration, int* colors, int length);
+	int animationId, int frameIndex, float* duration, int* colors, int length);
 ```
 
 ---
@@ -5029,11 +5179,11 @@ Get the color of an animation key for the given frame referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGetKeyColor(
- int animationId, int frameId, int rzkey);
+	int animationId, int frameId, int rzkey);
 
 // Class Plugin
 int result = ChromaAnimationAPI::GetKeyColor(
- int animationId, int frameId, int rzkey);
+	int animationId, int frameId, int rzkey);
 ```
 
 ---
@@ -5045,11 +5195,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginGetKeyColorD(
- const char* path, double frameId, double rzkey);
+	const char* path, double frameId, double rzkey);
 
 // Class Plugin
 double result = ChromaAnimationAPI::GetKeyColorD(
- const char* path, double frameId, double rzkey);
+	const char* path, double frameId, double rzkey);
 ```
 
 ---
@@ -5061,11 +5211,11 @@ Get the color of an animation key for the given frame referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGetKeyColorName(
- const char* path, int frameId, int rzkey);
+	const char* path, int frameId, int rzkey);
 
 // Class Plugin
 int result = ChromaAnimationAPI::GetKeyColorName(
- const char* path, int frameId, int rzkey);
+	const char* path, int frameId, int rzkey);
 ```
 
 ---
@@ -5226,11 +5376,11 @@ Get the RGB color given red, green, and blue.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGetRGB(
- int red, int green, int blue);
+	int red, int green, int blue);
 
 // Class Plugin
 int result = ChromaAnimationAPI::GetRGB(
- int red, int green, int blue);
+	int red, int green, int blue);
 ```
 
 ---
@@ -5242,11 +5392,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginGetRGBD(
- double red, double green, double blue);
+	double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::GetRGBD(
- double red, double green, double blue);
+	double red, double green, double blue);
 ```
 
 ---
@@ -5331,11 +5481,11 @@ the ChromaSDK if not already initialized.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginInitSDK(
- ChromaSDK::APPINFOTYPE* AppInfo);
+	ChromaSDK::APPINFOTYPE* AppInfo);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::InitSDK(
- ChromaSDK::APPINFOTYPE* AppInfo);
+	ChromaSDK::APPINFOTYPE* AppInfo);
 ```
 
 ---
@@ -5348,11 +5498,11 @@ times. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginInsertDelay(
- int animationId, int frameId, int delay);
+	int animationId, int frameId, int delay);
 
 // Class Plugin
 ChromaAnimationAPI::InsertDelay(
- int animationId, int frameId, int delay);
+	int animationId, int frameId, int delay);
 ```
 
 ---
@@ -5365,11 +5515,11 @@ times. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginInsertDelayName(
- const char* path, int frameId, int delay);
+	const char* path, int frameId, int delay);
 
 // Class Plugin
 ChromaAnimationAPI::InsertDelayName(
- const char* path, int frameId, int delay);
+	const char* path, int frameId, int delay);
 ```
 
 ---
@@ -5381,11 +5531,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginInsertDelayNameD(
- const char* path, double frameId, double delay);
+	const char* path, double frameId, double delay);
 
 // Class Plugin
 double result = ChromaAnimationAPI::InsertDelayNameD(
- const char* path, double frameId, double delay);
+	const char* path, double frameId, double delay);
 ```
 
 ---
@@ -5398,11 +5548,11 @@ referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginInsertFrame(
- int animationId, int sourceFrame, int targetFrame);
+	int animationId, int sourceFrame, int targetFrame);
 
 // Class Plugin
 ChromaAnimationAPI::InsertFrame(
- int animationId, int sourceFrame, int targetFrame);
+	int animationId, int sourceFrame, int targetFrame);
 ```
 
 ---
@@ -5415,11 +5565,11 @@ referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginInsertFrameName(
- const char* path, int sourceFrame, int targetFrame);
+	const char* path, int sourceFrame, int targetFrame);
 
 // Class Plugin
 ChromaAnimationAPI::InsertFrameName(
- const char* path, int sourceFrame, int targetFrame);
+	const char* path, int sourceFrame, int targetFrame);
 ```
 
 ---
@@ -5431,11 +5581,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginInsertFrameNameD(
- const char* path, double sourceFrame, double targetFrame);
+	const char* path, double sourceFrame, double targetFrame);
 
 // Class Plugin
 double result = ChromaAnimationAPI::InsertFrameNameD(
- const char* path, double sourceFrame, double targetFrame);
+	const char* path, double sourceFrame, double targetFrame);
 ```
 
 ---
@@ -5448,11 +5598,11 @@ id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginInvertColors(
- int animationId, int frameId);
+	int animationId, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::InvertColors(
- int animationId, int frameId);
+	int animationId, int frameId);
 ```
 
 ---
@@ -5507,11 +5657,11 @@ name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginInvertColorsName(
- const char* path, int frameId);
+	const char* path, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::InvertColorsName(
- const char* path, int frameId);
+	const char* path, int frameId);
 ```
 
 ---
@@ -5523,11 +5673,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginInvertColorsNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::InvertColorsNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 ```
 
 ---
@@ -5731,11 +5881,11 @@ the method will return true, otherwise false.
 ```C++
 // DLL Interface
 EXPORT_API bool PluginIsPlayingType(
- int deviceType, int device);
+	int deviceType, int device);
 
 // Class Plugin
 bool result = ChromaAnimationAPI::IsPlayingType(
- int deviceType, int device);
+	int deviceType, int device);
 ```
 
 ---
@@ -5747,11 +5897,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginIsPlayingTypeD(
- double deviceType, double device);
+	double deviceType, double device);
 
 // Class Plugin
 double result = ChromaAnimationAPI::IsPlayingTypeD(
- double deviceType, double device);
+	double deviceType, double device);
 ```
 
 ---
@@ -5763,11 +5913,11 @@ Do a lerp math operation on a float.
 ```C++
 // DLL Interface
 EXPORT_API float PluginLerp(
- float start, float end, float amt);
+	float start, float end, float amt);
 
 // Class Plugin
 float result = ChromaAnimationAPI::Lerp(
- float start, float end, float amt);
+	float start, float end, float amt);
 ```
 
 ---
@@ -5779,11 +5929,11 @@ Lerp from one color to another given t in the range 0.0 to 1.0.
 ```C++
 // DLL Interface
 EXPORT_API int PluginLerpColor(
- int from, int to, float t);
+	int from, int to, float t);
 
 // Class Plugin
 int result = ChromaAnimationAPI::LerpColor(
- int from, int to, float t);
+	int from, int to, float t);
 ```
 
 ---
@@ -5854,11 +6004,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMakeBlankFrames(
- int animationId, int frameCount, float duration, int color);
+	int animationId, int frameCount, float duration, int color);
 
 // Class Plugin
 ChromaAnimationAPI::MakeBlankFrames(
- int animationId, int frameCount, float duration, int color);
+	int animationId, int frameCount, float duration, int color);
 ```
 
 ---
@@ -5872,11 +6022,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMakeBlankFramesName(
- const char* path, int frameCount, float duration, int color);
+	const char* path, int frameCount, float duration, int color);
 
 // Class Plugin
 ChromaAnimationAPI::MakeBlankFramesName(
- const char* path, int frameCount, float duration, int color);
+	const char* path, int frameCount, float duration, int color);
 ```
 
 ---
@@ -5888,11 +6038,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMakeBlankFramesNameD(
- const char* path, double frameCount, double duration, double color);
+	const char* path, double frameCount, double duration, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MakeBlankFramesNameD(
- const char* path, double frameCount, double duration, double color);
+	const char* path, double frameCount, double duration, double color);
 ```
 
 ---
@@ -5906,11 +6056,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMakeBlankFramesRandom(
- int animationId, int frameCount, float duration);
+	int animationId, int frameCount, float duration);
 
 // Class Plugin
 ChromaAnimationAPI::MakeBlankFramesRandom(
- int animationId, int frameCount, float duration);
+	int animationId, int frameCount, float duration);
 ```
 
 ---
@@ -5924,11 +6074,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhite(
- int animationId, int frameCount, float duration);
+	int animationId, int frameCount, float duration);
 
 // Class Plugin
 ChromaAnimationAPI::MakeBlankFramesRandomBlackAndWhite(
- int animationId, int frameCount, float duration);
+	int animationId, int frameCount, float duration);
 ```
 
 ---
@@ -5942,11 +6092,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhiteName(
- const char* path, int frameCount, float duration);
+	const char* path, int frameCount, float duration);
 
 // Class Plugin
 ChromaAnimationAPI::MakeBlankFramesRandomBlackAndWhiteName(
- const char* path, int frameCount, float duration);
+	const char* path, int frameCount, float duration);
 ```
 
 ---
@@ -5958,11 +6108,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMakeBlankFramesRandomBlackAndWhiteNameD(
- const char* path, double frameCount, double duration);
+	const char* path, double frameCount, double duration);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MakeBlankFramesRandomBlackAndWhiteNameD(
- const char* path, double frameCount, double duration);
+	const char* path, double frameCount, double duration);
 ```
 
 ---
@@ -5976,11 +6126,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMakeBlankFramesRandomName(
- const char* path, int frameCount, float duration);
+	const char* path, int frameCount, float duration);
 
 // Class Plugin
 ChromaAnimationAPI::MakeBlankFramesRandomName(
- const char* path, int frameCount, float duration);
+	const char* path, int frameCount, float duration);
 ```
 
 ---
@@ -5992,11 +6142,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMakeBlankFramesRandomNameD(
- const char* path, double frameCount, double duration);
+	const char* path, double frameCount, double duration);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MakeBlankFramesRandomNameD(
- const char* path, double frameCount, double duration);
+	const char* path, double frameCount, double duration);
 ```
 
 ---
@@ -6010,11 +6160,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMakeBlankFramesRGB(
- int animationId, int frameCount, float duration, int red, int green, int blue);
+	int animationId, int frameCount, float duration, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::MakeBlankFramesRGB(
- int animationId, int frameCount, float duration, int red, int green, int blue);
+	int animationId, int frameCount, float duration, int red, int green, int blue);
 ```
 
 ---
@@ -6028,11 +6178,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMakeBlankFramesRGBName(
- const char* path, int frameCount, float duration, int red, int green, int blue);
+	const char* path, int frameCount, float duration, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::MakeBlankFramesRGBName(
- const char* path, int frameCount, float duration, int red, int green, int blue);
+	const char* path, int frameCount, float duration, int red, int green, int blue);
 ```
 
 ---
@@ -6044,13 +6194,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMakeBlankFramesRGBNameD(
- const char* path, double frameCount, double duration, double red, double green,
- double blue);
+	const char* path, double frameCount, double duration, double red, double green,
+	double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MakeBlankFramesRGBNameD(
- const char* path, double frameCount, double duration, double red, double green,
- double blue);
+	const char* path, double frameCount, double duration, double red, double green,
+	double blue);
 ```
 
 ---
@@ -6095,11 +6245,11 @@ Animation is referenced in id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyColorLerpAllFrames(
- int animationId, int color1, int color2);
+	int animationId, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyColorLerpAllFrames(
- int animationId, int color1, int color2);
+	int animationId, int color1, int color2);
 ```
 
 ---
@@ -6113,11 +6263,11 @@ Animation is referenced in name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyColorLerpAllFramesName(
- const char* path, int color1, int color2);
+	const char* path, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyColorLerpAllFramesName(
- const char* path, int color1, int color2);
+	const char* path, int color1, int color2);
 ```
 
 ---
@@ -6129,11 +6279,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyColorLerpAllFramesNameD(
- const char* path, double color1, double color2);
+	const char* path, double color1, double color2);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyColorLerpAllFramesNameD(
- const char* path, double color1, double color2);
+	const char* path, double color1, double color2);
 ```
 
 ---
@@ -6148,11 +6298,11 @@ will not be affected by this method.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensity(
- int animationId, int frameId, float intensity);
+	int animationId, int frameId, float intensity);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensity(
- int animationId, int frameId, float intensity);
+	int animationId, int frameId, float intensity);
 ```
 
 ---
@@ -6167,11 +6317,11 @@ the frame will not be affected by this method.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityAllFrames(
- int animationId, float intensity);
+	int animationId, float intensity);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityAllFrames(
- int animationId, float intensity);
+	int animationId, float intensity);
 ```
 
 ---
@@ -6186,11 +6336,11 @@ the frame will not be affected by this method.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityAllFramesName(
- const char* path, float intensity);
+	const char* path, float intensity);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityAllFramesName(
- const char* path, float intensity);
+	const char* path, float intensity);
 ```
 
 ---
@@ -6202,11 +6352,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyIntensityAllFramesNameD(
- const char* path, double intensity);
+	const char* path, double intensity);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyIntensityAllFramesNameD(
- const char* path, double intensity);
+	const char* path, double intensity);
 ```
 
 ---
@@ -6219,11 +6369,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityAllFramesRGB(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityAllFramesRGB(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 ```
 
 ---
@@ -6236,11 +6386,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityAllFramesRGBName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityAllFramesRGBName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 ```
 
 ---
@@ -6252,11 +6402,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyIntensityAllFramesRGBNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyIntensityAllFramesRGBNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 ```
 
 ---
@@ -6269,11 +6419,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityColor(
- int animationId, int frameId, int color);
+	int animationId, int frameId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityColor(
- int animationId, int frameId, int color);
+	int animationId, int frameId, int color);
 ```
 
 ---
@@ -6286,11 +6436,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityColorAllFrames(
- int animationId, int color);
+	int animationId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityColorAllFrames(
- int animationId, int color);
+	int animationId, int color);
 ```
 
 ---
@@ -6303,11 +6453,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityColorAllFramesName(
- const char* path, int color);
+	const char* path, int color);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityColorAllFramesName(
- const char* path, int color);
+	const char* path, int color);
 ```
 
 ---
@@ -6319,11 +6469,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyIntensityColorAllFramesNameD(
- const char* path, double color);
+	const char* path, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyIntensityColorAllFramesNameD(
- const char* path, double color);
+	const char* path, double color);
 ```
 
 ---
@@ -6336,11 +6486,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityColorName(
- const char* path, int frameId, int color);
+	const char* path, int frameId, int color);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityColorName(
- const char* path, int frameId, int color);
+	const char* path, int frameId, int color);
 ```
 
 ---
@@ -6352,11 +6502,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyIntensityColorNameD(
- const char* path, double frameId, double color);
+	const char* path, double frameId, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyIntensityColorNameD(
- const char* path, double frameId, double color);
+	const char* path, double frameId, double color);
 ```
 
 ---
@@ -6371,11 +6521,11 @@ will not be affected by this method.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityName(
- const char* path, int frameId, float intensity);
+	const char* path, int frameId, float intensity);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityName(
- const char* path, int frameId, float intensity);
+	const char* path, int frameId, float intensity);
 ```
 
 ---
@@ -6387,11 +6537,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyIntensityNameD(
- const char* path, double frameId, double intensity);
+	const char* path, double frameId, double intensity);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyIntensityNameD(
- const char* path, double frameId, double intensity);
+	const char* path, double frameId, double intensity);
 ```
 
 ---
@@ -6404,11 +6554,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityRGB(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityRGB(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -6421,11 +6571,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyIntensityRGBName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyIntensityRGBName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -6437,11 +6587,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyIntensityRGBNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyIntensityRGBNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 ```
 
 ---
@@ -6455,11 +6605,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyNonZeroTargetColorLerp(
- int animationId, int frameId, int color1, int color2);
+	int animationId, int frameId, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyNonZeroTargetColorLerp(
- int animationId, int frameId, int color1, int color2);
+	int animationId, int frameId, int color1, int color2);
 ```
 
 ---
@@ -6472,11 +6622,11 @@ the frame color value as the `t` value. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFrames(
- int animationId, int color1, int color2);
+	int animationId, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFrames(
- int animationId, int color1, int color2);
+	int animationId, int color1, int color2);
 ```
 
 ---
@@ -6489,11 +6639,11 @@ the frame color value as the `t` value. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesName(
- const char* path, int color1, int color2);
+	const char* path, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesName(
- const char* path, int color1, int color2);
+	const char* path, int color1, int color2);
 ```
 
 ---
@@ -6505,11 +6655,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesNameD(
- const char* path, double color1, double color2);
+	const char* path, double color1, double color2);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesNameD(
- const char* path, double color1, double color2);
+	const char* path, double color1, double color2);
 ```
 
 ---
@@ -6523,11 +6673,11 @@ id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGB(
- int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesRGB(
- int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
 ```
 
 ---
@@ -6541,13 +6691,13 @@ name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(
- const char* path, int red1, int green1, int blue1, int red2, int green2,
- int blue2);
+	const char* path, int red1, int green1, int blue1, int red2, int green2,
+	int blue2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesRGBName(
- const char* path, int red1, int green1, int blue1, int red2, int green2,
- int blue2);
+	const char* path, int red1, int green1, int blue1, int red2, int green2,
+	int blue2);
 ```
 
 ---
@@ -6559,13 +6709,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyNonZeroTargetColorLerpAllFramesRGBNameD(
- const char* path, double red1, double green1, double blue1, double red2,
- double green2, double blue2);
+	const char* path, double red1, double green1, double blue1, double red2,
+	double green2, double blue2);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesRGBNameD(
- const char* path, double red1, double green1, double blue1, double red2,
- double green2, double blue2);
+	const char* path, double red1, double green1, double blue1, double red2,
+	double green2, double blue2);
 ```
 
 ---
@@ -6579,11 +6729,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyTargetColorLerp(
- int animationId, int frameId, int color1, int color2);
+	int animationId, int frameId, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyTargetColorLerp(
- int animationId, int frameId, int color1, int color2);
+	int animationId, int frameId, int color1, int color2);
 ```
 
 ---
@@ -6596,11 +6746,11 @@ the frame color value as the `t` value. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyTargetColorLerpAllFrames(
- int animationId, int color1, int color2);
+	int animationId, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyTargetColorLerpAllFrames(
- int animationId, int color1, int color2);
+	int animationId, int color1, int color2);
 ```
 
 ---
@@ -6613,11 +6763,11 @@ the frame color value as the `t` value. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyTargetColorLerpAllFramesName(
- const char* path, int color1, int color2);
+	const char* path, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesName(
- const char* path, int color1, int color2);
+	const char* path, int color1, int color2);
 ```
 
 ---
@@ -6629,11 +6779,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(
- const char* path, double color1, double color2);
+	const char* path, double color1, double color2);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesNameD(
- const char* path, double color1, double color2);
+	const char* path, double color1, double color2);
 ```
 
 ---
@@ -6646,11 +6796,11 @@ frame color value as the `t` value. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGB(
- int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesRGB(
- int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
+	int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
 ```
 
 ---
@@ -6663,13 +6813,13 @@ frame color value as the `t` value. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(
- const char* path, int red1, int green1, int blue1, int red2, int green2,
- int blue2);
+	const char* path, int red1, int green1, int blue1, int red2, int green2,
+	int blue2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesRGBName(
- const char* path, int red1, int green1, int blue1, int red2, int green2,
- int blue2);
+	const char* path, int red1, int green1, int blue1, int red2, int green2,
+	int blue2);
 ```
 
 ---
@@ -6681,13 +6831,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginMultiplyTargetColorLerpAllFramesRGBNameD(
- const char* path, double red1, double green1, double blue1, double red2,
- double green2, double blue2);
+	const char* path, double red1, double green1, double blue1, double red2,
+	double green2, double blue2);
 
 // Class Plugin
 double result = ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesRGBNameD(
- const char* path, double red1, double green1, double blue1, double red2,
- double green2, double blue2);
+	const char* path, double red1, double green1, double blue1, double red2,
+	double green2, double blue2);
 ```
 
 ---
@@ -6701,11 +6851,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginMultiplyTargetColorLerpName(
- const char* path, int frameId, int color1, int color2);
+	const char* path, int frameId, int color1, int color2);
 
 // Class Plugin
 ChromaAnimationAPI::MultiplyTargetColorLerpName(
- const char* path, int frameId, int color1, int color2);
+	const char* path, int frameId, int color1, int color2);
 ```
 
 ---
@@ -6719,11 +6869,11 @@ Positive values add color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOffsetColors(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::OffsetColors(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -6737,11 +6887,11 @@ color. Positive values add color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOffsetColorsAllFrames(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::OffsetColorsAllFrames(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 ```
 
 ---
@@ -6755,11 +6905,11 @@ color. Positive values add color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOffsetColorsAllFramesName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::OffsetColorsAllFramesName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 ```
 
 ---
@@ -6771,11 +6921,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginOffsetColorsAllFramesNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::OffsetColorsAllFramesNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 ```
 
 ---
@@ -6789,11 +6939,11 @@ Positive values add color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOffsetColorsName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::OffsetColorsName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -6805,11 +6955,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginOffsetColorsNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::OffsetColorsNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 ```
 
 ---
@@ -6824,11 +6974,11 @@ values remove color. Positive values add color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOffsetNonZeroColors(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::OffsetNonZeroColors(
- int animationId, int frameId, int red, int green, int blue);
+	int animationId, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -6843,11 +6993,11 @@ values remove color. Positive values add color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOffsetNonZeroColorsAllFrames(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::OffsetNonZeroColorsAllFrames(
- int animationId, int red, int green, int blue);
+	int animationId, int red, int green, int blue);
 ```
 
 ---
@@ -6862,11 +7012,11 @@ values remove color. Positive values add color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::OffsetNonZeroColorsAllFramesName(
- const char* path, int red, int green, int blue);
+	const char* path, int red, int green, int blue);
 ```
 
 ---
@@ -6878,11 +7028,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginOffsetNonZeroColorsAllFramesNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::OffsetNonZeroColorsAllFramesNameD(
- const char* path, double red, double green, double blue);
+	const char* path, double red, double green, double blue);
 ```
 
 ---
@@ -6897,11 +7047,11 @@ values remove color. Positive values add color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOffsetNonZeroColorsName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::OffsetNonZeroColorsName(
- const char* path, int frameId, int red, int green, int blue);
+	const char* path, int frameId, int red, int green, int blue);
 ```
 
 ---
@@ -6913,11 +7063,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginOffsetNonZeroColorsNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::OffsetNonZeroColorsNameD(
- const char* path, double frameId, double red, double green, double blue);
+	const char* path, double frameId, double red, double green, double blue);
 ```
 
 ---
@@ -6955,7 +7105,7 @@ double result = ChromaAnimationAPI::OpenAnimationD(const char* path);
 **PluginOpenAnimationFromMemory**
 
 Opens a `Chroma` animation data from memory so that it can be played. `Data`
-is a pointer to byte array of the loaded animation in memory. `Name` will
+is a pointer to BYTE array of the loaded animation in memory. `Name` will
 be assigned to the animation when loaded. Returns an animation id >= 0
 upon success. Returns -1 if there was a failure. The animation id is used
 in most of the API methods.
@@ -6963,11 +7113,11 @@ in most of the API methods.
 ```C++
 // DLL Interface
 EXPORT_API int PluginOpenAnimationFromMemory(
- const byte* data, const char* name);
+	const BYTE* data, const char* name);
 
 // Class Plugin
 int result = ChromaAnimationAPI::OpenAnimationFromMemory(
- const byte* data, const char* name);
+	const BYTE* data, const char* name);
 ```
 
 ---
@@ -7038,11 +7188,11 @@ parameter. Returns the animation id upon success. Returns -1 upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginOverrideFrameDuration(
- int animationId, float duration);
+	int animationId, float duration);
 
 // Class Plugin
 int result = ChromaAnimationAPI::OverrideFrameDuration(
- int animationId, float duration);
+	int animationId, float duration);
 ```
 
 ---
@@ -7054,11 +7204,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginOverrideFrameDurationD(
- double animationId, double duration);
+	double animationId, double duration);
 
 // Class Plugin
 double result = ChromaAnimationAPI::OverrideFrameDurationD(
- double animationId, double duration);
+	double animationId, double duration);
 ```
 
 ---
@@ -7071,11 +7221,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginOverrideFrameDurationName(
- const char* path, float duration);
+	const char* path, float duration);
 
 // Class Plugin
 ChromaAnimationAPI::OverrideFrameDurationName(
- const char* path, float duration);
+	const char* path, float duration);
 ```
 
 ---
@@ -7160,11 +7310,11 @@ The method will play the animation given the `animationId` with looping
 ```C++
 // DLL Interface
 EXPORT_API void PluginPlayAnimationFrame(
- int animationId, int frameId, bool loop);
+	int animationId, int frameId, bool loop);
 
 // Class Plugin
 ChromaAnimationAPI::PlayAnimationFrame(
- int animationId, int frameId, bool loop);
+	int animationId, int frameId, bool loop);
 ```
 
 ---
@@ -7178,11 +7328,11 @@ will play with looping `on` or `off` starting at the `frameId`.
 ```C++
 // DLL Interface
 EXPORT_API void PluginPlayAnimationFrameName(
- const char* path, int frameId, bool loop);
+	const char* path, int frameId, bool loop);
 
 // Class Plugin
 ChromaAnimationAPI::PlayAnimationFrameName(
- const char* path, int frameId, bool loop);
+	const char* path, int frameId, bool loop);
 ```
 
 ---
@@ -7194,11 +7344,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginPlayAnimationFrameNameD(
- const char* path, double frameId, double loop);
+	const char* path, double frameId, double loop);
 
 // Class Plugin
 double result = ChromaAnimationAPI::PlayAnimationFrameNameD(
- const char* path, double frameId, double loop);
+	const char* path, double frameId, double loop);
 ```
 
 ---
@@ -7212,11 +7362,11 @@ The method will play the animation given the `animationId` with looping
 ```C++
 // DLL Interface
 EXPORT_API void PluginPlayAnimationLoop(
- int animationId, bool loop);
+	int animationId, bool loop);
 
 // Class Plugin
 ChromaAnimationAPI::PlayAnimationLoop(
- int animationId, bool loop);
+	int animationId, bool loop);
 ```
 
 ---
@@ -7230,11 +7380,11 @@ will play with looping `on` or `off`.
 ```C++
 // DLL Interface
 EXPORT_API void PluginPlayAnimationName(
- const char* path, bool loop);
+	const char* path, bool loop);
 
 // Class Plugin
 ChromaAnimationAPI::PlayAnimationName(
- const char* path, bool loop);
+	const char* path, bool loop);
 ```
 
 ---
@@ -7246,11 +7396,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginPlayAnimationNameD(
- const char* path, double loop);
+	const char* path, double loop);
 
 // Class Plugin
 double result = ChromaAnimationAPI::PlayAnimationNameD(
- const char* path, double loop);
+	const char* path, double loop);
 ```
 
 ---
@@ -7264,11 +7414,11 @@ The set of animations will play with looping `on` or `off`.
 ```C++
 // DLL Interface
 EXPORT_API void PluginPlayComposite(
- const char* name, bool loop);
+	const char* name, bool loop);
 
 // Class Plugin
 ChromaAnimationAPI::PlayComposite(
- const char* name, bool loop);
+	const char* name, bool loop);
 ```
 
 ---
@@ -7280,11 +7430,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginPlayCompositeD(
- const char* name, double loop);
+	const char* name, double loop);
 
 // Class Plugin
 double result = ChromaAnimationAPI::PlayCompositeD(
- const char* name, double loop);
+	const char* name, double loop);
 ```
 
 ---
@@ -7297,11 +7447,11 @@ Returns the animation id upon success. Returns -1 upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginPreviewFrame(
- int animationId, int frameIndex);
+	int animationId, int frameIndex);
 
 // Class Plugin
 int result = ChromaAnimationAPI::PreviewFrame(
- int animationId, int frameIndex);
+	int animationId, int frameIndex);
 ```
 
 ---
@@ -7313,11 +7463,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginPreviewFrameD(
- double animationId, double frameIndex);
+	double animationId, double frameIndex);
 
 // Class Plugin
 double result = ChromaAnimationAPI::PreviewFrameD(
- double animationId, double frameIndex);
+	double animationId, double frameIndex);
 ```
 
 ---
@@ -7330,11 +7480,11 @@ Animaton is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginPreviewFrameName(
- const char* path, int frameIndex);
+	const char* path, int frameIndex);
 
 // Class Plugin
 ChromaAnimationAPI::PreviewFrameName(
- const char* path, int frameIndex);
+	const char* path, int frameIndex);
 ```
 
 ---
@@ -7347,11 +7497,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginReduceFrames(
- int animationId, int n);
+	int animationId, int n);
 
 // Class Plugin
 ChromaAnimationAPI::ReduceFrames(
- int animationId, int n);
+	int animationId, int n);
 ```
 
 ---
@@ -7364,11 +7514,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginReduceFramesName(
- const char* path, int n);
+	const char* path, int n);
 
 // Class Plugin
 ChromaAnimationAPI::ReduceFramesName(
- const char* path, int n);
+	const char* path, int n);
 ```
 
 ---
@@ -7380,11 +7530,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginReduceFramesNameD(
- const char* path, double n);
+	const char* path, double n);
 
 // Class Plugin
 double result = ChromaAnimationAPI::ReduceFramesNameD(
- const char* path, double n);
+	const char* path, double n);
 ```
 
 ---
@@ -7411,11 +7561,11 @@ Resume the animation with loop `ON` or `OFF` referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginResumeAnimation(
- int animationId, bool loop);
+	int animationId, bool loop);
 
 // Class Plugin
 ChromaAnimationAPI::ResumeAnimation(
- int animationId, bool loop);
+	int animationId, bool loop);
 ```
 
 ---
@@ -7427,11 +7577,11 @@ Resume the animation with loop `ON` or `OFF` referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginResumeAnimationName(
- const char* path, bool loop);
+	const char* path, bool loop);
 
 // Class Plugin
 ChromaAnimationAPI::ResumeAnimationName(
- const char* path, bool loop);
+	const char* path, bool loop);
 ```
 
 ---
@@ -7443,11 +7593,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginResumeAnimationNameD(
- const char* path, double loop);
+	const char* path, double loop);
 
 // Class Plugin
 double result = ChromaAnimationAPI::ResumeAnimationNameD(
- const char* path, double loop);
+	const char* path, double loop);
 ```
 
 ---
@@ -7519,11 +7669,11 @@ Save the animation referenced by id to the path specified.
 ```C++
 // DLL Interface
 EXPORT_API int PluginSaveAnimation(
- int animationId, const char* path);
+	int animationId, const char* path);
 
 // Class Plugin
 int result = ChromaAnimationAPI::SaveAnimation(
- int animationId, const char* path);
+	int animationId, const char* path);
 ```
 
 ---
@@ -7535,11 +7685,11 @@ Save the named animation to the target path specified.
 ```C++
 // DLL Interface
 EXPORT_API int PluginSaveAnimationName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 int result = ChromaAnimationAPI::SaveAnimationName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -7553,11 +7703,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSet1DColor(
- int animationId, int frameId, int led, int color);
+	int animationId, int frameId, int led, int color);
 
 // Class Plugin
 ChromaAnimationAPI::Set1DColor(
- int animationId, int frameId, int led, int color);
+	int animationId, int frameId, int led, int color);
 ```
 
 ---
@@ -7571,11 +7721,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSet1DColorName(
- const char* path, int frameId, int led, int color);
+	const char* path, int frameId, int led, int color);
 
 // Class Plugin
 ChromaAnimationAPI::Set1DColorName(
- const char* path, int frameId, int led, int color);
+	const char* path, int frameId, int led, int color);
 ```
 
 ---
@@ -7587,11 +7737,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSet1DColorNameD(
- const char* path, double frameId, double led, double color);
+	const char* path, double frameId, double led, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::Set1DColorNameD(
- const char* path, double frameId, double led, double color);
+	const char* path, double frameId, double led, double color);
 ```
 
 ---
@@ -7606,11 +7756,11 @@ The animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSet2DColor(
- int animationId, int frameId, int row, int column, int color);
+	int animationId, int frameId, int row, int column, int color);
 
 // Class Plugin
 ChromaAnimationAPI::Set2DColor(
- int animationId, int frameId, int row, int column, int color);
+	int animationId, int frameId, int row, int column, int color);
 ```
 
 ---
@@ -7625,11 +7775,11 @@ The animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSet2DColorName(
- const char* path, int frameId, int row, int column, int color);
+	const char* path, int frameId, int row, int column, int color);
 
 // Class Plugin
 ChromaAnimationAPI::Set2DColorName(
- const char* path, int frameId, int row, int column, int color);
+	const char* path, int frameId, int row, int column, int color);
 ```
 
 ---
@@ -7641,11 +7791,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSet2DColorNameD(
- const char* path, double frameId, double rowColumnIndex, double color);
+	const char* path, double frameId, double rowColumnIndex, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::Set2DColorNameD(
- const char* path, double frameId, double rowColumnIndex, double color);
+	const char* path, double frameId, double rowColumnIndex, double color);
 ```
 
 ---
@@ -7703,11 +7853,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetChromaCustomFlag(
- int animationId, bool flag);
+	int animationId, bool flag);
 
 // Class Plugin
 ChromaAnimationAPI::SetChromaCustomFlag(
- int animationId, bool flag);
+	int animationId, bool flag);
 ```
 
 ---
@@ -7721,11 +7871,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetChromaCustomFlagName(
- const char* path, bool flag);
+	const char* path, bool flag);
 
 // Class Plugin
 ChromaAnimationAPI::SetChromaCustomFlagName(
- const char* path, bool flag);
+	const char* path, bool flag);
 ```
 
 ---
@@ -7737,11 +7887,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetChromaCustomFlagNameD(
- const char* path, double flag);
+	const char* path, double flag);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetChromaCustomFlagNameD(
- const char* path, double flag);
+	const char* path, double flag);
 ```
 
 ---
@@ -7753,11 +7903,11 @@ Set the current frame of the animation referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetCurrentFrame(
- int animationId, int frameId);
+	int animationId, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::SetCurrentFrame(
- int animationId, int frameId);
+	int animationId, int frameId);
 ```
 
 ---
@@ -7769,11 +7919,11 @@ Set the current frame of the animation referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetCurrentFrameName(
- const char* path, int frameId);
+	const char* path, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::SetCurrentFrameName(
- const char* path, int frameId);
+	const char* path, int frameId);
 ```
 
 ---
@@ -7785,11 +7935,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetCurrentFrameNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetCurrentFrameNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 ```
 
 ---
@@ -7801,11 +7951,11 @@ Set the custom alpha flag on the color array
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginSetCustomColorFlag2D(
- int device, int* colors);
+	int device, int* colors);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::SetCustomColorFlag2D(
- int device, int* colors);
+	int device, int* colors);
 ```
 
 ---
@@ -7819,11 +7969,11 @@ the animation id upon success. Returns -1 upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginSetDevice(
- int animationId, int deviceType, int device);
+	int animationId, int deviceType, int device);
 
 // Class Plugin
 int result = ChromaAnimationAPI::SetDevice(
- int animationId, int deviceType, int device);
+	int animationId, int deviceType, int device);
 ```
 
 ---
@@ -7835,11 +7985,11 @@ SetEffect will display the referenced effect id.
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginSetEffect(
- const ChromaSDK::FChromaSDKGuid& effectId);
+	const ChromaSDK::FChromaSDKGuid& effectId);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::SetEffect(
- const ChromaSDK::FChromaSDKGuid& effectId);
+	const ChromaSDK::FChromaSDKGuid& effectId);
 ```
 
 ---
@@ -7851,11 +8001,11 @@ SetEffectCustom1D will display the referenced colors immediately
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginSetEffectCustom1D(
- const int device, const int* colors);
+	const int device, const int* colors);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::SetEffectCustom1D(
- const int device, const int* colors);
+	const int device, const int* colors);
 ```
 
 ---
@@ -7867,11 +8017,11 @@ SetEffectCustom2D will display the referenced colors immediately
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginSetEffectCustom2D(
- const int device, const int* colors);
+	const int device, const int* colors);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::SetEffectCustom2D(
- const int device, const int* colors);
+	const int device, const int* colors);
 ```
 
 ---
@@ -7884,11 +8034,11 @@ immediately
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(
- const int device, const int* colors);
+	const int device, const int* colors);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::SetEffectKeyboardCustom2D(
- const int device, const int* colors);
+	const int device, const int* colors);
 ```
 
 ---
@@ -7930,11 +8080,11 @@ Set animation key to a static color for the given frame.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyColor(
- int animationId, int frameId, int rzkey, int color);
+	int animationId, int frameId, int rzkey, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyColor(
- int animationId, int frameId, int rzkey, int color);
+	int animationId, int frameId, int rzkey, int color);
 ```
 
 ---
@@ -7947,11 +8097,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyColorAllFrames(
- int animationId, int rzkey, int color);
+	int animationId, int rzkey, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyColorAllFrames(
- int animationId, int rzkey, int color);
+	int animationId, int rzkey, int color);
 ```
 
 ---
@@ -7964,11 +8114,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyColorAllFramesName(
- const char* path, int rzkey, int color);
+	const char* path, int rzkey, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyColorAllFramesName(
- const char* path, int rzkey, int color);
+	const char* path, int rzkey, int color);
 ```
 
 ---
@@ -7980,11 +8130,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyColorAllFramesNameD(
- const char* path, double rzkey, double color);
+	const char* path, double rzkey, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetKeyColorAllFramesNameD(
- const char* path, double rzkey, double color);
+	const char* path, double rzkey, double color);
 ```
 
 ---
@@ -7997,11 +8147,11 @@ by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyColorAllFramesRGB(
- int animationId, int rzkey, int red, int green, int blue);
+	int animationId, int rzkey, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyColorAllFramesRGB(
- int animationId, int rzkey, int red, int green, int blue);
+	int animationId, int rzkey, int red, int green, int blue);
 ```
 
 ---
@@ -8014,11 +8164,11 @@ by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyColorAllFramesRGBName(
- const char* path, int rzkey, int red, int green, int blue);
+	const char* path, int rzkey, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyColorAllFramesRGBName(
- const char* path, int rzkey, int red, int green, int blue);
+	const char* path, int rzkey, int red, int green, int blue);
 ```
 
 ---
@@ -8030,11 +8180,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyColorAllFramesRGBNameD(
- const char* path, double rzkey, double red, double green, double blue);
+	const char* path, double rzkey, double red, double green, double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetKeyColorAllFramesRGBNameD(
- const char* path, double rzkey, double red, double green, double blue);
+	const char* path, double rzkey, double red, double green, double blue);
 ```
 
 ---
@@ -8046,11 +8196,11 @@ Set animation key to a static color for the given frame.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyColorName(
- const char* path, int frameId, int rzkey, int color);
+	const char* path, int frameId, int rzkey, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyColorName(
- const char* path, int frameId, int rzkey, int color);
+	const char* path, int frameId, int rzkey, int color);
 ```
 
 ---
@@ -8062,11 +8212,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyColorNameD(
- const char* path, double frameId, double rzkey, double color);
+	const char* path, double frameId, double rzkey, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetKeyColorNameD(
- const char* path, double frameId, double rzkey, double color);
+	const char* path, double frameId, double rzkey, double color);
 ```
 
 ---
@@ -8079,11 +8229,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyColorRGB(
- int animationId, int frameId, int rzkey, int red, int green, int blue);
+	int animationId, int frameId, int rzkey, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyColorRGB(
- int animationId, int frameId, int rzkey, int red, int green, int blue);
+	int animationId, int frameId, int rzkey, int red, int green, int blue);
 ```
 
 ---
@@ -8096,11 +8246,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyColorRGBName(
- const char* path, int frameId, int rzkey, int red, int green, int blue);
+	const char* path, int frameId, int rzkey, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyColorRGBName(
- const char* path, int frameId, int rzkey, int red, int green, int blue);
+	const char* path, int frameId, int rzkey, int red, int green, int blue);
 ```
 
 ---
@@ -8112,13 +8262,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyColorRGBNameD(
- const char* path, double frameId, double rzkey, double red, double green,
- double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetKeyColorRGBNameD(
- const char* path, double frameId, double rzkey, double red, double green,
- double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 ```
 
 ---
@@ -8131,11 +8281,11 @@ color is not already black.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyNonZeroColor(
- int animationId, int frameId, int rzkey, int color);
+	int animationId, int frameId, int rzkey, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyNonZeroColor(
- int animationId, int frameId, int rzkey, int color);
+	int animationId, int frameId, int rzkey, int color);
 ```
 
 ---
@@ -8148,11 +8298,11 @@ color is not already black.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyNonZeroColorName(
- const char* path, int frameId, int rzkey, int color);
+	const char* path, int frameId, int rzkey, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyNonZeroColorName(
- const char* path, int frameId, int rzkey, int color);
+	const char* path, int frameId, int rzkey, int color);
 ```
 
 ---
@@ -8164,11 +8314,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyNonZeroColorNameD(
- const char* path, double frameId, double rzkey, double color);
+	const char* path, double frameId, double rzkey, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetKeyNonZeroColorNameD(
- const char* path, double frameId, double rzkey, double color);
+	const char* path, double frameId, double rzkey, double color);
 ```
 
 ---
@@ -8181,11 +8331,11 @@ is not black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyNonZeroColorRGB(
- int animationId, int frameId, int rzkey, int red, int green, int blue);
+	int animationId, int frameId, int rzkey, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyNonZeroColorRGB(
- int animationId, int frameId, int rzkey, int red, int green, int blue);
+	int animationId, int frameId, int rzkey, int red, int green, int blue);
 ```
 
 ---
@@ -8198,11 +8348,11 @@ is not black. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyNonZeroColorRGBName(
- const char* path, int frameId, int rzkey, int red, int green, int blue);
+	const char* path, int frameId, int rzkey, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyNonZeroColorRGBName(
- const char* path, int frameId, int rzkey, int red, int green, int blue);
+	const char* path, int frameId, int rzkey, int red, int green, int blue);
 ```
 
 ---
@@ -8214,13 +8364,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyNonZeroColorRGBNameD(
- const char* path, double frameId, double rzkey, double red, double green,
- double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetKeyNonZeroColorRGBNameD(
- const char* path, double frameId, double rzkey, double red, double green,
- double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 ```
 
 ---
@@ -8232,11 +8382,11 @@ Set animation key by row and column to a static color for the given frame.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyRowColumnColorName(
- const char* path, int frameId, int row, int column, int color);
+	const char* path, int frameId, int row, int column, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyRowColumnColorName(
- const char* path, int frameId, int row, int column, int color);
+	const char* path, int frameId, int row, int column, int color);
 ```
 
 ---
@@ -8249,11 +8399,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysColor(
- int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysColor(
- int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8266,11 +8416,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysColorAllFrames(
- int animationId, const int* rzkeys, int keyCount, int color);
+	int animationId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysColorAllFrames(
- int animationId, const int* rzkeys, int keyCount, int color);
+	int animationId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8283,11 +8433,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysColorAllFramesName(
- const char* path, const int* rzkeys, int keyCount, int color);
+	const char* path, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysColorAllFramesName(
- const char* path, const int* rzkeys, int keyCount, int color);
+	const char* path, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8300,11 +8450,11 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysColorAllFramesRGB(
- int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysColorAllFramesRGB(
- int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
 ```
 
 ---
@@ -8317,11 +8467,11 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysColorAllFramesRGBName(
- const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
+	const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysColorAllFramesRGBName(
- const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
+	const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 ```
 
 ---
@@ -8333,11 +8483,11 @@ Set an array of animation keys to a static color for the given frame.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysColorName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysColorName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8350,13 +8500,13 @@ is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysColorRGB(
- int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
- int blue);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
+	int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysColorRGB(
- int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
- int blue);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
+	int blue);
 ```
 
 ---
@@ -8369,13 +8519,13 @@ is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysColorRGBName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int red,
- int green, int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysColorRGBName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int red,
- int green, int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 ```
 
 ---
@@ -8388,11 +8538,11 @@ the existing color is not already black.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysNonZeroColor(
- int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysNonZeroColor(
- int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8405,11 +8555,11 @@ the color is not black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysNonZeroColorAllFrames(
- int animationId, const int* rzkeys, int keyCount, int color);
+	int animationId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysNonZeroColorAllFrames(
- int animationId, const int* rzkeys, int keyCount, int color);
+	int animationId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8422,11 +8572,11 @@ color is not already black. Reference animation by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysNonZeroColorAllFramesName(
- const char* path, const int* rzkeys, int keyCount, int color);
+	const char* path, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysNonZeroColorAllFramesName(
- const char* path, const int* rzkeys, int keyCount, int color);
+	const char* path, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8439,11 +8589,11 @@ the existing color is not already black. Reference animation by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysNonZeroColorName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysNonZeroColorName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8456,13 +8606,13 @@ the color is not black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysNonZeroColorRGB(
- int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
- int blue);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
+	int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysNonZeroColorRGB(
- int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
- int blue);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
+	int blue);
 ```
 
 ---
@@ -8475,13 +8625,13 @@ the color is not black. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysNonZeroColorRGBName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int red,
- int green, int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysNonZeroColorRGBName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int red,
- int green, int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 ```
 
 ---
@@ -8494,11 +8644,11 @@ the color is black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysZeroColor(
- int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysZeroColor(
- int animationId, int frameId, const int* rzkeys, int keyCount, int color);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8511,11 +8661,11 @@ color is black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysZeroColorAllFrames(
- int animationId, const int* rzkeys, int keyCount, int color);
+	int animationId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysZeroColorAllFrames(
- int animationId, const int* rzkeys, int keyCount, int color);
+	int animationId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8528,11 +8678,11 @@ color is black. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysZeroColorAllFramesName(
- const char* path, const int* rzkeys, int keyCount, int color);
+	const char* path, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysZeroColorAllFramesName(
- const char* path, const int* rzkeys, int keyCount, int color);
+	const char* path, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8545,11 +8695,11 @@ color is black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysZeroColorAllFramesRGB(
- int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysZeroColorAllFramesRGB(
- int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
+	int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
 ```
 
 ---
@@ -8562,11 +8712,11 @@ color is black. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysZeroColorAllFramesRGBName(
- const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
+	const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysZeroColorAllFramesRGBName(
- const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
+	const char* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 ```
 
 ---
@@ -8579,11 +8729,11 @@ the color is black. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysZeroColorName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysZeroColorName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int color);
 ```
 
 ---
@@ -8596,13 +8746,13 @@ the color is black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysZeroColorRGB(
- int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
- int blue);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
+	int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysZeroColorRGB(
- int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
- int blue);
+	int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green,
+	int blue);
 ```
 
 ---
@@ -8615,13 +8765,13 @@ the color is black. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeysZeroColorRGBName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int red,
- int green, int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeysZeroColorRGBName(
- const char* path, int frameId, const int* rzkeys, int keyCount, int red,
- int green, int blue);
+	const char* path, int frameId, const int* rzkeys, int keyCount, int red,
+	int green, int blue);
 ```
 
 ---
@@ -8634,11 +8784,11 @@ is black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyZeroColor(
- int animationId, int frameId, int rzkey, int color);
+	int animationId, int frameId, int rzkey, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyZeroColor(
- int animationId, int frameId, int rzkey, int color);
+	int animationId, int frameId, int rzkey, int color);
 ```
 
 ---
@@ -8651,11 +8801,11 @@ is black. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyZeroColorName(
- const char* path, int frameId, int rzkey, int color);
+	const char* path, int frameId, int rzkey, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyZeroColorName(
- const char* path, int frameId, int rzkey, int color);
+	const char* path, int frameId, int rzkey, int color);
 ```
 
 ---
@@ -8667,11 +8817,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyZeroColorNameD(
- const char* path, double frameId, double rzkey, double color);
+	const char* path, double frameId, double rzkey, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetKeyZeroColorNameD(
- const char* path, double frameId, double rzkey, double color);
+	const char* path, double frameId, double rzkey, double color);
 ```
 
 ---
@@ -8684,11 +8834,11 @@ is black. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyZeroColorRGB(
- int animationId, int frameId, int rzkey, int red, int green, int blue);
+	int animationId, int frameId, int rzkey, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyZeroColorRGB(
- int animationId, int frameId, int rzkey, int red, int green, int blue);
+	int animationId, int frameId, int rzkey, int red, int green, int blue);
 ```
 
 ---
@@ -8701,11 +8851,11 @@ is black. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetKeyZeroColorRGBName(
- const char* path, int frameId, int rzkey, int red, int green, int blue);
+	const char* path, int frameId, int rzkey, int red, int green, int blue);
 
 // Class Plugin
 ChromaAnimationAPI::SetKeyZeroColorRGBName(
- const char* path, int frameId, int rzkey, int red, int green, int blue);
+	const char* path, int frameId, int rzkey, int red, int green, int blue);
 ```
 
 ---
@@ -8717,13 +8867,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSetKeyZeroColorRGBNameD(
- const char* path, double frameId, double rzkey, double red, double green,
- double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SetKeyZeroColorRGBNameD(
- const char* path, double frameId, double rzkey, double red, double green,
- double blue);
+	const char* path, double frameId, double rzkey, double red, double green,
+	double blue);
 ```
 
 ---
@@ -8751,11 +8901,11 @@ Sets the target device to the static color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSetStaticColor(
- int deviceType, int device, int color);
+	int deviceType, int device, int color);
 
 // Class Plugin
 ChromaAnimationAPI::SetStaticColor(
- int deviceType, int device, int color);
+	int deviceType, int device, int color);
 ```
 
 ---
@@ -8781,11 +8931,11 @@ Sets the target device to the static color.
 ```C++
 // DLL Interface
 EXPORT_API void PluginStaticColor(
- int deviceType, int device, int color);
+	int deviceType, int device, int color);
 
 // Class Plugin
 ChromaAnimationAPI::StaticColor(
- int deviceType, int device, int color);
+	int deviceType, int device, int color);
 ```
 
 ---
@@ -8811,11 +8961,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginStaticColorD(
- double deviceType, double device, double color);
+	double deviceType, double device, double color);
 
 // Class Plugin
 double result = ChromaAnimationAPI::StaticColorD(
- double deviceType, double device, double color);
+	double deviceType, double device, double color);
 ```
 
 ---
@@ -8902,11 +9052,11 @@ it will be stopped.
 ```C++
 // DLL Interface
 EXPORT_API void PluginStopAnimationType(
- int deviceType, int device);
+	int deviceType, int device);
 
 // Class Plugin
 ChromaAnimationAPI::StopAnimationType(
- int deviceType, int device);
+	int deviceType, int device);
 ```
 
 ---
@@ -8918,11 +9068,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginStopAnimationTypeD(
- double deviceType, double device);
+	double deviceType, double device);
 
 // Class Plugin
 double result = ChromaAnimationAPI::StopAnimationTypeD(
- double deviceType, double device);
+	double deviceType, double device);
 ```
 
 ---
@@ -8964,11 +9114,28 @@ Return color1 - color2
 ```C++
 // DLL Interface
 EXPORT_API int PluginSubtractColor(
- const int color1, const int color2);
+	const int color1, const int color2);
 
 // Class Plugin
 int result = ChromaAnimationAPI::SubtractColor(
- const int color1, const int color2);
+	const int color1, const int color2);
+```
+
+---
+<a name="PluginSubtractNonZeroAllKeys"></a>
+**PluginSubtractNonZeroAllKeys**
+
+Subtract the source color from the target color for the frame where the
+target color is not black. Source and target are referenced by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginSubtractNonZeroAllKeys(
+	int sourceAnimationId, int targetAnimationId, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::SubtractNonZeroAllKeys(
+	int sourceAnimationId, int targetAnimationId, int frameId);
 ```
 
 ---
@@ -8981,11 +9148,11 @@ target color is not black. Source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -8998,11 +9165,11 @@ target color is not black. Source and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -9014,11 +9181,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -9032,11 +9199,11 @@ Source and target are referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 ```
 
 ---
@@ -9050,11 +9217,11 @@ Source and target are referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 ```
 
 ---
@@ -9066,11 +9233,28 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
+```
+
+---
+<a name="PluginSubtractNonZeroAllKeysName"></a>
+**PluginSubtractNonZeroAllKeysName**
+
+Subtract the source color from the target color for the frame where the
+target color is not black. Source and target are referenced by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginSubtractNonZeroAllKeysName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::SubtractNonZeroAllKeysName(
+	const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -9083,11 +9267,11 @@ source frame and target offset frame, reference source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 ```
 
 ---
@@ -9100,11 +9284,11 @@ source frame and target offset frame, reference source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 ```
 
 ---
@@ -9116,13 +9300,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractNonZeroAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 ---
@@ -9135,11 +9319,11 @@ not black for all frames. Reference source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFrames(
- int sourceAnimationId, int targetAnimationId);
+	int sourceAnimationId, int targetAnimationId);
 ```
 
 ---
@@ -9152,11 +9336,11 @@ not black for all frames. Reference source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesName(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -9168,11 +9352,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesNameD(
- const char* sourceAnimation, const char* targetAnimation);
+	const char* sourceAnimation, const char* targetAnimation);
 ```
 
 ---
@@ -9186,11 +9370,11 @@ the source. Reference source and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesOffset(
- int sourceAnimationId, int targetAnimationId, int offset);
+	int sourceAnimationId, int targetAnimationId, int offset);
 ```
 
 ---
@@ -9204,11 +9388,11 @@ the source. Reference source and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int offset);
 ```
 
 ---
@@ -9220,11 +9404,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroTargetAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double offset);
+	const char* sourceAnimation, const char* targetAnimation, double offset);
 ```
 
 ---
@@ -9238,11 +9422,11 @@ and target by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroTargetAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroTargetAllKeysOffset(
- int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 ```
 
 ---
@@ -9256,11 +9440,11 @@ and target by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractNonZeroTargetAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractNonZeroTargetAllKeysOffsetName(
- const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
 ```
 
 ---
@@ -9272,13 +9456,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractNonZeroTargetAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractNonZeroTargetAllKeysOffsetNameD(
- const char* sourceAnimation, const char* targetAnimation, double frameId,
- double offset);
+	const char* sourceAnimation, const char* targetAnimation, double frameId,
+	double offset);
 ```
 
 ---
@@ -9292,15 +9476,15 @@ is more than the max threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractThresholdColorsMinMaxAllFramesRGB(
- const int animationId, const int minThreshold, const int minRed, const int minGreen,
- const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen,
- const int maxBlue);
+	const int animationId, const int minThreshold, const int minRed, const int minGreen,
+	const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen,
+	const int maxBlue);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractThresholdColorsMinMaxAllFramesRGB(
- const int animationId, const int minThreshold, const int minRed, const int minGreen,
- const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen,
- const int maxBlue);
+	const int animationId, const int minThreshold, const int minRed, const int minGreen,
+	const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen,
+	const int maxBlue);
 ```
 
 ---
@@ -9314,15 +9498,15 @@ is more than the max threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractThresholdColorsMinMaxAllFramesRGBName(
- const char* path, const int minThreshold, const int minRed, const int minGreen,
- const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen,
- const int maxBlue);
+	const char* path, const int minThreshold, const int minRed, const int minGreen,
+	const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen,
+	const int maxBlue);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractThresholdColorsMinMaxAllFramesRGBName(
- const char* path, const int minThreshold, const int minRed, const int minGreen,
- const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen,
- const int maxBlue);
+	const char* path, const int minThreshold, const int minRed, const int minGreen,
+	const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen,
+	const int maxBlue);
 ```
 
 ---
@@ -9334,13 +9518,13 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractThresholdColorsMinMaxAllFramesRGBNameD(
- const char* path, double minThreshold, double minRed, double minGreen, double minBlue,
- double maxThreshold, double maxRed, double maxGreen, double maxBlue);
+	const char* path, double minThreshold, double minRed, double minGreen, double minBlue,
+	double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractThresholdColorsMinMaxAllFramesRGBNameD(
- const char* path, double minThreshold, double minRed, double minGreen, double minBlue,
- double maxThreshold, double maxRed, double maxGreen, double maxBlue);
+	const char* path, double minThreshold, double minRed, double minGreen, double minBlue,
+	double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 ```
 
 ---
@@ -9354,15 +9538,15 @@ animation is more than the max threshold. Animation is referenced by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractThresholdColorsMinMaxRGB(
- const int animationId, const int frameId, const int minThreshold, const int minRed,
- const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
- const int maxGreen, const int maxBlue);
+	const int animationId, const int frameId, const int minThreshold, const int minRed,
+	const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
+	const int maxGreen, const int maxBlue);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGB(
- const int animationId, const int frameId, const int minThreshold, const int minRed,
- const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
- const int maxGreen, const int maxBlue);
+	const int animationId, const int frameId, const int minThreshold, const int minRed,
+	const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
+	const int maxGreen, const int maxBlue);
 ```
 
 ---
@@ -9376,15 +9560,15 @@ animation is more than the max threshold. Animation is referenced by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginSubtractThresholdColorsMinMaxRGBName(
- const char* path, const int frameId, const int minThreshold, const int minRed,
- const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
- const int maxGreen, const int maxBlue);
+	const char* path, const int frameId, const int minThreshold, const int minRed,
+	const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
+	const int maxGreen, const int maxBlue);
 
 // Class Plugin
 ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGBName(
- const char* path, const int frameId, const int minThreshold, const int minRed,
- const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
- const int maxGreen, const int maxBlue);
+	const char* path, const int frameId, const int minThreshold, const int minRed,
+	const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
+	const int maxGreen, const int maxBlue);
 ```
 
 ---
@@ -9396,15 +9580,15 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginSubtractThresholdColorsMinMaxRGBNameD(
- const char* path, const int frameId, const int minThreshold, const int minRed,
- const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
- const int maxGreen, const int maxBlue);
+	const char* path, const int frameId, const int minThreshold, const int minRed,
+	const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
+	const int maxGreen, const int maxBlue);
 
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGBNameD(
- const char* path, const int frameId, const int minThreshold, const int minRed,
- const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
- const int maxGreen, const int maxBlue);
+	const char* path, const int frameId, const int minThreshold, const int minRed,
+	const int minGreen, const int minBlue, const int maxThreshold, const int maxRed,
+	const int maxGreen, const int maxBlue);
 ```
 
 ---
@@ -9412,17 +9596,16 @@ double result = ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGBNameD(
 **PluginTrimEndFrames**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
-
-* 1. Reference the animation by id.
++ 1. Reference the animation by id.
 
 ```C++
 // DLL Interface
 EXPORT_API void PluginTrimEndFrames(
- int animationId, int lastFrameId);
+	int animationId, int lastFrameId);
 
 // Class Plugin
 ChromaAnimationAPI::TrimEndFrames(
- int animationId, int lastFrameId);
+	int animationId, int lastFrameId);
 ```
 
 ---
@@ -9430,17 +9613,16 @@ ChromaAnimationAPI::TrimEndFrames(
 **PluginTrimEndFramesName**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
-
-* 1. Reference the animation by name.
++ 1. Reference the animation by name.
 
 ```C++
 // DLL Interface
 EXPORT_API void PluginTrimEndFramesName(
- const char* path, int lastFrameId);
+	const char* path, int lastFrameId);
 
 // Class Plugin
 ChromaAnimationAPI::TrimEndFramesName(
- const char* path, int lastFrameId);
+	const char* path, int lastFrameId);
 ```
 
 ---
@@ -9452,11 +9634,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginTrimEndFramesNameD(
- const char* path, double lastFrameId);
+	const char* path, double lastFrameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::TrimEndFramesNameD(
- const char* path, double lastFrameId);
+	const char* path, double lastFrameId);
 ```
 
 ---
@@ -9468,11 +9650,11 @@ Remove the frame from the animation. Reference animation by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginTrimFrame(
- int animationId, int frameId);
+	int animationId, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::TrimFrame(
- int animationId, int frameId);
+	int animationId, int frameId);
 ```
 
 ---
@@ -9484,11 +9666,11 @@ Remove the frame from the animation. Reference animation by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginTrimFrameName(
- const char* path, int frameId);
+	const char* path, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::TrimFrameName(
- const char* path, int frameId);
+	const char* path, int frameId);
 ```
 
 ---
@@ -9500,11 +9682,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginTrimFrameNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::TrimFrameNameD(
- const char* path, double frameId);
+	const char* path, double frameId);
 ```
 
 ---
@@ -9517,11 +9699,11 @@ Reference the animation by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginTrimStartFrames(
- int animationId, int numberOfFrames);
+	int animationId, int numberOfFrames);
 
 // Class Plugin
 ChromaAnimationAPI::TrimStartFrames(
- int animationId, int numberOfFrames);
+	int animationId, int numberOfFrames);
 ```
 
 ---
@@ -9534,11 +9716,11 @@ Reference the animation by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginTrimStartFramesName(
- const char* path, int numberOfFrames);
+	const char* path, int numberOfFrames);
 
 // Class Plugin
 ChromaAnimationAPI::TrimStartFramesName(
- const char* path, int numberOfFrames);
+	const char* path, int numberOfFrames);
 ```
 
 ---
@@ -9550,11 +9732,11 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginTrimStartFramesNameD(
- const char* path, double numberOfFrames);
+	const char* path, double numberOfFrames);
 
 // Class Plugin
 double result = ChromaAnimationAPI::TrimStartFramesNameD(
- const char* path, double numberOfFrames);
+	const char* path, double numberOfFrames);
 ```
 
 ---
@@ -9680,18 +9862,17 @@ Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
 for the `deviceType/device`. The `length` parameter is the size of the
 `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
 LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-
 * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
 failure.
 
 ```C++
 // DLL Interface
 EXPORT_API int PluginUpdateFrame(
- int animationId, int frameIndex, float duration, int* colors, int length);
+	int animationId, int frameIndex, float duration, int* colors, int length);
 
 // Class Plugin
 int result = ChromaAnimationAPI::UpdateFrame(
- int animationId, int frameIndex, float duration, int* colors, int length);
+	int animationId, int frameIndex, float duration, int* colors, int length);
 ```
 
 ---
@@ -9703,18 +9884,17 @@ Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
 for the `deviceType/device`. The `length` parameter is the size of the
 `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
 LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-
 * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
 failure.
 
 ```C++
 // DLL Interface
 EXPORT_API int PluginUpdateFrameName(
- const char* path, int frameIndex, float duration, int* colors, int length);
+	const char* path, int frameIndex, float duration, int* colors, int length);
 
 // Class Plugin
 int result = ChromaAnimationAPI::UpdateFrameName(
- const char* path, int frameIndex, float duration, int* colors, int length);
+	const char* path, int frameIndex, float duration, int* colors, int length);
 ```
 
 ---
@@ -9730,11 +9910,11 @@ the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 ```C++
 // DLL Interface
 EXPORT_API void PluginUseIdleAnimation(
- int device, bool flag);
+	int device, bool flag);
 
 // Class Plugin
 ChromaAnimationAPI::UseIdleAnimation(
- int device, bool flag);
+	int device, bool flag);
 ```
 
 ---
@@ -9761,11 +9941,11 @@ animation by id.
 ```C++
 // DLL Interface
 EXPORT_API void PluginUsePreloading(
- int animationId, bool flag);
+	int animationId, bool flag);
 
 // Class Plugin
 ChromaAnimationAPI::UsePreloading(
- int animationId, bool flag);
+	int animationId, bool flag);
 ```
 
 ---
@@ -9778,11 +9958,11 @@ animation by name.
 ```C++
 // DLL Interface
 EXPORT_API void PluginUsePreloadingName(
- const char* path, bool flag);
+	const char* path, bool flag);
 
 // Class Plugin
 ChromaAnimationAPI::UsePreloadingName(
- const char* path, bool flag);
+	const char* path, bool flag);
 ```
 
 <br/><br/>

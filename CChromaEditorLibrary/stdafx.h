@@ -79,6 +79,11 @@ extern "C"
 	*/
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
 	/*
+		Add source color to target where color is not black for frame id, reference
+		source and target by id.
+	*/
+	EXPORT_API void PluginAddNonZeroAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
+	/*
 		Add source color to target where color is not black for all frames, reference
 		source and target by id.
 	*/
@@ -108,6 +113,11 @@ extern "C"
 		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
+	/*
+		Add source color to target where color is not black for frame id, reference
+		source and target by name.
+	*/
+	EXPORT_API void PluginAddNonZeroAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
 	/*
 		Add source color to target where color is not black for the source frame
 		and target offset frame, reference source and target by id.
@@ -522,6 +532,11 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyRedChannelAllFramesNameD(const char* path, double greenIntensity, double blueIntensity);
 	/*
+		Copy zero colors from source animation to target animation for the frame.
+		Source and target are referenced by id.
+	*/
+	EXPORT_API void PluginCopyZeroAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
+	/*
 		Copy zero colors from source animation to target animation for all frames.
 		Source and target are referenced by id.
 	*/
@@ -552,6 +567,23 @@ extern "C"
 	*/
 	EXPORT_API double PluginCopyZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
 	/*
+		Copy zero colors from source animation to target animation for the frame.
+		Source and target are referenced by name.
+	*/
+	EXPORT_API void PluginCopyZeroAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
+	/*
+		Copy zero colors from source animation to target animation for the frame
+		id starting at the target offset for the length of the source animation.
+		Source and target are referenced by id.
+	*/
+	EXPORT_API void PluginCopyZeroAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+	/*
+		Copy zero colors from source animation to target animation for the frame
+		id starting at the target offset for the length of the source animation.
+		Source and target are referenced by name.
+	*/
+	EXPORT_API void PluginCopyZeroAllKeysOffsetName(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+	/*
 		Copy zero key color from source animation to target animation for the specified
 		frame. Source and target are referenced by id.
 	*/
@@ -567,6 +599,11 @@ extern "C"
 	EXPORT_API double PluginCopyZeroKeyColorNameD(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 	/*
 		Copy nonzero color from source animation to target animation where target
+		is zero for the frame. Source and target are referenced by id.
+	*/
+	EXPORT_API void PluginCopyZeroTargetAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
+	/*
+		Copy nonzero color from source animation to target animation where target
 		is zero for all frames. Source and target are referenced by id.
 	*/
 	EXPORT_API void PluginCopyZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
@@ -579,6 +616,11 @@ extern "C"
 		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginCopyZeroTargetAllKeysAllFramesNameD(const char* sourceAnimation, const char* targetAnimation);
+	/*
+		Copy nonzero color from source animation to target animation where target
+		is zero for the frame. Source and target are referenced by name.
+	*/
+	EXPORT_API void PluginCopyZeroTargetAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
 	/*
 		Direct access to low level API.
 	*/
@@ -647,7 +689,10 @@ extern "C"
 		If length is greater than zero, it will be the length of the returned streaming
 		auth code.  Once you have the shortcode, it should be shown to the user
 		so they can associate the stream with their Razer ID  StreamGetStatus()
-		should return the READY status before invoking this method.
+		should return the READY status before invoking this method. platform: is
+		the null terminated string that identifies the source of the stream: {
+		GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string
+		that identifies the application or game.
 	*/
 	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 	/*
@@ -667,9 +712,8 @@ extern "C"
 		is greater than zero, it will be the length of the returned streaming id.
 		Retrieve the stream id after authorizing the shortcode. The authorization
 		window will expire in 5 minutes. Be sure to save the stream key before
-		the window expires.  platform: is the null terminated string that identifies
-		the source of the stream: { GEFORCE_NOW, LUNA, STADIA, GAME_PASS }
-		StreamGetStatus() should return the READY status to use this method.
+		the window expires. StreamGetStatus() should return the READY status to
+		use this method.
 	*/
 	EXPORT_API void PluginCoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length);
 	/*
@@ -2472,6 +2516,11 @@ extern "C"
 	*/
 	EXPORT_API int PluginSubtractColor(const int color1, const int color2);
 	/*
+		Subtract the source color from the target color for the frame where the
+		target color is not black. Source and target are referenced by id.
+	*/
+	EXPORT_API void PluginSubtractNonZeroAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
+	/*
 		Subtract the source color from the target color for all frames where the
 		target color is not black. Source and target are referenced by id.
 	*/
@@ -2501,6 +2550,11 @@ extern "C"
 		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesOffsetNameD(const char* sourceAnimation, const char* targetAnimation, double offset);
+	/*
+		Subtract the source color from the target color for the frame where the
+		target color is not black. Source and target are referenced by name.
+	*/
+	EXPORT_API void PluginSubtractNonZeroAllKeysName(const char* sourceAnimation, const char* targetAnimation, int frameId);
 	/*
 		Subtract the source color from the target where color is not black for the
 		source frame and target offset frame, reference source and target by id.

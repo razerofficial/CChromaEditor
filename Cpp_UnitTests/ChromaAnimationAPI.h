@@ -23,6 +23,11 @@ typedef int			(*PLUGIN_ADD_COLOR)(const int color1, const int color2);
 */
 typedef int			(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int length);
 /*
+	Add source color to target where color is not black for frame id, reference 
+	source and target by id.
+*/
+typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
+/*
 	Add source color to target where color is not black for all frames, reference 
 	source and target by id.
 */
@@ -52,6 +57,11 @@ typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char*
 	D suffix for limited data types.
 */
 typedef double		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
+/*
+	Add source color to target where color is not black for frame id, reference 
+	source and target by name.
+*/
+typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId);
 /*
 	Add source color to target where color is not black for the source frame 
 	and target offset frame, reference source and target by id.
@@ -466,6 +476,11 @@ typedef void		(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME)(const char* path, float
 */
 typedef double		(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME_D)(const char* path, double greenIntensity, double blueIntensity);
 /*
+	Copy zero colors from source animation to target animation for the frame. 
+	Source and target are referenced by id.
+*/
+typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
+/*
 	Copy zero colors from source animation to target animation for all frames. 
 	Source and target are referenced by id.
 */
@@ -496,6 +511,23 @@ typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const char* so
 */
 typedef double		(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
 /*
+	Copy zero colors from source animation to target animation for the frame. 
+	Source and target are referenced by name.
+*/
+typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId);
+/*
+	Copy zero colors from source animation to target animation for the frame 
+	id starting at the target offset for the length of the source animation. 
+	Source and target are referenced by id.
+*/
+typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+/*
+	Copy zero colors from source animation to target animation for the frame 
+	id starting at the target offset for the length of the source animation. 
+	Source and target are referenced by name.
+*/
+typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+/*
 	Copy zero key color from source animation to target animation for the specified 
 	frame. Source and target are referenced by id.
 */
@@ -511,6 +543,11 @@ typedef void		(*PLUGIN_COPY_ZERO_KEY_COLOR_NAME)(const char* sourceAnimation, co
 typedef double		(*PLUGIN_COPY_ZERO_KEY_COLOR_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 /*
 	Copy nonzero color from source animation to target animation where target 
+	is zero for the frame. Source and target are referenced by id.
+*/
+typedef void		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
+/*
+	Copy nonzero color from source animation to target animation where target 
 	is zero for all frames. Source and target are referenced by id.
 */
 typedef void		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
@@ -523,6 +560,11 @@ typedef void		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const char* so
 	D suffix for limited data types.
 */
 typedef double		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const char* sourceAnimation, const char* targetAnimation);
+/*
+	Copy nonzero color from source animation to target animation where target 
+	is zero for the frame. Source and target are referenced by name.
+*/
+typedef void		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId);
 /*
 	Direct access to low level API.
 */
@@ -591,7 +633,10 @@ typedef bool		(*PLUGIN_CORE_STREAM_BROADCAST_END)();
 	If length is greater than zero, it will be the length of the returned streaming 
 	auth code.  Once you have the shortcode, it should be shown to the user 
 	so they can associate the stream with their Razer ID  StreamGetStatus() 
-	should return the READY status before invoking this method.
+	should return the READY status before invoking this method. platform: is 
+	the null terminated string that identifies the source of the stream: { 
+	GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string 
+	that identifies the application or game.
 */
 typedef void		(*PLUGIN_CORE_STREAM_GET_AUTH_SHORTCODE)(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 /*
@@ -611,9 +656,8 @@ typedef bool		(*PLUGIN_CORE_STREAM_GET_FOCUS)(char* focus, unsigned char* length
 	is greater than zero, it will be the length of the returned streaming id. 
 	Retrieve the stream id after authorizing the shortcode. The authorization 
 	window will expire in 5 minutes. Be sure to save the stream key before 
-	the window expires.  platform: is the null terminated string that identifies 
-	the source of the stream: { GEFORCE_NOW, LUNA, STADIA, GAME_PASS } 
-	StreamGetStatus() should return the READY status to use this method.
+	the window expires. StreamGetStatus() should return the READY status to 
+	use this method.
 */
 typedef void		(*PLUGIN_CORE_STREAM_GET_ID)(const char* shortcode, char* streamId, unsigned char* length);
 /*
@@ -2416,6 +2460,11 @@ typedef double		(*PLUGIN_STOP_COMPOSITE_D)(const char* name);
 */
 typedef int			(*PLUGIN_SUBTRACT_COLOR)(const int color1, const int color2);
 /*
+	Subtract the source color from the target color for the frame where the 
+	target color is not black. Source and target are referenced by id.
+*/
+typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
+/*
 	Subtract the source color from the target color for all frames where the 
 	target color is not black. Source and target are referenced by id.
 */
@@ -2445,6 +2494,11 @@ typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const 
 	D suffix for limited data types.
 */
 typedef double		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double offset);
+/*
+	Subtract the source color from the target color for the frame where the 
+	target color is not black. Source and target are referenced by name.
+*/
+typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId);
 /*
 	Subtract the source color from the target where color is not black for the 
 	source frame and target offset frame, reference source and target by id.
@@ -2683,6 +2737,11 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_FRAME, AddFrame);
 		/*
+			Add source color to target where color is not black for frame id, reference 
+			source and target by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS, AddNonZeroAllKeys);
+		/*
 			Add source color to target where color is not black for all frames, reference 
 			source and target by id.
 		*/
@@ -2712,6 +2771,11 @@ namespace ChromaSDK
 			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, AddNonZeroAllKeysAllFramesOffsetNameD);
+		/*
+			Add source color to target where color is not black for frame id, reference 
+			source and target by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_NAME, AddNonZeroAllKeysName);
 		/*
 			Add source color to target where color is not black for the source frame 
 			and target offset frame, reference source and target by id.
@@ -3126,6 +3190,11 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME_D, CopyRedChannelAllFramesNameD);
 		/*
+			Copy zero colors from source animation to target animation for the frame. 
+			Source and target are referenced by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS, CopyZeroAllKeys);
+		/*
 			Copy zero colors from source animation to target animation for all frames. 
 			Source and target are referenced by id.
 		*/
@@ -3156,6 +3225,23 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, CopyZeroAllKeysAllFramesOffsetNameD);
 		/*
+			Copy zero colors from source animation to target animation for the frame. 
+			Source and target are referenced by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_NAME, CopyZeroAllKeysName);
+		/*
+			Copy zero colors from source animation to target animation for the frame 
+			id starting at the target offset for the length of the source animation. 
+			Source and target are referenced by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_OFFSET, CopyZeroAllKeysOffset);
+		/*
+			Copy zero colors from source animation to target animation for the frame 
+			id starting at the target offset for the length of the source animation. 
+			Source and target are referenced by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_OFFSET_NAME, CopyZeroAllKeysOffsetName);
+		/*
 			Copy zero key color from source animation to target animation for the specified 
 			frame. Source and target are referenced by id.
 		*/
@@ -3171,6 +3257,11 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_KEY_COLOR_NAME_D, CopyZeroKeyColorNameD);
 		/*
 			Copy nonzero color from source animation to target animation where target 
+			is zero for the frame. Source and target are referenced by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS, CopyZeroTargetAllKeys);
+		/*
+			Copy nonzero color from source animation to target animation where target 
 			is zero for all frames. Source and target are referenced by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES, CopyZeroTargetAllKeysAllFrames);
@@ -3183,6 +3274,11 @@ namespace ChromaSDK
 			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, CopyZeroTargetAllKeysAllFramesNameD);
+		/*
+			Copy nonzero color from source animation to target animation where target 
+			is zero for the frame. Source and target are referenced by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_NAME, CopyZeroTargetAllKeysName);
 		/*
 			Direct access to low level API.
 		*/
@@ -3251,7 +3347,10 @@ namespace ChromaSDK
 			If length is greater than zero, it will be the length of the returned streaming 
 			auth code.  Once you have the shortcode, it should be shown to the user 
 			so they can associate the stream with their Razer ID  StreamGetStatus() 
-			should return the READY status before invoking this method.
+			should return the READY status before invoking this method. platform: is 
+			the null terminated string that identifies the source of the stream: { 
+			GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string 
+			that identifies the application or game.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_AUTH_SHORTCODE, CoreStreamGetAuthShortcode);
 		/*
@@ -3271,9 +3370,8 @@ namespace ChromaSDK
 			is greater than zero, it will be the length of the returned streaming id. 
 			Retrieve the stream id after authorizing the shortcode. The authorization 
 			window will expire in 5 minutes. Be sure to save the stream key before 
-			the window expires.  platform: is the null terminated string that identifies 
-			the source of the stream: { GEFORCE_NOW, LUNA, STADIA, GAME_PASS } 
-			StreamGetStatus() should return the READY status to use this method.
+			the window expires. StreamGetStatus() should return the READY status to 
+			use this method.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_ID, CoreStreamGetId);
 		/*
@@ -5076,6 +5174,11 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_COLOR, SubtractColor);
 		/*
+			Subtract the source color from the target color for the frame where the 
+			target color is not black. Source and target are referenced by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS, SubtractNonZeroAllKeys);
+		/*
 			Subtract the source color from the target color for all frames where the 
 			target color is not black. Source and target are referenced by id.
 		*/
@@ -5105,6 +5208,11 @@ namespace ChromaSDK
 			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, SubtractNonZeroAllKeysAllFramesOffsetNameD);
+		/*
+			Subtract the source color from the target color for the frame where the 
+			target color is not black. Source and target are referenced by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_NAME, SubtractNonZeroAllKeysName);
 		/*
 			Subtract the source color from the target where color is not black for the 
 			source frame and target offset frame, reference source and target by id.
