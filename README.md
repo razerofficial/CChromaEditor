@@ -923,12 +923,12 @@ int result = ChromaAnimationAPI::AddColor(
 <a name="PluginAddFrame"></a>
 **PluginAddFrame**
 
-Adds a frame to the `Chroma` animation and sets the `duration` (in seconds).
-The `color` is expected to be an array of the dimensions for the `deviceType/device`.
-The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum`
-the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array
-size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon
-success. Returns -1 upon failure.
+Adds a frame to the `Chroma` animation and sets the `duration` (in seconds). 
+The `color` is expected to be an array of the dimensions for the `deviceType/device`. 
+The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` 
+the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array 
+size should be `MAX ROW` times `MAX COLUMN`. Returns the animation id upon 
+success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -944,7 +944,7 @@ int result = ChromaAnimationAPI::AddFrame(
 <a name="PluginAddNonZeroAllKeys"></a>
 **PluginAddNonZeroAllKeys**
 
-Add source color to target where color is not black for frame id, reference
+Add source color to target where color is not black for frame id, reference 
 source and target by id.
 
 ```C++
@@ -961,7 +961,7 @@ ChromaAnimationAPI::AddNonZeroAllKeys(
 <a name="PluginAddNonZeroAllKeysAllFrames"></a>
 **PluginAddNonZeroAllKeysAllFrames**
 
-Add source color to target where color is not black for all frames, reference
+Add source color to target where color is not black for all frames, reference 
 source and target by id.
 
 ```C++
@@ -978,7 +978,7 @@ ChromaAnimationAPI::AddNonZeroAllKeysAllFrames(
 <a name="PluginAddNonZeroAllKeysAllFramesName"></a>
 **PluginAddNonZeroAllKeysAllFramesName**
 
-Add source color to target where color is not black for all frames, reference
+Add source color to target where color is not black for all frames, reference 
 source and target by name.
 
 ```C++
@@ -1011,8 +1011,8 @@ double result = ChromaAnimationAPI::AddNonZeroAllKeysAllFramesNameD(
 <a name="PluginAddNonZeroAllKeysAllFramesOffset"></a>
 **PluginAddNonZeroAllKeysAllFramesOffset**
 
-Add source color to target where color is not black for all frames starting
-at offset for the length of the source, reference source and target by
+Add source color to target where color is not black for all frames starting 
+at offset for the length of the source, reference source and target by 
 id.
 
 ```C++
@@ -1029,8 +1029,8 @@ ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffset(
 <a name="PluginAddNonZeroAllKeysAllFramesOffsetName"></a>
 **PluginAddNonZeroAllKeysAllFramesOffsetName**
 
-Add source color to target where color is not black for all frames starting
-at offset for the length of the source, reference source and target by
+Add source color to target where color is not black for all frames starting 
+at offset for the length of the source, reference source and target by 
 name.
 
 ```C++
@@ -1063,7 +1063,7 @@ double result = ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffsetNameD(
 <a name="PluginAddNonZeroAllKeysName"></a>
 **PluginAddNonZeroAllKeysName**
 
-Add source color to target where color is not black for frame id, reference
+Add source color to target where color is not black for frame id, reference 
 source and target by name.
 
 ```C++
@@ -1080,7 +1080,7 @@ ChromaAnimationAPI::AddNonZeroAllKeysName(
 <a name="PluginAddNonZeroAllKeysOffset"></a>
 **PluginAddNonZeroAllKeysOffset**
 
-Add source color to target where color is not black for the source frame
+Add source color to target where color is not black for the source frame 
 and target offset frame, reference source and target by id.
 
 ```C++
@@ -1097,7 +1097,7 @@ ChromaAnimationAPI::AddNonZeroAllKeysOffset(
 <a name="PluginAddNonZeroAllKeysOffsetName"></a>
 **PluginAddNonZeroAllKeysOffsetName**
 
-Add source color to target where color is not black for the source frame
+Add source color to target where color is not black for the source frame 
 and target offset frame, reference source and target by name.
 
 ```C++
@@ -1132,7 +1132,7 @@ double result = ChromaAnimationAPI::AddNonZeroAllKeysOffsetNameD(
 <a name="PluginAddNonZeroTargetAllKeysAllFrames"></a>
 **PluginAddNonZeroTargetAllKeysAllFrames**
 
-Add source color to target where the target color is not black for all frames,
+Add source color to target where the target color is not black for all frames, 
 reference source and target by id.
 
 ```C++
@@ -1149,7 +1149,7 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFrames(
 <a name="PluginAddNonZeroTargetAllKeysAllFramesName"></a>
 **PluginAddNonZeroTargetAllKeysAllFramesName**
 
-Add source color to target where the target color is not black for all frames,
+Add source color to target where the target color is not black for all frames, 
 reference source and target by name.
 
 ```C++
@@ -1182,8 +1182,8 @@ double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesNameD(
 <a name="PluginAddNonZeroTargetAllKeysAllFramesOffset"></a>
 **PluginAddNonZeroTargetAllKeysAllFramesOffset**
 
-Add source color to target where the target color is not black for all frames
-starting at offset for the length of the source, reference source and target
+Add source color to target where the target color is not black for all frames 
+starting at offset for the length of the source, reference source and target 
 by id.
 
 ```C++
@@ -1200,8 +1200,8 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesOffset(
 <a name="PluginAddNonZeroTargetAllKeysAllFramesOffsetName"></a>
 **PluginAddNonZeroTargetAllKeysAllFramesOffsetName**
 
-Add source color to target where the target color is not black for all frames
-starting at offset for the length of the source, reference source and target
+Add source color to target where the target color is not black for all frames 
+starting at offset for the length of the source, reference source and target 
 by name.
 
 ```C++
@@ -1234,7 +1234,7 @@ double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysAllFramesOffsetNameD(
 <a name="PluginAddNonZeroTargetAllKeysOffset"></a>
 **PluginAddNonZeroTargetAllKeysOffset**
 
-Add source color to target where target color is not blank from the source
+Add source color to target where target color is not blank from the source 
 frame to the target offset frame, reference source and target by id.
 
 ```C++
@@ -1251,7 +1251,7 @@ ChromaAnimationAPI::AddNonZeroTargetAllKeysOffset(
 <a name="PluginAddNonZeroTargetAllKeysOffsetName"></a>
 **PluginAddNonZeroTargetAllKeysOffsetName**
 
-Add source color to target where target color is not blank from the source
+Add source color to target where target color is not blank from the source 
 frame to the target offset frame, reference source and target by name.
 
 ```C++
@@ -1286,7 +1286,7 @@ double result = ChromaAnimationAPI::AddNonZeroTargetAllKeysOffsetNameD(
 <a name="PluginAppendAllFrames"></a>
 **PluginAppendAllFrames**
 
-Append all source frames to the target animation, reference source and target
+Append all source frames to the target animation, reference source and target 
 by id.
 
 ```C++
@@ -1303,7 +1303,7 @@ ChromaAnimationAPI::AppendAllFrames(
 <a name="PluginAppendAllFramesName"></a>
 **PluginAppendAllFramesName**
 
-Append all source frames to the target animation, reference source and target
+Append all source frames to the target animation, reference source and target 
 by name.
 
 ```C++
@@ -1366,7 +1366,7 @@ ChromaAnimationAPI::ClearAnimationType(
 <a name="PluginCloseAll"></a>
 **PluginCloseAll**
 
-`PluginCloseAll` closes all open animations so they can be reloaded from
+`PluginCloseAll` closes all open animations so they can be reloaded from 
 disk. The set of animations will be stopped if playing.
 
 ```C++
@@ -1381,10 +1381,10 @@ ChromaAnimationAPI::CloseAll();
 <a name="PluginCloseAnimation"></a>
 **PluginCloseAnimation**
 
-Closes the `Chroma` animation to free up resources referenced by id. Returns
-the animation id upon success. Returns -1 upon failure. This might be used
-while authoring effects if there was a change necessitating re-opening
-the animation. The animation id can no longer be used once closed.
+Closes the `Chroma` animation to free up resources referenced by id. Returns 
+the animation id upon success. Returns negative one upon failure. This 
+might be used while authoring effects if there was a change necessitating 
+re-opening the animation. The animation id can no longer be used once closed.
 
 ```C++
 // DLL Interface
@@ -1412,7 +1412,7 @@ double result = ChromaAnimationAPI::CloseAnimationD(double animationId);
 <a name="PluginCloseAnimationName"></a>
 **PluginCloseAnimationName**
 
-Closes the `Chroma` animation referenced by name so that the animation can
+Closes the `Chroma` animation referenced by name so that the animation can 
 be reloaded from disk.
 
 ```C++
@@ -1441,7 +1441,7 @@ double result = ChromaAnimationAPI::CloseAnimationNameD(const char* path);
 <a name="PluginCloseComposite"></a>
 **PluginCloseComposite**
 
-`PluginCloseComposite` closes a set of animations so they can be reloaded
+`PluginCloseComposite` closes a set of animations so they can be reloaded 
 from disk. The set of animations will be stopped if playing.
 
 ```C++
@@ -1470,7 +1470,7 @@ double result = ChromaAnimationAPI::CloseCompositeD(const char* name);
 <a name="PluginCopyAllKeys"></a>
 **PluginCopyAllKeys**
 
-Copy source animation to target animation for the given frame. Source and
+Copy source animation to target animation for the given frame. Source and 
 target are referenced by id.
 
 ```C++
@@ -1487,7 +1487,7 @@ ChromaAnimationAPI::CopyAllKeys(
 <a name="PluginCopyAllKeysName"></a>
 **PluginCopyAllKeysName**
 
-Copy source animation to target animation for the given frame. Source and
+Copy source animation to target animation for the given frame. Source and 
 target are referenced by id.
 
 ```C++
@@ -1504,7 +1504,7 @@ ChromaAnimationAPI::CopyAllKeysName(
 <a name="PluginCopyAnimation"></a>
 **PluginCopyAnimation**
 
-Copy animation to named target animation in memory. If target animation
+Copy animation to named target animation in memory. If target animation 
 exists, close first. Source is referenced by id.
 
 ```C++
@@ -1521,7 +1521,7 @@ int result = ChromaAnimationAPI::CopyAnimation(
 <a name="PluginCopyAnimationName"></a>
 **PluginCopyAnimationName**
 
-Copy animation to named target animation in memory. If target animation
+Copy animation to named target animation in memory. If target animation 
 exists, close first. Source is referenced by name.
 
 ```C++
@@ -1554,7 +1554,7 @@ double result = ChromaAnimationAPI::CopyAnimationNameD(
 <a name="PluginCopyBlueChannelAllFrames"></a>
 **PluginCopyBlueChannelAllFrames**
 
-Copy blue channel to other channels for all frames. Intensity range is 0.0
+Copy blue channel to other channels for all frames. Intensity range is 0.0 
 to 1.0. Reference the animation by id.
 
 ```C++
@@ -1571,7 +1571,7 @@ ChromaAnimationAPI::CopyBlueChannelAllFrames(
 <a name="PluginCopyBlueChannelAllFramesName"></a>
 **PluginCopyBlueChannelAllFramesName**
 
-Copy blue channel to other channels for all frames. Intensity range is 0.0
+Copy blue channel to other channels for all frames. Intensity range is 0.0 
 to 1.0. Reference the animation by name.
 
 ```C++
@@ -1604,7 +1604,7 @@ double result = ChromaAnimationAPI::CopyBlueChannelAllFramesNameD(
 <a name="PluginCopyGreenChannelAllFrames"></a>
 **PluginCopyGreenChannelAllFrames**
 
-Copy green channel to other channels for all frames. Intensity range is
+Copy green channel to other channels for all frames. Intensity range is 
 0.0 to 1.0. Reference the animation by id.
 
 ```C++
@@ -1621,7 +1621,7 @@ ChromaAnimationAPI::CopyGreenChannelAllFrames(
 <a name="PluginCopyGreenChannelAllFramesName"></a>
 **PluginCopyGreenChannelAllFramesName**
 
-Copy green channel to other channels for all frames. Intensity range is
+Copy green channel to other channels for all frames. Intensity range is 
 0.0 to 1.0. Reference the animation by name.
 
 ```C++
@@ -1654,7 +1654,7 @@ double result = ChromaAnimationAPI::CopyGreenChannelAllFramesNameD(
 <a name="PluginCopyKeyColor"></a>
 **PluginCopyKeyColor**
 
-Copy animation key color from the source animation to the target animation
+Copy animation key color from the source animation to the target animation 
 for the given frame. Reference the source and target by id.
 
 ```C++
@@ -1671,7 +1671,7 @@ ChromaAnimationAPI::CopyKeyColor(
 <a name="PluginCopyKeyColorAllFrames"></a>
 **PluginCopyKeyColorAllFrames**
 
-Copy animation key color from the source animation to the target animation
+Copy animation key color from the source animation to the target animation 
 for all frames. Reference the source and target by id.
 
 ```C++
@@ -1688,7 +1688,7 @@ ChromaAnimationAPI::CopyKeyColorAllFrames(
 <a name="PluginCopyKeyColorAllFramesName"></a>
 **PluginCopyKeyColorAllFramesName**
 
-Copy animation key color from the source animation to the target animation
+Copy animation key color from the source animation to the target animation 
 for all frames. Reference the source and target by name.
 
 ```C++
@@ -1721,8 +1721,8 @@ double result = ChromaAnimationAPI::CopyKeyColorAllFramesNameD(
 <a name="PluginCopyKeyColorAllFramesOffset"></a>
 **PluginCopyKeyColorAllFramesOffset**
 
-Copy animation key color from the source animation to the target animation
-for all frames, starting at the offset for the length of the source animation.
+Copy animation key color from the source animation to the target animation 
+for all frames, starting at the offset for the length of the source animation. 
 Source and target are referenced by id.
 
 ```C++
@@ -1739,8 +1739,8 @@ ChromaAnimationAPI::CopyKeyColorAllFramesOffset(
 <a name="PluginCopyKeyColorAllFramesOffsetName"></a>
 **PluginCopyKeyColorAllFramesOffsetName**
 
-Copy animation key color from the source animation to the target animation
-for all frames, starting at the offset for the length of the source animation.
+Copy animation key color from the source animation to the target animation 
+for all frames, starting at the offset for the length of the source animation. 
 Source and target are referenced by name.
 
 ```C++
@@ -1773,7 +1773,7 @@ double result = ChromaAnimationAPI::CopyKeyColorAllFramesOffsetNameD(
 <a name="PluginCopyKeyColorName"></a>
 **PluginCopyKeyColorName**
 
-Copy animation key color from the source animation to the target animation
+Copy animation key color from the source animation to the target animation 
 for the given frame.
 
 ```C++
@@ -1808,8 +1808,8 @@ double result = ChromaAnimationAPI::CopyKeyColorNameD(
 <a name="PluginCopyKeysColor"></a>
 **PluginCopyKeysColor**
 
-Copy animation color for a set of keys from the source animation to the
-target animation for the given frame. Reference the source and target by
+Copy animation color for a set of keys from the source animation to the 
+target animation for the given frame. Reference the source and target by 
 id.
 
 ```C++
@@ -1828,7 +1828,7 @@ ChromaAnimationAPI::CopyKeysColor(
 <a name="PluginCopyKeysColorAllFrames"></a>
 **PluginCopyKeysColorAllFrames**
 
-Copy animation color for a set of keys from the source animation to the
+Copy animation color for a set of keys from the source animation to the 
 target animation for all frames. Reference the source and target by id.
 
 ```C++
@@ -1845,7 +1845,7 @@ ChromaAnimationAPI::CopyKeysColorAllFrames(
 <a name="PluginCopyKeysColorAllFramesName"></a>
 **PluginCopyKeysColorAllFramesName**
 
-Copy animation color for a set of keys from the source animation to the
+Copy animation color for a set of keys from the source animation to the 
 target animation for all frames. Reference the source and target by name.
 
 ```C++
@@ -1864,8 +1864,8 @@ ChromaAnimationAPI::CopyKeysColorAllFramesName(
 <a name="PluginCopyKeysColorName"></a>
 **PluginCopyKeysColorName**
 
-Copy animation color for a set of keys from the source animation to the
-target animation for the given frame. Reference the source and target by
+Copy animation color for a set of keys from the source animation to the 
+target animation for the given frame. Reference the source and target by 
 name.
 
 ```C++
@@ -1884,8 +1884,8 @@ ChromaAnimationAPI::CopyKeysColorName(
 <a name="PluginCopyKeysColorOffset"></a>
 **PluginCopyKeysColorOffset**
 
-Copy animation color for a set of keys from the source animation to the
-target animation from the source frame to the target frame. Reference the
+Copy animation color for a set of keys from the source animation to the 
+target animation from the source frame to the target frame. Reference the 
 source and target by id.
 
 ```C++
@@ -1904,8 +1904,8 @@ ChromaAnimationAPI::CopyKeysColorOffset(
 <a name="PluginCopyKeysColorOffsetName"></a>
 **PluginCopyKeysColorOffsetName**
 
-Copy animation color for a set of keys from the source animation to the
-target animation from the source frame to the target frame. Reference the
+Copy animation color for a set of keys from the source animation to the 
+target animation from the source frame to the target frame. Reference the 
 source and target by name.
 
 ```C++
@@ -1924,7 +1924,7 @@ ChromaAnimationAPI::CopyKeysColorOffsetName(
 <a name="PluginCopyNonZeroAllKeys"></a>
 **PluginCopyNonZeroAllKeys**
 
-Copy source animation to target animation for the given frame. Source and
+Copy source animation to target animation for the given frame. Source and 
 target are referenced by id.
 
 ```C++
@@ -1941,7 +1941,7 @@ ChromaAnimationAPI::CopyNonZeroAllKeys(
 <a name="PluginCopyNonZeroAllKeysAllFrames"></a>
 **PluginCopyNonZeroAllKeysAllFrames**
 
-Copy nonzero colors from a source animation to a target animation for all
+Copy nonzero colors from a source animation to a target animation for all 
 frames. Reference source and target by id.
 
 ```C++
@@ -1958,7 +1958,7 @@ ChromaAnimationAPI::CopyNonZeroAllKeysAllFrames(
 <a name="PluginCopyNonZeroAllKeysAllFramesName"></a>
 **PluginCopyNonZeroAllKeysAllFramesName**
 
-Copy nonzero colors from a source animation to a target animation for all
+Copy nonzero colors from a source animation to a target animation for all 
 frames. Reference source and target by name.
 
 ```C++
@@ -1991,8 +1991,8 @@ double result = ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesNameD(
 <a name="PluginCopyNonZeroAllKeysAllFramesOffset"></a>
 **PluginCopyNonZeroAllKeysAllFramesOffset**
 
-Copy nonzero colors from a source animation to a target animation for all
-frames starting at the offset for the length of the source animation. The
+Copy nonzero colors from a source animation to a target animation for all 
+frames starting at the offset for the length of the source animation. The 
 source and target are referenced by id.
 
 ```C++
@@ -2009,8 +2009,8 @@ ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesOffset(
 <a name="PluginCopyNonZeroAllKeysAllFramesOffsetName"></a>
 **PluginCopyNonZeroAllKeysAllFramesOffsetName**
 
-Copy nonzero colors from a source animation to a target animation for all
-frames starting at the offset for the length of the source animation. The
+Copy nonzero colors from a source animation to a target animation for all 
+frames starting at the offset for the length of the source animation. The 
 source and target are referenced by name.
 
 ```C++
@@ -2043,7 +2043,7 @@ double result = ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesOffsetNameD(
 <a name="PluginCopyNonZeroAllKeysName"></a>
 **PluginCopyNonZeroAllKeysName**
 
-Copy nonzero colors from source animation to target animation for the specified
+Copy nonzero colors from source animation to target animation for the specified 
 frame. Source and target are referenced by id.
 
 ```C++
@@ -2076,8 +2076,8 @@ double result = ChromaAnimationAPI::CopyNonZeroAllKeysNameD(
 <a name="PluginCopyNonZeroAllKeysOffset"></a>
 **PluginCopyNonZeroAllKeysOffset**
 
-Copy nonzero colors from the source animation to the target animation from
-the source frame to the target offset frame. Source and target are referenced
+Copy nonzero colors from the source animation to the target animation from 
+the source frame to the target offset frame. Source and target are referenced 
 by id.
 
 ```C++
@@ -2094,8 +2094,8 @@ ChromaAnimationAPI::CopyNonZeroAllKeysOffset(
 <a name="PluginCopyNonZeroAllKeysOffsetName"></a>
 **PluginCopyNonZeroAllKeysOffsetName**
 
-Copy nonzero colors from the source animation to the target animation from
-the source frame to the target offset frame. Source and target are referenced
+Copy nonzero colors from the source animation to the target animation from 
+the source frame to the target offset frame. Source and target are referenced 
 by name.
 
 ```C++
@@ -2130,7 +2130,7 @@ double result = ChromaAnimationAPI::CopyNonZeroAllKeysOffsetNameD(
 <a name="PluginCopyNonZeroKeyColor"></a>
 **PluginCopyNonZeroKeyColor**
 
-Copy animation key color from the source animation to the target animation
+Copy animation key color from the source animation to the target animation 
 for the given frame where color is not zero.
 
 ```C++
@@ -2147,7 +2147,7 @@ ChromaAnimationAPI::CopyNonZeroKeyColor(
 <a name="PluginCopyNonZeroKeyColorName"></a>
 **PluginCopyNonZeroKeyColorName**
 
-Copy animation key color from the source animation to the target animation
+Copy animation key color from the source animation to the target animation 
 for the given frame where color is not zero.
 
 ```C++
@@ -2182,8 +2182,8 @@ double result = ChromaAnimationAPI::CopyNonZeroKeyColorNameD(
 <a name="PluginCopyNonZeroTargetAllKeys"></a>
 **PluginCopyNonZeroTargetAllKeys**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is nonzero for the specified frame. Source and target
+Copy nonzero colors from the source animation to the target animation where 
+the target color is nonzero for the specified frame. Source and target 
 are referenced by id.
 
 ```C++
@@ -2200,8 +2200,8 @@ ChromaAnimationAPI::CopyNonZeroTargetAllKeys(
 <a name="PluginCopyNonZeroTargetAllKeysAllFrames"></a>
 **PluginCopyNonZeroTargetAllKeysAllFrames**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is nonzero for all frames. Source and target are referenced
+Copy nonzero colors from the source animation to the target animation where 
+the target color is nonzero for all frames. Source and target are referenced 
 by id.
 
 ```C++
@@ -2218,8 +2218,8 @@ ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFrames(
 <a name="PluginCopyNonZeroTargetAllKeysAllFramesName"></a>
 **PluginCopyNonZeroTargetAllKeysAllFramesName**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is nonzero for all frames. Source and target are referenced
+Copy nonzero colors from the source animation to the target animation where 
+the target color is nonzero for all frames. Source and target are referenced 
 by name.
 
 ```C++
@@ -2252,8 +2252,8 @@ double result = ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesNameD(
 <a name="PluginCopyNonZeroTargetAllKeysAllFramesOffset"></a>
 **PluginCopyNonZeroTargetAllKeysAllFramesOffset**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is nonzero for all frames. Source and target are referenced
+Copy nonzero colors from the source animation to the target animation where 
+the target color is nonzero for all frames. Source and target are referenced 
 by name.
 
 ```C++
@@ -2270,9 +2270,9 @@ ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesOffset(
 <a name="PluginCopyNonZeroTargetAllKeysAllFramesOffsetName"></a>
 **PluginCopyNonZeroTargetAllKeysAllFramesOffsetName**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is nonzero for all frames starting at the target offset
-for the length of the source animation. Source and target animations are
+Copy nonzero colors from the source animation to the target animation where 
+the target color is nonzero for all frames starting at the target offset 
+for the length of the source animation. Source and target animations are 
 referenced by name.
 
 ```C++
@@ -2305,8 +2305,8 @@ double result = ChromaAnimationAPI::CopyNonZeroTargetAllKeysAllFramesOffsetNameD
 <a name="PluginCopyNonZeroTargetAllKeysName"></a>
 **PluginCopyNonZeroTargetAllKeysName**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is nonzero for the specified frame. The source and target
+Copy nonzero colors from the source animation to the target animation where 
+the target color is nonzero for the specified frame. The source and target 
 are referenced by name.
 
 ```C++
@@ -2339,8 +2339,8 @@ double result = ChromaAnimationAPI::CopyNonZeroTargetAllKeysNameD(
 <a name="PluginCopyNonZeroTargetAllKeysOffset"></a>
 **PluginCopyNonZeroTargetAllKeysOffset**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is nonzero for the specified source frame and target offset
+Copy nonzero colors from the source animation to the target animation where 
+the target color is nonzero for the specified source frame and target offset 
 frame. The source and target are referenced by id.
 
 ```C++
@@ -2357,8 +2357,8 @@ ChromaAnimationAPI::CopyNonZeroTargetAllKeysOffset(
 <a name="PluginCopyNonZeroTargetAllKeysOffsetName"></a>
 **PluginCopyNonZeroTargetAllKeysOffsetName**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is nonzero for the specified source frame and target offset
+Copy nonzero colors from the source animation to the target animation where 
+the target color is nonzero for the specified source frame and target offset 
 frame. The source and target are referenced by name.
 
 ```C++
@@ -2393,8 +2393,8 @@ double result = ChromaAnimationAPI::CopyNonZeroTargetAllKeysOffsetNameD(
 <a name="PluginCopyNonZeroTargetZeroAllKeysAllFrames"></a>
 **PluginCopyNonZeroTargetZeroAllKeysAllFrames**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is zero for all frames. Source and target are referenced
+Copy nonzero colors from the source animation to the target animation where 
+the target color is zero for all frames. Source and target are referenced 
 by id.
 
 ```C++
@@ -2411,8 +2411,8 @@ ChromaAnimationAPI::CopyNonZeroTargetZeroAllKeysAllFrames(
 <a name="PluginCopyNonZeroTargetZeroAllKeysAllFramesName"></a>
 **PluginCopyNonZeroTargetZeroAllKeysAllFramesName**
 
-Copy nonzero colors from the source animation to the target animation where
-the target color is zero for all frames. Source and target are referenced
+Copy nonzero colors from the source animation to the target animation where 
+the target color is zero for all frames. Source and target are referenced 
 by name.
 
 ```C++
@@ -2445,7 +2445,7 @@ double result = ChromaAnimationAPI::CopyNonZeroTargetZeroAllKeysAllFramesNameD(
 <a name="PluginCopyRedChannelAllFrames"></a>
 **PluginCopyRedChannelAllFrames**
 
-Copy red channel to other channels for all frames. Intensity range is 0.0
+Copy red channel to other channels for all frames. Intensity range is 0.0 
 to 1.0. Reference the animation by id.
 
 ```C++
@@ -2462,7 +2462,7 @@ ChromaAnimationAPI::CopyRedChannelAllFrames(
 <a name="PluginCopyRedChannelAllFramesName"></a>
 **PluginCopyRedChannelAllFramesName**
 
-Copy green channel to other channels for all frames. Intensity range is
+Copy green channel to other channels for all frames. Intensity range is 
 0.0 to 1.0. Reference the animation by name.
 
 ```C++
@@ -2495,7 +2495,7 @@ double result = ChromaAnimationAPI::CopyRedChannelAllFramesNameD(
 <a name="PluginCopyZeroAllKeys"></a>
 **PluginCopyZeroAllKeys**
 
-Copy zero colors from source animation to target animation for the frame.
+Copy zero colors from source animation to target animation for the frame. 
 Source and target are referenced by id.
 
 ```C++
@@ -2512,7 +2512,7 @@ ChromaAnimationAPI::CopyZeroAllKeys(
 <a name="PluginCopyZeroAllKeysAllFrames"></a>
 **PluginCopyZeroAllKeysAllFrames**
 
-Copy zero colors from source animation to target animation for all frames.
+Copy zero colors from source animation to target animation for all frames. 
 Source and target are referenced by id.
 
 ```C++
@@ -2529,7 +2529,7 @@ ChromaAnimationAPI::CopyZeroAllKeysAllFrames(
 <a name="PluginCopyZeroAllKeysAllFramesName"></a>
 **PluginCopyZeroAllKeysAllFramesName**
 
-Copy zero colors from source animation to target animation for all frames.
+Copy zero colors from source animation to target animation for all frames. 
 Source and target are referenced by name.
 
 ```C++
@@ -2562,8 +2562,8 @@ double result = ChromaAnimationAPI::CopyZeroAllKeysAllFramesNameD(
 <a name="PluginCopyZeroAllKeysAllFramesOffset"></a>
 **PluginCopyZeroAllKeysAllFramesOffset**
 
-Copy zero colors from source animation to target animation for all frames
-starting at the target offset for the length of the source animation. Source
+Copy zero colors from source animation to target animation for all frames 
+starting at the target offset for the length of the source animation. Source 
 and target are referenced by id.
 
 ```C++
@@ -2580,8 +2580,8 @@ ChromaAnimationAPI::CopyZeroAllKeysAllFramesOffset(
 <a name="PluginCopyZeroAllKeysAllFramesOffsetName"></a>
 **PluginCopyZeroAllKeysAllFramesOffsetName**
 
-Copy zero colors from source animation to target animation for all frames
-starting at the target offset for the length of the source animation. Source
+Copy zero colors from source animation to target animation for all frames 
+starting at the target offset for the length of the source animation. Source 
 and target are referenced by name.
 
 ```C++
@@ -2614,7 +2614,7 @@ double result = ChromaAnimationAPI::CopyZeroAllKeysAllFramesOffsetNameD(
 <a name="PluginCopyZeroAllKeysName"></a>
 **PluginCopyZeroAllKeysName**
 
-Copy zero colors from source animation to target animation for the frame.
+Copy zero colors from source animation to target animation for the frame. 
 Source and target are referenced by name.
 
 ```C++
@@ -2631,8 +2631,8 @@ ChromaAnimationAPI::CopyZeroAllKeysName(
 <a name="PluginCopyZeroAllKeysOffset"></a>
 **PluginCopyZeroAllKeysOffset**
 
-Copy zero colors from source animation to target animation for the frame
-id starting at the target offset for the length of the source animation.
+Copy zero colors from source animation to target animation for the frame 
+id starting at the target offset for the length of the source animation. 
 Source and target are referenced by id.
 
 ```C++
@@ -2649,8 +2649,8 @@ ChromaAnimationAPI::CopyZeroAllKeysOffset(
 <a name="PluginCopyZeroAllKeysOffsetName"></a>
 **PluginCopyZeroAllKeysOffsetName**
 
-Copy zero colors from source animation to target animation for the frame
-id starting at the target offset for the length of the source animation.
+Copy zero colors from source animation to target animation for the frame 
+id starting at the target offset for the length of the source animation. 
 Source and target are referenced by name.
 
 ```C++
@@ -2667,7 +2667,7 @@ ChromaAnimationAPI::CopyZeroAllKeysOffsetName(
 <a name="PluginCopyZeroKeyColor"></a>
 **PluginCopyZeroKeyColor**
 
-Copy zero key color from source animation to target animation for the specified
+Copy zero key color from source animation to target animation for the specified 
 frame. Source and target are referenced by id.
 
 ```C++
@@ -2684,7 +2684,7 @@ ChromaAnimationAPI::CopyZeroKeyColor(
 <a name="PluginCopyZeroKeyColorName"></a>
 **PluginCopyZeroKeyColorName**
 
-Copy zero key color from source animation to target animation for the specified
+Copy zero key color from source animation to target animation for the specified 
 frame. Source and target are referenced by name.
 
 ```C++
@@ -2719,7 +2719,7 @@ double result = ChromaAnimationAPI::CopyZeroKeyColorNameD(
 <a name="PluginCopyZeroTargetAllKeys"></a>
 **PluginCopyZeroTargetAllKeys**
 
-Copy nonzero color from source animation to target animation where target
+Copy nonzero color from source animation to target animation where target 
 is zero for the frame. Source and target are referenced by id.
 
 ```C++
@@ -2736,7 +2736,7 @@ ChromaAnimationAPI::CopyZeroTargetAllKeys(
 <a name="PluginCopyZeroTargetAllKeysAllFrames"></a>
 **PluginCopyZeroTargetAllKeysAllFrames**
 
-Copy nonzero color from source animation to target animation where target
+Copy nonzero color from source animation to target animation where target 
 is zero for all frames. Source and target are referenced by id.
 
 ```C++
@@ -2753,7 +2753,7 @@ ChromaAnimationAPI::CopyZeroTargetAllKeysAllFrames(
 <a name="PluginCopyZeroTargetAllKeysAllFramesName"></a>
 **PluginCopyZeroTargetAllKeysAllFramesName**
 
-Copy nonzero color from source animation to target animation where target
+Copy nonzero color from source animation to target animation where target 
 is zero for all frames. Source and target are referenced by name.
 
 ```C++
@@ -2786,7 +2786,7 @@ double result = ChromaAnimationAPI::CopyZeroTargetAllKeysAllFramesNameD(
 <a name="PluginCopyZeroTargetAllKeysName"></a>
 **PluginCopyZeroTargetAllKeysName**
 
-Copy nonzero color from source animation to target animation where target
+Copy nonzero color from source animation to target animation where target 
 is zero for the frame. Source and target are referenced by name.
 
 ```C++
@@ -2989,10 +2989,10 @@ RZRESULT result = ChromaAnimationAPI::CoreSetEffect(RZEFFECTID EffectId);
 <a name="PluginCoreStreamBroadcast"></a>
 **PluginCoreStreamBroadcast**
 
-Begin broadcasting Chroma RGB data using the stored stream key as the endpoint.
-Intended for Cloud Gaming Platforms,  restore the streaming key when the
-game instance is launched to continue streaming.  streamId is a null terminated
-string  streamKey is a null terminated string  StreamGetStatus() should
+Begin broadcasting Chroma RGB data using the stored stream key as the endpoint. 
+Intended for Cloud Gaming Platforms,  restore the streaming key when the 
+game instance is launched to continue streaming.  streamId is a null terminated 
+string  streamKey is a null terminated string  StreamGetStatus() should 
 return the READY status to use this method.
 
 ```C++
@@ -3009,7 +3009,7 @@ bool result = ChromaAnimationAPI::CoreStreamBroadcast(
 <a name="PluginCoreStreamBroadcastEnd"></a>
 **PluginCoreStreamBroadcastEnd**
 
-End broadcasting Chroma RGB data.  StreamGetStatus() should return the BROADCASTING
+End broadcasting Chroma RGB data.  StreamGetStatus() should return the BROADCASTING 
 status to use this method.
 
 ```C++
@@ -3024,15 +3024,15 @@ bool result = ChromaAnimationAPI::CoreStreamBroadcastEnd();
 <a name="PluginCoreStreamGetAuthShortcode"></a>
 **PluginCoreStreamGetAuthShortcode**
 
-shortcode: Pass the address of a preallocated character buffer to get the
-streaming auth code. The buffer should have a minimum length of 6.  length:
-Length will return as zero if the streaming auth code could not be obtained.
-If length is greater than zero, it will be the length of the returned streaming
-auth code.  Once you have the shortcode, it should be shown to the user
-so they can associate the stream with their Razer ID  StreamGetStatus()
-should return the READY status before invoking this method. platform: is
-the null terminated string that identifies the source of the stream: {
-GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string
+shortcode: Pass the address of a preallocated character buffer to get the 
+streaming auth code. The buffer should have a minimum length of 6.  length: 
+Length will return as zero if the streaming auth code could not be obtained. 
+If length is greater than zero, it will be the length of the returned streaming 
+auth code.  Once you have the shortcode, it should be shown to the user 
+so they can associate the stream with their Razer ID  StreamGetStatus() 
+should return the READY status before invoking this method. platform: is 
+the null terminated string that identifies the source of the stream: { 
+GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string 
 that identifies the application or game.
 
 ```C++
@@ -3049,9 +3049,9 @@ ChromaAnimationAPI::CoreStreamGetAuthShortcode(
 <a name="PluginCoreStreamGetFocus"></a>
 **PluginCoreStreamGetFocus**
 
-focus: Pass the address of a preallocated character buffer to get the stream
-focus. The buffer should have a length of 48  length: Length will return
-as zero if the stream focus could not be obtained. If length is greater
+focus: Pass the address of a preallocated character buffer to get the stream 
+focus. The buffer should have a length of 48  length: Length will return 
+as zero if the stream focus could not be obtained. If length is greater 
 than zero, it will be the length of the returned stream focus.
 
 ```C++
@@ -3068,16 +3068,16 @@ bool result = ChromaAnimationAPI::CoreStreamGetFocus(
 <a name="PluginCoreStreamGetId"></a>
 **PluginCoreStreamGetId**
 
-Intended for Cloud Gaming Platforms, store the stream id to persist in user
-preferences to continue streaming if the game is suspended or closed. shortcode:
-The shortcode is a null terminated string. Use the shortcode that authorized
-the stream to obtain the stream id.  streamId should be a preallocated
-buffer to get the stream key. The buffer should have a length of 48.  length:
-Length will return zero if the key could not be obtained. If the length
-is greater than zero, it will be the length of the returned streaming id.
-Retrieve the stream id after authorizing the shortcode. The authorization
-window will expire in 5 minutes. Be sure to save the stream key before
-the window expires. StreamGetStatus() should return the READY status to
+Intended for Cloud Gaming Platforms, store the stream id to persist in user 
+preferences to continue streaming if the game is suspended or closed. shortcode: 
+The shortcode is a null terminated string. Use the shortcode that authorized 
+the stream to obtain the stream id.  streamId should be a preallocated 
+buffer to get the stream key. The buffer should have a length of 48.  length: 
+Length will return zero if the key could not be obtained. If the length 
+is greater than zero, it will be the length of the returned streaming id. 
+Retrieve the stream id after authorizing the shortcode. The authorization 
+window will expire in 5 minutes. Be sure to save the stream key before 
+the window expires. StreamGetStatus() should return the READY status to 
 use this method.
 
 ```C++
@@ -3094,18 +3094,18 @@ ChromaAnimationAPI::CoreStreamGetId(
 <a name="PluginCoreStreamGetKey"></a>
 **PluginCoreStreamGetKey**
 
-Intended for Cloud Gaming Platforms, store the streaming key to persist
-in user preferences to continue streaming if the game is suspended or closed.
-shortcode: The shortcode is a null terminated string. Use the shortcode
-that authorized the stream to obtain the stream key.  If the status is
-in the BROADCASTING or WATCHING state, passing a NULL shortcode will return
-the active streamId.  streamKey should be a preallocated buffer to get
-the stream key. The buffer should have a length of 48.  length: Length
-will return zero if the key could not be obtained. If the length is greater
-than zero, it will be the length of the returned streaming key.  Retrieve
-the stream key after authorizing the shortcode. The authorization window
-will expire in 5 minutes. Be sure to save the stream key before the window
-expires.  StreamGetStatus() should return the READY status to use this
+Intended for Cloud Gaming Platforms, store the streaming key to persist 
+in user preferences to continue streaming if the game is suspended or closed. 
+shortcode: The shortcode is a null terminated string. Use the shortcode 
+that authorized the stream to obtain the stream key.  If the status is 
+in the BROADCASTING or WATCHING state, passing a NULL shortcode will return 
+the active streamId.  streamKey should be a preallocated buffer to get 
+the stream key. The buffer should have a length of 48.  length: Length 
+will return zero if the key could not be obtained. If the length is greater 
+than zero, it will be the length of the returned streaming key.  Retrieve 
+the stream key after authorizing the shortcode. The authorization window 
+will expire in 5 minutes. Be sure to save the stream key before the window 
+expires.  StreamGetStatus() should return the READY status to use this 
 method.
 
 ```C++
@@ -3152,9 +3152,9 @@ const char* result = ChromaAnimationAPI::CoreStreamGetStatusString(
 <a name="PluginCoreStreamReleaseShortcode"></a>
 **PluginCoreStreamReleaseShortcode**
 
-This prevents the stream id and stream key from being obtained through the
-shortcode. This closes the auth window.  shortcode is a null terminated
-string.  StreamGetStatus() should return the READY status to use this method.
+This prevents the stream id and stream key from being obtained through the 
+shortcode. This closes the auth window.  shortcode is a null terminated 
+string.  StreamGetStatus() should return the READY status to use this method. 
 returns success when shortcode has been released
 
 ```C++
@@ -3171,8 +3171,8 @@ bool result = ChromaAnimationAPI::CoreStreamReleaseShortcode(
 <a name="PluginCoreStreamSetFocus"></a>
 **PluginCoreStreamSetFocus**
 
-The focus is a null terminated string. Set the focus identifer for the application
-designated to automatically change the streaming state.  Returns true on
+The focus is a null terminated string. Set the focus identifer for the application 
+designated to automatically change the streaming state.  Returns true on 
 success.
 
 ```C++
@@ -3187,7 +3187,7 @@ bool result = ChromaAnimationAPI::CoreStreamSetFocus(const char* focus);
 <a name="PluginCoreStreamSupportsStreaming"></a>
 **PluginCoreStreamSupportsStreaming**
 
-Returns true if the Chroma streaming is supported. If false is returned,
+Returns true if the Chroma streaming is supported. If false is returned, 
 avoid calling stream methods.
 
 ```C++
@@ -3202,8 +3202,8 @@ bool result = ChromaAnimationAPI::CoreStreamSupportsStreaming();
 <a name="PluginCoreStreamWatch"></a>
 **PluginCoreStreamWatch**
 
-Begin watching the Chroma RGB data using streamID parameter.  streamId is
-a null terminated string.  StreamGetStatus() should return the READY status
+Begin watching the Chroma RGB data using streamID parameter.  streamId is 
+a null terminated string.  StreamGetStatus() should return the READY status 
 to use this method.
 
 ```C++
@@ -3220,7 +3220,7 @@ bool result = ChromaAnimationAPI::CoreStreamWatch(
 <a name="PluginCoreStreamWatchEnd"></a>
 **PluginCoreStreamWatchEnd**
 
-End watching Chroma RGB data stream.  StreamGetStatus() should return the
+End watching Chroma RGB data stream.  StreamGetStatus() should return the 
 WATCHING status to use this method.
 
 ```C++
@@ -3249,13 +3249,13 @@ RZRESULT result = ChromaAnimationAPI::CoreUnInit();
 <a name="PluginCreateAnimation"></a>
 **PluginCreateAnimation**
 
-Creates a `Chroma` animation at the given path. The `deviceType` parameter
-uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses
-`EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective
-to the `deviceType`. Returns the animation id upon success. Returns -1
-upon failure. Saves a `Chroma` animation file with the `.chroma` extension
-at the given path. Returns the animation id upon success. Returns -1 upon
-failure.
+Creates a `Chroma` animation at the given path. The `deviceType` parameter 
+uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses 
+`EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective 
+to the `deviceType`. Returns the animation id upon success. Returns negative 
+one upon failure. Saves a `Chroma` animation file with the `.chroma` extension 
+at the given path. Returns the animation id upon success. Returns negative 
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -3271,12 +3271,12 @@ int result = ChromaAnimationAPI::CreateAnimation(
 <a name="PluginCreateAnimationInMemory"></a>
 **PluginCreateAnimationInMemory**
 
-Creates a `Chroma` animation in memory without creating a file. The `deviceType`
-parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter
-uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer,
-respective to the `deviceType`. Returns the animation id upon success.
-Returns -1 upon failure. Returns the animation id upon success. Returns
--1 upon failure.
+Creates a `Chroma` animation in memory without creating a file. The `deviceType` 
+parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter 
+uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, 
+respective to the `deviceType`. Returns the animation id upon success. 
+Returns negative one upon failure. Returns the animation id upon success. 
+Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -3326,7 +3326,7 @@ RZRESULT result = ChromaAnimationAPI::DeleteEffect(
 <a name="PluginDuplicateFirstFrame"></a>
 **PluginDuplicateFirstFrame**
 
-Duplicate the first animation frame so that the animation length matches
+Duplicate the first animation frame so that the animation length matches 
 the frame count. Animation is referenced by id.
 
 ```C++
@@ -3343,7 +3343,7 @@ ChromaAnimationAPI::DuplicateFirstFrame(
 <a name="PluginDuplicateFirstFrameName"></a>
 **PluginDuplicateFirstFrameName**
 
-Duplicate the first animation frame so that the animation length matches
+Duplicate the first animation frame so that the animation length matches 
 the frame count. Animation is referenced by name.
 
 ```C++
@@ -3376,8 +3376,8 @@ double result = ChromaAnimationAPI::DuplicateFirstFrameNameD(
 <a name="PluginDuplicateFrames"></a>
 **PluginDuplicateFrames**
 
-Duplicate all the frames of the animation to double the animation length.
-Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on.
+Duplicate all the frames of the animation to double the animation length. 
+Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on. 
 The animation is referenced by id.
 
 ```C++
@@ -3392,8 +3392,8 @@ ChromaAnimationAPI::DuplicateFrames(int animationId);
 <a name="PluginDuplicateFramesName"></a>
 **PluginDuplicateFramesName**
 
-Duplicate all the frames of the animation to double the animation length.
-Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on.
+Duplicate all the frames of the animation to double the animation length. 
+Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on. 
 The animation is referenced by name.
 
 ```C++
@@ -3422,7 +3422,7 @@ double result = ChromaAnimationAPI::DuplicateFramesNameD(const char* path);
 <a name="PluginDuplicateMirrorFrames"></a>
 **PluginDuplicateMirrorFrames**
 
-Duplicate all the animation frames in reverse so that the animation plays
+Duplicate all the animation frames in reverse so that the animation plays 
 forwards and backwards. Animation is referenced by id.
 
 ```C++
@@ -3437,7 +3437,7 @@ ChromaAnimationAPI::DuplicateMirrorFrames(int animationId);
 <a name="PluginDuplicateMirrorFramesName"></a>
 **PluginDuplicateMirrorFramesName**
 
-Duplicate all the animation frames in reverse so that the animation plays
+Duplicate all the animation frames in reverse so that the animation plays 
 forwards and backwards. Animation is referenced by name.
 
 ```C++
@@ -3466,7 +3466,7 @@ double result = ChromaAnimationAPI::DuplicateMirrorFramesNameD(const char* path)
 <a name="PluginFadeEndFrames"></a>
 **PluginFadeEndFrames**
 
-Fade the animation to black starting at the fade frame index to the end
+Fade the animation to black starting at the fade frame index to the end 
 of the animation. Animation is referenced by id.
 
 ```C++
@@ -3483,7 +3483,7 @@ ChromaAnimationAPI::FadeEndFrames(
 <a name="PluginFadeEndFramesName"></a>
 **PluginFadeEndFramesName**
 
-Fade the animation to black starting at the fade frame index to the end
+Fade the animation to black starting at the fade frame index to the end 
 of the animation. Animation is referenced by name.
 
 ```C++
@@ -3516,7 +3516,7 @@ double result = ChromaAnimationAPI::FadeEndFramesNameD(
 <a name="PluginFadeStartFrames"></a>
 **PluginFadeStartFrames**
 
-Fade the animation from black to full color starting at 0 to the fade frame
+Fade the animation from black to full color starting at 0 to the fade frame 
 index. Animation is referenced by id.
 
 ```C++
@@ -3533,7 +3533,7 @@ ChromaAnimationAPI::FadeStartFrames(
 <a name="PluginFadeStartFramesName"></a>
 **PluginFadeStartFramesName**
 
-Fade the animation from black to full color starting at 0 to the fade frame
+Fade the animation from black to full color starting at 0 to the fade frame 
 index. Animation is referenced by name.
 
 ```C++
@@ -3566,7 +3566,7 @@ double result = ChromaAnimationAPI::FadeStartFramesNameD(
 <a name="PluginFillColor"></a>
 **PluginFillColor**
 
-Set the RGB value for all colors in the specified frame. Animation is referenced
+Set the RGB value for all colors in the specified frame. Animation is referenced 
 by id.
 
 ```C++
@@ -3583,7 +3583,7 @@ ChromaAnimationAPI::FillColor(
 <a name="PluginFillColorAllFrames"></a>
 **PluginFillColorAllFrames**
 
-Set the RGB value for all colors for all frames. Animation is referenced
+Set the RGB value for all colors for all frames. Animation is referenced 
 by id.
 
 ```C++
@@ -3600,7 +3600,7 @@ ChromaAnimationAPI::FillColorAllFrames(
 <a name="PluginFillColorAllFramesName"></a>
 **PluginFillColorAllFramesName**
 
-Set the RGB value for all colors for all frames. Animation is referenced
+Set the RGB value for all colors for all frames. Animation is referenced 
 by name.
 
 ```C++
@@ -3633,7 +3633,7 @@ double result = ChromaAnimationAPI::FillColorAllFramesNameD(
 <a name="PluginFillColorAllFramesRGB"></a>
 **PluginFillColorAllFramesRGB**
 
-Set the RGB value for all colors for all frames. Use the range of 0 to 255
+Set the RGB value for all colors for all frames. Use the range of 0 to 255 
 for red, green, and blue parameters. Animation is referenced by id.
 
 ```C++
@@ -3650,7 +3650,7 @@ ChromaAnimationAPI::FillColorAllFramesRGB(
 <a name="PluginFillColorAllFramesRGBName"></a>
 **PluginFillColorAllFramesRGBName**
 
-Set the RGB value for all colors for all frames. Use the range of 0 to 255
+Set the RGB value for all colors for all frames. Use the range of 0 to 255 
 for red, green, and blue parameters. Animation is referenced by name.
 
 ```C++
@@ -3683,7 +3683,7 @@ double result = ChromaAnimationAPI::FillColorAllFramesRGBNameD(
 <a name="PluginFillColorName"></a>
 **PluginFillColorName**
 
-Set the RGB value for all colors in the specified frame. Animation is referenced
+Set the RGB value for all colors in the specified frame. Animation is referenced 
 by name.
 
 ```C++
@@ -3716,7 +3716,7 @@ double result = ChromaAnimationAPI::FillColorNameD(
 <a name="PluginFillColorRGB"></a>
 **PluginFillColorRGB**
 
-Set the RGB value for all colors in the specified frame. Animation is referenced
+Set the RGB value for all colors in the specified frame. Animation is referenced 
 by id.
 
 ```C++
@@ -3733,7 +3733,7 @@ ChromaAnimationAPI::FillColorRGB(
 <a name="PluginFillColorRGBName"></a>
 **PluginFillColorRGBName**
 
-Set the RGB value for all colors in the specified frame. Animation is referenced
+Set the RGB value for all colors in the specified frame. Animation is referenced 
 by name.
 
 ```C++
@@ -3766,8 +3766,8 @@ double result = ChromaAnimationAPI::FillColorRGBNameD(
 <a name="PluginFillNonZeroColor"></a>
 **PluginFillNonZeroColor**
 
-This method will only update colors in the animation that are not already
-set to black. Set the RGB value for a subset of colors in the specified
+This method will only update colors in the animation that are not already 
+set to black. Set the RGB value for a subset of colors in the specified 
 frame. Animation is referenced by id.
 
 ```C++
@@ -3784,8 +3784,8 @@ ChromaAnimationAPI::FillNonZeroColor(
 <a name="PluginFillNonZeroColorAllFrames"></a>
 **PluginFillNonZeroColorAllFrames**
 
-This method will only update colors in the animation that are not already
-set to black. Set the RGB value for a subset of colors for all frames.
+This method will only update colors in the animation that are not already 
+set to black. Set the RGB value for a subset of colors for all frames. 
 Animation is referenced by id.
 
 ```C++
@@ -3802,8 +3802,8 @@ ChromaAnimationAPI::FillNonZeroColorAllFrames(
 <a name="PluginFillNonZeroColorAllFramesName"></a>
 **PluginFillNonZeroColorAllFramesName**
 
-This method will only update colors in the animation that are not already
-set to black. Set the RGB value for a subset of colors for all frames.
+This method will only update colors in the animation that are not already 
+set to black. Set the RGB value for a subset of colors for all frames. 
 Animation is referenced by name.
 
 ```C++
@@ -3836,9 +3836,9 @@ double result = ChromaAnimationAPI::FillNonZeroColorAllFramesNameD(
 <a name="PluginFillNonZeroColorAllFramesRGB"></a>
 **PluginFillNonZeroColorAllFramesRGB**
 
-This method will only update colors in the animation that are not already
-set to black. Set the RGB value for a subset of colors for all frames.
-Use the range of 0 to 255 for red, green, and blue parameters. Animation
+This method will only update colors in the animation that are not already 
+set to black. Set the RGB value for a subset of colors for all frames. 
+Use the range of 0 to 255 for red, green, and blue parameters. Animation 
 is referenced by id.
 
 ```C++
@@ -3855,9 +3855,9 @@ ChromaAnimationAPI::FillNonZeroColorAllFramesRGB(
 <a name="PluginFillNonZeroColorAllFramesRGBName"></a>
 **PluginFillNonZeroColorAllFramesRGBName**
 
-This method will only update colors in the animation that are not already
-set to black. Set the RGB value for a subset of colors for all frames.
-Use the range of 0 to 255 for red, green, and blue parameters. Animation
+This method will only update colors in the animation that are not already 
+set to black. Set the RGB value for a subset of colors for all frames. 
+Use the range of 0 to 255 for red, green, and blue parameters. Animation 
 is referenced by name.
 
 ```C++
@@ -3890,8 +3890,8 @@ double result = ChromaAnimationAPI::FillNonZeroColorAllFramesRGBNameD(
 <a name="PluginFillNonZeroColorName"></a>
 **PluginFillNonZeroColorName**
 
-This method will only update colors in the animation that are not already
-set to black. Set the RGB value for a subset of colors in the specified
+This method will only update colors in the animation that are not already 
+set to black. Set the RGB value for a subset of colors in the specified 
 frame. Animation is referenced by name.
 
 ```C++
@@ -3924,9 +3924,9 @@ double result = ChromaAnimationAPI::FillNonZeroColorNameD(
 <a name="PluginFillNonZeroColorRGB"></a>
 **PluginFillNonZeroColorRGB**
 
-This method will only update colors in the animation that are not already
-set to black. Set the RGB value for a subset of colors in the specified
-frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation
+This method will only update colors in the animation that are not already 
+set to black. Set the RGB value for a subset of colors in the specified 
+frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation 
 is referenced by id.
 
 ```C++
@@ -3943,9 +3943,9 @@ ChromaAnimationAPI::FillNonZeroColorRGB(
 <a name="PluginFillNonZeroColorRGBName"></a>
 **PluginFillNonZeroColorRGBName**
 
-This method will only update colors in the animation that are not already
-set to black. Set the RGB value for a subset of colors in the specified
-frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation
+This method will only update colors in the animation that are not already 
+set to black. Set the RGB value for a subset of colors in the specified 
+frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation 
 is referenced by name.
 
 ```C++
@@ -3978,7 +3978,7 @@ double result = ChromaAnimationAPI::FillNonZeroColorRGBNameD(
 <a name="PluginFillRandomColors"></a>
 **PluginFillRandomColors**
 
-Fill the frame with random RGB values for the given frame. Animation is
+Fill the frame with random RGB values for the given frame. Animation is 
 referenced by id.
 
 ```C++
@@ -3995,7 +3995,7 @@ ChromaAnimationAPI::FillRandomColors(
 <a name="PluginFillRandomColorsAllFrames"></a>
 **PluginFillRandomColorsAllFrames**
 
-Fill the frame with random RGB values for all frames. Animation is referenced
+Fill the frame with random RGB values for all frames. Animation is referenced 
 by id.
 
 ```C++
@@ -4010,7 +4010,7 @@ ChromaAnimationAPI::FillRandomColorsAllFrames(int animationId);
 <a name="PluginFillRandomColorsAllFramesName"></a>
 **PluginFillRandomColorsAllFramesName**
 
-Fill the frame with random RGB values for all frames. Animation is referenced
+Fill the frame with random RGB values for all frames. Animation is referenced 
 by name.
 
 ```C++
@@ -4039,7 +4039,7 @@ double result = ChromaAnimationAPI::FillRandomColorsAllFramesNameD(const char* p
 <a name="PluginFillRandomColorsBlackAndWhite"></a>
 **PluginFillRandomColorsBlackAndWhite**
 
-Fill the frame with random black and white values for the specified frame.
+Fill the frame with random black and white values for the specified frame. 
 Animation is referenced by id.
 
 ```C++
@@ -4056,7 +4056,7 @@ ChromaAnimationAPI::FillRandomColorsBlackAndWhite(
 <a name="PluginFillRandomColorsBlackAndWhiteAllFrames"></a>
 **PluginFillRandomColorsBlackAndWhiteAllFrames**
 
-Fill the frame with random black and white values for all frames. Animation
+Fill the frame with random black and white values for all frames. Animation 
 is referenced by id.
 
 ```C++
@@ -4071,7 +4071,7 @@ ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFrames(int animationId);
 <a name="PluginFillRandomColorsBlackAndWhiteAllFramesName"></a>
 **PluginFillRandomColorsBlackAndWhiteAllFramesName**
 
-Fill the frame with random black and white values for all frames. Animation
+Fill the frame with random black and white values for all frames. Animation 
 is referenced by name.
 
 ```C++
@@ -4100,7 +4100,7 @@ double result = ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesNameD(
 <a name="PluginFillRandomColorsBlackAndWhiteName"></a>
 **PluginFillRandomColorsBlackAndWhiteName**
 
-Fill the frame with random black and white values for the specified frame.
+Fill the frame with random black and white values for the specified frame. 
 Animation is referenced by name.
 
 ```C++
@@ -4133,7 +4133,7 @@ double result = ChromaAnimationAPI::FillRandomColorsBlackAndWhiteNameD(
 <a name="PluginFillRandomColorsName"></a>
 **PluginFillRandomColorsName**
 
-Fill the frame with random RGB values for the given frame. Animation is
+Fill the frame with random RGB values for the given frame. Animation is 
 referenced by name.
 
 ```C++
@@ -4166,7 +4166,7 @@ double result = ChromaAnimationAPI::FillRandomColorsNameD(
 <a name="PluginFillThresholdColors"></a>
 **PluginFillThresholdColors**
 
-Fill the specified frame with RGB color where the animation color is less
+Fill the specified frame with RGB color where the animation color is less 
 than the RGB threshold. Animation is referenced by id.
 
 ```C++
@@ -4183,7 +4183,7 @@ ChromaAnimationAPI::FillThresholdColors(
 <a name="PluginFillThresholdColorsAllFrames"></a>
 **PluginFillThresholdColorsAllFrames**
 
-Fill all frames with RGB color where the animation color is less than the
+Fill all frames with RGB color where the animation color is less than the 
 RGB threshold. Animation is referenced by id.
 
 ```C++
@@ -4200,7 +4200,7 @@ ChromaAnimationAPI::FillThresholdColorsAllFrames(
 <a name="PluginFillThresholdColorsAllFramesName"></a>
 **PluginFillThresholdColorsAllFramesName**
 
-Fill all frames with RGB color where the animation color is less than the
+Fill all frames with RGB color where the animation color is less than the 
 RGB threshold. Animation is referenced by name.
 
 ```C++
@@ -4233,7 +4233,7 @@ double result = ChromaAnimationAPI::FillThresholdColorsAllFramesNameD(
 <a name="PluginFillThresholdColorsAllFramesRGB"></a>
 **PluginFillThresholdColorsAllFramesRGB**
 
-Fill all frames with RGB color where the animation color is less than the
+Fill all frames with RGB color where the animation color is less than the 
 threshold. Animation is referenced by id.
 
 ```C++
@@ -4250,7 +4250,7 @@ ChromaAnimationAPI::FillThresholdColorsAllFramesRGB(
 <a name="PluginFillThresholdColorsAllFramesRGBName"></a>
 **PluginFillThresholdColorsAllFramesRGBName**
 
-Fill all frames with RGB color where the animation color is less than the
+Fill all frames with RGB color where the animation color is less than the 
 threshold. Animation is referenced by name.
 
 ```C++
@@ -4283,8 +4283,8 @@ double result = ChromaAnimationAPI::FillThresholdColorsAllFramesRGBNameD(
 <a name="PluginFillThresholdColorsMinMaxAllFramesRGB"></a>
 **PluginFillThresholdColorsMinMaxAllFramesRGB**
 
-Fill all frames with the min RGB color where the animation color is less
-than the min threshold AND with the max RGB color where the animation is
+Fill all frames with the min RGB color where the animation color is less 
+than the min threshold AND with the max RGB color where the animation is 
 more than the max threshold. Animation is referenced by id.
 
 ```C++
@@ -4303,8 +4303,8 @@ ChromaAnimationAPI::FillThresholdColorsMinMaxAllFramesRGB(
 <a name="PluginFillThresholdColorsMinMaxAllFramesRGBName"></a>
 **PluginFillThresholdColorsMinMaxAllFramesRGBName**
 
-Fill all frames with the min RGB color where the animation color is less
-than the min threshold AND with the max RGB color where the animation is
+Fill all frames with the min RGB color where the animation color is less 
+than the min threshold AND with the max RGB color where the animation is 
 more than the max threshold. Animation is referenced by name.
 
 ```C++
@@ -4341,8 +4341,8 @@ double result = ChromaAnimationAPI::FillThresholdColorsMinMaxAllFramesRGBNameD(
 <a name="PluginFillThresholdColorsMinMaxRGB"></a>
 **PluginFillThresholdColorsMinMaxRGB**
 
-Fill the specified frame with the min RGB color where the animation color
-is less than the min threshold AND with the max RGB color where the animation
+Fill the specified frame with the min RGB color where the animation color 
+is less than the min threshold AND with the max RGB color where the animation 
 is more than the max threshold. Animation is referenced by id.
 
 ```C++
@@ -4361,8 +4361,8 @@ ChromaAnimationAPI::FillThresholdColorsMinMaxRGB(
 <a name="PluginFillThresholdColorsMinMaxRGBName"></a>
 **PluginFillThresholdColorsMinMaxRGBName**
 
-Fill the specified frame with the min RGB color where the animation color
-is less than the min threshold AND with the max RGB color where the animation
+Fill the specified frame with the min RGB color where the animation color 
+is less than the min threshold AND with the max RGB color where the animation 
 is more than the max threshold. Animation is referenced by name.
 
 ```C++
@@ -4399,7 +4399,7 @@ double result = ChromaAnimationAPI::FillThresholdColorsMinMaxRGBNameD(
 <a name="PluginFillThresholdColorsName"></a>
 **PluginFillThresholdColorsName**
 
-Fill the specified frame with RGB color where the animation color is less
+Fill the specified frame with RGB color where the animation color is less 
 than the RGB threshold. Animation is referenced by name.
 
 ```C++
@@ -4432,7 +4432,7 @@ double result = ChromaAnimationAPI::FillThresholdColorsNameD(
 <a name="PluginFillThresholdColorsRGB"></a>
 **PluginFillThresholdColorsRGB**
 
-Fill the specified frame with RGB color where the animation color is less
+Fill the specified frame with RGB color where the animation color is less 
 than the RGB threshold. Animation is referenced by id.
 
 ```C++
@@ -4449,7 +4449,7 @@ ChromaAnimationAPI::FillThresholdColorsRGB(
 <a name="PluginFillThresholdColorsRGBName"></a>
 **PluginFillThresholdColorsRGBName**
 
-Fill the specified frame with RGB color where the animation color is less
+Fill the specified frame with RGB color where the animation color is less 
 than the RGB threshold. Animation is referenced by name.
 
 ```C++
@@ -4484,7 +4484,7 @@ double result = ChromaAnimationAPI::FillThresholdColorsRGBNameD(
 <a name="PluginFillThresholdRGBColorsAllFramesRGB"></a>
 **PluginFillThresholdRGBColorsAllFramesRGB**
 
-Fill all frames with RGB color where the animation color is less than the
+Fill all frames with RGB color where the animation color is less than the 
 RGB threshold. Animation is referenced by id.
 
 ```C++
@@ -4503,7 +4503,7 @@ ChromaAnimationAPI::FillThresholdRGBColorsAllFramesRGB(
 <a name="PluginFillThresholdRGBColorsAllFramesRGBName"></a>
 **PluginFillThresholdRGBColorsAllFramesRGBName**
 
-Fill all frames with RGB color where the animation color is less than the
+Fill all frames with RGB color where the animation color is less than the 
 RGB threshold. Animation is referenced by name.
 
 ```C++
@@ -4540,7 +4540,7 @@ double result = ChromaAnimationAPI::FillThresholdRGBColorsAllFramesRGBNameD(
 <a name="PluginFillThresholdRGBColorsRGB"></a>
 **PluginFillThresholdRGBColorsRGB**
 
-Fill the specified frame with RGB color where the animation color is less
+Fill the specified frame with RGB color where the animation color is less 
 than the RGB threshold. Animation is referenced by id.
 
 ```C++
@@ -4559,7 +4559,7 @@ ChromaAnimationAPI::FillThresholdRGBColorsRGB(
 <a name="PluginFillThresholdRGBColorsRGBName"></a>
 **PluginFillThresholdRGBColorsRGBName**
 
-Fill the specified frame with RGB color where the animation color is less
+Fill the specified frame with RGB color where the animation color is less 
 than the RGB threshold. Animation is referenced by name.
 
 ```C++
@@ -4596,7 +4596,7 @@ double result = ChromaAnimationAPI::FillThresholdRGBColorsRGBNameD(
 <a name="PluginFillZeroColor"></a>
 **PluginFillZeroColor**
 
-Fill the specified frame with RGB color where the animation color is zero.
+Fill the specified frame with RGB color where the animation color is zero. 
 Animation is referenced by id.
 
 ```C++
@@ -4613,7 +4613,7 @@ ChromaAnimationAPI::FillZeroColor(
 <a name="PluginFillZeroColorAllFrames"></a>
 **PluginFillZeroColorAllFrames**
 
-Fill all frames with RGB color where the animation color is zero. Animation
+Fill all frames with RGB color where the animation color is zero. Animation 
 is referenced by id.
 
 ```C++
@@ -4630,7 +4630,7 @@ ChromaAnimationAPI::FillZeroColorAllFrames(
 <a name="PluginFillZeroColorAllFramesName"></a>
 **PluginFillZeroColorAllFramesName**
 
-Fill all frames with RGB color where the animation color is zero. Animation
+Fill all frames with RGB color where the animation color is zero. Animation 
 is referenced by name.
 
 ```C++
@@ -4663,7 +4663,7 @@ double result = ChromaAnimationAPI::FillZeroColorAllFramesNameD(
 <a name="PluginFillZeroColorAllFramesRGB"></a>
 **PluginFillZeroColorAllFramesRGB**
 
-Fill all frames with RGB color where the animation color is zero. Animation
+Fill all frames with RGB color where the animation color is zero. Animation 
 is referenced by id.
 
 ```C++
@@ -4680,7 +4680,7 @@ ChromaAnimationAPI::FillZeroColorAllFramesRGB(
 <a name="PluginFillZeroColorAllFramesRGBName"></a>
 **PluginFillZeroColorAllFramesRGBName**
 
-Fill all frames with RGB color where the animation color is zero. Animation
+Fill all frames with RGB color where the animation color is zero. Animation 
 is referenced by name.
 
 ```C++
@@ -4713,7 +4713,7 @@ double result = ChromaAnimationAPI::FillZeroColorAllFramesRGBNameD(
 <a name="PluginFillZeroColorName"></a>
 **PluginFillZeroColorName**
 
-Fill the specified frame with RGB color where the animation color is zero.
+Fill the specified frame with RGB color where the animation color is zero. 
 Animation is referenced by name.
 
 ```C++
@@ -4746,7 +4746,7 @@ double result = ChromaAnimationAPI::FillZeroColorNameD(
 <a name="PluginFillZeroColorRGB"></a>
 **PluginFillZeroColorRGB**
 
-Fill the specified frame with RGB color where the animation color is zero.
+Fill the specified frame with RGB color where the animation color is zero. 
 Animation is referenced by id.
 
 ```C++
@@ -4763,7 +4763,7 @@ ChromaAnimationAPI::FillZeroColorRGB(
 <a name="PluginFillZeroColorRGBName"></a>
 **PluginFillZeroColorRGBName**
 
-Fill the specified frame with RGB color where the animation color is zero.
+Fill the specified frame with RGB color where the animation color is zero. 
 Animation is referenced by name.
 
 ```C++
@@ -4796,8 +4796,8 @@ double result = ChromaAnimationAPI::FillZeroColorRGBNameD(
 <a name="PluginGet1DColor"></a>
 **PluginGet1DColor**
 
-Get the animation color for a frame given the `1D` `led`. The `led` should
-be greater than or equal to 0 and less than the `MaxLeds`. Animation is
+Get the animation color for a frame given the `1D` `led`. The `led` should 
+be greater than or equal to 0 and less than the `MaxLeds`. Animation is 
 referenced by id.
 
 ```C++
@@ -4814,8 +4814,8 @@ int result = ChromaAnimationAPI::Get1DColor(
 <a name="PluginGet1DColorName"></a>
 **PluginGet1DColorName**
 
-Get the animation color for a frame given the `1D` `led`. The `led` should
-be greater than or equal to 0 and less than the `MaxLeds`. Animation is
+Get the animation color for a frame given the `1D` `led`. The `led` should 
+be greater than or equal to 0 and less than the `MaxLeds`. Animation is 
 referenced by name.
 
 ```C++
@@ -4848,9 +4848,9 @@ double result = ChromaAnimationAPI::Get1DColorNameD(
 <a name="PluginGet2DColor"></a>
 **PluginGet2DColor**
 
-Get the animation color for a frame given the `2D` `row` and `column`. The
-`row` should be greater than or equal to 0 and less than the `MaxRow`.
-The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
+Get the animation color for a frame given the `2D` `row` and `column`. The 
+`row` should be greater than or equal to 0 and less than the `MaxRow`. 
+The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
 Animation is referenced by id.
 
 ```C++
@@ -4867,9 +4867,9 @@ int result = ChromaAnimationAPI::Get2DColor(
 <a name="PluginGet2DColorName"></a>
 **PluginGet2DColorName**
 
-Get the animation color for a frame given the `2D` `row` and `column`. The
-`row` should be greater than or equal to 0 and less than the `MaxRow`.
-The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
+Get the animation color for a frame given the `2D` `row` and `column`. The 
+`row` should be greater than or equal to 0 and less than the `MaxRow`. 
+The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
 Animation is referenced by name.
 
 ```C++
@@ -4944,9 +4944,9 @@ double result = ChromaAnimationAPI::GetAnimationD(const char* name);
 <a name="PluginGetAnimationId"></a>
 **PluginGetAnimationId**
 
-`PluginGetAnimationId` will return the `animationId` given the `index` of
-the loaded animation. The `index` is zero-based and less than the number
-returned by `PluginGetAnimationCount`. Use `PluginGetAnimationName` to
+`PluginGetAnimationId` will return the `animationId` given the `index` of 
+the loaded animation. The `index` is zero-based and less than the number 
+returned by `PluginGetAnimationCount`. Use `PluginGetAnimationName` to 
 get the name of the animation.
 
 ```C++
@@ -4961,8 +4961,8 @@ int result = ChromaAnimationAPI::GetAnimationId(int index);
 <a name="PluginGetAnimationName"></a>
 **PluginGetAnimationName**
 
-`PluginGetAnimationName` takes an `animationId` and returns the name of
-the animation of the `.chroma` animation file. If a name is not available
+`PluginGetAnimationName` takes an `animationId` and returns the name of 
+the animation of the `.chroma` animation file. If a name is not available 
 then an empty string will be returned.
 
 ```C++
@@ -5019,9 +5019,9 @@ double result = ChromaAnimationAPI::GetCurrentFrameNameD(const char* path);
 <a name="PluginGetDevice"></a>
 **PluginGetDevice**
 
-Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma`
-animation respective to the `deviceType`, as an integer upon success. Returns
--1 upon failure.
+Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
+animation respective to the `deviceType`, as an integer upon success. Returns 
+negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5035,9 +5035,9 @@ int result = ChromaAnimationAPI::GetDevice(int animationId);
 <a name="PluginGetDeviceName"></a>
 **PluginGetDeviceName**
 
-Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma`
-animation respective to the `deviceType`, as an integer upon success. Returns
--1 upon failure.
+Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
+animation respective to the `deviceType`, as an integer upon success. Returns 
+negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5065,8 +5065,8 @@ double result = ChromaAnimationAPI::GetDeviceNameD(const char* path);
 <a name="PluginGetDeviceType"></a>
 **PluginGetDeviceType**
 
-Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer
-upon success. Returns -1 upon failure.
+Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5080,8 +5080,8 @@ int result = ChromaAnimationAPI::GetDeviceType(int animationId);
 <a name="PluginGetDeviceTypeName"></a>
 **PluginGetDeviceTypeName**
 
-Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer
-upon success. Returns -1 upon failure.
+Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5109,12 +5109,13 @@ double result = ChromaAnimationAPI::GetDeviceTypeNameD(const char* path);
 <a name="PluginGetFrame"></a>
 **PluginGetFrame**
 
-Gets the frame colors and duration (in seconds) for a `Chroma` animation.
-The `color` is expected to be an array of the expected dimensions for the
-`deviceType/device`. The `length` parameter is the size of the `color`
-array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`.
-For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX
-COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
+Gets the frame colors and duration (in seconds) for a `Chroma` animation. 
+The `color` is expected to be an array of the expected dimensions for the 
+`deviceType/device`. The `length` parameter is the size of the `color` 
+array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. 
+For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX 
+COLUMN`. Returns the animation id upon success. Returns negative one upon 
+failure.
 
 ```C++
 // DLL Interface
@@ -5130,8 +5131,8 @@ int result = ChromaAnimationAPI::GetFrame(
 <a name="PluginGetFrameCount"></a>
 **PluginGetFrameCount**
 
-Returns the frame count of a `Chroma` animation upon success. Returns -1
-upon failure.
+Returns the frame count of a `Chroma` animation upon success. Returns negative 
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -5145,8 +5146,8 @@ int result = ChromaAnimationAPI::GetFrameCount(int animationId);
 <a name="PluginGetFrameCountName"></a>
 **PluginGetFrameCountName**
 
-Returns the frame count of a `Chroma` animation upon success. Returns -1
-upon failure.
+Returns the frame count of a `Chroma` animation upon success. Returns negative 
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -5222,9 +5223,9 @@ int result = ChromaAnimationAPI::GetKeyColorName(
 <a name="PluginGetLibraryLoadedState"></a>
 **PluginGetLibraryLoadedState**
 
-Returns `RZRESULT_SUCCESS` if the plugin has been initialized successfully.
-Returns `RZRESULT_DLL_NOT_FOUND` if core Chroma library is not found. Returns
-`RZRESULT_DLL_INVALID_SIGNATURE` if core Chroma library has an invalid
+Returns `RZRESULT_SUCCESS` if the plugin has been initialized successfully. 
+Returns `RZRESULT_DLL_NOT_FOUND` if core Chroma library is not found. Returns 
+`RZRESULT_DLL_INVALID_SIGNATURE` if core Chroma library has an invalid 
 signature.
 
 ```C++
@@ -5253,8 +5254,8 @@ double result = ChromaAnimationAPI::GetLibraryLoadedStateD();
 <a name="PluginGetMaxColumn"></a>
 **PluginGetMaxColumn**
 
-Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an
-integer upon success. Returns -1 upon failure.
+Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an 
+integer upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5282,8 +5283,8 @@ double result = ChromaAnimationAPI::GetMaxColumnD(double device);
 <a name="PluginGetMaxLeds"></a>
 **PluginGetMaxLeds**
 
-Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer
-upon success. Returns -1 upon failure.
+Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer 
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5311,8 +5312,8 @@ double result = ChromaAnimationAPI::GetMaxLedsD(double device);
 <a name="PluginGetMaxRow"></a>
 **PluginGetMaxRow**
 
-Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer
-upon success. Returns -1 upon failure.
+Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer 
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5354,9 +5355,9 @@ int result = ChromaAnimationAPI::GetPlayingAnimationCount();
 <a name="PluginGetPlayingAnimationId"></a>
 **PluginGetPlayingAnimationId**
 
-`PluginGetPlayingAnimationId` will return the `animationId` given the `index`
-of the playing animation. The `index` is zero-based and less than the number
-returned by `PluginGetPlayingAnimationCount`. Use `PluginGetAnimationName`
+`PluginGetPlayingAnimationId` will return the `animationId` given the `index` 
+of the playing animation. The `index` is zero-based and less than the number 
+returned by `PluginGetPlayingAnimationCount`. Use `PluginGetAnimationName` 
 to get the name of the animation.
 
 ```C++
@@ -5445,7 +5446,7 @@ double result = ChromaAnimationAPI::HasAnimationLoopNameD(const char* path);
 <a name="PluginInit"></a>
 **PluginInit**
 
-Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many
+Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many 
 API methods auto initialize the ChromaSDK if not already initialized.
 
 ```C++
@@ -5474,8 +5475,8 @@ double result = ChromaAnimationAPI::InitD();
 <a name="PluginInitSDK"></a>
 **PluginInitSDK**
 
-Initialize the ChromaSDK. AppInfo populates the details in Synapse. Zero
-indicates  success, otherwise failure. Many API methods auto initialize
+Initialize the ChromaSDK. AppInfo populates the details in Synapse. Zero 
+indicates  success, otherwise failure. Many API methods auto initialize 
 the ChromaSDK if not already initialized.
 
 ```C++
@@ -5492,7 +5493,7 @@ RZRESULT result = ChromaAnimationAPI::InitSDK(
 <a name="PluginInsertDelay"></a>
 **PluginInsertDelay**
 
-Insert an animation delay by duplicating the frame by the delay number of
+Insert an animation delay by duplicating the frame by the delay number of 
 times. Animation is referenced by id.
 
 ```C++
@@ -5509,7 +5510,7 @@ ChromaAnimationAPI::InsertDelay(
 <a name="PluginInsertDelayName"></a>
 **PluginInsertDelayName**
 
-Insert an animation delay by duplicating the frame by the delay number of
+Insert an animation delay by duplicating the frame by the delay number of 
 times. Animation is referenced by name.
 
 ```C++
@@ -5542,7 +5543,7 @@ double result = ChromaAnimationAPI::InsertDelayNameD(
 <a name="PluginInsertFrame"></a>
 **PluginInsertFrame**
 
-Duplicate the source frame index at the target frame index. Animation is
+Duplicate the source frame index at the target frame index. Animation is 
 referenced by id.
 
 ```C++
@@ -5559,7 +5560,7 @@ ChromaAnimationAPI::InsertFrame(
 <a name="PluginInsertFrameName"></a>
 **PluginInsertFrameName**
 
-Duplicate the source frame index at the target frame index. Animation is
+Duplicate the source frame index at the target frame index. Animation is 
 referenced by name.
 
 ```C++
@@ -5592,7 +5593,7 @@ double result = ChromaAnimationAPI::InsertFrameNameD(
 <a name="PluginInvertColors"></a>
 **PluginInvertColors**
 
-Invert all the colors at the specified frame. Animation is referenced by
+Invert all the colors at the specified frame. Animation is referenced by 
 id.
 
 ```C++
@@ -5651,7 +5652,7 @@ double result = ChromaAnimationAPI::InvertColorsAllFramesNameD(const char* path)
 <a name="PluginInvertColorsName"></a>
 **PluginInvertColorsName**
 
-Invert all the colors at the specified frame. Animation is referenced by
+Invert all the colors at the specified frame. Animation is referenced by 
 name.
 
 ```C++
@@ -5726,7 +5727,7 @@ double result = ChromaAnimationAPI::IsAnimationPausedNameD(const char* path);
 <a name="PluginIsDialogOpen"></a>
 **PluginIsDialogOpen**
 
-The editor dialog is a non-blocking modal window, this method returns true
+The editor dialog is a non-blocking modal window, this method returns true 
 if the modal window is open, otherwise false.
 
 ```C++
@@ -5755,7 +5756,7 @@ double result = ChromaAnimationAPI::IsDialogOpenD();
 <a name="PluginIsInitialized"></a>
 **PluginIsInitialized**
 
-Returns true if the plugin has been initialized. Returns false if the plugin
+Returns true if the plugin has been initialized. Returns false if the plugin 
 is uninitialized.
 
 ```C++
@@ -5812,9 +5813,9 @@ double result = ChromaAnimationAPI::IsPlatformSupportedD();
 <a name="PluginIsPlaying"></a>
 **PluginIsPlaying**
 
-`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`.
-The named `.chroma` animation file will be automatically opened. The method
-will return whether the animation is playing or not. Animation is referenced
+`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`. 
+The named `.chroma` animation file will be automatically opened. The method 
+will return whether the animation is playing or not. Animation is referenced 
 by id.
 
 ```C++
@@ -5843,9 +5844,9 @@ double result = ChromaAnimationAPI::IsPlayingD(double animationId);
 <a name="PluginIsPlayingName"></a>
 **PluginIsPlayingName**
 
-`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`.
-The named `.chroma` animation file will be automatically opened. The method
-will return whether the animation is playing or not. Animation is referenced
+`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`. 
+The named `.chroma` animation file will be automatically opened. The method 
+will return whether the animation is playing or not. Animation is referenced 
 by name.
 
 ```C++
@@ -5874,8 +5875,8 @@ double result = ChromaAnimationAPI::IsPlayingNameD(const char* path);
 <a name="PluginIsPlayingType"></a>
 **PluginIsPlayingType**
 
-`PluginIsPlayingType` automatically handles initializing the `ChromaSDK`.
-If any animation is playing for the `deviceType` and `device` combination,
+`PluginIsPlayingType` automatically handles initializing the `ChromaSDK`. 
+If any animation is playing for the `deviceType` and `device` combination, 
 the method will return true, otherwise false.
 
 ```C++
@@ -5940,8 +5941,8 @@ int result = ChromaAnimationAPI::LerpColor(
 <a name="PluginLoadAnimation"></a>
 **PluginLoadAnimation**
 
-Loads `Chroma` effects so that the animation can be played immediately.
-Returns the animation id upon success. Returns -1 upon failure.
+Loads `Chroma` effects so that the animation can be played immediately. 
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5997,8 +5998,8 @@ ChromaAnimationAPI::LoadComposite(const char* name);
 <a name="PluginMakeBlankFrames"></a>
 **PluginMakeBlankFrames**
 
-Make a blank animation for the length of the frame count. Frame duration
-defaults to the duration. The frame color defaults to color. Animation
+Make a blank animation for the length of the frame count. Frame duration 
+defaults to the duration. The frame color defaults to color. Animation 
 is referenced by id.
 
 ```C++
@@ -6015,8 +6016,8 @@ ChromaAnimationAPI::MakeBlankFrames(
 <a name="PluginMakeBlankFramesName"></a>
 **PluginMakeBlankFramesName**
 
-Make a blank animation for the length of the frame count. Frame duration
-defaults to the duration. The frame color defaults to color. Animation
+Make a blank animation for the length of the frame count. Frame duration 
+defaults to the duration. The frame color defaults to color. Animation 
 is referenced by name.
 
 ```C++
@@ -6049,8 +6050,8 @@ double result = ChromaAnimationAPI::MakeBlankFramesNameD(
 <a name="PluginMakeBlankFramesRandom"></a>
 **PluginMakeBlankFramesRandom**
 
-Make a blank animation for the length of the frame count. Frame duration
-defaults to the duration. The frame color is random. Animation is referenced
+Make a blank animation for the length of the frame count. Frame duration 
+defaults to the duration. The frame color is random. Animation is referenced 
 by id.
 
 ```C++
@@ -6067,8 +6068,8 @@ ChromaAnimationAPI::MakeBlankFramesRandom(
 <a name="PluginMakeBlankFramesRandomBlackAndWhite"></a>
 **PluginMakeBlankFramesRandomBlackAndWhite**
 
-Make a blank animation for the length of the frame count. Frame duration
-defaults to the duration. The frame color is random black and white. Animation
+Make a blank animation for the length of the frame count. Frame duration 
+defaults to the duration. The frame color is random black and white. Animation 
 is referenced by id.
 
 ```C++
@@ -6085,8 +6086,8 @@ ChromaAnimationAPI::MakeBlankFramesRandomBlackAndWhite(
 <a name="PluginMakeBlankFramesRandomBlackAndWhiteName"></a>
 **PluginMakeBlankFramesRandomBlackAndWhiteName**
 
-Make a blank animation for the length of the frame count. Frame duration
-defaults to the duration. The frame color is random black and white. Animation
+Make a blank animation for the length of the frame count. Frame duration 
+defaults to the duration. The frame color is random black and white. Animation 
 is referenced by name.
 
 ```C++
@@ -6119,8 +6120,8 @@ double result = ChromaAnimationAPI::MakeBlankFramesRandomBlackAndWhiteNameD(
 <a name="PluginMakeBlankFramesRandomName"></a>
 **PluginMakeBlankFramesRandomName**
 
-Make a blank animation for the length of the frame count. Frame duration
-defaults to the duration. The frame color is random. Animation is referenced
+Make a blank animation for the length of the frame count. Frame duration 
+defaults to the duration. The frame color is random. Animation is referenced 
 by name.
 
 ```C++
@@ -6153,8 +6154,8 @@ double result = ChromaAnimationAPI::MakeBlankFramesRandomNameD(
 <a name="PluginMakeBlankFramesRGB"></a>
 **PluginMakeBlankFramesRGB**
 
-Make a blank animation for the length of the frame count. Frame duration
-defaults to the duration. The frame color defaults to color. Animation
+Make a blank animation for the length of the frame count. Frame duration 
+defaults to the duration. The frame color defaults to color. Animation 
 is referenced by id.
 
 ```C++
@@ -6171,8 +6172,8 @@ ChromaAnimationAPI::MakeBlankFramesRGB(
 <a name="PluginMakeBlankFramesRGBName"></a>
 **PluginMakeBlankFramesRGBName**
 
-Make a blank animation for the length of the frame count. Frame duration
-defaults to the duration. The frame color defaults to color. Animation
+Make a blank animation for the length of the frame count. Frame duration 
+defaults to the duration. The frame color defaults to color. Animation 
 is referenced by name.
 
 ```C++
@@ -6207,8 +6208,8 @@ double result = ChromaAnimationAPI::MakeBlankFramesRGBNameD(
 <a name="PluginMirrorHorizontally"></a>
 **PluginMirrorHorizontally**
 
-Flips the color grid horizontally for all `Chroma` animation frames. Returns
-the animation id upon success. Returns -1 upon failure.
+Flips the color grid horizontally for all `Chroma` animation frames. Returns 
+the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -6222,9 +6223,9 @@ int result = ChromaAnimationAPI::MirrorHorizontally(int animationId);
 <a name="PluginMirrorVertically"></a>
 **PluginMirrorVertically**
 
-Flips the color grid vertically for all `Chroma` animation frames. This
-method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the
-animation id upon success. Returns -1 upon failure.
+Flips the color grid vertically for all `Chroma` animation frames. This 
+method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the 
+animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -6238,8 +6239,8 @@ int result = ChromaAnimationAPI::MirrorVertically(int animationId);
 <a name="PluginMultiplyColorLerpAllFrames"></a>
 **PluginMultiplyColorLerpAllFrames**
 
-Multiply the color intensity with the lerp result from color 1 to color
-2 using the frame index divided by the frame count for the `t` parameter.
+Multiply the color intensity with the lerp result from color 1 to color 
+2 using the frame index divided by the frame count for the `t` parameter. 
 Animation is referenced in id.
 
 ```C++
@@ -6256,8 +6257,8 @@ ChromaAnimationAPI::MultiplyColorLerpAllFrames(
 <a name="PluginMultiplyColorLerpAllFramesName"></a>
 **PluginMultiplyColorLerpAllFramesName**
 
-Multiply the color intensity with the lerp result from color 1 to color
-2 using the frame index divided by the frame count for the `t` parameter.
+Multiply the color intensity with the lerp result from color 1 to color 
+2 using the frame index divided by the frame count for the `t` parameter. 
 Animation is referenced in name.
 
 ```C++
@@ -6290,9 +6291,9 @@ double result = ChromaAnimationAPI::MultiplyColorLerpAllFramesNameD(
 <a name="PluginMultiplyIntensity"></a>
 **PluginMultiplyIntensity**
 
-Multiply all the colors in the frame by the intensity value. The valid the
-intensity range is from 0.0 to 255.0. RGB components are multiplied equally.
-An intensity of 0.5 would half the color value. Black colors in the frame
+Multiply all the colors in the frame by the intensity value. The valid the 
+intensity range is from 0.0 to 255.0. RGB components are multiplied equally. 
+An intensity of 0.5 would half the color value. Black colors in the frame 
 will not be affected by this method.
 
 ```C++
@@ -6309,9 +6310,9 @@ ChromaAnimationAPI::MultiplyIntensity(
 <a name="PluginMultiplyIntensityAllFrames"></a>
 **PluginMultiplyIntensityAllFrames**
 
-Multiply all the colors for all frames by the intensity value. The valid
-the intensity range is from 0.0 to 255.0. RGB components are multiplied
-equally. An intensity of 0.5 would half the color value. Black colors in
+Multiply all the colors for all frames by the intensity value. The valid 
+the intensity range is from 0.0 to 255.0. RGB components are multiplied 
+equally. An intensity of 0.5 would half the color value. Black colors in 
 the frame will not be affected by this method.
 
 ```C++
@@ -6328,9 +6329,9 @@ ChromaAnimationAPI::MultiplyIntensityAllFrames(
 <a name="PluginMultiplyIntensityAllFramesName"></a>
 **PluginMultiplyIntensityAllFramesName**
 
-Multiply all the colors for all frames by the intensity value. The valid
-the intensity range is from 0.0 to 255.0. RGB components are multiplied
-equally. An intensity of 0.5 would half the color value. Black colors in
+Multiply all the colors for all frames by the intensity value. The valid 
+the intensity range is from 0.0 to 255.0. RGB components are multiplied 
+equally. An intensity of 0.5 would half the color value. Black colors in 
 the frame will not be affected by this method.
 
 ```C++
@@ -6363,7 +6364,7 @@ double result = ChromaAnimationAPI::MultiplyIntensityAllFramesNameD(
 <a name="PluginMultiplyIntensityAllFramesRGB"></a>
 **PluginMultiplyIntensityAllFramesRGB**
 
-Multiply all frames by the RBG color intensity. Animation is referenced
+Multiply all frames by the RBG color intensity. Animation is referenced 
 by id.
 
 ```C++
@@ -6380,7 +6381,7 @@ ChromaAnimationAPI::MultiplyIntensityAllFramesRGB(
 <a name="PluginMultiplyIntensityAllFramesRGBName"></a>
 **PluginMultiplyIntensityAllFramesRGBName**
 
-Multiply all frames by the RBG color intensity. Animation is referenced
+Multiply all frames by the RBG color intensity. Animation is referenced 
 by name.
 
 ```C++
@@ -6413,7 +6414,7 @@ double result = ChromaAnimationAPI::MultiplyIntensityAllFramesRGBNameD(
 <a name="PluginMultiplyIntensityColor"></a>
 **PluginMultiplyIntensityColor**
 
-Multiply the specific frame by the RBG color intensity. Animation is referenced
+Multiply the specific frame by the RBG color intensity. Animation is referenced 
 by id.
 
 ```C++
@@ -6430,7 +6431,7 @@ ChromaAnimationAPI::MultiplyIntensityColor(
 <a name="PluginMultiplyIntensityColorAllFrames"></a>
 **PluginMultiplyIntensityColorAllFrames**
 
-Multiply all frames by the RBG color intensity. Animation is referenced
+Multiply all frames by the RBG color intensity. Animation is referenced 
 by id.
 
 ```C++
@@ -6447,7 +6448,7 @@ ChromaAnimationAPI::MultiplyIntensityColorAllFrames(
 <a name="PluginMultiplyIntensityColorAllFramesName"></a>
 **PluginMultiplyIntensityColorAllFramesName**
 
-Multiply all frames by the RBG color intensity. Animation is referenced
+Multiply all frames by the RBG color intensity. Animation is referenced 
 by name.
 
 ```C++
@@ -6480,7 +6481,7 @@ double result = ChromaAnimationAPI::MultiplyIntensityColorAllFramesNameD(
 <a name="PluginMultiplyIntensityColorName"></a>
 **PluginMultiplyIntensityColorName**
 
-Multiply the specific frame by the RBG color intensity. Animation is referenced
+Multiply the specific frame by the RBG color intensity. Animation is referenced 
 by name.
 
 ```C++
@@ -6513,9 +6514,9 @@ double result = ChromaAnimationAPI::MultiplyIntensityColorNameD(
 <a name="PluginMultiplyIntensityName"></a>
 **PluginMultiplyIntensityName**
 
-Multiply all the colors in the frame by the intensity value. The valid the
-intensity range is from 0.0 to 255.0. RGB components are multiplied equally.
-An intensity of 0.5 would half the color value. Black colors in the frame
+Multiply all the colors in the frame by the intensity value. The valid the 
+intensity range is from 0.0 to 255.0. RGB components are multiplied equally. 
+An intensity of 0.5 would half the color value. Black colors in the frame 
 will not be affected by this method.
 
 ```C++
@@ -6548,7 +6549,7 @@ double result = ChromaAnimationAPI::MultiplyIntensityNameD(
 <a name="PluginMultiplyIntensityRGB"></a>
 **PluginMultiplyIntensityRGB**
 
-Multiply the specific frame by the RBG color intensity. Animation is referenced
+Multiply the specific frame by the RBG color intensity. Animation is referenced 
 by id.
 
 ```C++
@@ -6565,7 +6566,7 @@ ChromaAnimationAPI::MultiplyIntensityRGB(
 <a name="PluginMultiplyIntensityRGBName"></a>
 **PluginMultiplyIntensityRGBName**
 
-Multiply the specific frame by the RBG color intensity. Animation is referenced
+Multiply the specific frame by the RBG color intensity. Animation is referenced 
 by name.
 
 ```C++
@@ -6598,8 +6599,8 @@ double result = ChromaAnimationAPI::MultiplyIntensityRGBNameD(
 <a name="PluginMultiplyNonZeroTargetColorLerp"></a>
 **PluginMultiplyNonZeroTargetColorLerp**
 
-Multiply the specific frame by the color lerp result between color 1 and
-2 using the frame color value as the `t` value. Animation is referenced
+Multiply the specific frame by the color lerp result between color 1 and 
+2 using the frame color value as the `t` value. Animation is referenced 
 by id.
 
 ```C++
@@ -6616,7 +6617,7 @@ ChromaAnimationAPI::MultiplyNonZeroTargetColorLerp(
 <a name="PluginMultiplyNonZeroTargetColorLerpAllFrames"></a>
 **PluginMultiplyNonZeroTargetColorLerpAllFrames**
 
-Multiply all frames by the color lerp result between color 1 and 2 using
+Multiply all frames by the color lerp result between color 1 and 2 using 
 the frame color value as the `t` value. Animation is referenced by id.
 
 ```C++
@@ -6633,7 +6634,7 @@ ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFrames(
 <a name="PluginMultiplyNonZeroTargetColorLerpAllFramesName"></a>
 **PluginMultiplyNonZeroTargetColorLerpAllFramesName**
 
-Multiply all frames by the color lerp result between color 1 and 2 using
+Multiply all frames by the color lerp result between color 1 and 2 using 
 the frame color value as the `t` value. Animation is referenced by name.
 
 ```C++
@@ -6666,8 +6667,8 @@ double result = ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesNameD
 <a name="PluginMultiplyNonZeroTargetColorLerpAllFramesRGB"></a>
 **PluginMultiplyNonZeroTargetColorLerpAllFramesRGB**
 
-Multiply the specific frame by the color lerp result between RGB 1 and 2
-using the frame color value as the `t` value. Animation is referenced by
+Multiply the specific frame by the color lerp result between RGB 1 and 2 
+using the frame color value as the `t` value. Animation is referenced by 
 id.
 
 ```C++
@@ -6684,8 +6685,8 @@ ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesRGB(
 <a name="PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName"></a>
 **PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName**
 
-Multiply the specific frame by the color lerp result between RGB 1 and 2
-using the frame color value as the `t` value. Animation is referenced by
+Multiply the specific frame by the color lerp result between RGB 1 and 2 
+using the frame color value as the `t` value. Animation is referenced by 
 name.
 
 ```C++
@@ -6722,8 +6723,8 @@ double result = ChromaAnimationAPI::MultiplyNonZeroTargetColorLerpAllFramesRGBNa
 <a name="PluginMultiplyTargetColorLerp"></a>
 **PluginMultiplyTargetColorLerp**
 
-Multiply the specific frame by the color lerp result between color 1 and
-2 using the frame color value as the `t` value. Animation is referenced
+Multiply the specific frame by the color lerp result between color 1 and 
+2 using the frame color value as the `t` value. Animation is referenced 
 by id.
 
 ```C++
@@ -6740,7 +6741,7 @@ ChromaAnimationAPI::MultiplyTargetColorLerp(
 <a name="PluginMultiplyTargetColorLerpAllFrames"></a>
 **PluginMultiplyTargetColorLerpAllFrames**
 
-Multiply all frames by the color lerp result between color 1 and 2 using
+Multiply all frames by the color lerp result between color 1 and 2 using 
 the frame color value as the `t` value. Animation is referenced by id.
 
 ```C++
@@ -6757,7 +6758,7 @@ ChromaAnimationAPI::MultiplyTargetColorLerpAllFrames(
 <a name="PluginMultiplyTargetColorLerpAllFramesName"></a>
 **PluginMultiplyTargetColorLerpAllFramesName**
 
-Multiply all frames by the color lerp result between color 1 and 2 using
+Multiply all frames by the color lerp result between color 1 and 2 using 
 the frame color value as the `t` value. Animation is referenced by name.
 
 ```C++
@@ -6790,7 +6791,7 @@ double result = ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesNameD(
 <a name="PluginMultiplyTargetColorLerpAllFramesRGB"></a>
 **PluginMultiplyTargetColorLerpAllFramesRGB**
 
-Multiply all frames by the color lerp result between RGB 1 and 2 using the
+Multiply all frames by the color lerp result between RGB 1 and 2 using the 
 frame color value as the `t` value. Animation is referenced by id.
 
 ```C++
@@ -6807,7 +6808,7 @@ ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesRGB(
 <a name="PluginMultiplyTargetColorLerpAllFramesRGBName"></a>
 **PluginMultiplyTargetColorLerpAllFramesRGBName**
 
-Multiply all frames by the color lerp result between RGB 1 and 2 using the
+Multiply all frames by the color lerp result between RGB 1 and 2 using the 
 frame color value as the `t` value. Animation is referenced by name.
 
 ```C++
@@ -6844,8 +6845,8 @@ double result = ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesRGBNameD(
 <a name="PluginMultiplyTargetColorLerpName"></a>
 **PluginMultiplyTargetColorLerpName**
 
-Multiply the specific frame by the color lerp result between color 1 and
-2 using the frame color value as the `t` value. Animation is referenced
+Multiply the specific frame by the color lerp result between color 1 and 
+2 using the frame color value as the `t` value. Animation is referenced 
 by name.
 
 ```C++
@@ -6862,8 +6863,8 @@ ChromaAnimationAPI::MultiplyTargetColorLerpName(
 <a name="PluginOffsetColors"></a>
 **PluginOffsetColors**
 
-Offset all colors in the frame using the RGB offset. Use the range of -255
-to 255 for red, green, and blue parameters. Negative values remove color.
+Offset all colors in the frame using the RGB offset. Use the range of -255 
+to 255 for red, green, and blue parameters. Negative values remove color. 
 Positive values add color.
 
 ```C++
@@ -6880,8 +6881,8 @@ ChromaAnimationAPI::OffsetColors(
 <a name="PluginOffsetColorsAllFrames"></a>
 **PluginOffsetColorsAllFrames**
 
-Offset all colors for all frames using the RGB offset. Use the range of
--255 to 255 for red, green, and blue parameters. Negative values remove
+Offset all colors for all frames using the RGB offset. Use the range of 
+-255 to 255 for red, green, and blue parameters. Negative values remove 
 color. Positive values add color.
 
 ```C++
@@ -6898,8 +6899,8 @@ ChromaAnimationAPI::OffsetColorsAllFrames(
 <a name="PluginOffsetColorsAllFramesName"></a>
 **PluginOffsetColorsAllFramesName**
 
-Offset all colors for all frames using the RGB offset. Use the range of
--255 to 255 for red, green, and blue parameters. Negative values remove
+Offset all colors for all frames using the RGB offset. Use the range of 
+-255 to 255 for red, green, and blue parameters. Negative values remove 
 color. Positive values add color.
 
 ```C++
@@ -6932,8 +6933,8 @@ double result = ChromaAnimationAPI::OffsetColorsAllFramesNameD(
 <a name="PluginOffsetColorsName"></a>
 **PluginOffsetColorsName**
 
-Offset all colors in the frame using the RGB offset. Use the range of -255
-to 255 for red, green, and blue parameters. Negative values remove color.
+Offset all colors in the frame using the RGB offset. Use the range of -255 
+to 255 for red, green, and blue parameters. Negative values remove color. 
 Positive values add color.
 
 ```C++
@@ -6966,9 +6967,9 @@ double result = ChromaAnimationAPI::OffsetColorsNameD(
 <a name="PluginOffsetNonZeroColors"></a>
 **PluginOffsetNonZeroColors**
 
-This method will only update colors in the animation that are not already
-set to black. Offset a subset of colors in the frame using the RGB offset.
-Use the range of -255 to 255 for red, green, and blue parameters. Negative
+This method will only update colors in the animation that are not already 
+set to black. Offset a subset of colors in the frame using the RGB offset. 
+Use the range of -255 to 255 for red, green, and blue parameters. Negative 
 values remove color. Positive values add color.
 
 ```C++
@@ -6985,9 +6986,9 @@ ChromaAnimationAPI::OffsetNonZeroColors(
 <a name="PluginOffsetNonZeroColorsAllFrames"></a>
 **PluginOffsetNonZeroColorsAllFrames**
 
-This method will only update colors in the animation that are not already
-set to black. Offset a subset of colors for all frames using the RGB offset.
-Use the range of -255 to 255 for red, green, and blue parameters. Negative
+This method will only update colors in the animation that are not already 
+set to black. Offset a subset of colors for all frames using the RGB offset. 
+Use the range of -255 to 255 for red, green, and blue parameters. Negative 
 values remove color. Positive values add color.
 
 ```C++
@@ -7004,9 +7005,9 @@ ChromaAnimationAPI::OffsetNonZeroColorsAllFrames(
 <a name="PluginOffsetNonZeroColorsAllFramesName"></a>
 **PluginOffsetNonZeroColorsAllFramesName**
 
-This method will only update colors in the animation that are not already
-set to black. Offset a subset of colors for all frames using the RGB offset.
-Use the range of -255 to 255 for red, green, and blue parameters. Negative
+This method will only update colors in the animation that are not already 
+set to black. Offset a subset of colors for all frames using the RGB offset. 
+Use the range of -255 to 255 for red, green, and blue parameters. Negative 
 values remove color. Positive values add color.
 
 ```C++
@@ -7039,9 +7040,9 @@ double result = ChromaAnimationAPI::OffsetNonZeroColorsAllFramesNameD(
 <a name="PluginOffsetNonZeroColorsName"></a>
 **PluginOffsetNonZeroColorsName**
 
-This method will only update colors in the animation that are not already
-set to black. Offset a subset of colors in the frame using the RGB offset.
-Use the range of -255 to 255 for red, green, and blue parameters. Negative
+This method will only update colors in the animation that are not already 
+set to black. Offset a subset of colors in the frame using the RGB offset. 
+Use the range of -255 to 255 for red, green, and blue parameters. Negative 
 values remove color. Positive values add color.
 
 ```C++
@@ -7074,9 +7075,9 @@ double result = ChromaAnimationAPI::OffsetNonZeroColorsNameD(
 <a name="PluginOpenAnimation"></a>
 **PluginOpenAnimation**
 
-Opens a `Chroma` animation file so that it can be played. Returns an animation
-id >= 0 upon success. Returns -1 if there was a failure. The animation
-id is used in most of the API methods.
+Opens a `Chroma` animation file so that it can be played. Returns an animation 
+id >= 0 upon success. Returns negative one if there was a failure. The 
+animation id is used in most of the API methods.
 
 ```C++
 // DLL Interface
@@ -7104,11 +7105,11 @@ double result = ChromaAnimationAPI::OpenAnimationD(const char* path);
 <a name="PluginOpenAnimationFromMemory"></a>
 **PluginOpenAnimationFromMemory**
 
-Opens a `Chroma` animation data from memory so that it can be played. `Data`
-is a pointer to BYTE array of the loaded animation in memory. `Name` will
-be assigned to the animation when loaded. Returns an animation id >= 0
-upon success. Returns -1 if there was a failure. The animation id is used
-in most of the API methods.
+Opens a `Chroma` animation data from memory so that it can be played. `Data` 
+is a pointer to BYTE array of the loaded animation in memory. `Name` will 
+be assigned to the animation when loaded. Returns an animation id >= 0 
+upon success. Returns negative one if there was a failure. The animation 
+id is used in most of the API methods.
 
 ```C++
 // DLL Interface
@@ -7124,8 +7125,8 @@ int result = ChromaAnimationAPI::OpenAnimationFromMemory(
 <a name="PluginOpenEditorDialog"></a>
 **PluginOpenEditorDialog**
 
-Opens a `Chroma` animation file with the `.chroma` extension. Returns zero
-upon success. Returns -1 if there was a failure.
+Opens a `Chroma` animation file with the `.chroma` extension. Returns zero 
+upon success. Returns negative one if there was a failure.
 
 ```C++
 // DLL Interface
@@ -7139,7 +7140,7 @@ int result = ChromaAnimationAPI::OpenEditorDialog(const char* path);
 <a name="PluginOpenEditorDialogAndPlay"></a>
 **PluginOpenEditorDialogAndPlay**
 
-Open the named animation in the editor dialog and play the animation at
+Open the named animation in the editor dialog and play the animation at 
 start.
 
 ```C++
@@ -7182,8 +7183,9 @@ double result = ChromaAnimationAPI::OpenEditorDialogD(const char* path);
 <a name="PluginOverrideFrameDuration"></a>
 **PluginOverrideFrameDuration**
 
-Sets the `duration` for all grames in the `Chroma` animation to the `duration`
-parameter. Returns the animation id upon success. Returns -1 upon failure.
+Sets the `duration` for all grames in the `Chroma` animation to the `duration` 
+parameter. Returns the animation id upon success. Returns negative one 
+upon failure.
 
 ```C++
 // DLL Interface
@@ -7215,7 +7217,7 @@ double result = ChromaAnimationAPI::OverrideFrameDurationD(
 <a name="PluginOverrideFrameDurationName"></a>
 **PluginOverrideFrameDurationName**
 
-Override the duration of all frames with the `duration` value. Animation
+Override the duration of all frames with the `duration` value. Animation 
 is referenced by name.
 
 ```C++
@@ -7274,8 +7276,9 @@ double result = ChromaAnimationAPI::PauseAnimationNameD(const char* path);
 <a name="PluginPlayAnimation"></a>
 **PluginPlayAnimation**
 
-Plays the `Chroma` animation. This will load the animation, if not loaded
-previously. Returns the animation id upon success. Returns -1 upon failure.
+Plays the `Chroma` animation. This will load the animation, if not loaded 
+previously. Returns the animation id upon success. Returns negative one 
+upon failure.
 
 ```C++
 // DLL Interface
@@ -7303,8 +7306,8 @@ double result = ChromaAnimationAPI::PlayAnimationD(double animationId);
 <a name="PluginPlayAnimationFrame"></a>
 **PluginPlayAnimationFrame**
 
-`PluginPlayAnimationFrame` automatically handles initializing the `ChromaSDK`.
-The method will play the animation given the `animationId` with looping
+`PluginPlayAnimationFrame` automatically handles initializing the `ChromaSDK`. 
+The method will play the animation given the `animationId` with looping 
 `on` or `off` starting at the `frameId`.
 
 ```C++
@@ -7321,8 +7324,8 @@ ChromaAnimationAPI::PlayAnimationFrame(
 <a name="PluginPlayAnimationFrameName"></a>
 **PluginPlayAnimationFrameName**
 
-`PluginPlayAnimationFrameName` automatically handles initializing the `ChromaSDK`.
-The named `.chroma` animation file will be automatically opened. The animation
+`PluginPlayAnimationFrameName` automatically handles initializing the `ChromaSDK`. 
+The named `.chroma` animation file will be automatically opened. The animation 
 will play with looping `on` or `off` starting at the `frameId`.
 
 ```C++
@@ -7355,8 +7358,8 @@ double result = ChromaAnimationAPI::PlayAnimationFrameNameD(
 <a name="PluginPlayAnimationLoop"></a>
 **PluginPlayAnimationLoop**
 
-`PluginPlayAnimationLoop` automatically handles initializing the `ChromaSDK`.
-The method will play the animation given the `animationId` with looping
+`PluginPlayAnimationLoop` automatically handles initializing the `ChromaSDK`. 
+The method will play the animation given the `animationId` with looping 
 `on` or `off`.
 
 ```C++
@@ -7373,8 +7376,8 @@ ChromaAnimationAPI::PlayAnimationLoop(
 <a name="PluginPlayAnimationName"></a>
 **PluginPlayAnimationName**
 
-`PluginPlayAnimationName` automatically handles initializing the `ChromaSDK`.
-The named `.chroma` animation file will be automatically opened. The animation
+`PluginPlayAnimationName` automatically handles initializing the `ChromaSDK`. 
+The named `.chroma` animation file will be automatically opened. The animation 
 will play with looping `on` or `off`.
 
 ```C++
@@ -7407,8 +7410,8 @@ double result = ChromaAnimationAPI::PlayAnimationNameD(
 <a name="PluginPlayComposite"></a>
 **PluginPlayComposite**
 
-`PluginPlayComposite` automatically handles initializing the `ChromaSDK`.
-The named animation files for the `.chroma` set will be automatically opened.
+`PluginPlayComposite` automatically handles initializing the `ChromaSDK`. 
+The named animation files for the `.chroma` set will be automatically opened. 
 The set of animations will play with looping `on` or `off`.
 
 ```C++
@@ -7441,8 +7444,8 @@ double result = ChromaAnimationAPI::PlayCompositeD(
 <a name="PluginPreviewFrame"></a>
 **PluginPreviewFrame**
 
-Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`.
-Returns the animation id upon success. Returns -1 upon failure.
+Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`. 
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -7474,7 +7477,7 @@ double result = ChromaAnimationAPI::PreviewFrameD(
 <a name="PluginPreviewFrameName"></a>
 **PluginPreviewFrameName**
 
-Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`.
+Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`. 
 Animaton is referenced by name.
 
 ```C++
@@ -7491,7 +7494,7 @@ ChromaAnimationAPI::PreviewFrameName(
 <a name="PluginReduceFrames"></a>
 **PluginReduceFrames**
 
-Reduce the frames of the animation by removing every nth element. Animation
+Reduce the frames of the animation by removing every nth element. Animation 
 is referenced by id.
 
 ```C++
@@ -7508,7 +7511,7 @@ ChromaAnimationAPI::ReduceFrames(
 <a name="PluginReduceFramesName"></a>
 **PluginReduceFramesName**
 
-Reduce the frames of the animation by removing every nth element. Animation
+Reduce the frames of the animation by removing every nth element. Animation 
 is referenced by name.
 
 ```C++
@@ -7541,8 +7544,8 @@ double result = ChromaAnimationAPI::ReduceFramesNameD(
 <a name="PluginResetAnimation"></a>
 **PluginResetAnimation**
 
-Resets the `Chroma` animation to 1 blank frame. Returns the animation id
-upon success. Returns -1 upon failure.
+Resets the `Chroma` animation to 1 blank frame. Returns the animation id 
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -7604,9 +7607,9 @@ double result = ChromaAnimationAPI::ResumeAnimationNameD(
 <a name="PluginReverse"></a>
 **PluginReverse**
 
-Reverse the animation frame order of the `Chroma` animation. Returns the
-animation id upon success. Returns -1 upon failure. Animation is referenced
-by id.
+Reverse the animation frame order of the `Chroma` animation. Returns the 
+animation id upon success. Returns negative one upon failure. Animation 
+is referenced by id.
 
 ```C++
 // DLL Interface
@@ -7620,7 +7623,7 @@ int result = ChromaAnimationAPI::Reverse(int animationId);
 <a name="PluginReverseAllFrames"></a>
 **PluginReverseAllFrames**
 
-Reverse the animation frame order of the `Chroma` animation. Animation is
+Reverse the animation frame order of the `Chroma` animation. Animation is 
 referenced by id.
 
 ```C++
@@ -7635,7 +7638,7 @@ ChromaAnimationAPI::ReverseAllFrames(int animationId);
 <a name="PluginReverseAllFramesName"></a>
 **PluginReverseAllFramesName**
 
-Reverse the animation frame order of the `Chroma` animation. Animation is
+Reverse the animation frame order of the `Chroma` animation. Animation is 
 referenced by name.
 
 ```C++
@@ -7696,8 +7699,8 @@ int result = ChromaAnimationAPI::SaveAnimationName(
 <a name="PluginSet1DColor"></a>
 **PluginSet1DColor**
 
-Set the animation color for a frame given the `1D` `led`. The `led` should
-be greater than or equal to 0 and less than the `MaxLeds`. The animation
+Set the animation color for a frame given the `1D` `led`. The `led` should 
+be greater than or equal to 0 and less than the `MaxLeds`. The animation 
 is referenced by id.
 
 ```C++
@@ -7714,8 +7717,8 @@ ChromaAnimationAPI::Set1DColor(
 <a name="PluginSet1DColorName"></a>
 **PluginSet1DColorName**
 
-Set the animation color for a frame given the `1D` `led`. The `led` should
-be greater than or equal to 0 and less than the `MaxLeds`. The animation
+Set the animation color for a frame given the `1D` `led`. The `led` should 
+be greater than or equal to 0 and less than the `MaxLeds`. The animation 
 is referenced by name.
 
 ```C++
@@ -7748,9 +7751,9 @@ double result = ChromaAnimationAPI::Set1DColorNameD(
 <a name="PluginSet2DColor"></a>
 **PluginSet2DColor**
 
-Set the animation color for a frame given the `2D` `row` and `column`. The
-`row` should be greater than or equal to 0 and less than the `MaxRow`.
-The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
+Set the animation color for a frame given the `2D` `row` and `column`. The 
+`row` should be greater than or equal to 0 and less than the `MaxRow`. 
+The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
 The animation is referenced by id.
 
 ```C++
@@ -7767,9 +7770,9 @@ ChromaAnimationAPI::Set2DColor(
 <a name="PluginSet2DColorName"></a>
 **PluginSet2DColorName**
 
-Set the animation color for a frame given the `2D` `row` and `column`. The
-`row` should be greater than or equal to 0 and less than the `MaxRow`.
-The `column` should be greater than or equal to 0 and less than the `MaxColumn`.
+Set the animation color for a frame given the `2D` `row` and `column`. The 
+`row` should be greater than or equal to 0 and less than the `MaxRow`. 
+The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
 The animation is referenced by name.
 
 ```C++
@@ -7802,7 +7805,7 @@ double result = ChromaAnimationAPI::Set2DColorNameD(
 <a name="PluginSetChromaCustomColorAllFrames"></a>
 **PluginSetChromaCustomColorAllFrames**
 
-When custom color is set, the custom key mode will be used. The animation
+When custom color is set, the custom key mode will be used. The animation 
 is referenced by id.
 
 ```C++
@@ -7817,7 +7820,7 @@ ChromaAnimationAPI::SetChromaCustomColorAllFrames(int animationId);
 <a name="PluginSetChromaCustomColorAllFramesName"></a>
 **PluginSetChromaCustomColorAllFramesName**
 
-When custom color is set, the custom key mode will be used. The animation
+When custom color is set, the custom key mode will be used. The animation 
 is referenced by name.
 
 ```C++
@@ -7846,8 +7849,8 @@ double result = ChromaAnimationAPI::SetChromaCustomColorAllFramesNameD(const cha
 <a name="PluginSetChromaCustomFlag"></a>
 **PluginSetChromaCustomFlag**
 
-Set the Chroma custom key color flag on all frames. `True` changes the layout
-from grid to key. `True` changes the layout from key to grid. Animation
+Set the Chroma custom key color flag on all frames. `True` changes the layout 
+from grid to key. `True` changes the layout from key to grid. Animation 
 is referenced by id.
 
 ```C++
@@ -7864,8 +7867,8 @@ ChromaAnimationAPI::SetChromaCustomFlag(
 <a name="PluginSetChromaCustomFlagName"></a>
 **PluginSetChromaCustomFlagName**
 
-Set the Chroma custom key color flag on all frames. `True` changes the layout
-from grid to key. `True` changes the layout from key to grid. Animation
+Set the Chroma custom key color flag on all frames. `True` changes the layout 
+from grid to key. `True` changes the layout from key to grid. Animation 
 is referenced by name.
 
 ```C++
@@ -7962,9 +7965,9 @@ RZRESULT result = ChromaAnimationAPI::SetCustomColorFlag2D(
 <a name="PluginSetDevice"></a>
 **PluginSetDevice**
 
-Changes the `deviceType` and `device` of a `Chroma` animation. If the device
-is changed, the `Chroma` animation will be reset with 1 blank frame. Returns
-the animation id upon success. Returns -1 upon failure.
+Changes the `deviceType` and `device` of a `Chroma` animation. If the device 
+is changed, the `Chroma` animation will be reset with 1 blank frame. Returns 
+the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -8028,7 +8031,7 @@ RZRESULT result = ChromaAnimationAPI::SetEffectCustom2D(
 <a name="PluginSetEffectKeyboardCustom2D"></a>
 **PluginSetEffectKeyboardCustom2D**
 
-SetEffectKeyboardCustom2D will display the referenced custom keyboard colors
+SetEffectKeyboardCustom2D will display the referenced custom keyboard colors 
 immediately
 
 ```C++
@@ -8045,7 +8048,7 @@ RZRESULT result = ChromaAnimationAPI::SetEffectKeyboardCustom2D(
 <a name="PluginSetIdleAnimation"></a>
 **PluginSetIdleAnimation**
 
-When the idle animation is used, the named animation will play when no other
+When the idle animation is used, the named animation will play when no other 
 animations are playing. Reference the animation by id.
 
 ```C++
@@ -8060,7 +8063,7 @@ ChromaAnimationAPI::SetIdleAnimation(int animationId);
 <a name="PluginSetIdleAnimationName"></a>
 **PluginSetIdleAnimationName**
 
-When the idle animation is used, the named animation will play when no other
+When the idle animation is used, the named animation will play when no other 
 animations are playing. Reference the animation by name.
 
 ```C++
@@ -8091,7 +8094,7 @@ ChromaAnimationAPI::SetKeyColor(
 <a name="PluginSetKeyColorAllFrames"></a>
 **PluginSetKeyColorAllFrames**
 
-Set the key to the specified key color for all frames. Animation is referenced
+Set the key to the specified key color for all frames. Animation is referenced 
 by id.
 
 ```C++
@@ -8108,7 +8111,7 @@ ChromaAnimationAPI::SetKeyColorAllFrames(
 <a name="PluginSetKeyColorAllFramesName"></a>
 **PluginSetKeyColorAllFramesName**
 
-Set the key to the specified key color for all frames. Animation is referenced
+Set the key to the specified key color for all frames. Animation is referenced 
 by name.
 
 ```C++
@@ -8141,7 +8144,7 @@ double result = ChromaAnimationAPI::SetKeyColorAllFramesNameD(
 <a name="PluginSetKeyColorAllFramesRGB"></a>
 **PluginSetKeyColorAllFramesRGB**
 
-Set the key to the specified key color for all frames. Animation is referenced
+Set the key to the specified key color for all frames. Animation is referenced 
 by id.
 
 ```C++
@@ -8158,7 +8161,7 @@ ChromaAnimationAPI::SetKeyColorAllFramesRGB(
 <a name="PluginSetKeyColorAllFramesRGBName"></a>
 **PluginSetKeyColorAllFramesRGBName**
 
-Set the key to the specified key color for all frames. Animation is referenced
+Set the key to the specified key color for all frames. Animation is referenced 
 by name.
 
 ```C++
@@ -8223,7 +8226,7 @@ double result = ChromaAnimationAPI::SetKeyColorNameD(
 <a name="PluginSetKeyColorRGB"></a>
 **PluginSetKeyColorRGB**
 
-Set the key to the specified key color for the specified frame. Animation
+Set the key to the specified key color for the specified frame. Animation 
 is referenced by id.
 
 ```C++
@@ -8240,7 +8243,7 @@ ChromaAnimationAPI::SetKeyColorRGB(
 <a name="PluginSetKeyColorRGBName"></a>
 **PluginSetKeyColorRGBName**
 
-Set the key to the specified key color for the specified frame. Animation
+Set the key to the specified key color for the specified frame. Animation 
 is referenced by name.
 
 ```C++
@@ -8275,7 +8278,7 @@ double result = ChromaAnimationAPI::SetKeyColorRGBNameD(
 <a name="PluginSetKeyNonZeroColor"></a>
 **PluginSetKeyNonZeroColor**
 
-Set animation key to a static color for the given frame if the existing
+Set animation key to a static color for the given frame if the existing 
 color is not already black.
 
 ```C++
@@ -8292,7 +8295,7 @@ ChromaAnimationAPI::SetKeyNonZeroColor(
 <a name="PluginSetKeyNonZeroColorName"></a>
 **PluginSetKeyNonZeroColorName**
 
-Set animation key to a static color for the given frame if the existing
+Set animation key to a static color for the given frame if the existing 
 color is not already black.
 
 ```C++
@@ -8325,7 +8328,7 @@ double result = ChromaAnimationAPI::SetKeyNonZeroColorNameD(
 <a name="PluginSetKeyNonZeroColorRGB"></a>
 **PluginSetKeyNonZeroColorRGB**
 
-Set the key to the specified key color for the specified frame where color
+Set the key to the specified key color for the specified frame where color 
 is not black. Animation is referenced by id.
 
 ```C++
@@ -8342,7 +8345,7 @@ ChromaAnimationAPI::SetKeyNonZeroColorRGB(
 <a name="PluginSetKeyNonZeroColorRGBName"></a>
 **PluginSetKeyNonZeroColorRGBName**
 
-Set the key to the specified key color for the specified frame where color
+Set the key to the specified key color for the specified frame where color 
 is not black. Animation is referenced by name.
 
 ```C++
@@ -8393,7 +8396,7 @@ ChromaAnimationAPI::SetKeyRowColumnColorName(
 <a name="PluginSetKeysColor"></a>
 **PluginSetKeysColor**
 
-Set an array of animation keys to a static color for the given frame. Animation
+Set an array of animation keys to a static color for the given frame. Animation 
 is referenced by id.
 
 ```C++
@@ -8410,7 +8413,7 @@ ChromaAnimationAPI::SetKeysColor(
 <a name="PluginSetKeysColorAllFrames"></a>
 **PluginSetKeysColorAllFrames**
 
-Set an array of animation keys to a static color for all frames. Animation
+Set an array of animation keys to a static color for all frames. Animation 
 is referenced by id.
 
 ```C++
@@ -8427,7 +8430,7 @@ ChromaAnimationAPI::SetKeysColorAllFrames(
 <a name="PluginSetKeysColorAllFramesName"></a>
 **PluginSetKeysColorAllFramesName**
 
-Set an array of animation keys to a static color for all frames. Animation
+Set an array of animation keys to a static color for all frames. Animation 
 is referenced by name.
 
 ```C++
@@ -8444,7 +8447,7 @@ ChromaAnimationAPI::SetKeysColorAllFramesName(
 <a name="PluginSetKeysColorAllFramesRGB"></a>
 **PluginSetKeysColorAllFramesRGB**
 
-Set an array of animation keys to a static color for all frames. Animation
+Set an array of animation keys to a static color for all frames. Animation 
 is referenced by id.
 
 ```C++
@@ -8461,7 +8464,7 @@ ChromaAnimationAPI::SetKeysColorAllFramesRGB(
 <a name="PluginSetKeysColorAllFramesRGBName"></a>
 **PluginSetKeysColorAllFramesRGBName**
 
-Set an array of animation keys to a static color for all frames. Animation
+Set an array of animation keys to a static color for all frames. Animation 
 is referenced by name.
 
 ```C++
@@ -8494,7 +8497,7 @@ ChromaAnimationAPI::SetKeysColorName(
 <a name="PluginSetKeysColorRGB"></a>
 **PluginSetKeysColorRGB**
 
-Set an array of animation keys to a static color for the given frame. Animation
+Set an array of animation keys to a static color for the given frame. Animation 
 is referenced by id.
 
 ```C++
@@ -8513,7 +8516,7 @@ ChromaAnimationAPI::SetKeysColorRGB(
 <a name="PluginSetKeysColorRGBName"></a>
 **PluginSetKeysColorRGBName**
 
-Set an array of animation keys to a static color for the given frame. Animation
+Set an array of animation keys to a static color for the given frame. Animation 
 is referenced by name.
 
 ```C++
@@ -8532,7 +8535,7 @@ ChromaAnimationAPI::SetKeysColorRGBName(
 <a name="PluginSetKeysNonZeroColor"></a>
 **PluginSetKeysNonZeroColor**
 
-Set an array of animation keys to a static color for the given frame if
+Set an array of animation keys to a static color for the given frame if 
 the existing color is not already black.
 
 ```C++
@@ -8549,7 +8552,7 @@ ChromaAnimationAPI::SetKeysNonZeroColor(
 <a name="PluginSetKeysNonZeroColorAllFrames"></a>
 **PluginSetKeysNonZeroColorAllFrames**
 
-Set an array of animation keys to a static color for the given frame where
+Set an array of animation keys to a static color for the given frame where 
 the color is not black. Animation is referenced by id.
 
 ```C++
@@ -8566,7 +8569,7 @@ ChromaAnimationAPI::SetKeysNonZeroColorAllFrames(
 <a name="PluginSetKeysNonZeroColorAllFramesName"></a>
 **PluginSetKeysNonZeroColorAllFramesName**
 
-Set an array of animation keys to a static color for all frames if the existing
+Set an array of animation keys to a static color for all frames if the existing 
 color is not already black. Reference animation by name.
 
 ```C++
@@ -8583,7 +8586,7 @@ ChromaAnimationAPI::SetKeysNonZeroColorAllFramesName(
 <a name="PluginSetKeysNonZeroColorName"></a>
 **PluginSetKeysNonZeroColorName**
 
-Set an array of animation keys to a static color for the given frame if
+Set an array of animation keys to a static color for the given frame if 
 the existing color is not already black. Reference animation by name.
 
 ```C++
@@ -8600,7 +8603,7 @@ ChromaAnimationAPI::SetKeysNonZeroColorName(
 <a name="PluginSetKeysNonZeroColorRGB"></a>
 **PluginSetKeysNonZeroColorRGB**
 
-Set an array of animation keys to a static color for the given frame where
+Set an array of animation keys to a static color for the given frame where 
 the color is not black. Animation is referenced by id.
 
 ```C++
@@ -8619,7 +8622,7 @@ ChromaAnimationAPI::SetKeysNonZeroColorRGB(
 <a name="PluginSetKeysNonZeroColorRGBName"></a>
 **PluginSetKeysNonZeroColorRGBName**
 
-Set an array of animation keys to a static color for the given frame where
+Set an array of animation keys to a static color for the given frame where 
 the color is not black. Animation is referenced by name.
 
 ```C++
@@ -8638,7 +8641,7 @@ ChromaAnimationAPI::SetKeysNonZeroColorRGBName(
 <a name="PluginSetKeysZeroColor"></a>
 **PluginSetKeysZeroColor**
 
-Set an array of animation keys to a static color for the given frame where
+Set an array of animation keys to a static color for the given frame where 
 the color is black. Animation is referenced by id.
 
 ```C++
@@ -8655,7 +8658,7 @@ ChromaAnimationAPI::SetKeysZeroColor(
 <a name="PluginSetKeysZeroColorAllFrames"></a>
 **PluginSetKeysZeroColorAllFrames**
 
-Set an array of animation keys to a static color for all frames where the
+Set an array of animation keys to a static color for all frames where the 
 color is black. Animation is referenced by id.
 
 ```C++
@@ -8672,7 +8675,7 @@ ChromaAnimationAPI::SetKeysZeroColorAllFrames(
 <a name="PluginSetKeysZeroColorAllFramesName"></a>
 **PluginSetKeysZeroColorAllFramesName**
 
-Set an array of animation keys to a static color for all frames where the
+Set an array of animation keys to a static color for all frames where the 
 color is black. Animation is referenced by name.
 
 ```C++
@@ -8689,7 +8692,7 @@ ChromaAnimationAPI::SetKeysZeroColorAllFramesName(
 <a name="PluginSetKeysZeroColorAllFramesRGB"></a>
 **PluginSetKeysZeroColorAllFramesRGB**
 
-Set an array of animation keys to a static color for all frames where the
+Set an array of animation keys to a static color for all frames where the 
 color is black. Animation is referenced by id.
 
 ```C++
@@ -8706,7 +8709,7 @@ ChromaAnimationAPI::SetKeysZeroColorAllFramesRGB(
 <a name="PluginSetKeysZeroColorAllFramesRGBName"></a>
 **PluginSetKeysZeroColorAllFramesRGBName**
 
-Set an array of animation keys to a static color for all frames where the
+Set an array of animation keys to a static color for all frames where the 
 color is black. Animation is referenced by name.
 
 ```C++
@@ -8723,7 +8726,7 @@ ChromaAnimationAPI::SetKeysZeroColorAllFramesRGBName(
 <a name="PluginSetKeysZeroColorName"></a>
 **PluginSetKeysZeroColorName**
 
-Set an array of animation keys to a static color for the given frame where
+Set an array of animation keys to a static color for the given frame where 
 the color is black. Animation is referenced by name.
 
 ```C++
@@ -8740,7 +8743,7 @@ ChromaAnimationAPI::SetKeysZeroColorName(
 <a name="PluginSetKeysZeroColorRGB"></a>
 **PluginSetKeysZeroColorRGB**
 
-Set an array of animation keys to a static color for the given frame where
+Set an array of animation keys to a static color for the given frame where 
 the color is black. Animation is referenced by id.
 
 ```C++
@@ -8759,7 +8762,7 @@ ChromaAnimationAPI::SetKeysZeroColorRGB(
 <a name="PluginSetKeysZeroColorRGBName"></a>
 **PluginSetKeysZeroColorRGBName**
 
-Set an array of animation keys to a static color for the given frame where
+Set an array of animation keys to a static color for the given frame where 
 the color is black. Animation is referenced by name.
 
 ```C++
@@ -8778,7 +8781,7 @@ ChromaAnimationAPI::SetKeysZeroColorRGBName(
 <a name="PluginSetKeyZeroColor"></a>
 **PluginSetKeyZeroColor**
 
-Set animation key to a static color for the given frame where the color
+Set animation key to a static color for the given frame where the color 
 is black. Animation is referenced by id.
 
 ```C++
@@ -8795,7 +8798,7 @@ ChromaAnimationAPI::SetKeyZeroColor(
 <a name="PluginSetKeyZeroColorName"></a>
 **PluginSetKeyZeroColorName**
 
-Set animation key to a static color for the given frame where the color
+Set animation key to a static color for the given frame where the color 
 is black. Animation is referenced by name.
 
 ```C++
@@ -8828,7 +8831,7 @@ double result = ChromaAnimationAPI::SetKeyZeroColorNameD(
 <a name="PluginSetKeyZeroColorRGB"></a>
 **PluginSetKeyZeroColorRGB**
 
-Set animation key to a static color for the given frame where the color
+Set animation key to a static color for the given frame where the color 
 is black. Animation is referenced by id.
 
 ```C++
@@ -8845,7 +8848,7 @@ ChromaAnimationAPI::SetKeyZeroColorRGB(
 <a name="PluginSetKeyZeroColorRGBName"></a>
 **PluginSetKeyZeroColorRGBName**
 
-Set animation key to a static color for the given frame where the color
+Set animation key to a static color for the given frame where the color 
 is black. Animation is referenced by name.
 
 ```C++
@@ -8880,8 +8883,8 @@ double result = ChromaAnimationAPI::SetKeyZeroColorRGBNameD(
 <a name="PluginSetLogDelegate"></a>
 **PluginSetLogDelegate**
 
-Invokes the setup for a debug logging callback so that `stdout` is redirected
-to the callback. This is used by `Unity` so that debug messages can appear
+Invokes the setup for a debug logging callback so that `stdout` is redirected 
+to the callback. This is used by `Unity` so that debug messages can appear 
 in the console window.
 
 ```C++
@@ -8986,8 +8989,8 @@ ChromaAnimationAPI::StopAll();
 <a name="PluginStopAnimation"></a>
 **PluginStopAnimation**
 
-Stops animation playback if in progress. Returns the animation id upon success.
-Returns -1 upon failure.
+Stops animation playback if in progress. Returns the animation id upon success. 
+Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -9015,8 +9018,8 @@ double result = ChromaAnimationAPI::StopAnimationD(double animationId);
 <a name="PluginStopAnimationName"></a>
 **PluginStopAnimationName**
 
-`PluginStopAnimationName` automatically handles initializing the `ChromaSDK`.
-The named `.chroma` animation file will be automatically opened. The animation
+`PluginStopAnimationName` automatically handles initializing the `ChromaSDK`. 
+The named `.chroma` animation file will be automatically opened. The animation 
 will stop if playing.
 
 ```C++
@@ -9045,8 +9048,8 @@ double result = ChromaAnimationAPI::StopAnimationNameD(const char* path);
 <a name="PluginStopAnimationType"></a>
 **PluginStopAnimationType**
 
-`PluginStopAnimationType` automatically handles initializing the `ChromaSDK`.
-If any animation is playing for the `deviceType` and `device` combination,
+`PluginStopAnimationType` automatically handles initializing the `ChromaSDK`. 
+If any animation is playing for the `deviceType` and `device` combination, 
 it will be stopped.
 
 ```C++
@@ -9079,8 +9082,8 @@ double result = ChromaAnimationAPI::StopAnimationTypeD(
 <a name="PluginStopComposite"></a>
 **PluginStopComposite**
 
-`PluginStopComposite` automatically handles initializing the `ChromaSDK`.
-The named animation files for the `.chroma` set will be automatically opened.
+`PluginStopComposite` automatically handles initializing the `ChromaSDK`. 
+The named animation files for the `.chroma` set will be automatically opened. 
 The set of animations will be stopped if playing.
 
 ```C++
@@ -9125,7 +9128,7 @@ int result = ChromaAnimationAPI::SubtractColor(
 <a name="PluginSubtractNonZeroAllKeys"></a>
 **PluginSubtractNonZeroAllKeys**
 
-Subtract the source color from the target color for the frame where the
+Subtract the source color from the target color for the frame where the 
 target color is not black. Source and target are referenced by id.
 
 ```C++
@@ -9142,7 +9145,7 @@ ChromaAnimationAPI::SubtractNonZeroAllKeys(
 <a name="PluginSubtractNonZeroAllKeysAllFrames"></a>
 **PluginSubtractNonZeroAllKeysAllFrames**
 
-Subtract the source color from the target color for all frames where the
+Subtract the source color from the target color for all frames where the 
 target color is not black. Source and target are referenced by id.
 
 ```C++
@@ -9159,7 +9162,7 @@ ChromaAnimationAPI::SubtractNonZeroAllKeysAllFrames(
 <a name="PluginSubtractNonZeroAllKeysAllFramesName"></a>
 **PluginSubtractNonZeroAllKeysAllFramesName**
 
-Subtract the source color from the target color for all frames where the
+Subtract the source color from the target color for all frames where the 
 target color is not black. Source and target are referenced by name.
 
 ```C++
@@ -9192,8 +9195,8 @@ double result = ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesNameD(
 <a name="PluginSubtractNonZeroAllKeysAllFramesOffset"></a>
 **PluginSubtractNonZeroAllKeysAllFramesOffset**
 
-Subtract the source color from the target color for all frames where the
-target color is not black starting at offset for the length of the source.
+Subtract the source color from the target color for all frames where the 
+target color is not black starting at offset for the length of the source. 
 Source and target are referenced by id.
 
 ```C++
@@ -9210,8 +9213,8 @@ ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesOffset(
 <a name="PluginSubtractNonZeroAllKeysAllFramesOffsetName"></a>
 **PluginSubtractNonZeroAllKeysAllFramesOffsetName**
 
-Subtract the source color from the target color for all frames where the
-target color is not black starting at offset for the length of the source.
+Subtract the source color from the target color for all frames where the 
+target color is not black starting at offset for the length of the source. 
 Source and target are referenced by name.
 
 ```C++
@@ -9244,7 +9247,7 @@ double result = ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesOffsetNameD(
 <a name="PluginSubtractNonZeroAllKeysName"></a>
 **PluginSubtractNonZeroAllKeysName**
 
-Subtract the source color from the target color for the frame where the
+Subtract the source color from the target color for the frame where the 
 target color is not black. Source and target are referenced by name.
 
 ```C++
@@ -9261,7 +9264,7 @@ ChromaAnimationAPI::SubtractNonZeroAllKeysName(
 <a name="PluginSubtractNonZeroAllKeysOffset"></a>
 **PluginSubtractNonZeroAllKeysOffset**
 
-Subtract the source color from the target where color is not black for the
+Subtract the source color from the target where color is not black for the 
 source frame and target offset frame, reference source and target by id.
 
 ```C++
@@ -9278,7 +9281,7 @@ ChromaAnimationAPI::SubtractNonZeroAllKeysOffset(
 <a name="PluginSubtractNonZeroAllKeysOffsetName"></a>
 **PluginSubtractNonZeroAllKeysOffsetName**
 
-Subtract the source color from the target where color is not black for the
+Subtract the source color from the target where color is not black for the 
 source frame and target offset frame, reference source and target by name.
 
 ```C++
@@ -9313,7 +9316,7 @@ double result = ChromaAnimationAPI::SubtractNonZeroAllKeysOffsetNameD(
 <a name="PluginSubtractNonZeroTargetAllKeysAllFrames"></a>
 **PluginSubtractNonZeroTargetAllKeysAllFrames**
 
-Subtract the source color from the target color where the target color is
+Subtract the source color from the target color where the target color is 
 not black for all frames. Reference source and target by id.
 
 ```C++
@@ -9330,7 +9333,7 @@ ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFrames(
 <a name="PluginSubtractNonZeroTargetAllKeysAllFramesName"></a>
 **PluginSubtractNonZeroTargetAllKeysAllFramesName**
 
-Subtract the source color from the target color where the target color is
+Subtract the source color from the target color where the target color is 
 not black for all frames. Reference source and target by name.
 
 ```C++
@@ -9363,8 +9366,8 @@ double result = ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesNameD(
 <a name="PluginSubtractNonZeroTargetAllKeysAllFramesOffset"></a>
 **PluginSubtractNonZeroTargetAllKeysAllFramesOffset**
 
-Subtract the source color from the target color where the target color is
-not black for all frames starting at the target offset for the length of
+Subtract the source color from the target color where the target color is 
+not black for all frames starting at the target offset for the length of 
 the source. Reference source and target by id.
 
 ```C++
@@ -9381,8 +9384,8 @@ ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesOffset(
 <a name="PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName"></a>
 **PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName**
 
-Subtract the source color from the target color where the target color is
-not black for all frames starting at the target offset for the length of
+Subtract the source color from the target color where the target color is 
+not black for all frames starting at the target offset for the length of 
 the source. Reference source and target by name.
 
 ```C++
@@ -9415,8 +9418,8 @@ double result = ChromaAnimationAPI::SubtractNonZeroTargetAllKeysAllFramesOffsetN
 <a name="PluginSubtractNonZeroTargetAllKeysOffset"></a>
 **PluginSubtractNonZeroTargetAllKeysOffset**
 
-Subtract the source color from the target color where the target color is
-not black from the source frame to the target offset frame. Reference source
+Subtract the source color from the target color where the target color is 
+not black from the source frame to the target offset frame. Reference source 
 and target by id.
 
 ```C++
@@ -9433,8 +9436,8 @@ ChromaAnimationAPI::SubtractNonZeroTargetAllKeysOffset(
 <a name="PluginSubtractNonZeroTargetAllKeysOffsetName"></a>
 **PluginSubtractNonZeroTargetAllKeysOffsetName**
 
-Subtract the source color from the target color where the target color is
-not black from the source frame to the target offset frame. Reference source
+Subtract the source color from the target color where the target color is 
+not black from the source frame to the target offset frame. Reference source 
 and target by name.
 
 ```C++
@@ -9469,8 +9472,8 @@ double result = ChromaAnimationAPI::SubtractNonZeroTargetAllKeysOffsetNameD(
 <a name="PluginSubtractThresholdColorsMinMaxAllFramesRGB"></a>
 **PluginSubtractThresholdColorsMinMaxAllFramesRGB**
 
-Subtract all frames with the min RGB color where the animation color is
-less than the min threshold AND with the max RGB color where the animation
+Subtract all frames with the min RGB color where the animation color is 
+less than the min threshold AND with the max RGB color where the animation 
 is more than the max threshold. Animation is referenced by id.
 
 ```C++
@@ -9491,8 +9494,8 @@ ChromaAnimationAPI::SubtractThresholdColorsMinMaxAllFramesRGB(
 <a name="PluginSubtractThresholdColorsMinMaxAllFramesRGBName"></a>
 **PluginSubtractThresholdColorsMinMaxAllFramesRGBName**
 
-Subtract all frames with the min RGB color where the animation color is
-less than the min threshold AND with the max RGB color where the animation
+Subtract all frames with the min RGB color where the animation color is 
+less than the min threshold AND with the max RGB color where the animation 
 is more than the max threshold. Animation is referenced by name.
 
 ```C++
@@ -9531,8 +9534,8 @@ double result = ChromaAnimationAPI::SubtractThresholdColorsMinMaxAllFramesRGBNam
 <a name="PluginSubtractThresholdColorsMinMaxRGB"></a>
 **PluginSubtractThresholdColorsMinMaxRGB**
 
-Subtract the specified frame with the min RGB color where the animation
-color is less than the min threshold AND with the max RGB color where the
+Subtract the specified frame with the min RGB color where the animation 
+color is less than the min threshold AND with the max RGB color where the 
 animation is more than the max threshold. Animation is referenced by id.
 
 ```C++
@@ -9553,8 +9556,8 @@ ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGB(
 <a name="PluginSubtractThresholdColorsMinMaxRGBName"></a>
 **PluginSubtractThresholdColorsMinMaxRGBName**
 
-Subtract the specified frame with the min RGB color where the animation
-color is less than the min threshold AND with the max RGB color where the
+Subtract the specified frame with the min RGB color where the animation 
+color is less than the min threshold AND with the max RGB color where the 
 animation is more than the max threshold. Animation is referenced by name.
 
 ```C++
@@ -9595,8 +9598,8 @@ double result = ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGBNameD(
 <a name="PluginTrimEndFrames"></a>
 **PluginTrimEndFrames**
 
-Trim the end of the animation. The length of the animation will be the lastFrameId
-+ 1. Reference the animation by id.
+Trim the end of the animation. The length of the animation will be the lastFrameId 
+plus one. Reference the animation by id.
 
 ```C++
 // DLL Interface
@@ -9612,8 +9615,8 @@ ChromaAnimationAPI::TrimEndFrames(
 <a name="PluginTrimEndFramesName"></a>
 **PluginTrimEndFramesName**
 
-Trim the end of the animation. The length of the animation will be the lastFrameId
-+ 1. Reference the animation by name.
+Trim the end of the animation. The length of the animation will be the lastFrameId 
+plus one. Reference the animation by name.
 
 ```C++
 // DLL Interface
@@ -9693,7 +9696,7 @@ double result = ChromaAnimationAPI::TrimFrameNameD(
 <a name="PluginTrimStartFrames"></a>
 **PluginTrimStartFrames**
 
-Trim the start of the animation starting at frame 0 for the number of frames.
+Trim the start of the animation starting at frame 0 for the number of frames. 
 Reference the animation by id.
 
 ```C++
@@ -9710,7 +9713,7 @@ ChromaAnimationAPI::TrimStartFrames(
 <a name="PluginTrimStartFramesName"></a>
 **PluginTrimStartFramesName**
 
-Trim the start of the animation starting at frame 0 for the number of frames.
+Trim the start of the animation starting at frame 0 for the number of frames. 
 Reference the animation by name.
 
 ```C++
@@ -9743,7 +9746,8 @@ double result = ChromaAnimationAPI::TrimStartFramesNameD(
 <a name="PluginUninit"></a>
 **PluginUninit**
 
-Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
+Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns negative 
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -9771,8 +9775,9 @@ double result = ChromaAnimationAPI::UninitD();
 <a name="PluginUnloadAnimation"></a>
 **PluginUnloadAnimation**
 
-Unloads `Chroma` effects to free up resources. Returns the animation id
-upon success. Returns -1 upon failure. Reference the animation by id.
+Unloads `Chroma` effects to free up resources. Returns the animation id 
+upon success. Returns negative one upon failure. Reference the animation 
+by id.
 
 ```C++
 // DLL Interface
@@ -9814,7 +9819,7 @@ ChromaAnimationAPI::UnloadAnimationName(const char* path);
 <a name="PluginUnloadComposite"></a>
 **PluginUnloadComposite**
 
-Unload the the composite set of animation effects. Reference the animation
+Unload the the composite set of animation effects. Reference the animation 
 by name.
 
 ```C++
@@ -9857,13 +9862,13 @@ ChromaAnimationAPI::UnloadLibraryStreamingPlugin();
 <a name="PluginUpdateFrame"></a>
 **PluginUpdateFrame**
 
-Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
-(in seconds). The `color` is expected to be an array of the dimensions
-for the `deviceType/device`. The `length` parameter is the size of the
-`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
-LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
-failure.
+Updates the `frameIndex` of the `Chroma` animation and sets the `duration` 
+(in seconds). The `color` is expected to be an array of the dimensions 
+for the `deviceType/device`. The `length` parameter is the size of the 
+`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX 
+LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` 
+times `MAX COLUMN`. Returns the animation id upon success. Returns negative 
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -9879,13 +9884,13 @@ int result = ChromaAnimationAPI::UpdateFrame(
 <a name="PluginUpdateFrameName"></a>
 **PluginUpdateFrameName**
 
-Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
-(in seconds). The `color` is expected to be an array of the dimensions
-for the `deviceType/device`. The `length` parameter is the size of the
-`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
-LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
-failure.
+Updates the `frameIndex` of the `Chroma` animation and sets the `duration` 
+(in seconds). The `color` is expected to be an array of the dimensions 
+for the `deviceType/device`. The `length` parameter is the size of the 
+`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX 
+LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` 
+times `MAX COLUMN`. Returns the animation id upon success. Returns negative 
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -9901,10 +9906,10 @@ int result = ChromaAnimationAPI::UpdateFrameName(
 <a name="PluginUseIdleAnimation"></a>
 **PluginUseIdleAnimation**
 
-When the idle animation flag is true, when no other animations are playing,
-the idle animation will be used. The idle animation will not be affected
-by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId,
-and PluginGetPlayingAnimationCount. Then the idle animation flag is false,
+When the idle animation flag is true, when no other animations are playing, 
+the idle animation will be used. The idle animation will not be affected 
+by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId, 
+and PluginGetPlayingAnimationCount. Then the idle animation flag is false, 
 the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 
 ```C++
@@ -9935,7 +9940,7 @@ ChromaAnimationAPI::UseIdleAnimations(bool flag);
 <a name="PluginUsePreloading"></a>
 **PluginUsePreloading**
 
-Set preloading animation flag, which is set to true by default. Reference
+Set preloading animation flag, which is set to true by default. Reference 
 animation by id.
 
 ```C++
@@ -9952,7 +9957,7 @@ ChromaAnimationAPI::UsePreloading(
 <a name="PluginUsePreloadingName"></a>
 **PluginUsePreloadingName**
 
-Set preloading animation flag, which is set to true by default. Reference
+Set preloading animation flag, which is set to true by default. Reference 
 animation by name.
 
 ```C++

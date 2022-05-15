@@ -74,8 +74,8 @@ extern "C"
 		The `color` is expected to be an array of the dimensions for the `deviceType/device`.
 		The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum`
 		the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array
-		size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon
-		success. Returns -1 upon failure.
+		size should be `MAX ROW` times `MAX COLUMN`. Returns the animation id upon
+		success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginAddFrame(int animationId, float duration, int* colors, int length);
 	/*
@@ -205,9 +205,9 @@ extern "C"
 	EXPORT_API void PluginCloseAll();
 	/*
 		Closes the `Chroma` animation to free up resources referenced by id. Returns
-		the animation id upon success. Returns -1 upon failure. This might be used
-		while authoring effects if there was a change necessitating re-opening
-		the animation. The animation id can no longer be used once closed.
+		the animation id upon success. Returns negative one upon failure. This
+		might be used while authoring effects if there was a change necessitating
+		re-opening the animation. The animation id can no longer be used once closed.
 	*/
 	EXPORT_API int PluginCloseAnimation(int animationId);
 	/*
@@ -777,10 +777,10 @@ extern "C"
 		Creates a `Chroma` animation at the given path. The `deviceType` parameter
 		uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses
 		`EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective
-		to the `deviceType`. Returns the animation id upon success. Returns -1
-		upon failure. Saves a `Chroma` animation file with the `.chroma` extension
-		at the given path. Returns the animation id upon success. Returns -1 upon
-		failure.
+		to the `deviceType`. Returns the animation id upon success. Returns negative
+		one upon failure. Saves a `Chroma` animation file with the `.chroma` extension
+		at the given path. Returns the animation id upon success. Returns negative
+		one upon failure.
 	*/
 	EXPORT_API int PluginCreateAnimation(const char* path, int deviceType, int device);
 	/*
@@ -788,8 +788,8 @@ extern "C"
 		parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter
 		uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer,
 		respective to the `deviceType`. Returns the animation id upon success.
-		Returns -1 upon failure. Returns the animation id upon success. Returns
-		-1 upon failure.
+		Returns negative one upon failure. Returns the animation id upon success.
+		Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginCreateAnimationInMemory(int deviceType, int device);
 	/*
@@ -1298,13 +1298,13 @@ extern "C"
 	/*
 		Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma`
 		animation respective to the `deviceType`, as an integer upon success. Returns
-		-1 upon failure.
+		negative one upon failure.
 	*/
 	EXPORT_API int PluginGetDevice(int animationId);
 	/*
 		Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma`
 		animation respective to the `deviceType`, as an integer upon success. Returns
-		-1 upon failure.
+		negative one upon failure.
 	*/
 	EXPORT_API int PluginGetDeviceName(const char* path);
 	/*
@@ -1313,12 +1313,12 @@ extern "C"
 	EXPORT_API double PluginGetDeviceNameD(const char* path);
 	/*
 		Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer
-		upon success. Returns -1 upon failure.
+		upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginGetDeviceType(int animationId);
 	/*
 		Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer
-		upon success. Returns -1 upon failure.
+		upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginGetDeviceTypeName(const char* path);
 	/*
@@ -1331,17 +1331,18 @@ extern "C"
 		`deviceType/device`. The `length` parameter is the size of the `color`
 		array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`.
 		For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX
-		COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
+		COLUMN`. Returns the animation id upon success. Returns negative one upon
+		failure.
 	*/
 	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length);
 	/*
-		Returns the frame count of a `Chroma` animation upon success. Returns -1
-		upon failure.
+		Returns the frame count of a `Chroma` animation upon success. Returns negative
+		one upon failure.
 	*/
 	EXPORT_API int PluginGetFrameCount(int animationId);
 	/*
-		Returns the frame count of a `Chroma` animation upon success. Returns -1
-		upon failure.
+		Returns the frame count of a `Chroma` animation upon success. Returns negative
+		one upon failure.
 	*/
 	EXPORT_API int PluginGetFrameCountName(const char* path);
 	/*
@@ -1373,7 +1374,7 @@ extern "C"
 	EXPORT_API double PluginGetLibraryLoadedStateD();
 	/*
 		Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an
-		integer upon success. Returns -1 upon failure.
+		integer upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginGetMaxColumn(int device);
 	/*
@@ -1382,7 +1383,7 @@ extern "C"
 	EXPORT_API double PluginGetMaxColumnD(double device);
 	/*
 		Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer
-		upon success. Returns -1 upon failure.
+		upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginGetMaxLeds(int device);
 	/*
@@ -1391,7 +1392,7 @@ extern "C"
 	EXPORT_API double PluginGetMaxLedsD(double device);
 	/*
 		Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer
-		upon success. Returns -1 upon failure.
+		upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginGetMaxRow(int device);
 	/*
@@ -1578,7 +1579,7 @@ extern "C"
 	EXPORT_API int PluginLerpColor(int from, int to, float t);
 	/*
 		Loads `Chroma` effects so that the animation can be played immediately.
-		Returns the animation id upon success. Returns -1 upon failure.
+		Returns the animation id upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginLoadAnimation(int animationId);
 	/*
@@ -1659,13 +1660,13 @@ extern "C"
 	EXPORT_API double PluginMakeBlankFramesRGBNameD(const char* path, double frameCount, double duration, double red, double green, double blue);
 	/*
 		Flips the color grid horizontally for all `Chroma` animation frames. Returns
-		the animation id upon success. Returns -1 upon failure.
+		the animation id upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginMirrorHorizontally(int animationId);
 	/*
 		Flips the color grid vertically for all `Chroma` animation frames. This
 		method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the
-		animation id upon success. Returns -1 upon failure.
+		animation id upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginMirrorVertically(int animationId);
 	/*
@@ -1922,8 +1923,8 @@ extern "C"
 	EXPORT_API double PluginOffsetNonZeroColorsNameD(const char* path, double frameId, double red, double green, double blue);
 	/*
 		Opens a `Chroma` animation file so that it can be played. Returns an animation
-		id >= 0 upon success. Returns -1 if there was a failure. The animation
-		id is used in most of the API methods.
+		id >= 0 upon success. Returns negative one if there was a failure. The
+		animation id is used in most of the API methods.
 	*/
 	EXPORT_API int PluginOpenAnimation(const char* path);
 	/*
@@ -1934,13 +1935,13 @@ extern "C"
 		Opens a `Chroma` animation data from memory so that it can be played. `Data`
 		is a pointer to BYTE array of the loaded animation in memory. `Name` will
 		be assigned to the animation when loaded. Returns an animation id >= 0
-		upon success. Returns -1 if there was a failure. The animation id is used
-		in most of the API methods.
+		upon success. Returns negative one if there was a failure. The animation
+		id is used in most of the API methods.
 	*/
 	EXPORT_API int PluginOpenAnimationFromMemory(const BYTE* data, const char* name);
 	/*
 		Opens a `Chroma` animation file with the `.chroma` extension. Returns zero
-		upon success. Returns -1 if there was a failure.
+		upon success. Returns negative one if there was a failure.
 	*/
 	EXPORT_API int PluginOpenEditorDialog(const char* path);
 	/*
@@ -1958,7 +1959,8 @@ extern "C"
 	EXPORT_API double PluginOpenEditorDialogD(const char* path);
 	/*
 		Sets the `duration` for all grames in the `Chroma` animation to the `duration`
-		parameter. Returns the animation id upon success. Returns -1 upon failure.
+		parameter. Returns the animation id upon success. Returns negative one
+		upon failure.
 	*/
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration);
 	/*
@@ -1984,7 +1986,8 @@ extern "C"
 	EXPORT_API double PluginPauseAnimationNameD(const char* path);
 	/*
 		Plays the `Chroma` animation. This will load the animation, if not loaded
-		previously. Returns the animation id upon success. Returns -1 upon failure.
+		previously. Returns the animation id upon success. Returns negative one
+		upon failure.
 	*/
 	EXPORT_API int PluginPlayAnimation(int animationId);
 	/*
@@ -2035,7 +2038,7 @@ extern "C"
 	EXPORT_API double PluginPlayCompositeD(const char* name, double loop);
 	/*
 		Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`.
-		Returns the animation id upon success. Returns -1 upon failure.
+		Returns the animation id upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
 	/*
@@ -2063,7 +2066,7 @@ extern "C"
 	EXPORT_API double PluginReduceFramesNameD(const char* path, double n);
 	/*
 		Resets the `Chroma` animation to 1 blank frame. Returns the animation id
-		upon success. Returns -1 upon failure.
+		upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginResetAnimation(int animationId);
 	/*
@@ -2080,8 +2083,8 @@ extern "C"
 	EXPORT_API double PluginResumeAnimationNameD(const char* path, double loop);
 	/*
 		Reverse the animation frame order of the `Chroma` animation. Returns the
-		animation id upon success. Returns -1 upon failure. Animation is referenced
-		by id.
+		animation id upon success. Returns negative one upon failure. Animation
+		is referenced by id.
 	*/
 	EXPORT_API int PluginReverse(int animationId);
 	/*
@@ -2189,7 +2192,7 @@ extern "C"
 	/*
 		Changes the `deviceType` and `device` of a `Chroma` animation. If the device
 		is changed, the `Chroma` animation will be reset with 1 blank frame. Returns
-		the animation id upon success. Returns -1 upon failure.
+		the animation id upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginSetDevice(int animationId, int deviceType, int device);
 	/*
@@ -2474,7 +2477,7 @@ extern "C"
 	EXPORT_API void PluginStopAll();
 	/*
 		Stops animation playback if in progress. Returns the animation id upon success.
-		Returns -1 upon failure.
+		Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginStopAnimation(int animationId);
 	/*
@@ -2649,12 +2652,12 @@ extern "C"
 	EXPORT_API double PluginSubtractThresholdColorsMinMaxRGBNameD(const char* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
 	/*
 		Trim the end of the animation. The length of the animation will be the lastFrameId
-		+ 1. Reference the animation by id.
+		plus one. Reference the animation by id.
 	*/
 	EXPORT_API void PluginTrimEndFrames(int animationId, int lastFrameId);
 	/*
 		Trim the end of the animation. The length of the animation will be the lastFrameId
-		+ 1. Reference the animation by name.
+		plus one. Reference the animation by name.
 	*/
 	EXPORT_API void PluginTrimEndFramesName(const char* path, int lastFrameId);
 	/*
@@ -2688,7 +2691,8 @@ extern "C"
 	*/
 	EXPORT_API double PluginTrimStartFramesNameD(const char* path, double numberOfFrames);
 	/*
-		Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
+		Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns negative
+		one upon failure.
 	*/
 	EXPORT_API RZRESULT PluginUninit();
 	/*
@@ -2697,7 +2701,8 @@ extern "C"
 	EXPORT_API double PluginUninitD();
 	/*
 		Unloads `Chroma` effects to free up resources. Returns the animation id
-		upon success. Returns -1 upon failure. Reference the animation by id.
+		upon success. Returns negative one upon failure. Reference the animation
+		by id.
 	*/
 	EXPORT_API int PluginUnloadAnimation(int animationId);
 	/*
@@ -2727,8 +2732,8 @@ extern "C"
 		for the `deviceType/device`. The `length` parameter is the size of the
 		`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
 		LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-		* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
-		failure.
+		times `MAX COLUMN`. Returns the animation id upon success. Returns negative
+		one upon failure.
 	*/
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
 	/*
@@ -2737,8 +2742,8 @@ extern "C"
 		for the `deviceType/device`. The `length` parameter is the size of the
 		`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
 		LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-		* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
-		failure.
+		times `MAX COLUMN`. Returns the animation id upon success. Returns negative
+		one upon failure.
 	*/
 	EXPORT_API int PluginUpdateFrameName(const char* path, int frameIndex, float duration, int* colors, int length);
 	/*

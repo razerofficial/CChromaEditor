@@ -18,8 +18,8 @@ typedef int			(*PLUGIN_ADD_COLOR)(const int color1, const int color2);
 	The `color` is expected to be an array of the dimensions for the `deviceType/device`. 
 	The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` 
 	the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array 
-	size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon 
-	success. Returns -1 upon failure.
+	size should be `MAX ROW` times `MAX COLUMN`. Returns the animation id upon 
+	success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int length);
 /*
@@ -149,9 +149,9 @@ typedef void		(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
 typedef void		(*PLUGIN_CLOSE_ALL)();
 /*
 	Closes the `Chroma` animation to free up resources referenced by id. Returns 
-	the animation id upon success. Returns -1 upon failure. This might be used 
-	while authoring effects if there was a change necessitating re-opening 
-	the animation. The animation id can no longer be used once closed.
+	the animation id upon success. Returns negative one upon failure. This 
+	might be used while authoring effects if there was a change necessitating 
+	re-opening the animation. The animation id can no longer be used once closed.
 */
 typedef int			(*PLUGIN_CLOSE_ANIMATION)(int animationId);
 /*
@@ -721,10 +721,10 @@ typedef RZRESULT	(*PLUGIN_CORE_UNINIT)();
 	Creates a `Chroma` animation at the given path. The `deviceType` parameter 
 	uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses 
 	`EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective 
-	to the `deviceType`. Returns the animation id upon success. Returns -1 
-	upon failure. Saves a `Chroma` animation file with the `.chroma` extension 
-	at the given path. Returns the animation id upon success. Returns -1 upon 
-	failure.
+	to the `deviceType`. Returns the animation id upon success. Returns negative 
+	one upon failure. Saves a `Chroma` animation file with the `.chroma` extension 
+	at the given path. Returns the animation id upon success. Returns negative 
+	one upon failure.
 */
 typedef int			(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int device);
 /*
@@ -732,8 +732,8 @@ typedef int			(*PLUGIN_CREATE_ANIMATION)(const char* path, int deviceType, int d
 	parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter 
 	uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, 
 	respective to the `deviceType`. Returns the animation id upon success. 
-	Returns -1 upon failure. Returns the animation id upon success. Returns 
-	-1 upon failure.
+	Returns negative one upon failure. Returns the animation id upon success. 
+	Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_CREATE_ANIMATION_IN_MEMORY)(int deviceType, int device);
 /*
@@ -1242,13 +1242,13 @@ typedef double		(*PLUGIN_GET_CURRENT_FRAME_NAME_D)(const char* path);
 /*
 	Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
 	animation respective to the `deviceType`, as an integer upon success. Returns 
-	-1 upon failure.
+	negative one upon failure.
 */
 typedef int			(*PLUGIN_GET_DEVICE)(int animationId);
 /*
 	Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
 	animation respective to the `deviceType`, as an integer upon success. Returns 
-	-1 upon failure.
+	negative one upon failure.
 */
 typedef int			(*PLUGIN_GET_DEVICE_NAME)(const char* path);
 /*
@@ -1257,12 +1257,12 @@ typedef int			(*PLUGIN_GET_DEVICE_NAME)(const char* path);
 typedef double		(*PLUGIN_GET_DEVICE_NAME_D)(const char* path);
 /*
 	Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
-	upon success. Returns -1 upon failure.
+	upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_GET_DEVICE_TYPE)(int animationId);
 /*
 	Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
-	upon success. Returns -1 upon failure.
+	upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_GET_DEVICE_TYPE_NAME)(const char* path);
 /*
@@ -1275,17 +1275,18 @@ typedef double		(*PLUGIN_GET_DEVICE_TYPE_NAME_D)(const char* path);
 	`deviceType/device`. The `length` parameter is the size of the `color` 
 	array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. 
 	For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX 
-	COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
+	COLUMN`. Returns the animation id upon success. Returns negative one upon 
+	failure.
 */
 typedef int			(*PLUGIN_GET_FRAME)(int animationId, int frameIndex, float* duration, int* colors, int length);
 /*
-	Returns the frame count of a `Chroma` animation upon success. Returns -1 
-	upon failure.
+	Returns the frame count of a `Chroma` animation upon success. Returns negative 
+	one upon failure.
 */
 typedef int			(*PLUGIN_GET_FRAME_COUNT)(int animationId);
 /*
-	Returns the frame count of a `Chroma` animation upon success. Returns -1 
-	upon failure.
+	Returns the frame count of a `Chroma` animation upon success. Returns negative 
+	one upon failure.
 */
 typedef int			(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
 /*
@@ -1317,7 +1318,7 @@ typedef RZRESULT	(*PLUGIN_GET_LIBRARY_LOADED_STATE)();
 typedef double		(*PLUGIN_GET_LIBRARY_LOADED_STATE_D)();
 /*
 	Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an 
-	integer upon success. Returns -1 upon failure.
+	integer upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_GET_MAX_COLUMN)(int device);
 /*
@@ -1326,7 +1327,7 @@ typedef int			(*PLUGIN_GET_MAX_COLUMN)(int device);
 typedef double		(*PLUGIN_GET_MAX_COLUMN_D)(double device);
 /*
 	Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer 
-	upon success. Returns -1 upon failure.
+	upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_GET_MAX_LEDS)(int device);
 /*
@@ -1335,7 +1336,7 @@ typedef int			(*PLUGIN_GET_MAX_LEDS)(int device);
 typedef double		(*PLUGIN_GET_MAX_LEDS_D)(double device);
 /*
 	Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer 
-	upon success. Returns -1 upon failure.
+	upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_GET_MAX_ROW)(int device);
 /*
@@ -1522,7 +1523,7 @@ typedef float		(*PLUGIN_LERP)(float start, float end, float amt);
 typedef int			(*PLUGIN_LERP_COLOR)(int from, int to, float t);
 /*
 	Loads `Chroma` effects so that the animation can be played immediately. 
-	Returns the animation id upon success. Returns -1 upon failure.
+	Returns the animation id upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_LOAD_ANIMATION)(int animationId);
 /*
@@ -1603,13 +1604,13 @@ typedef void		(*PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME)(const char* path, int frameCo
 typedef double		(*PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME_D)(const char* path, double frameCount, double duration, double red, double green, double blue);
 /*
 	Flips the color grid horizontally for all `Chroma` animation frames. Returns 
-	the animation id upon success. Returns -1 upon failure.
+	the animation id upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_MIRROR_HORIZONTALLY)(int animationId);
 /*
 	Flips the color grid vertically for all `Chroma` animation frames. This 
 	method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the 
-	animation id upon success. Returns -1 upon failure.
+	animation id upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_MIRROR_VERTICALLY)(int animationId);
 /*
@@ -1866,8 +1867,8 @@ typedef void		(*PLUGIN_OFFSET_NON_ZERO_COLORS_NAME)(const char* path, int frameI
 typedef double		(*PLUGIN_OFFSET_NON_ZERO_COLORS_NAME_D)(const char* path, double frameId, double red, double green, double blue);
 /*
 	Opens a `Chroma` animation file so that it can be played. Returns an animation 
-	id >= 0 upon success. Returns -1 if there was a failure. The animation 
-	id is used in most of the API methods.
+	id >= 0 upon success. Returns negative one if there was a failure. The 
+	animation id is used in most of the API methods.
 */
 typedef int			(*PLUGIN_OPEN_ANIMATION)(const char* path);
 /*
@@ -1878,13 +1879,13 @@ typedef double		(*PLUGIN_OPEN_ANIMATION_D)(const char* path);
 	Opens a `Chroma` animation data from memory so that it can be played. `Data` 
 	is a pointer to BYTE array of the loaded animation in memory. `Name` will 
 	be assigned to the animation when loaded. Returns an animation id >= 0 
-	upon success. Returns -1 if there was a failure. The animation id is used 
-	in most of the API methods.
+	upon success. Returns negative one if there was a failure. The animation 
+	id is used in most of the API methods.
 */
 typedef int			(*PLUGIN_OPEN_ANIMATION_FROM_MEMORY)(const BYTE* data, const char* name);
 /*
 	Opens a `Chroma` animation file with the `.chroma` extension. Returns zero 
-	upon success. Returns -1 if there was a failure.
+	upon success. Returns negative one if there was a failure.
 */
 typedef int			(*PLUGIN_OPEN_EDITOR_DIALOG)(const char* path);
 /*
@@ -1902,7 +1903,8 @@ typedef double		(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY_D)(const char* path);
 typedef double		(*PLUGIN_OPEN_EDITOR_DIALOG_D)(const char* path);
 /*
 	Sets the `duration` for all grames in the `Chroma` animation to the `duration` 
-	parameter. Returns the animation id upon success. Returns -1 upon failure.
+	parameter. Returns the animation id upon success. Returns negative one 
+	upon failure.
 */
 typedef int			(*PLUGIN_OVERRIDE_FRAME_DURATION)(int animationId, float duration);
 /*
@@ -1928,7 +1930,8 @@ typedef void		(*PLUGIN_PAUSE_ANIMATION_NAME)(const char* path);
 typedef double		(*PLUGIN_PAUSE_ANIMATION_NAME_D)(const char* path);
 /*
 	Plays the `Chroma` animation. This will load the animation, if not loaded 
-	previously. Returns the animation id upon success. Returns -1 upon failure.
+	previously. Returns the animation id upon success. Returns negative one 
+	upon failure.
 */
 typedef int			(*PLUGIN_PLAY_ANIMATION)(int animationId);
 /*
@@ -1979,7 +1982,7 @@ typedef void		(*PLUGIN_PLAY_COMPOSITE)(const char* name, bool loop);
 typedef double		(*PLUGIN_PLAY_COMPOSITE_D)(const char* name, double loop);
 /*
 	Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`. 
-	Returns the animation id upon success. Returns -1 upon failure.
+	Returns the animation id upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_PREVIEW_FRAME)(int animationId, int frameIndex);
 /*
@@ -2007,7 +2010,7 @@ typedef void		(*PLUGIN_REDUCE_FRAMES_NAME)(const char* path, int n);
 typedef double		(*PLUGIN_REDUCE_FRAMES_NAME_D)(const char* path, double n);
 /*
 	Resets the `Chroma` animation to 1 blank frame. Returns the animation id 
-	upon success. Returns -1 upon failure.
+	upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_RESET_ANIMATION)(int animationId);
 /*
@@ -2024,8 +2027,8 @@ typedef void		(*PLUGIN_RESUME_ANIMATION_NAME)(const char* path, bool loop);
 typedef double		(*PLUGIN_RESUME_ANIMATION_NAME_D)(const char* path, double loop);
 /*
 	Reverse the animation frame order of the `Chroma` animation. Returns the 
-	animation id upon success. Returns -1 upon failure. Animation is referenced 
-	by id.
+	animation id upon success. Returns negative one upon failure. Animation 
+	is referenced by id.
 */
 typedef int			(*PLUGIN_REVERSE)(int animationId);
 /*
@@ -2133,7 +2136,7 @@ typedef RZRESULT	(*PLUGIN_SET_CUSTOM_COLOR_FLAG_2D_)(int device, int* colors);
 /*
 	Changes the `deviceType` and `device` of a `Chroma` animation. If the device 
 	is changed, the `Chroma` animation will be reset with 1 blank frame. Returns 
-	the animation id upon success. Returns -1 upon failure.
+	the animation id upon success. Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_SET_DEVICE)(int animationId, int deviceType, int device);
 /*
@@ -2418,7 +2421,7 @@ typedef double		(*PLUGIN_STATIC_COLOR_D)(double deviceType, double device, doubl
 typedef void		(*PLUGIN_STOP_ALL)();
 /*
 	Stops animation playback if in progress. Returns the animation id upon success. 
-	Returns -1 upon failure.
+	Returns negative one upon failure.
 */
 typedef int			(*PLUGIN_STOP_ANIMATION)(int animationId);
 /*
@@ -2593,12 +2596,12 @@ typedef void		(*PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB_NAME)(const char* p
 typedef double		(*PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB_NAME_D)(const char* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
 /*
 	Trim the end of the animation. The length of the animation will be the lastFrameId 
-	+ 1. Reference the animation by id.
+	plus one. Reference the animation by id.
 */
 typedef void		(*PLUGIN_TRIM_END_FRAMES)(int animationId, int lastFrameId);
 /*
 	Trim the end of the animation. The length of the animation will be the lastFrameId 
-	+ 1. Reference the animation by name.
+	plus one. Reference the animation by name.
 */
 typedef void		(*PLUGIN_TRIM_END_FRAMES_NAME)(const char* path, int lastFrameId);
 /*
@@ -2632,7 +2635,8 @@ typedef void		(*PLUGIN_TRIM_START_FRAMES_NAME)(const char* path, int numberOfFra
 */
 typedef double		(*PLUGIN_TRIM_START_FRAMES_NAME_D)(const char* path, double numberOfFrames);
 /*
-	Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
+	Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns negative 
+	one upon failure.
 */
 typedef RZRESULT	(*PLUGIN_UNINIT)();
 /*
@@ -2641,7 +2645,8 @@ typedef RZRESULT	(*PLUGIN_UNINIT)();
 typedef double		(*PLUGIN_UNINIT_D)();
 /*
 	Unloads `Chroma` effects to free up resources. Returns the animation id 
-	upon success. Returns -1 upon failure. Reference the animation by id.
+	upon success. Returns negative one upon failure. Reference the animation 
+	by id.
 */
 typedef int			(*PLUGIN_UNLOAD_ANIMATION)(int animationId);
 /*
@@ -2671,8 +2676,8 @@ typedef void		(*PLUGIN_UNLOAD_LIBRARY_STREAMING_PLUGIN)();
 	for the `deviceType/device`. The `length` parameter is the size of the 
 	`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX 
 	LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` 
-	* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon 
-	failure.
+	times `MAX COLUMN`. Returns the animation id upon success. Returns negative 
+	one upon failure.
 */
 typedef int			(*PLUGIN_UPDATE_FRAME)(int animationId, int frameIndex, float duration, int* colors, int length);
 /*
@@ -2681,8 +2686,8 @@ typedef int			(*PLUGIN_UPDATE_FRAME)(int animationId, int frameIndex, float dura
 	for the `deviceType/device`. The `length` parameter is the size of the 
 	`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX 
 	LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` 
-	* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon 
-	failure.
+	times `MAX COLUMN`. Returns the animation id upon success. Returns negative 
+	one upon failure.
 */
 typedef int			(*PLUGIN_UPDATE_FRAME_NAME)(const char* path, int frameIndex, float duration, int* colors, int length);
 /*
@@ -2732,8 +2737,8 @@ namespace ChromaSDK
 			The `color` is expected to be an array of the dimensions for the `deviceType/device`. 
 			The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` 
 			the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array 
-			size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon 
-			success. Returns -1 upon failure.
+			size should be `MAX ROW` times `MAX COLUMN`. Returns the animation id upon 
+			success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_FRAME, AddFrame);
 		/*
@@ -2863,9 +2868,9 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ALL, CloseAll);
 		/*
 			Closes the `Chroma` animation to free up resources referenced by id. Returns 
-			the animation id upon success. Returns -1 upon failure. This might be used 
-			while authoring effects if there was a change necessitating re-opening 
-			the animation. The animation id can no longer be used once closed.
+			the animation id upon success. Returns negative one upon failure. This 
+			might be used while authoring effects if there was a change necessitating 
+			re-opening the animation. The animation id can no longer be used once closed.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION, CloseAnimation);
 		/*
@@ -3435,10 +3440,10 @@ namespace ChromaSDK
 			Creates a `Chroma` animation at the given path. The `deviceType` parameter 
 			uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses 
 			`EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective 
-			to the `deviceType`. Returns the animation id upon success. Returns -1 
-			upon failure. Saves a `Chroma` animation file with the `.chroma` extension 
-			at the given path. Returns the animation id upon success. Returns -1 upon 
-			failure.
+			to the `deviceType`. Returns the animation id upon success. Returns negative 
+			one upon failure. Saves a `Chroma` animation file with the `.chroma` extension 
+			at the given path. Returns the animation id upon success. Returns negative 
+			one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_ANIMATION, CreateAnimation);
 		/*
@@ -3446,8 +3451,8 @@ namespace ChromaSDK
 			parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter 
 			uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, 
 			respective to the `deviceType`. Returns the animation id upon success. 
-			Returns -1 upon failure. Returns the animation id upon success. Returns 
-			-1 upon failure.
+			Returns negative one upon failure. Returns the animation id upon success. 
+			Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_ANIMATION_IN_MEMORY, CreateAnimationInMemory);
 		/*
@@ -3956,13 +3961,13 @@ namespace ChromaSDK
 		/*
 			Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
 			animation respective to the `deviceType`, as an integer upon success. Returns 
-			-1 upon failure.
+			negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE, GetDevice);
 		/*
 			Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
 			animation respective to the `deviceType`, as an integer upon success. Returns 
-			-1 upon failure.
+			negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_NAME, GetDeviceName);
 		/*
@@ -3971,12 +3976,12 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_NAME_D, GetDeviceNameD);
 		/*
 			Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
-			upon success. Returns -1 upon failure.
+			upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_TYPE, GetDeviceType);
 		/*
 			Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
-			upon success. Returns -1 upon failure.
+			upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_TYPE_NAME, GetDeviceTypeName);
 		/*
@@ -3989,17 +3994,18 @@ namespace ChromaSDK
 			`deviceType/device`. The `length` parameter is the size of the `color` 
 			array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. 
 			For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX 
-			COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
+			COLUMN`. Returns the animation id upon success. Returns negative one upon 
+			failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME, GetFrame);
 		/*
-			Returns the frame count of a `Chroma` animation upon success. Returns -1 
-			upon failure.
+			Returns the frame count of a `Chroma` animation upon success. Returns negative 
+			one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT, GetFrameCount);
 		/*
-			Returns the frame count of a `Chroma` animation upon success. Returns -1 
-			upon failure.
+			Returns the frame count of a `Chroma` animation upon success. Returns negative 
+			one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME, GetFrameCountName);
 		/*
@@ -4031,7 +4037,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_LIBRARY_LOADED_STATE_D, GetLibraryLoadedStateD);
 		/*
 			Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an 
-			integer upon success. Returns -1 upon failure.
+			integer upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_COLUMN, GetMaxColumn);
 		/*
@@ -4040,7 +4046,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_COLUMN_D, GetMaxColumnD);
 		/*
 			Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer 
-			upon success. Returns -1 upon failure.
+			upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_LEDS, GetMaxLeds);
 		/*
@@ -4049,7 +4055,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_LEDS_D, GetMaxLedsD);
 		/*
 			Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer 
-			upon success. Returns -1 upon failure.
+			upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_ROW, GetMaxRow);
 		/*
@@ -4236,7 +4242,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_LERP_COLOR, LerpColor);
 		/*
 			Loads `Chroma` effects so that the animation can be played immediately. 
-			Returns the animation id upon success. Returns -1 upon failure.
+			Returns the animation id upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_ANIMATION, LoadAnimation);
 		/*
@@ -4317,13 +4323,13 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME_D, MakeBlankFramesRGBNameD);
 		/*
 			Flips the color grid horizontally for all `Chroma` animation frames. Returns 
-			the animation id upon success. Returns -1 upon failure.
+			the animation id upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MIRROR_HORIZONTALLY, MirrorHorizontally);
 		/*
 			Flips the color grid vertically for all `Chroma` animation frames. This 
 			method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the 
-			animation id upon success. Returns -1 upon failure.
+			animation id upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_MIRROR_VERTICALLY, MirrorVertically);
 		/*
@@ -4580,8 +4586,8 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_NAME_D, OffsetNonZeroColorsNameD);
 		/*
 			Opens a `Chroma` animation file so that it can be played. Returns an animation 
-			id >= 0 upon success. Returns -1 if there was a failure. The animation 
-			id is used in most of the API methods.
+			id >= 0 upon success. Returns negative one if there was a failure. The 
+			animation id is used in most of the API methods.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION, OpenAnimation);
 		/*
@@ -4592,13 +4598,13 @@ namespace ChromaSDK
 			Opens a `Chroma` animation data from memory so that it can be played. `Data` 
 			is a pointer to BYTE array of the loaded animation in memory. `Name` will 
 			be assigned to the animation when loaded. Returns an animation id >= 0 
-			upon success. Returns -1 if there was a failure. The animation id is used 
-			in most of the API methods.
+			upon success. Returns negative one if there was a failure. The animation 
+			id is used in most of the API methods.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION_FROM_MEMORY, OpenAnimationFromMemory);
 		/*
 			Opens a `Chroma` animation file with the `.chroma` extension. Returns zero 
-			upon success. Returns -1 if there was a failure.
+			upon success. Returns negative one if there was a failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG, OpenEditorDialog);
 		/*
@@ -4616,7 +4622,8 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_D, OpenEditorDialogD);
 		/*
 			Sets the `duration` for all grames in the `Chroma` animation to the `duration` 
-			parameter. Returns the animation id upon success. Returns -1 upon failure.
+			parameter. Returns the animation id upon success. Returns negative one 
+			upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_OVERRIDE_FRAME_DURATION, OverrideFrameDuration);
 		/*
@@ -4642,7 +4649,8 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PAUSE_ANIMATION_NAME_D, PauseAnimationNameD);
 		/*
 			Plays the `Chroma` animation. This will load the animation, if not loaded 
-			previously. Returns the animation id upon success. Returns -1 upon failure.
+			previously. Returns the animation id upon success. Returns negative one 
+			upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION, PlayAnimation);
 		/*
@@ -4693,7 +4701,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_COMPOSITE_D, PlayCompositeD);
 		/*
 			Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`. 
-			Returns the animation id upon success. Returns -1 upon failure.
+			Returns the animation id upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame);
 		/*
@@ -4721,7 +4729,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REDUCE_FRAMES_NAME_D, ReduceFramesNameD);
 		/*
 			Resets the `Chroma` animation to 1 blank frame. Returns the animation id 
-			upon success. Returns -1 upon failure.
+			upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_RESET_ANIMATION, ResetAnimation);
 		/*
@@ -4738,8 +4746,8 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_RESUME_ANIMATION_NAME_D, ResumeAnimationNameD);
 		/*
 			Reverse the animation frame order of the `Chroma` animation. Returns the 
-			animation id upon success. Returns -1 upon failure. Animation is referenced 
-			by id.
+			animation id upon success. Returns negative one upon failure. Animation 
+			is referenced by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE, Reverse);
 		/*
@@ -4847,7 +4855,7 @@ namespace ChromaSDK
 		/*
 			Changes the `deviceType` and `device` of a `Chroma` animation. If the device 
 			is changed, the `Chroma` animation will be reset with 1 blank frame. Returns 
-			the animation id upon success. Returns -1 upon failure.
+			the animation id upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_DEVICE, SetDevice);
 		/*
@@ -5132,7 +5140,7 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ALL, StopAll);
 		/*
 			Stops animation playback if in progress. Returns the animation id upon success. 
-			Returns -1 upon failure.
+			Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION, StopAnimation);
 		/*
@@ -5307,12 +5315,12 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB_NAME_D, SubtractThresholdColorsMinMaxRGBNameD);
 		/*
 			Trim the end of the animation. The length of the animation will be the lastFrameId 
-			+ 1. Reference the animation by id.
+			plus one. Reference the animation by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_END_FRAMES, TrimEndFrames);
 		/*
 			Trim the end of the animation. The length of the animation will be the lastFrameId 
-			+ 1. Reference the animation by name.
+			plus one. Reference the animation by name.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_END_FRAMES_NAME, TrimEndFramesName);
 		/*
@@ -5346,7 +5354,8 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_START_FRAMES_NAME_D, TrimStartFramesNameD);
 		/*
-			Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
+			Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns negative 
+			one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNINIT, Uninit);
 		/*
@@ -5355,7 +5364,8 @@ namespace ChromaSDK
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNINIT_D, UninitD);
 		/*
 			Unloads `Chroma` effects to free up resources. Returns the animation id 
-			upon success. Returns -1 upon failure. Reference the animation by id.
+			upon success. Returns negative one upon failure. Reference the animation 
+			by id.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_ANIMATION, UnloadAnimation);
 		/*
@@ -5385,8 +5395,8 @@ namespace ChromaSDK
 			for the `deviceType/device`. The `length` parameter is the size of the 
 			`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX 
 			LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` 
-			* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon 
-			failure.
+			times `MAX COLUMN`. Returns the animation id upon success. Returns negative 
+			one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UPDATE_FRAME, UpdateFrame);
 		/*
@@ -5395,8 +5405,8 @@ namespace ChromaSDK
 			for the `deviceType/device`. The `length` parameter is the size of the 
 			`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX 
 			LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` 
-			* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon 
-			failure.
+			times `MAX COLUMN`. Returns the animation id upon success. Returns negative 
+			one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UPDATE_FRAME_NAME, UpdateFrameName);
 		/*
