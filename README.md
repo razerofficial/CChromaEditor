@@ -89,8 +89,6 @@ The latest versions of the `Chroma Editor Library` can be found in [Releases](ht
 
 For `Windows PC` builds the `RzChromaSDK.dll` and `RzChromaStreamPlugin.dll` are not packaged with the build. These libraries are automatically updated and managed by Synapse and the Chroma Connect module. Avoid including these files in your build folder for `Windows PC` builds.
 
-Within the `Unreal Editor` the `Chroma Editor Library` files are placed in `Win32` and `Win64` folders on Windows.
-
 **32-bit libraries**
 
 ```
