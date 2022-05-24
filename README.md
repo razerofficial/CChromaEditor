@@ -158,7 +158,7 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
  RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
  if (result != RZRESULT_SUCCESS)
  {
-  ChromaLogger::printf("UnitTests::UnitTestsInitSDK result=%ld\r\n", result);
+  ChromaLogger::printf("Failed to initialize Chroma SDK with error=%ld\r\n", result);
  
  // avoid making Chroma API calls after a non-zero init result
   return;
