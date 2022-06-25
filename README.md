@@ -73,7 +73,7 @@ The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition
 
 ```
 #ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
- _sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
+ _sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library);
 #endif
 ```
 

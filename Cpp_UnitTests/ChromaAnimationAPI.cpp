@@ -614,7 +614,7 @@ int ChromaAnimationAPI::InitAPI()
 	}
 
 #ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
-	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
+	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library);
 #endif
  	if (_sInvalidSignature)
 	{

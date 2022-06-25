@@ -23,7 +23,7 @@ namespace ChromaSDK
 {
 
 	// Source: https://docs.microsoft.com/en-us/windows/desktop/seccrypto/example-c-program--verifying-the-signature-of-a-pe-file
-	BOOL VerifyLibrarySignature::VerifyModule(HMODULE hModule, const bool validatePath)
+	BOOL VerifyLibrarySignature::VerifyModule(HMODULE hModule)
 	{
 		TCHAR szFilePath[MAX_PATH];
 		if (GetModuleFileNameEx(GetCurrentProcess(),
@@ -31,82 +31,13 @@ namespace ChromaSDK
 			szFilePath,
 			MAX_PATH) > 0)
 		{
-			if (validatePath)
+			if (IsFileSigned(szFilePath) == TRUE)
 			{
-				if ((IsValidPath(szFilePath) == TRUE) &&
-					(IsFileSigned(szFilePath) == TRUE))
-				{
-					return TRUE;
-				}
-			}
-			else
-			{
-				if (IsFileSigned(szFilePath) == TRUE)
-				{
-					return TRUE;
-				}
+				return TRUE;
 			}
 		}
 
 		return FALSE;
-	}
-
-	BOOL VerifyLibrarySignature::IsValidPath(PTCHAR szFileName)
-	{
-		BOOL bResult = FALSE;
-
-		// Get the module name
-		TCHAR szModuleName[MAX_PATH] = L"";
-		_tcscpy_s(szModuleName, MAX_PATH, szFileName);
-
-		PathStripPath(szModuleName);
-
-		// Verify the path of the module
-		// Below are valid paths
-		// Windows/System32
-		// Windows/SysWOW64
-		// Program Files/Razer Chroma SDK/bin
-		// Program Files (x86)/Razer Chroma SDK/bin
-
-		DWORD dwLength = 0;
-		TCHAR szFileNameExpected[MAX_PATH] = L"";
-		TCHAR szPath[MAX_PATH] = L"";
-
-		dwLength = GetEnvironmentVariable(L"SystemRoot",
-			szPath,
-			MAX_PATH);
-
-		if (dwLength > 0)
-		{
-			_tcscpy_s(szFileNameExpected, dwLength + 1, szPath);
-
-			_tcscat_s(szFileNameExpected, MAX_PATH, L"\\System32\\");
-			_tcscat_s(szFileNameExpected, MAX_PATH, szModuleName);
-
-			if (_tcsicmp(szFileNameExpected, szFileName) == 0)
-			{
-				bResult = TRUE;
-			}
-		}
-
-		dwLength = GetEnvironmentVariable(L"ProgramFiles",
-			szPath,
-			MAX_PATH);
-
-		if (dwLength > 0)
-		{
-			_tcscpy_s(szFileNameExpected, dwLength + 1, szPath);
-
-			_tcscat_s(szFileNameExpected, MAX_PATH, L"\\Razer Chroma SDK\\bin\\");
-			_tcscat_s(szFileNameExpected, MAX_PATH, szModuleName);
-
-			if (_tcsicmp(szFileNameExpected, szFileName) == 0)
-			{
-				bResult = TRUE;
-			}
-		}
-
-		return bResult;
 	}
 
 	BOOL VerifyLibrarySignature::IsFileSignedByRazer(PTCHAR szFileName)

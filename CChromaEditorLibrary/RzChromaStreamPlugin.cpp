@@ -7,26 +7,10 @@
 #include <stdio.h>
 
 
-#ifdef USE_CHROMA_CLOUD
-
-
 #ifdef _WIN64
 #define CHROMA_STREAMING_DLL        L"RzChromaStreamPlugin64.dll"
 #else
 #define CHROMA_STREAMING_DLL        L"RzChromaStreamPlugin.dll"
-#endif
-
-
-#else
-
-
-#ifdef _WIN64
-#define CHROMA_STREAMING_DLL        L"C:\\Program Files\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin64.dll"
-#else
-#define CHROMA_STREAMING_DLL        L"C:\\Program Files (x86)\\Razer Chroma SDK\\bin\\RzChromaStreamPlugin.dll"
-#endif
-
-
 #endif
 
 
@@ -104,7 +88,19 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 		path += L"\\";
 		path += CHROMA_STREAMING_DLL;
 #else
-		std::wstring path = CHROMA_STREAMING_DLL;
+		HMODULE library = LoadLibrary(CHROMA_STREAMING_DLL);
+		//HMODULE library = LoadLibraryEx(CHROMA_STREAMING_DLL, NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE);
+		if (library == NULL)
+		{
+			ChromaLogger::fprintf(stderr, "Failed to load Chroma SDK Library!\r\n");
+			return RZRESULT_DLL_NOT_FOUND;
+		}
+
+		wchar_t filename[MAX_PATH]; //this is a char buffer
+		GetModuleFileName(library, filename, sizeof(filename));
+		//GetModuleFileNameEx(NULL, library, filename, sizeof(filename)); //doesn't return path using LoadLibraryEx with LOAD_LIBRARY_AS_IMAGE_RESOURCE
+
+		std::wstring path = filename;
 #endif
 
 #ifdef USE_CHROMA_CLOUD
@@ -123,6 +119,7 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 		}
 #endif
 
+#ifdef USE_CHROMA_CLOUD
 		// load the library
 		HMODULE library = LoadLibrary(path.c_str());
 		if (library == NULL)
@@ -130,12 +127,13 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 			ChromaLogger::fprintf(stderr, "Failed to load Chroma Stream Library!\r\n");
 			return RZRESULT_DLL_NOT_FOUND;
 		}
+#endif
 
 		// verify the library has a valid signature
 #ifdef USE_CHROMA_CLOUD
-		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
+		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library);
 #else
-		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, true);
+		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library);
 #endif
  		if (_sInvalidSignature)
 		{

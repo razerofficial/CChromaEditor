@@ -11,10 +11,9 @@ namespace ChromaSDK
 	class VerifyLibrarySignature
 	{
 	public:
-		static BOOL VerifyModule(HMODULE hModule, const bool validatePath);
+		static BOOL VerifyModule(HMODULE hModule);
 		static BOOL IsFileVersionSameOrNewer(const wchar_t* szFileName, const int minMajor, const int minMinor, const int minRevision, const int minBuild);
 	private:
-		static BOOL IsValidPath(PTCHAR szFileName);
 		static BOOL IsFileSignedByRazer(PTCHAR szFileName);
 		static BOOL IsFileSigned(PTCHAR szFileName);
 	};
