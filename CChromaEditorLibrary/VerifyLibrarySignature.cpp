@@ -23,24 +23,12 @@ namespace ChromaSDK
 {
 
 	// Source: https://docs.microsoft.com/en-us/windows/desktop/seccrypto/example-c-program--verifying-the-signature-of-a-pe-file
-	BOOL VerifyLibrarySignature::VerifyModule(HMODULE hModule)
+	BOOL VerifyLibrarySignature::VerifyModule(const std::wstring& filename)
 	{
-		TCHAR szFilePath[MAX_PATH];
-		if (GetModuleFileNameEx(GetCurrentProcess(),
-			hModule,
-			szFilePath,
-			MAX_PATH) > 0)
-		{
-			if (IsFileSigned(szFilePath) == TRUE)
-			{
-				return TRUE;
-			}
-		}
-
-		return FALSE;
+		return IsFileSigned(filename.c_str());
 	}
 
-	BOOL VerifyLibrarySignature::IsFileSignedByRazer(PTCHAR szFileName)
+	BOOL VerifyLibrarySignature::IsFileSignedByRazer(const wchar_t* szFileName)
 	{
 		BOOL bResult = FALSE;
 
@@ -140,7 +128,7 @@ namespace ChromaSDK
 		return bResult;
 	}
 
-	BOOL VerifyLibrarySignature::IsFileSigned(PTCHAR szFileName)
+	BOOL VerifyLibrarySignature::IsFileSigned(const wchar_t* szFileName)
 	{
 		BOOL bResult = FALSE;
 		DWORD dwLastError = 0;
@@ -270,12 +258,12 @@ namespace ChromaSDK
 		return bResult;
 	}
 
-	BOOL VerifyLibrarySignature::IsFileVersionSameOrNewer(const wchar_t* szFileName, const int minMajor, const int minMinor, const int minRevision, const int minBuild)
+	BOOL VerifyLibrarySignature::IsFileVersionSameOrNewer(const std::wstring& filename, const int minMajor, const int minMinor, const int minRevision, const int minBuild)
 	{
-		wstring fileName = szFileName;
-		std::filesystem::path p = fileName.c_str();
+		std::filesystem::path p = filename.c_str();
 		if (!std::filesystem::exists(p))
 		{
+			ChromaLogger::fwprintf(stderr, L"Library not found! %s\r\n", filename.c_str());
 			return false;
 		}
 
@@ -284,13 +272,13 @@ namespace ChromaSDK
 		DWORD  verHandle = 0;
 		UINT   size = 0;
 		LPBYTE lpBuffer = NULL;
-		DWORD  verSize = GetFileVersionInfoSize(fileName.c_str(), &verHandle);
+		DWORD  verSize = GetFileVersionInfoSize(filename.c_str(), &verHandle);
 
 		if (verSize)
 		{
 			LPSTR verData = (LPSTR)malloc(verSize);
 
-			if (GetFileVersionInfo(fileName.c_str(), verHandle, verSize, verData))
+			if (GetFileVersionInfo(filename.c_str(), verHandle, verSize, verData))
 			{
 				if (VerQueryValue(verData, L"\\", (VOID FAR * FAR*) & lpBuffer, &size))
 				{
@@ -304,7 +292,7 @@ namespace ChromaSDK
 							const int revision = (verInfo->dwFileVersionLS >> 16) & 0xffff;
 							const int build = (verInfo->dwFileVersionLS >> 0) & 0xffff;
 
-							ChromaLogger::wprintf(L"File Version: %d.%d.%d.%d %s\r\n", major, minor, revision, build, szFileName);
+							ChromaLogger::wprintf(L"File Version: %d.%d.%d.%d %s\r\n", major, minor, revision, build, filename.c_str());
 
 							// Anything less than the min version returns false
 

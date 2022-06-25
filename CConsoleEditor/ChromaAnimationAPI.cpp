@@ -606,25 +606,20 @@ int ChromaAnimationAPI::InitAPI()
 		return RZRESULT_DLL_NOT_FOUND;
 	}
 
+#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
+	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(path);
+#endif
+	if (_sInvalidSignature)
+	{
+		ChromaLogger::fprintf(stderr, "Chroma Editor Library has an invalid signature!\r\n");
+		return RZRESULT_DLL_INVALID_SIGNATURE;
+	}
+
 	HMODULE library = LoadLibrary(path.c_str());
 	if (library == NULL)
 	{ 
 		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
         return RZRESULT_DLL_NOT_FOUND;
-	}
-
-#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
-	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library);
-#endif
- 	if (_sInvalidSignature)
-	{
-		ChromaLogger::fprintf(stderr, "Chroma Editor Library has an invalid signature!\r\n");
-
-		// unload the library
-		FreeLibrary(library);
-		library = NULL;
-
-		return -1;
 	}
 
 	_sLibrary = library;
