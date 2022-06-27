@@ -64,6 +64,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		return result;
 	}
 
+	ChromaLogger::fprintf(stderr, "Initialized Chroma!\r\n");
+	Sleep(100);
+
 #if _DEBUG
 	if (argc <= 1)
 #else

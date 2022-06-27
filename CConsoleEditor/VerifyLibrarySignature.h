@@ -2,20 +2,16 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-#include <tchar.h>
-
-typedef _TCHAR *PTCHAR;
 
 namespace ChromaSDK
 {
 	class VerifyLibrarySignature
 	{
 	public:
-		static BOOL VerifyModule(HMODULE hModule, const bool validatePath);
-		static BOOL IsFileVersionSameOrNewer(const wchar_t* szFileName, const int minMajor, const int minMinor, const int minRevision, const int minBuild);
+		static BOOL VerifyModule(const std::wstring& filename);
+		static BOOL IsFileVersionSameOrNewer(const std::wstring& filename, const int minMajor, const int minMinor, const int minRevision, const int minBuild);
 	private:
-		static BOOL IsValidPath(PTCHAR szFileName);
-		static BOOL IsFileSignedByRazer(PTCHAR szFileName);
-		static BOOL IsFileSigned(PTCHAR szFileName);
+		static BOOL IsFileSignedByRazer(const wchar_t* szFileName);
+		static BOOL IsFileSigned(const wchar_t* szFileName);
 	};
 }
