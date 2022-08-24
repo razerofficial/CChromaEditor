@@ -154,7 +154,7 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 		for (std::vector<std::wstring>::iterator it = searchPaths.begin(); it != searchPaths.end(); ++it)
 		{
 			std::wstring strPathSearch = *it;
-			if (strPathSearch.compare(strPathSearch.length() - 1, 1, L"\\") != 0) //not endsWith slash
+			if (strPathSearch.length() > 0 && strPathSearch.compare(strPathSearch.length() - 1, 1, L"\\") != 0) //not endsWith slash
 			{
 				strPathSearch += L"\\";
 			}
