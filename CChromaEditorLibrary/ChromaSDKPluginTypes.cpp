@@ -9,7 +9,7 @@ FChromaSDKColors::FChromaSDKColors()
 FChromaSDKColors::FChromaSDKColors(const FChromaSDKColors& copy)
 {
 	const std::vector<COLORREF>& colors = copy.Colors;
-	int size = colors.size();
+	int size = (int)colors.size();
 	for (int index = 0; index < size; ++index)
 	{
 		const COLORREF& color = colors[index];
@@ -24,7 +24,7 @@ FChromaSDKColorFrame1D::FChromaSDKColorFrame1D()
 FChromaSDKColorFrame1D::FChromaSDKColorFrame1D(const FChromaSDKColorFrame1D& copy)
 {
 	const std::vector<COLORREF>& colors = copy.Colors;
-	int size = colors.size();
+	int size = (int)colors.size();
 	for (int index = 0; index < size; ++index)
 	{
 		const COLORREF& color = colors[index];
@@ -40,7 +40,7 @@ FChromaSDKColorFrame2D::FChromaSDKColorFrame2D()
 FChromaSDKColorFrame2D::FChromaSDKColorFrame2D(const FChromaSDKColorFrame2D& copy)
 {
 	const std::vector<FChromaSDKColors>& colors = copy.Colors;
-	int size = colors.size();
+	int size = (int)colors.size();
 	for (int index = 0; index < size; ++index)
 	{
 		const FChromaSDKColors& color = colors[index];

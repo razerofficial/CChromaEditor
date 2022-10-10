@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1622
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CChromaEditorLibrary", "CChromaEditorLibrary\CChromaEditorLibrary.vcxproj", "{48DACD44-7EF3-45C8-B744-8D82390BAC93}"
 EndProject
@@ -18,32 +18,60 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cpp_UnitTests", "Cpp_UnitTe
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_Cloud|x64 = Debug_Cloud|x64
+		Debug_Cloud|x86 = Debug_Cloud|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release_Cloud|x64 = Release_Cloud|x64
+		Release_Cloud|x86 = Release_Cloud|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Debug_Cloud|x64.ActiveCfg = Debug_Cloud|x64
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Debug_Cloud|x64.Build.0 = Debug_Cloud|x64
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Debug_Cloud|x86.ActiveCfg = Debug_Cloud|Win32
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Debug_Cloud|x86.Build.0 = Debug_Cloud|Win32
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Debug|x64.ActiveCfg = Debug|x64
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Debug|x64.Build.0 = Debug|x64
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Debug|x86.ActiveCfg = Debug|Win32
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Debug|x86.Build.0 = Debug|Win32
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release_Cloud|x64.ActiveCfg = Release_Cloud|x64
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release_Cloud|x64.Build.0 = Release_Cloud|x64
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release_Cloud|x86.ActiveCfg = Release_Cloud|Win32
+		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release_Cloud|x86.Build.0 = Release_Cloud|Win32
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release|x64.ActiveCfg = Release|x64
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release|x64.Build.0 = Release|x64
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release|x86.ActiveCfg = Release|Win32
 		{48DACD44-7EF3-45C8-B744-8D82390BAC93}.Release|x86.Build.0 = Release|Win32
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug_Cloud|x64.ActiveCfg = Debug_Cloud|x64
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug_Cloud|x64.Build.0 = Debug_Cloud|x64
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug_Cloud|x86.ActiveCfg = Debug_Cloud|Win32
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug_Cloud|x86.Build.0 = Debug_Cloud|Win32
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug|x64.ActiveCfg = Debug|x64
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug|x64.Build.0 = Debug|x64
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug|x86.ActiveCfg = Debug|Win32
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Debug|x86.Build.0 = Debug|Win32
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release_Cloud|x64.ActiveCfg = Release_Cloud|x64
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release_Cloud|x64.Build.0 = Release_Cloud|x64
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release_Cloud|x86.ActiveCfg = Release_Cloud|Win32
+		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release_Cloud|x86.Build.0 = Release_Cloud|Win32
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x64.ActiveCfg = Release|x64
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x64.Build.0 = Release|x64
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x86.ActiveCfg = Release|Win32
 		{5F081398-5620-4B7E-B045-D5AB6091B72B}.Release|x86.Build.0 = Release|Win32
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug_Cloud|x64.ActiveCfg = Debug_Cloud|x64
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug_Cloud|x64.Build.0 = Debug_Cloud|x64
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug_Cloud|x86.ActiveCfg = Debug_Cloud|Win32
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug_Cloud|x86.Build.0 = Debug_Cloud|Win32
 		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug|x64.ActiveCfg = Debug|x64
 		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug|x64.Build.0 = Debug|x64
 		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug|x86.ActiveCfg = Debug|Win32
 		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Debug|x86.Build.0 = Debug|Win32
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release_Cloud|x64.ActiveCfg = Release_Cloud|x64
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release_Cloud|x64.Build.0 = Release_Cloud|x64
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release_Cloud|x86.ActiveCfg = Release_Cloud|Win32
+		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release_Cloud|x86.Build.0 = Release_Cloud|Win32
 		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release|x64.ActiveCfg = Release|x64
 		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release|x64.Build.0 = Release|x64
 		{8A175ECD-9591-4588-B71F-D62A31F743EF}.Release|x86.ActiveCfg = Release|Win32

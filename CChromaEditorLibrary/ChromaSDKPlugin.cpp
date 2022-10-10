@@ -258,7 +258,7 @@ ChromaSDKPlugin::ChromaSDKPlugin()
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_3] = L"= (equal) (VK_OEM_PLUS)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_4] = L"[ (left sqaure bracket) (VK_OEM_4)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_5] = L"] (right square bracket) (VK_OEM_6)";
-	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_6] = L"\ (backslash) (VK_OEM_5)";
+	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_6] = L"\\ (backslash) (VK_OEM_5)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_7] = L"; (semi-colon) (VK_OEM_1)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_8] = L"' (apostrophe) (VK_OEM_7)";
 	_mKeyboardCharMap[EChromaSDKKeyboardKey::KK_OEM_9] = L", (comma) (VK_OEM_COMMA)";
@@ -1004,12 +1004,12 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 	{
 		long read = 0;
 		long expectedRead = 1;
-		long expectedSize = sizeof(byte);
+		long expectedSize = sizeof(BYTE);
 
 		//version
 		int version = 0;
 		expectedSize = sizeof(int);
-		read = fread(&version, expectedSize, 1, stream);
+		read = (long)fread(&version, expectedSize, 1, stream);
 		if (read != expectedRead)
 		{
 			LogError(L"OpenAnimation: Failed to read version!\r\n");
@@ -1026,12 +1026,12 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 		//LogDebug(L"OpenAnimation: Version: %d\r\n", version);
 
 		//device
-		byte device = 0;
+		BYTE device = 0;
 
 		// device type
-		byte deviceType = 0;
-		expectedSize = sizeof(byte);
-		read = fread(&deviceType, expectedSize, 1, stream);
+		BYTE deviceType = 0;
+		expectedSize = sizeof(BYTE);
+		read = (long)fread(&deviceType, expectedSize, 1, stream);
 		if (read != expectedRead)
 		{
 			LogError(L"OpenAnimation: Unexpected DeviceType!\r\n");
@@ -1058,7 +1058,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 			switch (deviceType)
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
-				read = fread(&device, expectedSize, 1, stream);
+				read = (long)fread(&device, expectedSize, 1, stream);
 				if (read != expectedRead)
 				{
 					LogError(L"OpenAnimation: Unexpected Device!\r\n");
@@ -1090,7 +1090,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 					int frameCount;
 
 					expectedSize = sizeof(int);
-					read = fread(&frameCount, expectedSize, 1, stream);
+					read = (long)fread(&frameCount, expectedSize, 1, stream);
 					if (read != expectedRead)
 					{
 						LogError(L"OpenAnimation: Error detected reading frame count!\r\n");
@@ -1109,7 +1109,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 							//duration
 							float duration = 0.0f;
 							expectedSize = sizeof(float);
-							read = fread(&duration, expectedSize, 1, stream);
+							read = (long)fread(&duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
 								LogError(L"OpenAnimation: Error detected reading duration!\r\n");
@@ -1133,7 +1133,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 								for (int i = 0; i < maxLeds; ++i)
 								{
 									int color = 0;
-									read = fread(&color, expectedSize, 1, stream);
+									read = (long)fread(&color, expectedSize, 1, stream);
 									if (read != expectedRead)
 									{
 										LogError(L"OpenAnimation: Error detected reading color!\r\n");
@@ -1160,7 +1160,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 				}
 				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
-				read = fread(&device, expectedSize, 1, stream);
+				read = (long)fread(&device, expectedSize, 1, stream);
 				if (read != expectedRead)
 				{
 					LogError(L"OpenAnimation: Unexpected Device!\r\n");
@@ -1195,7 +1195,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 					int frameCount;
 
 					expectedSize = sizeof(int);
-					read = fread(&frameCount, expectedSize, 1, stream);
+					read = (long)fread(&frameCount, expectedSize, 1, stream);
 					if (read != expectedRead)
 					{
 						LogError(L"OpenAnimation: Error detected reading frame count!\r\n");
@@ -1215,7 +1215,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 							//duration
 							float duration = 0.0f;
 							expectedSize = sizeof(float);
-							read = fread(&duration, expectedSize, 1, stream);
+							read = (long)fread(&duration, expectedSize, 1, stream);
 							if (read != expectedRead)
 							{
 								LogError(L"OpenAnimation: Error detected reading duration!\r\n");
@@ -1242,7 +1242,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 									for (int j = 0; j < maxColumn; ++j)
 									{
 										int color = 0;
-										read = fread(&color, expectedSize, 1, stream);
+										read = (long)fread(&color, expectedSize, 1, stream);
 										if (read != expectedRead)
 										{
 											LogError(L"OpenAnimation: Error detected reading color!\r\n");
@@ -1280,9 +1280,9 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const wstring& path)
 	return animation;
 }
 
-AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
+AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const BYTE* data)
 {
-	const byte* pointer = data;
+	const BYTE* pointer = data;
 	AnimationBase* animation = nullptr;
 
 	if (0 == data)
@@ -1293,7 +1293,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 
 	long read = 0;
 	long expectedRead = 1;
-	long expectedSize = sizeof(byte);
+	long expectedSize = sizeof(BYTE);
 
 	//version
 	int version = 0;
@@ -1309,11 +1309,11 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	//LogDebug(L"OpenAnimationFromMemory: Version: %d\r\n", version);
 
 	//device
-	byte device = 0;
+	BYTE device = 0;
 
 	// device type
-	byte deviceType = 0;
-	expectedSize = sizeof(byte);
+	BYTE deviceType = 0;
+	expectedSize = sizeof(BYTE);
 	memcpy(&deviceType, pointer, expectedSize);
 	pointer += expectedSize;
 
@@ -1335,7 +1335,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 	{
-		expectedSize = sizeof(byte);
+		expectedSize = sizeof(BYTE);
 		memcpy(&device, pointer, expectedSize);
 		pointer += expectedSize;
 
@@ -1409,7 +1409,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const byte* data)
 	break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 	{
-		expectedSize = sizeof(byte);
+		expectedSize = sizeof(BYTE);
 		memcpy(&device, pointer, expectedSize);
 		pointer += expectedSize;
 

@@ -79,7 +79,7 @@ vector<FChromaSDKColorFrame1D>& Animation1D::GetFrames()
 
 int Animation1D::GetFrameCount()
 {
-	return _mFrames.size();
+	return (int)_mFrames.size();
 }
 
 float Animation1D::GetDuration(unsigned int index)
@@ -315,7 +315,7 @@ int Animation1D::Save(const wchar_t* path)
 
 		int version = ANIMATION_VERSION;
 		expectedSize = sizeof(int);
-		write = fwrite(&version, expectedSize, 1, stream);
+		write = (long)fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
 			ChromaLogger::fwprintf(stderr, L"Save: Failed to write version!\r\n");
@@ -324,8 +324,8 @@ int Animation1D::Save(const wchar_t* path)
 		}
 
 		//device type
-		byte deviceType = (byte)EChromaSDKDeviceTypeEnum::DE_1D;
-		expectedSize = sizeof(byte);
+		BYTE deviceType = (BYTE)EChromaSDKDeviceTypeEnum::DE_1D;
+		expectedSize = sizeof(BYTE);
 		fwrite(&deviceType, expectedSize, 1, stream);
 
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
@@ -339,7 +339,7 @@ int Animation1D::Save(const wchar_t* path)
 		}
 
 		//device
-		byte device = (byte)_mDevice;
+		BYTE device = (BYTE)_mDevice;
 		fwrite(&device, expectedSize, 1, stream);
 
 		switch ((EChromaSDKDevice1DEnum)device)

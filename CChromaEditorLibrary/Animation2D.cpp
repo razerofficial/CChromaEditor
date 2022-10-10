@@ -81,7 +81,7 @@ vector<FChromaSDKColorFrame2D>& Animation2D::GetFrames()
 
 int Animation2D::GetFrameCount()
 {
-	return _mFrames.size();
+	return (int)_mFrames.size();
 }
 
 float Animation2D::GetDuration(unsigned int index)
@@ -335,7 +335,7 @@ int Animation2D::Save(const wchar_t* path)
 
 		int version = ANIMATION_VERSION;
 		expectedSize = sizeof(int);
-		write = fwrite(&version, expectedSize, 1, stream);
+		write = (long)fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
 			ChromaLogger::fwprintf(stderr, L"Save: Failed to write version!\r\n");
@@ -344,8 +344,8 @@ int Animation2D::Save(const wchar_t* path)
 		}
 
 		//device type
-		byte deviceType = (byte)EChromaSDKDeviceTypeEnum::DE_2D;
-		expectedSize = sizeof(byte);
+		BYTE deviceType = (BYTE)EChromaSDKDeviceTypeEnum::DE_2D;
+		expectedSize = sizeof(BYTE);
 		fwrite(&deviceType, expectedSize, 1, stream);
 
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
@@ -359,7 +359,7 @@ int Animation2D::Save(const wchar_t* path)
 		}
 
 		//device
-		byte device = (byte)_mDevice;
+		BYTE device = (BYTE)_mDevice;
 		fwrite(&device, expectedSize, 1, stream);
 
 		switch ((EChromaSDKDevice2DEnum)device)
@@ -376,7 +376,7 @@ int Animation2D::Save(const wchar_t* path)
 		}
 
 		//frame count
-		unsigned int frameCount = _mFrames.size();
+		unsigned int frameCount = (unsigned int)_mFrames.size();
 		expectedSize = sizeof(unsigned int);
 		fwrite(&frameCount, expectedSize, 1, stream);
 

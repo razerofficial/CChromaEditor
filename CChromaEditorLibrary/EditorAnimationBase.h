@@ -13,10 +13,10 @@ public:
 	void ImportTextureImage();
 	void ImportTextureImageSequence();
 	void ImportTextureAnimation();
-	void ReadImage(const std::string& texturePath, bool isAnimation);
+	void ReadImage(const std::wstring& texturePath, bool isAnimation);
 	virtual void CopyPixels(COLORREF* pColor, UINT width, UINT height) = 0;
 	virtual void AddFrame() = 0;
-	void SetPath(const std::string& path);
+	void SetPath(const std::wstring& path);
 private:
-	std::string _mPath;
+	std::wstring _mPath;
 };

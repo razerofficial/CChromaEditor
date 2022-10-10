@@ -4,7 +4,7 @@ class UnitTests
 {
 public:
 
-	static void IsPlaying(const char* name);
+	static void IsPlaying(const wchar_t* name);
 
 	static void UnitTestsInit();
 
@@ -62,7 +62,7 @@ public:
 
 	static void UnitTestsDamage();
 
-	static int OpenAndPlay(const char* path);
+	static int OpenAndPlay(const wchar_t* path);
 
 	static int CloseAnimation(int animationId);
 

@@ -23,7 +23,7 @@ int Init()
 }
 
 #if _DEBUG
-int main(int argc, char *argv[])
+int main(int argc, wchar_t *argv[])
 #else
 int APIENTRY WinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -78,14 +78,15 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			&& buffer != nullptr)
 		{
 			//ChromaLogger::printf("EnvVarName = %s\n", buffer);
-			char path[256] = { 0 };
-			sprintf_s(path, "%s\\Desktop\\temp.chroma", buffer);		
+			string cstr = buffer;
+			wstring path(cstr.begin(), cstr.end());
+			path += L"\\Desktop\\temp.chroma";
 			free(buffer);
-			ChromaAnimationAPI::OpenEditorDialogAndPlay(path);
+			ChromaAnimationAPI::OpenEditorDialogAndPlay(path.c_str());
 		}
 		else
 		{
-			ChromaAnimationAPI::OpenEditorDialogAndPlay("temp.chroma");
+			ChromaAnimationAPI::OpenEditorDialogAndPlay(L"temp.chroma");
 		}
 	}
 	else
@@ -96,8 +97,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		if (szArgList != NULL)
 		{
 			wstring ws = szArgList[1];
-			string s(ws.begin(), ws.end());
-			ChromaAnimationAPI::OpenEditorDialogAndPlay(s.c_str());
+			ChromaAnimationAPI::OpenEditorDialogAndPlay(ws.c_str());
 		}
 #endif
 	}

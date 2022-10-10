@@ -30,6 +30,9 @@
     <ClInclude Include="ChromaLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VerifyLibrarySignature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChromaLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VerifyLibrarySignature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

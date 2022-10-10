@@ -1,22 +1,24 @@
 #include "stdafx.h"
 #include "RzChromaSDK.h"
-#include "RzErrors.h"
-#include "VerifyLibrarySignature.h"
 #include "ChromaLogger.h"
+#include "RzErrors.h"
+#include <filesystem>
+#include "VerifyLibrarySignature.h"
 #include <tchar.h>
+#include <psapi.h>
 
 
 #ifdef _WIN64
-#define CHROMASDKDLL        _T("RzChromaSDK64.dll")
+#define CHROMASDKDLL        L"RzChromaSDK64.dll"
 #else
-#define CHROMASDKDLL        _T("RzChromaSDK.dll")
+#define CHROMASDKDLL        L"RzChromaSDK.dll"
 #endif
 
 
 using namespace ChromaSDK;
 
 
-HMODULE RzChromaSDK::_sLibraryChroma = NULL;
+HMODULE RzChromaSDK::_sLibrary = NULL;
 bool RzChromaSDK::_sInvalidSignature = false;
 bool RzChromaSDK::_sLoaded = false;
 
@@ -46,9 +48,12 @@ CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
 #undef CHROMASDK_VALIDATE_METHOD
 #define CHROMASDK_VALIDATE_METHOD(Signature, FieldName) if (_sMethod ## FieldName == nullptr) \
 { \
-	_sMethod ## FieldName = (Signature) GetProcAddress(_sLibraryChroma, #FieldName); \
+	_sMethod ## FieldName = (Signature) GetProcAddress(_sLibrary, #FieldName); \
 	if (_sMethod ## FieldName == nullptr) \
 	{ \
+		fprintf(stderr, "RzChromaSDK: Method not available! %s\r\n", #FieldName); \
+		FreeLibrary(_sLibrary); \
+		_sLibrary = NULL; \
 		return RZRESULT_FAILED; \
 	} \
 }
@@ -221,27 +226,130 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 	}
 
 	// load the library if previously not loaded
-	if (_sLibraryChroma == NULL)
+	if (_sLibrary == NULL)
 	{
-		// load the library
-		_sLibraryChroma = LoadLibrary(CHROMASDKDLL);
-		if (_sLibraryChroma == NULL)
+		wchar_t pathTemp[MAX_PATH];
+		GetModuleFileNameW(NULL, pathTemp, sizeof(pathTemp));
+
+		std::wstring strPathCurrent;
+		const size_t last_slash_idx = std::wstring(pathTemp).rfind('\\');
+		if (std::string::npos != last_slash_idx)
 		{
+			strPathCurrent = std::wstring(pathTemp).substr(0, last_slash_idx);
+		}
+
+#ifdef USE_CHROMA_CLOUD
+		std::wstring path = strPathCurrent;
+		path += L"\\";
+		path += CHROMASDKDLL;
+
+		// check the library file version
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path, 1, 0, 0, 4))
+		{
+			ChromaLogger::fprintf(stderr, "Detected old version of Chroma SDK Library!\r\n");
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 
 		// verify the library has a valid signature
-		_sInvalidSignature = !ChromaSDK::VerifyLibrarySignature::VerifyModule(_sLibraryChroma);
+		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(path);
  		if (_sInvalidSignature)
 		{
-			ChromaLogger::fwprintf(stderr, L"Failed to load Chroma library with invalid signature!\r\n");
-			
-			// unload the library
-			FreeLibrary(_sLibraryChroma);
-			_sLibraryChroma = NULL;
-
+			ChromaLogger::fprintf(stderr, "Chroma SDK Library has an invalid signature!\r\n");
 			return RZRESULT_DLL_INVALID_SIGNATURE;
 		}
+#else
+		// DLL Search Order:
+		// 1. The directory from which the application loaded.
+		// 2. The system directory.Use the GetSystemDirectory function to get the path of this directory.
+		// 3. The 16 - bit system directory.There is no function that obtains the path of this directory, but it is searched.
+		// 4. The Windows directory.Use the GetWindowsDirectory function to get the path of this directory.
+		// 5. The current directory.
+		// 6. The directories that are listed in the PATH environment variable.Note that this does not include the per - application path specified by the App Paths registry key.The App Paths key is not used when computing the DLL search path.
+		std::vector<std::wstring> searchPaths;
+
+		// #1
+		searchPaths.push_back(strPathCurrent);
+
+		// #2
+		if (GetSystemDirectory(pathTemp, sizeof(pathTemp)))
+		{
+			std::wstring strPathSys = pathTemp;
+			searchPaths.push_back(strPathSys);
+		}
+
+		// #4
+		if (GetWindowsDirectory(pathTemp, sizeof(pathTemp)))
+		{
+			std::wstring strPathWin = pathTemp;
+			searchPaths.push_back(strPathWin);
+		}
+
+		// #6
+		DWORD envMaxSize = 65535; //Limit according to http://msdn.microsoft.com/en-us/library/ms683188.aspx
+		std::wstring strEnvPath;
+		strEnvPath.resize(envMaxSize);
+		if (GetEnvironmentVariableW(L"PATH", &strEnvPath[0], envMaxSize))
+		{
+			const char delimiter = ';';
+			size_t previous = 0;
+			size_t index = strEnvPath.find(delimiter);
+			while (index != std::wstring::npos)
+			{
+				searchPaths.push_back(strEnvPath.substr(previous, index - previous));
+				previous = index + 1;
+				index = strEnvPath.find(delimiter, previous);
+			}
+			searchPaths.push_back(strEnvPath.substr(previous));
+		}
+
+		// search DLL paths to check version and signature
+		for (std::vector<std::wstring>::iterator it = searchPaths.begin(); it != searchPaths.end(); ++it)
+		{
+			std::wstring strPathSearch = *it;
+			if (strPathSearch.length() > 0 && strPathSearch.compare(strPathSearch.length() - 1, 1, L"\\") != 0) //not endsWith slash
+			{
+				strPathSearch += L"\\";
+			}
+			strPathSearch += CHROMASDKDLL;
+			
+			// check if DLL exists in search path
+			std::filesystem::path p = strPathSearch.c_str();
+			if (!std::filesystem::exists(p))
+			{
+				// not found
+				continue;
+			}
+
+			// check the library file version
+			if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(strPathSearch, 3, 7, 3, 130))
+			{
+				ChromaLogger::fprintf(stderr, "Detected old version of Chroma SDK Library!\r\n");
+				return RZRESULT_DLL_NOT_FOUND;
+			}
+
+			// verify the library has a valid signature
+			_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(strPathSearch);
+			if (_sInvalidSignature)
+			{
+				ChromaLogger::fprintf(stderr, "Chroma SDK Library has an invalid signature!\r\n");
+			return RZRESULT_DLL_INVALID_SIGNATURE;
+		}
+
+			break;
+		}
+
+		std::wstring path = CHROMASDKDLL;
+#endif
+
+		// load the library
+		HMODULE library = LoadLibrary(path.c_str());
+		if (library == NULL)
+		{
+			ChromaLogger::fprintf(stderr, "Failed to load Chroma SDK Library!\r\n");
+			return RZRESULT_DLL_NOT_FOUND;
+		}
+
+		_sLibrary = library;
 	}
 
 	// CORE API METHODS
@@ -263,4 +371,19 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 
 	_sLoaded = true;
 	return RZRESULT_SUCCESS;
+}
+
+void RzChromaSDK::Unload()
+{
+	if (!_sLoaded)
+	{
+		return;
+	}
+
+	if (_sLibrary != nullptr)
+	{
+		FreeLibrary(_sLibrary);
+		_sLibrary = nullptr;
+	}
+	_sLoaded = false;
 }
