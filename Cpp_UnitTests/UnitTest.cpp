@@ -1,6 +1,7 @@
 #include "ChromaAnimationAPI.h"
 #include "UnitTests.h"
 #include "ChromaLogger.h"
+#include "HandleInput.h"
 
 #include <chrono>
 #include <string>
@@ -18,25 +19,25 @@ const float MATH_PI = 3.14159f;
 
 void UnitTests::IsPlaying(const char* name)
 {
-	ChromaLogger::printf("%s_ChromaLink IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
-	ChromaLogger::printf("%s_Headset IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
-	ChromaLogger::printf("%s_Keyboard IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
-	ChromaLogger::printf("%s_Keypad IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
-	ChromaLogger::printf("%s_Mouse IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
-	ChromaLogger::printf("%s_Mousepad IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	printf("%s_ChromaLink IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	printf("%s_Headset IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	printf("%s_Keyboard IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	printf("%s_Keypad IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	printf("%s_Mouse IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
+	printf("%s_Mousepad IsPlayingName: %s\r\n", name, ChromaAnimationAPI::IsPlayingName("Random_Keyboard.chroma") ? "true" : "false");
 
-	ChromaLogger::printf("ChromaLink IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink) ? "true" : "false");
-	ChromaLogger::printf("Headset IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset) ? "true" : "false");
-	ChromaLogger::printf("Keyboard IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard) ? "true" : "false");
-	ChromaLogger::printf("Keypad IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad) ? "true" : "false");
-	ChromaLogger::printf("Mouse IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse) ? "true" : "false");
-	ChromaLogger::printf("Mousepad IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad) ? "true" : "false");
+	printf("ChromaLink IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink) ? "true" : "false");
+	printf("Headset IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset) ? "true" : "false");
+	printf("Keyboard IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard) ? "true" : "false");
+	printf("Keypad IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad) ? "true" : "false");
+	printf("Mouse IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse) ? "true" : "false");
+	printf("Mousepad IsPlayingType: %s\r\n", ChromaAnimationAPI::IsPlayingType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad) ? "true" : "false");
 }
 
 void UnitTests::UnitTestsInit()
 {
 	RZRESULT result = ChromaAnimationAPI::Init();
-	ChromaLogger::printf("Init result=%ld\r\n", result);
+	printf("Init result=%ld\r\n", result);
 
 	Sleep(1000);
 }
@@ -63,7 +64,7 @@ RZRESULT UnitTests::UnitTestsInitSDK()
 	RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
 	if (result != RZRESULT_SUCCESS)
 	{
-		ChromaLogger::printf("UnitTests::UnitTestsInitSDK result=%ld\r\n", result);
+		printf("UnitTests::UnitTestsInitSDK result=%ld\r\n", result);
 	}
 
 	Sleep(100);
@@ -81,20 +82,14 @@ void UnitTests::UnitTestsUninit()
 
 	Sleep(1000);
 
-	ChromaLogger::printf("Unit Tests have completed!\r\n");
-
-	exit(0);
+	printf("Unit Tests have completed!\r\n");
 }
 
 void UnitTests::UnitTestsPlayComposite()
 {
-	while (true)
-	{
-		ChromaLogger::printf("Measure CPU usage.\r\n");
-		const char* RANDOM_COMPOSITE = "Animations/Random";
-		ChromaAnimationAPI::PlayComposite(RANDOM_COMPOSITE, false);
-		Sleep(3000);
-	}
+	printf("Measure CPU usage.\r\n");
+	const char* RANDOM_COMPOSITE = "Animations/Random";
+	ChromaAnimationAPI::PlayComposite(RANDOM_COMPOSITE, true);
 }
 
 void UnitTests::UnitTestsOpenDialog()
@@ -112,11 +107,11 @@ void UnitTests::UnitTestsOpenClose()
 	{
 		if (ChromaAnimationAPI::IsInitialized() == 0)
 		{
-			ChromaLogger::printf("Init...\r\n");
+			printf("Init...\r\n");
 			ChromaAnimationAPI::Init();
 		}
 
-		ChromaLogger::printf("Playing effects...\r\n");
+		printf("Playing effects...\r\n");
 		int randomChromaLinkEffect = OpenAndPlay("Animations/Random_ChromaLink.chroma");
 		int randomHeadsetEffect = OpenAndPlay("Animations/Random_Headset.chroma");
 		int randomKeyboardEffect = OpenAndPlay("Animations/Random_Keyboard.chroma");
@@ -132,7 +127,7 @@ void UnitTests::UnitTestsOpenClose()
 		ChromaAnimationAPI::CloseAnimation(randomMouseEffect);
 		ChromaAnimationAPI::CloseAnimation(randomMousepadEffect);
 
-		ChromaLogger::printf("Simulate exit...\r\n");
+		printf("Simulate exit...\r\n");
 		ChromaAnimationAPI::Uninit();
 	}
 }
@@ -162,7 +157,7 @@ void UnitTests::UnitTestsLayering()
 		ChromaAnimationAPI::AddFrame(animationId, 0.5f, &colors[0], keyboardMaxRow * keyboardMaxColumn);
 	}
 
-	ChromaLogger::printf("Playing animation %s.\r\n", animationName);
+	printf("Playing animation %s.\r\n", animationName);
 	ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesName(RANDOM_KEYBOARD, BLANK_KEYBOARD);
 	ChromaAnimationAPI::PlayAnimationName(animationName, false);
 	Sleep(10000);
@@ -182,7 +177,7 @@ void UnitTests::UnitTestsLoadedAnimations()
 	ChromaAnimationAPI::PlayComposite(RANDOM_COMPOSITE, true);
 	Sleep(500);
 	int count = ChromaAnimationAPI::GetAnimationCount();
-	ChromaLogger::printf("[%d] animation(s) are open.\r\n", count);
+	printf("[%d] animation(s) are open.\r\n", count);
 	for (int i = 0; i < count; ++i)
 	{
 		animationId = ChromaAnimationAPI::GetAnimationId(i);
@@ -191,23 +186,23 @@ void UnitTests::UnitTestsLoadedAnimations()
 			continue;
 		}
 		animationName = ChromaAnimationAPI::GetAnimationName(animationId);
-		ChromaLogger::printf("Animation is open: [%d] %s\r\n", animationId, animationName);
+		printf("Animation is open: [%d] %s\r\n", animationId, animationName);
 	}
-	ChromaLogger::printf("Closing open animations...\r\n");
+	printf("Closing open animations...\r\n");
 	ChromaAnimationAPI::CloseAll();
 	count = ChromaAnimationAPI::GetAnimationCount();
-	ChromaLogger::printf("[%d] animation(s) are open.\r\n", count);
-	ChromaLogger::printf("All animations are closed.\r\n");
+	printf("[%d] animation(s) are open.\r\n", count);
+	printf("All animations are closed.\r\n");
 
 	animationName = RANDOM_KEYBOARD;
-	ChromaLogger::printf("Playing animation %s.\r\n", animationName);
+	printf("Playing animation %s.\r\n", animationName);
 	ChromaAnimationAPI::PlayAnimationName(animationName, false);
 	while (ChromaAnimationAPI::IsPlayingName(animationName))
 	{
-		ChromaLogger::printf("Animation is playing... %s.\r\n", animationName);
+		printf("Animation is playing... %s.\r\n", animationName);
 		Sleep(1000);
 	}
-	ChromaLogger::printf("Animation complete %s.\r\n", animationName);
+	printf("Animation complete %s.\r\n", animationName);
 }
 
 void UnitTests::UnitTestsSetKeys()
@@ -283,23 +278,23 @@ void UnitTests::UnitTestsClear()
 	const char* compositeName = "";
 	int animationId = -1;
 
-	ChromaLogger::printf("Playing animation.\r\n");
+	printf("Playing animation.\r\n");
 	ChromaAnimationAPI::PlayAnimationName(RANDOM_KEYBOARD, false);
 	Sleep(100);
 
-	ChromaLogger::printf("Clearing animations.\r\n");
+	printf("Clearing animations.\r\n");
 	ChromaAnimationAPI::ClearAll();
 
 	Sleep(1000);
 
-	ChromaLogger::printf("Playing animations.\r\n");
+	printf("Playing animations.\r\n");
 	ChromaAnimationAPI::PlayComposite("Random", false);
 	Sleep(100);
 
 	for (int wait = 0; wait < 3; ++wait)
 	{
 		int count = ChromaAnimationAPI::GetAnimationCount();
-		ChromaLogger::printf("[%d] animation(s) are open.\r\n", count);
+		printf("[%d] animation(s) are open.\r\n", count);
 		for (int i = 0; i < count; ++i)
 		{
 			animationId = ChromaAnimationAPI::GetAnimationId(i);
@@ -308,7 +303,7 @@ void UnitTests::UnitTestsClear()
 				continue;
 			}
 			animationName = ChromaAnimationAPI::GetAnimationName(animationId);
-			ChromaLogger::printf("Animation is open: [%d] %s\r\n", animationId, animationName);
+			printf("Animation is open: [%d] %s\r\n", animationId, animationName);
 		}
 		Sleep(500);
 	}
@@ -316,7 +311,7 @@ void UnitTests::UnitTestsClear()
 	for (int wait = 0; wait < 10; ++wait)
 	{
 		int count = ChromaAnimationAPI::GetPlayingAnimationCount();
-		ChromaLogger::printf("[%d] animation(s) are playing.\r\n", count);
+		printf("[%d] animation(s) are playing.\r\n", count);
 		for (int i = 0; i < count; ++i)
 		{
 			animationId = ChromaAnimationAPI::GetPlayingAnimationId(i);
@@ -326,11 +321,11 @@ void UnitTests::UnitTestsClear()
 			}
 
 			animationName = ChromaAnimationAPI::GetAnimationName(animationId);
-			ChromaLogger::printf("Animation is playing: [%d] %s\r\n", animationId, animationName);
+			printf("Animation is playing: [%d] %s\r\n", animationId, animationName);
 		}
 		if (ChromaAnimationAPI::GetPlayingAnimationCount() == 0)
 		{
-			ChromaLogger::printf("No animations are playing.\r\n");
+			printf("No animations are playing.\r\n");
 		}
 		Sleep(500);
 	}
@@ -349,23 +344,23 @@ void UnitTests::UnitTestsWait()
 	const char* animationName = "";
 	int animationId = -1;
 
-	ChromaLogger::printf("Playing animation.\r\n");
+	printf("Playing animation.\r\n");
 	ChromaAnimationAPI::PlayAnimationName(RANDOM_KEYBOARD, false);
 	Sleep(100);
 
-	ChromaLogger::printf("Clearing animations.\r\n");
+	printf("Clearing animations.\r\n");
 	ChromaAnimationAPI::ClearAll();
 
 	Sleep(1000);
 
-	ChromaLogger::printf("Playing animations.\r\n");
+	printf("Playing animations.\r\n");
 	ChromaAnimationAPI::PlayComposite("Random", false);
 	Sleep(100);
 
 	for (int wait = 0; wait < 3; ++wait)
 	{
 		int count = ChromaAnimationAPI::GetAnimationCount();
-		ChromaLogger::printf("[%d] animation(s) are open.\r\n", count);
+		printf("[%d] animation(s) are open.\r\n", count);
 		for (int i = 0; i < count; ++i)
 		{
 			animationId = ChromaAnimationAPI::GetAnimationId(i);
@@ -374,7 +369,7 @@ void UnitTests::UnitTestsWait()
 				continue;
 			}
 			animationName = ChromaAnimationAPI::GetAnimationName(animationId);
-			ChromaLogger::printf("Animation is open: [%d] %s\r\n", animationId, animationName);
+			printf("Animation is open: [%d] %s\r\n", animationId, animationName);
 		}
 		Sleep(500);
 	}
@@ -382,7 +377,7 @@ void UnitTests::UnitTestsWait()
 	for (int wait = 0; wait < 10; ++wait)
 	{
 		int count = ChromaAnimationAPI::GetPlayingAnimationCount();
-		ChromaLogger::printf("[%d] animation(s) are playing.\r\n", count);
+		printf("[%d] animation(s) are playing.\r\n", count);
 		for (int i = 0; i < count; ++i)
 		{
 			animationId = ChromaAnimationAPI::GetPlayingAnimationId(i);
@@ -392,11 +387,11 @@ void UnitTests::UnitTestsWait()
 			}
 
 			animationName = ChromaAnimationAPI::GetAnimationName(animationId);
-			ChromaLogger::printf("Animation is playing: [%d] %s\r\n", animationId, animationName);
+			printf("Animation is playing: [%d] %s\r\n", animationId, animationName);
 		}
 		if (ChromaAnimationAPI::GetPlayingAnimationCount() == 0)
 		{
-			ChromaLogger::printf("No animations are playing.\r\n");
+			printf("No animations are playing.\r\n");
 		}
 		Sleep(500);
 	}
@@ -405,7 +400,7 @@ void UnitTests::UnitTestsWait()
 
 	Sleep(3000);
 
-	ChromaLogger::printf("Playing animation.\r\n");
+	printf("Playing animation.\r\n");
 	ChromaAnimationAPI::PlayAnimationName(RANDOM_KEYBOARD, false);
 	Sleep(100);
 }
@@ -432,40 +427,40 @@ void UnitTests::UnitTestsMisc()
 {
 	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
 
-	ChromaLogger::printf("Call: PlayComposite: Random\r\n");
+	printf("Call: PlayComposite: Random\r\n");
 	ChromaAnimationAPI::PlayComposite("Random", true);
 	IsPlaying("Random");
 	Sleep(3000);
 
-	ChromaLogger::printf("Call: StopComposite\r\n");
+	printf("Call: StopComposite\r\n");
 	ChromaAnimationAPI::StopComposite("Random");
 	IsPlaying("Random");
 	Sleep(3000);
 
-	ChromaLogger::printf("Call: PlayComposite: Blank\r\n");
+	printf("Call: PlayComposite: Blank\r\n");
 	ChromaAnimationAPI::PlayComposite("Blank", false);
 	IsPlaying("Random"); //random should show false, type should be playing blank
 	Sleep(3000);
 
-	ChromaLogger::printf("Call: PlayAnimationName\r\n");
+	printf("Call: PlayAnimationName\r\n");
 	ChromaAnimationAPI::PlayAnimationName(RANDOM_KEYBOARD, true);
 	Sleep(3000);
 
-	ChromaLogger::printf("Call: StopAnimationName\r\n");
+	printf("Call: StopAnimationName\r\n");
 	ChromaAnimationAPI::StopAnimationName(RANDOM_KEYBOARD);
 	Sleep(1000);
 
-	ChromaLogger::printf("Call: PlayAnimationName\r\n");
+	printf("Call: PlayAnimationName\r\n");
 	ChromaAnimationAPI::PlayAnimationName(RANDOM_KEYBOARD, true);
 	Sleep(3000);
 
-	ChromaLogger::printf("Call: StopAnimationType\r\n");
+	printf("Call: StopAnimationType\r\n");
 	ChromaAnimationAPI::StopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
 }
 
 void UnitTests::UnitTestsOffset()
 {
-	ChromaLogger::printf("Start of offset unit test.\r\n");
+	printf("Start of offset unit test.\r\n");
 
 	const char* RANDOM_KEYBOARD = "Animations/Random_Keyboard.chroma";
 
@@ -476,10 +471,10 @@ void UnitTests::UnitTestsOffset()
 
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(animationName);
 
-	ChromaLogger::printf("Set all frames white with FillColor.\r\n");
+	printf("Set all frames white with FillColor.\r\n");
 	ChromaAnimationAPI::FillColorAllFramesRGBName(animationName, 255, 255, 255);
 
-	ChromaLogger::printf("Fade out black with MultiplyIntensity.\r\n");
+	printf("Fade out black with MultiplyIntensity.\r\n");
 	for (int index = 0; index < frameCount; ++index)
 	{
 		float ratio = (index + 1) / (float)frameCount;
@@ -493,11 +488,11 @@ void UnitTests::UnitTestsOffset()
 		Sleep(0);
 	}
 
-	ChromaLogger::printf("Set all frames black with FillColor.\r\n");
+	printf("Set all frames black with FillColor.\r\n");
 	ChromaAnimationAPI::UnloadAnimationName(animationName);
 	ChromaAnimationAPI::FillColorAllFramesRGBName(animationName, 0, 0, 0);
 
-	ChromaLogger::printf("Fade in red with FillColor.\r\n");
+	printf("Fade in red with FillColor.\r\n");
 	for (int index = 0; index < frameCount; ++index)
 	{
 		int ratio = (255 * index + 1) / frameCount;
@@ -510,10 +505,10 @@ void UnitTests::UnitTestsOffset()
 		Sleep(0);
 	}
 
-	ChromaLogger::printf("Set all frames red with FillColor.\r\n");
+	printf("Set all frames red with FillColor.\r\n");
 	ChromaAnimationAPI::FillColorAllFramesRGBName(animationName, 255, 0, 0);
 
-	ChromaLogger::printf("Fade in green with OffsetColors.\r\n");
+	printf("Fade in green with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
 	{
 		const int greenOffset = 16;
@@ -526,10 +521,10 @@ void UnitTests::UnitTestsOffset()
 		Sleep(0);
 	}
 
-	ChromaLogger::printf("Set all frames yellow with FillColor.\r\n");
+	printf("Set all frames yellow with FillColor.\r\n");
 	ChromaAnimationAPI::FillColorAllFramesRGBName(animationName, 255, 255, 0);
 
-	ChromaLogger::printf("Fade out red with OffsetColors.\r\n");
+	printf("Fade out red with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
 	{
 		const int redOffset = -16;
@@ -542,10 +537,10 @@ void UnitTests::UnitTestsOffset()
 		Sleep(0);
 	}
 
-	ChromaLogger::printf("Set all frames green with FillColor.\r\n");
+	printf("Set all frames green with FillColor.\r\n");
 	ChromaAnimationAPI::FillColorAllFramesRGBName(animationName, 0, 255, 0);
 
-	ChromaLogger::printf("Fade in white with OffsetColors.\r\n");
+	printf("Fade in white with OffsetColors.\r\n");
 	for (int index = 0; index < frameCount; ++index)
 	{
 		const int redOffset = 16;
@@ -559,12 +554,12 @@ void UnitTests::UnitTestsOffset()
 		Sleep(0);
 	}
 
-	ChromaLogger::printf("End of offset unit test.\r\n");
+	printf("End of offset unit test.\r\n");
 }
 
 void UnitTests::UnitTestsNonZero()
 {
-	ChromaLogger::printf("Start of nonzero unit test.\r\n");
+	printf("Start of nonzero unit test.\r\n");
 
 	const int COLOR_WHITE = 0xFFFFFF;
 
@@ -587,7 +582,7 @@ void UnitTests::UnitTestsNonZero()
 
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(animationName);
 
-	ChromaLogger::printf("Fade out red.\r\n");
+	printf("Fade out red.\r\n");
 	for (int i = 0; i < frameCount; ++i)
 	{
 		float ratio = (i + 1) / (float)frameCount;
@@ -599,10 +594,10 @@ void UnitTests::UnitTestsNonZero()
 	{
 		Sleep(0);
 	}
-	ChromaLogger::printf("Red should be gone.\r\n");
+	printf("Red should be gone.\r\n");
 	Sleep(3000);
 
-	ChromaLogger::printf("Fade out green.\r\n");
+	printf("Fade out green.\r\n");
 	for (int i = 0; i < frameCount; ++i)
 	{
 		float ratio = (i + 1) / (float)frameCount;
@@ -614,10 +609,10 @@ void UnitTests::UnitTestsNonZero()
 	{
 		Sleep(0);
 	}
-	ChromaLogger::printf("Green should be gone.\r\n");
+	printf("Green should be gone.\r\n");
 	Sleep(3000);
 
-	ChromaLogger::printf("Fade out blue.\r\n");
+	printf("Fade out blue.\r\n");
 	for (int i = 0; i < frameCount; ++i)
 	{
 		float ratio = (i + 1) / (float)frameCount;
@@ -629,10 +624,10 @@ void UnitTests::UnitTestsNonZero()
 	{
 		Sleep(0);
 	}
-	ChromaLogger::printf("Blue should be gone.\r\n");
+	printf("Blue should be gone.\r\n");
 	Sleep(3000);
 
-	ChromaLogger::printf("Non zero keys should fade in to white.\r\n");
+	printf("Non zero keys should fade in to white.\r\n");
 	for (int i = 0; i < frameCount; ++i)
 	{
 		float ratio = (i + 1) / (float)frameCount;
@@ -654,7 +649,7 @@ void UnitTests::UnitTestsNonZero()
 	// Reload from disk
 	ChromaAnimationAPI::CloseAnimationName(animationName);
 
-	ChromaLogger::printf("WASD keys should be white every other frame.\r\n");
+	printf("WASD keys should be white every other frame.\r\n");
 	for (int i = 0; i < frameCount; ++i)
 	{
 		ChromaAnimationAPI::SetKeyNonZeroColorName(animationName, i, (int)Keyboard::RZKEY::RZKEY_W, COLOR_WHITE);
@@ -672,7 +667,7 @@ void UnitTests::UnitTestsNonZero()
 	// Reload from disk
 	ChromaAnimationAPI::CloseAnimationName(animationName);
 
-	ChromaLogger::printf("WASD keys should be white every other frame.\r\n");
+	printf("WASD keys should be white every other frame.\r\n");
 	for (int i = 0; i < frameCount; ++i)
 	{
 		ChromaAnimationAPI::SetKeysNonZeroColorName(animationName, i, wasdKeys, (int)size(wasdKeys), COLOR_WHITE);
@@ -684,7 +679,7 @@ void UnitTests::UnitTestsNonZero()
 		Sleep(0);
 	}
 
-	ChromaLogger::printf("End of nonzero unit test.\r\n");
+	printf("End of nonzero unit test.\r\n");
 }
 
 void UnitTests::UnitTestsHDKIndividualLEDs()
@@ -745,18 +740,18 @@ void UnitTests::UnitTestsHDKIndividualLEDs()
 		}
 	}
 
-	ChromaLogger::printf("Create random HDK LED colors effect.\r\n");
+	printf("Create random HDK LED colors effect.\r\n");
 
 	FChromaSDKGuid effectId = FChromaSDKGuid();
 	ChromaAnimationAPI::CreateEffect(CHROMABOX, EFFECT_TYPE::CHROMA_CUSTOM, colors, size, &effectId);
 
-	ChromaLogger::printf("Set HDK Effect.\r\n");
+	printf("Set HDK Effect.\r\n");
 
 	ChromaAnimationAPI::SetEffect(effectId);
 
 	Sleep(3000);
 
-	ChromaLogger::printf("Delete HDK Effect.\r\n");
+	printf("Delete HDK Effect.\r\n");
 
 	ChromaAnimationAPI::DeleteEffect(effectId);
 
@@ -784,18 +779,18 @@ void UnitTests::UnitTestsHDKIndividualLEDsGradient()
 		}
 	}
 
-	ChromaLogger::printf("Create HDK gradient.\r\n");
+	printf("Create HDK gradient.\r\n");
 
 	FChromaSDKGuid effectId = FChromaSDKGuid();
 	ChromaAnimationAPI::CreateEffect(CHROMABOX, EFFECT_TYPE::CHROMA_CUSTOM, colors, size, &effectId);
 
-	ChromaLogger::printf("Set HDK Effect.\r\n");
+	printf("Set HDK Effect.\r\n");
 
 	ChromaAnimationAPI::SetEffect(effectId);
 
 	Sleep(3000);
 
-	ChromaLogger::printf("Delete HDK Effect.\r\n");
+	printf("Delete HDK Effect.\r\n");
 
 	ChromaAnimationAPI::DeleteEffect(effectId);
 
@@ -810,36 +805,36 @@ void UnitTests::UnitTestsCreateAnimation()
 	int animationId = ChromaAnimationAPI::CreateAnimation(animationName, (int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink);
 	if (animationId < 0)
 	{
-		ChromaLogger::fprintf(stderr, "Failed to create animation! %s\r\n", animationName);
+		fprintf(stderr, "Failed to create animation! %s\r\n", animationName);
 	}
 }
 
 void UnitTests::UnitTestsKeyboardCustom()
 {
-	ChromaLogger::printf("Clear all.\r\n");
+	printf("Clear all.\r\n");
 	ChromaAnimationAPI::ClearAll();
 	Sleep(3000);
 
-	ChromaLogger::printf("Show custom keyboard keys Z N M LALT.\r\n");
+	printf("Show custom keyboard keys Z N M LALT.\r\n");
 	int animationId = ChromaAnimationAPI::CreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
 	ChromaAnimationAPI::SetChromaCustomFlag(animationId, true);
 	ChromaAnimationAPI::SetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_Z, 0x01FF0000);
 	ChromaAnimationAPI::SetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_N, 0x0100FF00);
 	ChromaAnimationAPI::SetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_M, 0x010000FF);
 	ChromaAnimationAPI::SetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_LALT, 0x01FFFFFF);
-	ChromaLogger::printf("Play animation with custom keys.\r\n");
+	printf("Play animation with custom keys.\r\n");
 	ChromaAnimationAPI::PlayAnimation(animationId);
 	Sleep(2000);
-	ChromaLogger::printf("Preview frame with custom keys.\r\n");
+	printf("Preview frame with custom keys.\r\n");
 	ChromaAnimationAPI::PreviewFrame(animationId, 0);
 	Sleep(2000);
 	ChromaAnimationAPI::CloseAnimation(animationId);
 
-	ChromaLogger::printf("Clear all.\r\n");
+	printf("Clear all.\r\n");
 	ChromaAnimationAPI::ClearAll();
 	Sleep(3000);
 
-	ChromaLogger::printf("Show custom keyboard keys LCTRL X C V B.\r\n");
+	printf("Show custom keyboard keys LCTRL X C V B.\r\n");
 	animationId = ChromaAnimationAPI::CreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
 	ChromaAnimationAPI::SetChromaCustomFlag(animationId, true);
 	ChromaAnimationAPI::SetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_LCTRL, 0x01FF0000);
@@ -847,15 +842,15 @@ void UnitTests::UnitTestsKeyboardCustom()
 	ChromaAnimationAPI::SetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_C, 0x010000FF);
 	ChromaAnimationAPI::SetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_V, 0x01FFFFFF);
 	ChromaAnimationAPI::SetKeyColor(animationId, 0, (int)Keyboard::RZKEY::RZKEY_B, 0x01FFFF00);
-	ChromaLogger::printf("Play animation with custom keys.\r\n");
+	printf("Play animation with custom keys.\r\n");
 	ChromaAnimationAPI::PlayAnimation(animationId);
 	Sleep(2000);
-	ChromaLogger::printf("Preview frame with custom keys.\r\n");
+	printf("Preview frame with custom keys.\r\n");
 	ChromaAnimationAPI::PreviewFrame(animationId, 0);
 	Sleep(2000);
 	ChromaAnimationAPI::CloseAnimation(animationId);
 
-	ChromaLogger::printf("Clear all.\r\n");
+	printf("Clear all.\r\n");
 	ChromaAnimationAPI::ClearAll();
 	Sleep(3000);
 }
@@ -933,7 +928,7 @@ void UnitTests::UnitTestsSaveAnimation()
 	// get time in seconds
 	duration<double, milli> time_span = high_resolution_clock::now() - timer;
 	float deltaTime = (float)(time_span.count() / 1000.0f);
-	ChromaLogger::printf("Elapsed time: %f\r\n", deltaTime);
+	printf("Elapsed time: %f\r\n", deltaTime);
 
 	ChromaAnimationAPI::PlayAnimationLoop(baseAnimation, true);
 
@@ -980,7 +975,7 @@ void UnitTests::UnitTestsCreateRandomBlackAndWhite()
 	// get time in seconds
 	duration<double, milli> time_span = high_resolution_clock::now() - timer;
 	float deltaTime = (float)(time_span.count() / 1000.0f);
-	ChromaLogger::printf("Elapsed time: %f\r\n", deltaTime);
+	printf("Elapsed time: %f\r\n", deltaTime);
 
 	Sleep(3000);
 
@@ -1011,11 +1006,11 @@ void UnitTests::UnitTestsDuplicateFirstFrame()
 int UnitTests::OpenAndPlay(const char* path)
 {
 	int animationId = (int)ChromaAnimationAPI::OpenAnimation(path);
-	ChromaLogger::printf("OpenAnimation: %s result=%d\r\n", path, animationId);
+	printf("OpenAnimation: %s result=%d\r\n", path, animationId);
 	if (animationId >= 0)
 	{
 		int result = (int)ChromaAnimationAPI::PlayAnimation(animationId);
-		ChromaLogger::printf("PlayAnimation: %d result=%d\r\n", animationId, result);
+		printf("PlayAnimation: %d result=%d\r\n", animationId, result);
 		return result;
 	}
 	else
@@ -1027,7 +1022,7 @@ int UnitTests::OpenAndPlay(const char* path)
 int UnitTests::CloseAnimation(int animationId)
 {
 	int result = (int)ChromaAnimationAPI::CloseAnimation(animationId);
-	ChromaLogger::printf("CloseAnimation: %d result=%d\r\n", animationId, result);
+	printf("CloseAnimation: %d result=%d\r\n", animationId, result);
 	return result;
 }
 
@@ -1040,11 +1035,11 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 		if (0 != fopen_s(&stream, path, "rb") ||
 			stream == nullptr)
 		{
-			ChromaLogger::fprintf(stderr, "UnitTestsOpenAnimationFromMemory: Failed to open animation! %s\r\n", path);
+			fprintf(stderr, "UnitTestsOpenAnimationFromMemory: Failed to open animation! %s\r\n", path);
 			return;
 		}
 
-		ChromaLogger::printf("UnitTestsOpenAnimationFromMemory: Reading animation file contents...\r\n");
+		printf("UnitTestsOpenAnimationFromMemory: Reading animation file contents...\r\n");
 
 		vector<BYTE> lstBuffer;
 
@@ -1056,21 +1051,21 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
- 		ChromaLogger::fprintf(stderr, "UnitTestsOpenAnimationFromMemory: File size is! %d\r\n", (int)lstBuffer.size());
+ 		fprintf(stderr, "UnitTestsOpenAnimationFromMemory: File size is! %d\r\n", (int)lstBuffer.size());
 
 		BYTE* buffer = new BYTE[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
 
-		ChromaLogger::printf("UnitTestsOpenAnimationFromMemory: Opening file from buffer...\r\n");
+		printf("UnitTestsOpenAnimationFromMemory: Opening file from buffer...\r\n");
 
 		const char* name = "MemoryAnimation.chroma";
 		ChromaAnimationAPI::OpenAnimationFromMemory(buffer, name);
 
-		ChromaLogger::printf("UnitTestsOpenAnimationFromMemory: Deleting buffer...\r\n");
+		printf("UnitTestsOpenAnimationFromMemory: Deleting buffer...\r\n");
 
 		delete []buffer;
 
-		ChromaLogger::printf("UnitTestsOpenAnimationFromMemory: Playing animation...\r\n");
+		printf("UnitTestsOpenAnimationFromMemory: Playing animation...\r\n");
 
 		ChromaAnimationAPI::PlayAnimationName(name, true);
 
@@ -1078,7 +1073,7 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 	}
 	catch (exception)
 	{
-		ChromaLogger::fprintf(stderr, "UnitTestsOpenAnimationFromMemory: Exception path=%s\r\n", path);
+		fprintf(stderr, "UnitTestsOpenAnimationFromMemory: Exception path=%s\r\n", path);
 	}
 
 	if (stream != nullptr)
@@ -1086,7 +1081,7 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 		fclose(stream);
 	}
 
-	ChromaLogger::printf("UnitTestsOpenAnimationFromMemory: Complete!\r\n");
+	printf("UnitTestsOpenAnimationFromMemory: Complete!\r\n");
 }
 
 void UnitTests::UnitTestsIdleAnimation()
@@ -1096,7 +1091,7 @@ void UnitTests::UnitTestsIdleAnimation()
 
 	const int delay = 3000;
 
-	ChromaLogger::printf("Idle is [ON].\r\n");
+	printf("Idle is [ON].\r\n");
 	ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, true);
 
 	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
@@ -1106,45 +1101,45 @@ void UnitTests::UnitTestsIdleAnimation()
 	ChromaAnimationAPI::CloseAnimationName(randomAnimation);
 	ChromaAnimationAPI::OverrideFrameDurationName(randomAnimation, 0.1f);
 
-	ChromaLogger::printf("Play random animation.\r\n");
+	printf("Play random animation.\r\n");
 	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	ChromaLogger::printf("Waiting 3 sec...\r\n");
+	printf("Waiting 3 sec...\r\n");
 	Sleep(delay);
-	ChromaLogger::printf("\r\n");
+	printf("\r\n");
 
-	ChromaLogger::printf("Close idle animation while active...\r\n");
+	printf("Close idle animation while active...\r\n");
 	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
 	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
 	Sleep(delay);
-	ChromaLogger::printf("\r\n");
+	printf("\r\n");
 
-	ChromaLogger::printf("Set idle animation.\r\n");
+	printf("Set idle animation.\r\n");
 	ChromaAnimationAPI::SetIdleAnimationName(idleAnimation);
 
-	ChromaLogger::printf("Play random animation.\r\n");
+	printf("Play random animation.\r\n");
 	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	ChromaLogger::printf("Waiting 3 sec...\r\n");
+	printf("Waiting 3 sec...\r\n");
 	Sleep(delay);
-	ChromaLogger::printf("\r\n");
+	printf("\r\n");
 
-	ChromaLogger::printf("Play random animation.\r\n");
+	printf("Play random animation.\r\n");
 	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	ChromaLogger::printf("Waiting 3 sec...\r\n");
+	printf("Waiting 3 sec...\r\n");
 	Sleep(delay);
-	ChromaLogger::printf("\r\n");
+	printf("\r\n");
 
-	ChromaLogger::printf("Clear all animations with idle [ON].\r\n");
+	printf("Clear all animations with idle [ON].\r\n");
 	ChromaAnimationAPI::ClearAll();
-	ChromaLogger::printf("Waiting 3 sec...\r\n");
+	printf("Waiting 3 sec...\r\n");
 	Sleep(delay);
-	ChromaLogger::printf("\r\n");
+	printf("\r\n");
 
-	ChromaLogger::printf("Idle is [OFF].\r\n");
+	printf("Idle is [OFF].\r\n");
 	ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, false);
 	ChromaAnimationAPI::ClearAll();
-	ChromaLogger::printf("Waiting 3 sec...\r\n");
+	printf("Waiting 3 sec...\r\n");
 	Sleep(delay);
-	ChromaLogger::printf("\r\n");
+	printf("\r\n");
 }
 
 void UnitTests::UnitTestsDamage()
@@ -1267,7 +1262,7 @@ void UnitTests::UnitTestsMeasurePreloading()
 {
 	const char* RAINBOW_KEYBOARD = "Animations/Rainbow_Keyboard.chroma";
 
-	ChromaLogger::printf("Measure [immediate mode] elapsed time...\r\n");
+	printf("Measure [immediate mode] elapsed time...\r\n");
 	for (int i = 0; i < 10; ++i)
 	{
 		// unload the animation (shouldn't be loaded)
@@ -1293,12 +1288,12 @@ void UnitTests::UnitTestsMeasurePreloading()
 		// get time in seconds
 		duration<double, milli> time_span = high_resolution_clock::now() - timer;
 		float deltaTime = (float)(time_span.count() / 1000.0f);
-		ChromaLogger::printf("Immediate elapsed time: %f\r\n", deltaTime);
+		printf("Immediate elapsed time: %f\r\n", deltaTime);
 
 		Sleep(500);
 	}
 
-	ChromaLogger::printf("Measure [preload mode] elapsed time...\r\n");
+	printf("Measure [preload mode] elapsed time...\r\n");
 	for (int i = 0; i < 10; ++i)
 	{
 		// unload the animation
@@ -1324,7 +1319,7 @@ void UnitTests::UnitTestsMeasurePreloading()
 		// get time in seconds
 		duration<double, milli> time_span = high_resolution_clock::now() - timer;
 		float deltaTime = (float)(time_span.count() / 1000.0f);
-		ChromaLogger::printf("Preload elapsed time: %f\r\n", deltaTime);
+		printf("Preload elapsed time: %f\r\n", deltaTime);
 
 		Sleep(500);
 	}
@@ -1339,11 +1334,11 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 		if (0 != fopen_s(&stream, path, "rb") ||
 			stream == nullptr)
 		{
-			ChromaLogger::fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: Failed to open animation! %s\r\n", path);
+			fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: Failed to open animation! %s\r\n", path);
 			return;
 		}
 
-		ChromaLogger::printf("UnitTestsMeasurePreloadingWithCaching: Reading animation file contents...\r\n");
+		printf("UnitTestsMeasurePreloadingWithCaching: Reading animation file contents...\r\n");
 
 		vector<BYTE> lstBuffer;
 
@@ -1355,18 +1350,18 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
-		ChromaLogger::fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: File size is! %d\r\n", (int)lstBuffer.size());
+		fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: File size is! %d\r\n", (int)lstBuffer.size());
 
 		BYTE* buffer = new BYTE[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
 
-		ChromaLogger::printf("UnitTestsMeasurePreloadingWithCaching: Opening file from buffer...\r\n");
+		printf("UnitTestsMeasurePreloadingWithCaching: Opening file from buffer...\r\n");
 
 		const char* name = "MemoryAnimation.chroma";
 
 		// measure performance
 
-		ChromaLogger::printf("Measure [immediate mode] elapsed time...\r\n");
+		printf("Measure [immediate mode] elapsed time...\r\n");
 		for (int i = 0; i < 10; ++i)
 		{
 			// open the animation
@@ -1386,7 +1381,7 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 			// get time in seconds
 			duration<double, milli> time_span = high_resolution_clock::now() - timer;
 			float deltaTime = (float)(time_span.count() / 1000.0f);
-			ChromaLogger::printf("Immediate elapsed time: %f\r\n", deltaTime);
+			printf("Immediate elapsed time: %f\r\n", deltaTime);
 
 			Sleep(500);
 
@@ -1394,7 +1389,7 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 			ChromaAnimationAPI::CloseAnimation(animationId);
 		}
 
-		ChromaLogger::printf("Measure [preload mode] elapsed time...\r\n");
+		printf("Measure [preload mode] elapsed time...\r\n");
 		for (int i = 0; i < 10; ++i)
 		{
 			// open the animation
@@ -1414,7 +1409,7 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 			// get time in seconds
 			duration<double, milli> time_span = high_resolution_clock::now() - timer;
 			float deltaTime = (float)(time_span.count() / 1000.0f);
-			ChromaLogger::printf("Preload elapsed time: %f\r\n", deltaTime);
+			printf("Preload elapsed time: %f\r\n", deltaTime);
 
 			Sleep(500);
 
@@ -1423,12 +1418,12 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 		}
 
 		// clear buffer for loading from memory
-		ChromaLogger::printf("UnitTestsMeasurePreloadingWithCaching: Deleting buffer...\r\n");
+		printf("UnitTestsMeasurePreloadingWithCaching: Deleting buffer...\r\n");
 		delete []buffer;
 	}
 	catch (exception)
 	{
-		ChromaLogger::fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: Exception path=%s\r\n", path);
+		fprintf(stderr, "UnitTestsMeasurePreloadingWithCaching: Exception path=%s\r\n", path);
 	}
 
 	if (stream != nullptr)
@@ -1436,7 +1431,7 @@ void UnitTests::UnitTestsMeasurePreloadingWithCaching()
 		fclose(stream);
 	}
 
-	ChromaLogger::printf("UnitTestsMeasurePreloadingWithCaching: Complete!\r\n");
+	printf("UnitTestsMeasurePreloadingWithCaching: Complete!\r\n");
 }
 
 void UnitTests::UnitTestsMeasureGetAnimation()
@@ -1445,7 +1440,7 @@ void UnitTests::UnitTestsMeasureGetAnimation()
 
 	// measure performance
 
-	ChromaLogger::printf("Measure [GetAnimation()] elapsed time...\r\n");
+	printf("Measure [GetAnimation()] elapsed time...\r\n");
 	for (int i = 0; i < 10; ++i)
 	{
 		// get current time
@@ -1457,7 +1452,7 @@ void UnitTests::UnitTestsMeasureGetAnimation()
 		// get time in seconds
 		duration<double, milli> time_span = high_resolution_clock::now() - timer;
 		float deltaTime = (float)(time_span.count() / 1000.0f);
-		ChromaLogger::printf("GetAnimation() elapsed time: %f\r\n", deltaTime);
+		printf("GetAnimation() elapsed time: %f\r\n", deltaTime);
 
 		Sleep(500);
 
@@ -1465,7 +1460,7 @@ void UnitTests::UnitTestsMeasureGetAnimation()
 		ChromaAnimationAPI::CloseAnimationName(path);
 	}
 
-	ChromaLogger::printf("UnitTestsMeasureGetAnimation: Complete!\r\n");
+	printf("UnitTestsMeasureGetAnimation: Complete!\r\n");
 }
 
 void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
@@ -1477,11 +1472,11 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 		if (0 != fopen_s(&stream, path, "rb") ||
 			stream == nullptr)
 		{
-			ChromaLogger::fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: Failed to open animation! %s\r\n", path);
+			fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: Failed to open animation! %s\r\n", path);
 			return;
 		}
 
-		ChromaLogger::printf("UnitTestsMeasureGetAnimationWithCaching: Reading animation file contents...\r\n");
+		printf("UnitTestsMeasureGetAnimationWithCaching: Reading animation file contents...\r\n");
 
 		vector<BYTE> lstBuffer;
 
@@ -1493,12 +1488,12 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 			lstBuffer.push_back(data);
 		} while (read != 0);
 
-		ChromaLogger::fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: File size is! %d\r\n", (int)lstBuffer.size());
+		fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: File size is! %d\r\n", (int)lstBuffer.size());
 
 		BYTE* buffer = new BYTE[lstBuffer.size()];
 		copy(lstBuffer.begin(), lstBuffer.end(), buffer);
 
-		ChromaLogger::printf("UnitTestsMeasureGetAnimationWithCaching: Opening file from buffer...\r\n");
+		printf("UnitTestsMeasureGetAnimationWithCaching: Opening file from buffer...\r\n");
 
 		const char* name = "MemoryAnimation.chroma";
 
@@ -1506,7 +1501,7 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 
 		float total = 0;
 
-		ChromaLogger::printf("Measure [GetAnimation()] elapsed time...\r\n");
+		printf("Measure [GetAnimation()] elapsed time...\r\n");
 		int tries = 1000;
 		for (int i = 0; i < tries; ++i)
 		{
@@ -1522,7 +1517,7 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 			duration<double, milli> time_span = high_resolution_clock::now() - timer;
 			float deltaTime = (float)(time_span.count() / 1000.0f);
 			total += deltaTime;
-			ChromaLogger::printf("%d GetAnimation() elapsed time: %f average: %f\r\n", i, deltaTime, total / (float)(i+1));
+			printf("%d GetAnimation() elapsed time: %f average: %f\r\n", i, deltaTime, total / (float)(i+1));
 
 			Sleep(500);
 
@@ -1531,12 +1526,12 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 		}
 
 		// clear buffer for loading from memory
-		ChromaLogger::printf("UnitTestsMeasureGetAnimationWithCaching: Deleting buffer...\r\n");
+		printf("UnitTestsMeasureGetAnimationWithCaching: Deleting buffer...\r\n");
 		delete []buffer;
 	}
 	catch (exception)
 	{
-		ChromaLogger::fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: Exception path=%s\r\n", path);
+		fprintf(stderr, "UnitTestsMeasureGetAnimationWithCaching: Exception path=%s\r\n", path);
 	}
 
 	if (stream != nullptr)
@@ -1544,7 +1539,7 @@ void UnitTests::UnitTestsMeasureGetAnimationWithCaching()
 		fclose(stream);
 	}
 
-	ChromaLogger::printf("UnitTestsMeasureGetAnimationWithCaching: Complete!\r\n");
+	printf("UnitTestsMeasureGetAnimationWithCaching: Complete!\r\n");
 }
 
 void UnitTests::UnitTestsCopyKeysColorAllFramesName()
@@ -1573,7 +1568,7 @@ void UnitTests::UnitTestsCopyKeysColorAllFramesName()
 	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
 	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 
-	ChromaLogger::printf("Done.\r\n");
+	printf("Done.\r\n");
 	Sleep(60000);
 }
 
@@ -1590,12 +1585,12 @@ void UnitTests::UnitTestsFrameValidation()
 	// open the animation
 	ChromaAnimationAPI::GetAnimation(path);
 
-	//ChromaLogger::printf("Set Frame: 23\r\n");	
+	//printf("Set Frame: 23\r\n");	
 	//ChromaAnimationAPI::SetCurrentFrameName(path, 23);
 	//ChromaAnimationAPI::PreviewFrameName(path, 23);
 	//Sleep(1000);
 
-	//ChromaLogger::printf("Set Frame: 24\r\n");
+	//printf("Set Frame: 24\r\n");
 	//ChromaAnimationAPI::SetCurrentFrameName(path, 24);
 	//ChromaAnimationAPI::PreviewFrameName(path, 24);
 	//Sleep(1000);
@@ -1605,37 +1600,38 @@ void UnitTests::UnitTestsFrameValidation()
 	ChromaAnimationAPI::OverrideFrameDurationName(path, 0.033f);
 	ChromaAnimationAPI::PlayAnimationName(path, true);
 
-	ChromaLogger::printf("Done.\r\n");
+	printf("Done.\r\n");
 	Sleep(60000);
 }
 
 void UnitTests::UnitTestsSpecialCharacters()
 {
-	ChromaLogger::printf("Play animation with special characters in path.\r\n");
+	printf("Play animation with special characters in path.\r\n");
 	ChromaAnimationAPI::PlayComposite("Animations/André/Message", false);
 	Sleep(3000);
 }
 
 void UnitTests::UnitTestsEmpty()
 {
-	ChromaLogger::printf("Open animations that don't exist.\r\n");
+	printf("Open animations that don't exist.\r\n");
 	ChromaAnimationAPI::PlayComposite("Animations/DO_NOT_EXIST", false);
 
-	ChromaLogger::printf("Open animations with zero bytes.\r\n");
+	printf("Open animations with zero bytes.\r\n");
 	ChromaAnimationAPI::PlayComposite("Animations/Empty", false);
 	Sleep(3000);
 }
 
 void UnitTests::UnitTestsLarge()
 {
-	ChromaLogger::printf("Open large animations.\r\n");
+	printf("Open large animations.\r\n");
 
 	auto measureElapsed = [](const char* name)
 	{
 		high_resolution_clock::time_point timer = high_resolution_clock::now();
+		ChromaAnimationAPI::OpenAnimation(name);
 		duration<double, milli> timeSpan = high_resolution_clock::now() - timer;
 		float deltaTime = (float)(timeSpan.count() / 1000.0f);
-		ChromaLogger::printf("Elapsed time: %f %s\r\n", deltaTime, name);
+		printf("Elapsed time: %f %s\r\n", deltaTime, name);
 	};
 
 	high_resolution_clock::time_point timer = high_resolution_clock::now();
@@ -1650,20 +1646,20 @@ void UnitTests::UnitTestsLarge()
 
 	duration<double, milli> timeSpan = high_resolution_clock::now() - timer;
 	float deltaTime = (float)(timeSpan.count() / 1000.0f);
-	ChromaLogger::printf("Opened large animations elapsed time: %f\r\n", deltaTime);
+	printf("Opened large animations elapsed time: %f\r\n", deltaTime);
 
 	Sleep(3000);
 }
 
 void UnitTests::Run()
 {
-	ChromaLogger::printf("Start of unit tests...\r\n");
+	printf("Start of unit tests...\r\n");
 	//UnitTestsInit();
 	UnitTestsInitSDK();
 
 	if (!ChromaAnimationAPI::IsInitialized())
 	{
-		ChromaLogger::printf("Library hasn't loaded, aborting unit tests...\r\n");
+		printf("Library hasn't loaded, aborting unit tests...\r\n");
 		return;
 	}
 
@@ -1679,7 +1675,7 @@ void UnitTests::Run()
 	//UnitTestsDuplicateFirstFrame();
 	//UnitTestsCreateRandomBlackAndWhite();
 	//UnitTestsKeyboardCustom();
-	//UnitTestsPlayComposite();
+	UnitTestsPlayComposite();
 	//UnitTestsHDKIndividualLEDsGradient();
 	//UnitTestsHDKIndividualLEDs();
 	//UnitTestsOffset();
@@ -1696,15 +1692,20 @@ void UnitTests::Run()
 
 	//UnitTestsSpecialCharacters();
 
-	UnitTestsEmpty();
-	UnitTestsLarge();
+	//UnitTestsEmpty();
+	//UnitTestsLarge();
 
-
-
-	UnitTestsUninit();
-
+	printf("Press Esc to end unit tests...\r\n");
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
 	while (true)
 	{
-		Sleep(1000);
+		if (inputEscape.WasReleased())
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+		Sleep(100);
 	}
+
+	UnitTestsUninit();
 }

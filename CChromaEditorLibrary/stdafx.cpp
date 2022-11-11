@@ -650,14 +650,21 @@ extern "C"
 					LogError("PluginPlayAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
-				PluginStopAnimationType(animation->GetDeviceTypeId(), animation->GetDeviceId());
+				int deviceType = animation->GetDeviceTypeId();
+				int deviceId = animation->GetDeviceId();
+				if (deviceType == (int)EChromaSDKDeviceTypeEnum::DE_2D &&
+					deviceId == (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended)
+				{
+					deviceId = (int)EChromaSDKDevice2DEnum::DE_Keyboard;
+				}
+				PluginStopAnimationType(deviceType, deviceId);
 				switch (animation->GetDeviceType())
 				{
 				case EChromaSDKDeviceTypeEnum::DE_1D:
-					_gPlayMap1D[(EChromaSDKDevice1DEnum)animation->GetDeviceId()] = animationId;
+					_gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId] = animationId;
 					break;
 				case EChromaSDKDeviceTypeEnum::DE_2D:
-					_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
+					_gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId] = animationId;
 					break;
 				}
 				if (animation->HasUsePreloading())
@@ -1821,15 +1828,22 @@ extern "C"
 				LogError("PluginPlayAnimationLoop: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
-			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
+			int deviceType = animation->GetDeviceType();
+			int deviceId = animation->GetDeviceId();
+			if (deviceType == (int)EChromaSDKDeviceTypeEnum::DE_2D &&
+				deviceId == (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended)
+			{
+				deviceId = (int)EChromaSDKDevice2DEnum::DE_Keyboard;
+			}
+			PluginStopAnimationType(deviceType, deviceId);
 			//LogDebug("PluginPlayAnimationLoop: %s\r\n", animation->GetName().c_str());
-			switch (animation->GetDeviceType())
+			switch (deviceType)
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
-				_gPlayMap1D[(EChromaSDKDevice1DEnum)animation->GetDeviceId()] = animationId;
+				_gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId] = animationId;
 				break;
 			case EChromaSDKDeviceTypeEnum::DE_2D:
-				_gPlayMap2D[(EChromaSDKDevice2DEnum)animation->GetDeviceId()] = animationId;
+				_gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId] = animationId;
 				break;
 			}
 			if (animation->HasUsePreloading())
@@ -1938,30 +1952,37 @@ extern "C"
 
 	EXPORT_API void PluginStopAnimationType(int deviceType, int device)
 	{
+		int deviceId = device;
+		if (deviceType == (int)EChromaSDKDeviceTypeEnum::DE_2D &&
+			device == (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended)
+		{
+			deviceId = (int)EChromaSDKDevice2DEnum::DE_Keyboard;
+		}
+
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
 		{
 		case EChromaSDKDeviceTypeEnum::DE_1D:
 			{
-				if (_gPlayMap1D.find((EChromaSDKDevice1DEnum)device) != _gPlayMap1D.end())
+				if (_gPlayMap1D.find((EChromaSDKDevice1DEnum)deviceId) != _gPlayMap1D.end())
 				{
-					int prevAnimation = _gPlayMap1D[(EChromaSDKDevice1DEnum)device];
+					int prevAnimation = _gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId];
 					if (prevAnimation != -1)
 					{
 						PluginStopAnimation(prevAnimation);
-						_gPlayMap1D[(EChromaSDKDevice1DEnum)device] = -1;
+						_gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId] = -1;
 					}
 				}
 			}
 			break;
 		case EChromaSDKDeviceTypeEnum::DE_2D:
 			{
-				if (_gPlayMap2D.find((EChromaSDKDevice2DEnum)device) != _gPlayMap2D.end())
+				if (_gPlayMap2D.find((EChromaSDKDevice2DEnum)deviceId) != _gPlayMap2D.end())
 				{
-					int prevAnimation = _gPlayMap2D[(EChromaSDKDevice2DEnum)device];
+					int prevAnimation = _gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId];
 					if (prevAnimation != -1)
 					{
 						PluginStopAnimation(prevAnimation);
-						_gPlayMap2D[(EChromaSDKDevice2DEnum)device] = -1;
+						_gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId] = -1;
 					}
 				}
 			}

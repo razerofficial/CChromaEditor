@@ -299,6 +299,7 @@
   <ItemGroup>
     <ClCompile Include="ChromaAnimationAPI.cpp" />
     <ClCompile Include="ChromaLogger.cpp" />
+    <ClCompile Include="HandleInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="UnitTest.cpp" />
     <ClCompile Include="VerifyLibrarySignature.cpp" />
@@ -306,6 +307,7 @@
   <ItemGroup>
     <ClInclude Include="ChromaAnimationAPI.h" />
     <ClInclude Include="ChromaLogger.h" />
+    <ClInclude Include="HandleInput.h" />
     <ClInclude Include="UnitTests.h" />
     <ClInclude Include="VerifyLibrarySignature.h" />
   </ItemGroup>
