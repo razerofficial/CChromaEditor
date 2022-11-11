@@ -1846,7 +1846,7 @@ extern "C"
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
 		{
-			LogError("PluginPlayAnimationName: Animation not found! %s\r\n", path);
+			//LogError("PluginPlayAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
 		PluginPlayAnimationLoop(animationId, loop);
@@ -2059,6 +2059,7 @@ extern "C"
 		PluginUnloadAnimationName((baseName + "_ChromaLink.chroma").c_str());
 		PluginUnloadAnimationName((baseName + "_Headset.chroma").c_str());
 		PluginUnloadAnimationName((baseName + "_Keyboard.chroma").c_str());
+		PluginUnloadAnimationName((baseName + "_KeyboardExtended.chroma").c_str());
 		PluginUnloadAnimationName((baseName + "_Keypad.chroma").c_str());
 		PluginUnloadAnimationName((baseName + "_Mouse.chroma").c_str());
 		PluginUnloadAnimationName((baseName + "_Mousepad.chroma").c_str());
@@ -2070,6 +2071,7 @@ extern "C"
 		PluginPlayAnimationName((baseName + "_ChromaLink.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + "_Headset.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + "_Keyboard.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + "_KeyboardExtended.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + "_Keypad.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + "_Mouse.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + "_Mousepad.chroma").c_str(), loop);

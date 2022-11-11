@@ -998,18 +998,25 @@ AnimationBase* ChromaSDKPlugin::OpenAnimation(const string& path)
 	if (0 != fopen_s(&stream, path.c_str(), "rb") ||
 		stream == nullptr)
 	{
-		//LogError("OpenAnimation: Failed to open animation! %s\r\n", path.c_str());
+		LogError("OpenAnimation: Failed to open animation! %s\r\n", path.c_str());
 	}
 	else
 	{
 		fseek(stream, 0, SEEK_END);
 		const int size = ftell(stream);
-		BYTE* data = new BYTE[size];
-		fseek(stream, 0, SEEK_SET);
-		fread(data, size, 1, stream);
-		animation = OpenAnimationFromMemory(data);
-		delete[] data;
-		std::fclose(stream);
+		if (size <= 0)
+		{
+			LogError("OpenAnimation: Failed to open empty animation! %s\r\n", path.c_str());
+		}
+		else
+		{
+			BYTE* data = new BYTE[size];
+			fseek(stream, 0, SEEK_SET);
+			fread(data, size, 1, stream);
+			animation = OpenAnimationFromMemory(data);
+			delete[] data;
+			std::fclose(stream);
+		}
 
 		//LogDebug("OpenAnimation: Loaded %s\r\n", path.c_str());
 	}

@@ -1616,6 +1616,45 @@ void UnitTests::UnitTestsSpecialCharacters()
 	Sleep(3000);
 }
 
+void UnitTests::UnitTestsEmpty()
+{
+	ChromaLogger::printf("Open animations that don't exist.\r\n");
+	ChromaAnimationAPI::PlayComposite("Animations/DO_NOT_EXIST", false);
+
+	ChromaLogger::printf("Open animations with zero bytes.\r\n");
+	ChromaAnimationAPI::PlayComposite("Animations/Empty", false);
+	Sleep(3000);
+}
+
+void UnitTests::UnitTestsLarge()
+{
+	ChromaLogger::printf("Open large animations.\r\n");
+
+	auto measureElapsed = [](const char* name)
+	{
+		high_resolution_clock::time_point timer = high_resolution_clock::now();
+		duration<double, milli> timeSpan = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(timeSpan.count() / 1000.0f);
+		ChromaLogger::printf("Elapsed time: %f %s\r\n", deltaTime, name);
+	};
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+
+	measureElapsed("Animations/Large_ChromaLink.chroma");
+	measureElapsed("Animations/Large_Headset.chroma");
+	measureElapsed("Animations/Large_Keyboard.chroma");
+	measureElapsed("Animations/Large_KeyboardExtended.chroma");
+	measureElapsed("Animations/Large_Keypad.chroma");
+	measureElapsed("Animations/Large_Mouse.chroma");
+	measureElapsed("Animations/Large_Mousepad.chroma");
+
+	duration<double, milli> timeSpan = high_resolution_clock::now() - timer;
+	float deltaTime = (float)(timeSpan.count() / 1000.0f);
+	ChromaLogger::printf("Opened large animations elapsed time: %f\r\n", deltaTime);
+
+	Sleep(3000);
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::printf("Start of unit tests...\r\n");
@@ -1655,7 +1694,12 @@ void UnitTests::Run()
 
 	//UnitTestsCopyKeysColorAllFramesName();
 
-	UnitTestsSpecialCharacters();
+	//UnitTestsSpecialCharacters();
+
+	UnitTestsEmpty();
+	UnitTestsLarge();
+
+
 
 	UnitTestsUninit();
 

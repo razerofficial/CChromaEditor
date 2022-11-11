@@ -84,6 +84,9 @@ public:
 
 	static void UnitTestsSpecialCharacters();
 
+	static void UnitTestsEmpty();
+	static void UnitTestsLarge();
+
 	static void Run();
 
 };
