@@ -1405,7 +1405,8 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 
 				button->GetIndex(_mIndexLed, _mIndexRow, _mIndexColumn);
 
-				if (!_mShiftModifier)
+				// capture color
+				if (!_mShiftModifier && !_mControlModifier)
 				{
 					color = GetColor();
 					button->SetColor(color, color);
@@ -1429,6 +1430,32 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 						{
 							FChromaSDKColorFrame1D& frame = frames[currentFrame];
 							int i = index;
+
+							// invert color
+							if (_mControlModifier)
+							{
+								color = frame.Colors[i];
+								int red = color & 0xFF;
+								int green = (color >> 8) & 0xFF;
+								int blue = (color >> 16) & 0xFF;
+								// invert
+								red = 255 - red;
+								green = 255 - green;
+								blue = 255 - blue;
+								color = red | (green << 8) | (blue << 16);
+								frame.Colors[i] = color;
+								button->SetColor(color, color);
+								button->Invalidate();
+							}
+
+							// set color
+							if (!_mShiftModifier && !_mControlModifier)
+							{
+								frame.Colors[i] = color;
+								RefreshGrid();
+							}
+
+							// capture ccolor
 							if (_mShiftModifier)
 							{
 								color = frame.Colors[i];
@@ -1436,11 +1463,6 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 								GetColorButtons()[0]->SetColor(color, color);
 								GetColorButtons()[0]->Invalidate();
 								OnSliderBrushIntensity();
-							}
-							else
-							{
-								frame.Colors[i] = color;
-								RefreshGrid();
 							}
 						}
 					}
@@ -1463,6 +1485,32 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 							int i = index / maxColumn;
 							FChromaSDKColors& row = frame.Colors[i];
 							int j = index - i * maxColumn;
+
+							// invert color
+							if (_mControlModifier)
+							{
+								color = row.Colors[j];
+								int red = color & 0xFF;
+								int green = (color >> 8) & 0xFF;
+								int blue = (color >> 16) & 0xFF;
+								// invert
+								red = 255 - red;
+								green = 255 - green;
+								blue = 255 - blue;
+								color = red | (green << 8) | (blue << 16);
+								row.Colors[j] = color;
+								button->SetColor(color, color);
+								button->Invalidate();
+							}
+
+							// set color
+							if (!_mShiftModifier && !_mControlModifier)
+							{
+								row.Colors[j] = color;
+								RefreshGrid();
+							}
+
+							// capture ccolor
 							if (_mShiftModifier)
 							{
 								color = row.Colors[j];
@@ -1470,12 +1518,7 @@ void CMainViewDlg::OnBnClickedButtonColor(UINT nID)
 								GetColorButtons()[0]->SetColor(color, color);
 								GetColorButtons()[0]->Invalidate();
 								OnSliderBrushIntensity();
-							}
-							else
-							{
-								row.Colors[j] = color;
-								RefreshGrid();
-							}
+							}							
 						}
 					}
 					break;
