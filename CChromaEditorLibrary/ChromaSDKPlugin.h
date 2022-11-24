@@ -33,8 +33,9 @@ namespace ChromaSDK
 		FChromaSDKEffectResult CreateEffectStatic1D(const EChromaSDKDevice1DEnum& device, COLORREF color);
 		FChromaSDKEffectResult CreateEffectStatic2D(const EChromaSDKDevice2DEnum& device, COLORREF color);
 		FChromaSDKEffectResult CreateEffectCustom1D(const EChromaSDKDevice1DEnum& device, const std::vector<COLORREF>& colors);
-		FChromaSDKEffectResult CreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const std::vector<FChromaSDKColors>& colors);
-		FChromaSDKEffectResult CreateEffectKeyboardCustom2D(const std::vector<FChromaSDKColors>& colors);
+		FChromaSDKEffectResult CreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const std::vector<FChromaSDKColors>& colors, const std::vector<FChromaSDKColors>& keys);
+		FChromaSDKEffectResult CreateEffectKeyboardCustom2D(const std::vector<FChromaSDKColors>& colors, const std::vector<FChromaSDKColors>& keys);
+		FChromaSDKEffectResult CreateEffectKeyboardExtendedCustom2D(const std::vector<FChromaSDKColors>& colors, const std::vector<FChromaSDKColors>& keys);
 		RZRESULT SetEffect(const FChromaSDKGuid& effectId);
 		RZRESULT DeleteEffect(const FChromaSDKGuid& effectId);
 

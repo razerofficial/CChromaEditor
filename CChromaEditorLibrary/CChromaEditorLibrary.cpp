@@ -2226,7 +2226,7 @@ void CMainViewDlg::OnBnClickedButtonPreview()
 			if (currentFrame < frames.size())
 			{
 				FChromaSDKColorFrame2D& frame = frames[currentFrame];
-				FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(device, frame.Colors);
+				FChromaSDKEffectResult result = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(device, frame.Colors, frame.Keys);
 				if (result.Result == 0)
 				{
 					ChromaSDKPlugin::GetInstance()->SetEffect(result.EffectId);
@@ -2586,7 +2586,7 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 			vector<FChromaSDKColorFrame2D>& frames = _mEdit2D.GetFrames();
 			if (frames.size() == 1)
 			{
-				FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+				FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D(_mEdit2D.GetDevice());
 				frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mEdit2D.GetDevice());
 				frames[0] = frame;
 			}

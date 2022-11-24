@@ -2204,14 +2204,15 @@ extern "C"
 	*/
 	EXPORT_API RZRESULT PluginSetEffectCustom1D(const int device, const int* colors);
 	/*
-		SetEffectCustom2D will display the referenced colors immediately
+		SetEffectCustom2D will display the referenced colors immediately.
 	*/
 	EXPORT_API RZRESULT PluginSetEffectCustom2D(const int device, const int* colors);
 	/*
 		SetEffectKeyboardCustom2D will display the referenced custom keyboard colors
-		immediately
+		immediately. Colors represent a visual grid layout. Keys represent the
+		hotkeys for any layout.
 	*/
-	EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(const int device, const int* colors);
+	EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(const int device, const int* colors, const int* keys);
 	/*
 		When the idle animation is used, the named animation will play when no other
 		animations are playing. Reference the animation by id.
@@ -2735,7 +2736,7 @@ extern "C"
 		times `MAX COLUMN`. Returns the animation id upon success. Returns negative
 		one upon failure.
 	*/
-	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length);
+	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
 	/*
 		Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
 		(in seconds). The `color` is expected to be an array of the dimensions
@@ -2745,7 +2746,7 @@ extern "C"
 		times `MAX COLUMN`. Returns the animation id upon success. Returns negative
 		one upon failure.
 	*/
-	EXPORT_API int PluginUpdateFrameName(const char* path, int frameIndex, float duration, int* colors, int length);
+	EXPORT_API int PluginUpdateFrameName(const char* path, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
 	/*
 		When the idle animation flag is true, when no other animations are playing,
 		the idle animation will be used. The idle animation will not be affected

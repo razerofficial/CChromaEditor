@@ -790,7 +790,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom1D(const EChromaSDKDev
 	return data;
 }
 
-FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const vector<FChromaSDKColors>& colors)
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDevice2DEnum& device, const vector<FChromaSDKColors>& colors, const vector<FChromaSDKColors>& keys)
 {
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
@@ -808,7 +808,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError("ChromaSDKPlugin::CreateEffectCustom2D Colors Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -835,7 +835,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			(colors.size() > 0 &&
 				maxColumn != colors[0].Colors.size()))
 		{
-			LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			LogError("ChromaSDKPlugin::CreateEffectCustom2D Colors Array size mismatch row: %d==%d column: %d==%d!\r\n",
 				maxRow,
 				colors.size(),
 				maxColumn,
@@ -849,6 +849,28 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 			for (int j = 0; j < maxColumn; j++)
 			{
 				pParam.Color[i][j] = row.Colors[j];
+			}
+		}
+		// Keyboard and KeyboardExtended use 6x22
+		maxRow = GetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
+		maxColumn = GetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
+		if (maxRow != keys.size() ||
+			(keys.size() > 0 &&
+				maxColumn != keys[0].Colors.size()))
+		{
+			LogError("ChromaSDKPlugin::CreateEffectCustom2D Keys Array size mismatch row: %d==%d column: %d==%d!\r\n",
+				maxRow,
+				keys.size(),
+				maxColumn,
+				keys.size() > 0 ? colors[0].Colors.size() : 0);
+			break;
+		}
+		for (int i = 0; i < maxRow; i++)
+		{
+			const FChromaSDKColors& row = keys[i];
+			for (int j = 0; j < maxColumn; j++)
+			{
+				pParam.Key[i][j] = row.Colors[j];
 			}
 		}
 		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM2, &pParam, &effectId);
@@ -918,20 +940,20 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectCustom2D(const EChromaSDKDev
 	return data;
 }
 
-FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vector<FChromaSDKColors>& colors)
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vector<FChromaSDKColors>& colors, const vector<FChromaSDKColors>& keys)
 {
 	FChromaSDKEffectResult data = FChromaSDKEffectResult();
 
 	RZRESULT result = 0;
 	RZEFFECTID effectId = RZEFFECTID();
-	int maxRow = Keyboard::MAX_ROW;
-	int maxColumn = Keyboard::MAX_COLUMN;
+	int maxRow = GetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
+	int maxColumn = GetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
 
 	if (maxRow != colors.size() ||
 		(colors.size() > 0 &&
 		maxColumn != colors[0].Colors.size()))
 	{
-		LogError("ChromaSDKPlugin::CreateEffectCustom2D Array size mismatch row: %d==%d column: %d==%d!\r\n",
+		LogError("ChromaSDKPlugin::CreateEffectKeyboardCustom2D Colors Array size mismatch row: %d==%d column: %d==%d!\r\n",
 			maxRow,
 			colors.size(),
 			maxColumn,
@@ -940,17 +962,110 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vecto
 	else
 	{
 		Keyboard::CUSTOM_KEY_EFFECT_TYPE pParam = {};
+
 		for (int i = 0; i < maxRow; i++)
 		{
 			const FChromaSDKColors& row = colors[i];
 			for (int j = 0; j < maxColumn; j++)
 			{
-				pParam.Key[i][j] = row.Colors[j];
+				pParam.Color[i][j] = row.Colors[j];
 			}
 		}
+
+
+		if (maxRow != keys.size() ||
+			(keys.size() > 0 &&
+				maxColumn != colors[0].Colors.size()))
+		{
+			LogError("ChromaSDKPlugin::CreateEffectKeyboardCustom2D Keys Array size mismatch row: %d==%d column: %d==%d!\r\n",
+				maxRow,
+				keys.size(),
+				maxColumn,
+				keys.size() > 0 ? keys[0].Colors.size() : 0);
+		}
+		else
+		{
+			for (int i = 0; i < maxRow; i++)
+			{
+				const FChromaSDKColors& row = keys[i];
+				for (int j = 0; j < maxColumn; j++)
+				{
+					pParam.Key[i][j] = row.Colors[j];
+				}
+			}
+		}
+
 		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, &pParam, &effectId);
 	}	
 	
+	data.EffectId.Data = effectId;
+	data.Result = result;
+
+	return data;
+}
+
+FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardExtendedCustom2D(const vector<FChromaSDKColors>& colors, const vector<FChromaSDKColors>& keys)
+{
+	FChromaSDKEffectResult data = FChromaSDKEffectResult();
+
+	RZRESULT result = 0;
+	RZEFFECTID effectId = RZEFFECTID();
+	int maxRow = GetMaxRow(EChromaSDKDevice2DEnum::DE_KeyboardExtended);
+	int maxColumn = GetMaxColumn(EChromaSDKDevice2DEnum::DE_KeyboardExtended);
+
+	if (maxRow != colors.size() ||
+		(colors.size() > 0 &&
+			maxColumn != colors[0].Colors.size()))
+	{
+		LogError("ChromaSDKPlugin::CreateEffectKeyboardExtendedCustom2D Colors Array size mismatch row: %d==%d column: %d==%d!\r\n",
+			maxRow,
+			colors.size(),
+			maxColumn,
+			colors.size() > 0 ? colors[0].Colors.size() : 0);
+	}
+	else
+	{
+		Keyboard::v2::CUSTOM_EFFECT_TYPE pParam = {};
+
+		for (int i = 0; i < maxRow; i++)
+		{
+			const FChromaSDKColors& row = colors[i];
+			for (int j = 0; j < maxColumn; j++)
+			{
+				pParam.Color[i][j] = row.Colors[j];
+			}
+		}
+
+		// Keyboard and KeyboardExtended use 6x22
+
+		maxRow = GetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
+		maxColumn = GetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
+
+		if (maxRow != keys.size() ||
+			(keys.size() > 0 &&
+				maxColumn != keys[0].Colors.size()))
+		{
+			LogError("ChromaSDKPlugin::CreateEffectKeyboardExtendedCustom2D Keys Array size mismatch row: %d==%d column: %d==%d!\r\n",
+				maxRow,
+				keys.size(),
+				maxColumn,
+				keys.size() > 0 ? keys[0].Colors.size() : 0);
+		}
+		else
+		{
+			for (int i = 0; i < maxRow; i++)
+			{
+				const FChromaSDKColors& row = keys[i];
+				for (int j = 0; j < maxColumn; j++)
+				{
+					pParam.Key[i][j] = row.Colors[j];
+				}
+			}
+		}
+
+		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM2, &pParam, &effectId);
+	}
+
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
@@ -1189,7 +1304,7 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const BYTE* data)
 		vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
 		for (int index = 0; index < frameCount; ++index)
 		{
-			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+			FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D((EChromaSDKDevice2DEnum)device);
 			int maxRow = GetMaxRow((EChromaSDKDevice2DEnum)device);
 			int maxColumn = GetMaxColumn((EChromaSDKDevice2DEnum)device);
 

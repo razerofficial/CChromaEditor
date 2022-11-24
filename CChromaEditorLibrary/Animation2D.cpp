@@ -34,7 +34,7 @@ Animation2D& Animation2D::operator=(const Animation2D& rhs)
 void Animation2D::Reset()
 {
 	_mFrames.clear();
-	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D(_mDevice);
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mDevice);
 	_mFrames.push_back(frame);
 
@@ -107,15 +107,32 @@ void Animation2D::Load()
 		try
 		{
 			FChromaSDKEffectResult effect;
-			if (_mDevice == EChromaSDKDevice2DEnum::DE_Keyboard &&
-				_mUseChromaCustom)
+			switch (_mDevice)
 			{
-				effect = ChromaSDKPlugin::GetInstance()->CreateEffectKeyboardCustom2D(frame.Colors);
-			}
-			else
-			{
-				effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors);
-			}
+			case EChromaSDKDevice2DEnum::DE_Keyboard:
+				if (_mUseChromaCustom)
+				{
+					effect = ChromaSDKPlugin::GetInstance()->CreateEffectKeyboardCustom2D(frame.Colors, frame.Keys);
+				}
+				else
+				{
+					effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors, frame.Keys);
+				}
+				break;
+			case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+				if (_mUseChromaCustom)
+				{
+					effect = ChromaSDKPlugin::GetInstance()->CreateEffectKeyboardExtendedCustom2D(frame.Colors, frame.Keys);
+				}
+				else
+				{
+					effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors, frame.Keys);
+				}
+				break;
+			default:
+				effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors, frame.Keys);
+				break;
+			}			
 			if (effect.Result != 0)
 			{
 				ChromaLogger::fprintf(stderr, "Load: Failed to create effect!\r\n");
@@ -242,15 +259,32 @@ void Animation2D::InternalShowFrame()
 			try
 			{
 				FChromaSDKEffectResult effect;
-				if (_mDevice == EChromaSDKDevice2DEnum::DE_Keyboard &&
-					_mUseChromaCustom)
+				switch (_mDevice)
 				{
-					effect = ChromaSDKPlugin::GetInstance()->CreateEffectKeyboardCustom2D(frame.Colors);
-				}
-				else
-				{
-					effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors);
-				}
+				case EChromaSDKDevice2DEnum::DE_Keyboard:
+					if (_mUseChromaCustom)
+					{
+						effect = ChromaSDKPlugin::GetInstance()->CreateEffectKeyboardCustom2D(frame.Colors, frame.Keys);
+					}
+					else
+					{
+						effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors, frame.Keys);
+					}
+					break;
+				case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+					if (_mUseChromaCustom)
+					{
+						effect = ChromaSDKPlugin::GetInstance()->CreateEffectKeyboardExtendedCustom2D(frame.Colors, frame.Keys);
+					}
+					else
+					{
+						effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors, frame.Keys);
+					}
+					break;
+				default:
+					effect = ChromaSDKPlugin::GetInstance()->CreateEffectCustom2D(_mDevice, frame.Colors, frame.Keys);
+					break;
+				}				
 				if (effect.Result == RZRESULT_SUCCESS)
 				{
 					ChromaSDKPlugin::GetInstance()->SetEffect(effect.EffectId);
@@ -311,7 +345,7 @@ void Animation2D::ResetFrames()
 		auto it = _mFrames.begin();
 		_mFrames.erase(it);
 	}
-	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D(_mDevice);
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mDevice);
 	frame.Duration = 1;
 	_mFrames.push_back(frame);

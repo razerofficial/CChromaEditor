@@ -5,7 +5,8 @@
 using namespace ChromaSDK;
 using namespace std;
 
-EditorAnimation2D::EditorAnimation2D()
+EditorAnimation2D::EditorAnimation2D() :
+	_mFrameCopy(EChromaSDKDevice2DEnum::DE_Keyboard)
 {
 	Reset();
 }
@@ -139,7 +140,7 @@ void EditorAnimation2D::AddFrame()
 	}
 
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
-	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D(GetDevice());
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(GetDevice());
 
 	if (currentFrame == GetFrameCount())
