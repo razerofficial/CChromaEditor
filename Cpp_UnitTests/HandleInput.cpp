@@ -12,6 +12,24 @@ int HandleInput::GetKey()
 {
 	return _mKey;
 }
+bool HandleInput::WasPressed()
+{
+	if (GetConsoleWindow() != GetForegroundWindow())
+	{
+		return false;
+	}
+	if (GetAsyncKeyState(_mKey) != 0)
+	{
+		if (!_mWasPressed)
+		{
+			_mWasPressed = true;
+			return true;
+		}
+	}
+	_mWasPressed = false;
+	return false;
+}
+
 bool HandleInput::WasReleased()
 {
 	if (GetConsoleWindow() != GetForegroundWindow())

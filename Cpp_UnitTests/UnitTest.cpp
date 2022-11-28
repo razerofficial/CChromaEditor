@@ -1653,7 +1653,7 @@ void UnitTests::UnitTestsLarge()
 
 void UnitTests::UnitTests8x24Keys()
 {
-	unsigned int index = 0;
+	int index = -1;
 
 	vector<int> keys;
 	keys.push_back(Keyboard::RZKEY::RZKEY_MACRO1);
@@ -1765,14 +1765,6 @@ void UnitTests::UnitTests8x24Keys()
 	keys.push_back(Keyboard::RZKEY::RZKEY_RIGHT);
 	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD0);	
 	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD_DECIMAL);
-	
-	keys.push_back(Keyboard::RZKEY::RZKEY_EUR_1);
-	keys.push_back(Keyboard::RZKEY::RZKEY_EUR_2);
-	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_1);
-	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_2);
-	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_3);
-	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_4);
-	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_5);
 
 	auto getKeyDescription = [] (int key) -> const wchar_t*
 	{
@@ -2016,8 +2008,8 @@ void UnitTests::UnitTests8x24Keys()
 		return L"UNKNOWN";
 	};
 
-	int key = keys[index];
-	wstring strKey = getKeyDescription(key);
+	int key = -1;
+	wstring strKey = L"NOT SET, Press the DOWN ARROW to set the first key.";
 
 	auto printLegend = []() {
 		printf("Press Esc to end unit test...\r\n");
@@ -2031,36 +2023,45 @@ void UnitTests::UnitTests8x24Keys()
 
 	const char* baseLayer = "Dynamic_KeyboardExtended.chroma";
 
+	// Create an animation for unit testing
 	ChromaAnimationAPI::CreateAnimation(baseLayer, (int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended);
+	
+	// use Keys array
 	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	
+	// Skip needing unload/load when changing Keys colors
+	ChromaAnimationAPI::UsePreloadingName(baseLayer, false);
+
+	// Start all black keys
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 
 	auto updateAnimation = [](const char* baseLayer, int key) {
 
-		ChromaAnimationAPI::StopAnimationName(baseLayer);
+		// clear all keys
 		ChromaAnimationAPI::MakeBlankFramesName(baseLayer, 1, 0.033f, 0);
+
 		int color = ChromaAnimationAPI::GetRGB(255, 255, 255);		
 		int row = HIBYTE(key);
 		int column = LOBYTE(key);
 		if (row < 6 && column < 22)
 		{
+			// set a single key
 			ChromaAnimationAPI::SetKeyColorAllFramesName(baseLayer, key, color);
+
+			// set by array
 			//ChromaAnimationAPI::SetKeysColorName(baseLayer, 0, &key, 1, color);
 		}
-		ChromaAnimationAPI::UnloadAnimationName(baseLayer);
-		ChromaAnimationAPI::LoadAnimationName(baseLayer);
-		ChromaAnimationAPI::PlayAnimationName(baseLayer, false);
+
+		// Show the changes
+		ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 	};
 
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
 	HandleInput inputUp = HandleInput(VK_UP);
 	HandleInput inputDown = HandleInput(VK_DOWN);
 
-	strKey = getKeyDescription(key);
 	printLegend();
 	printKey(index, key, strKey.c_str());
-
-	Sleep(100);
-	updateAnimation(baseLayer, key);
 
 	while (true)
 	{
@@ -2069,27 +2070,29 @@ void UnitTests::UnitTests8x24Keys()
 			printf("UnitTests8x24Keys: Complete.\r\n");
 			break;
 		}
-		if (inputUp.WasReleased())
+		if (inputUp.WasPressed())
 		{
 			if (index > 0) {
 				--index;
-			}
-			key = keys[index];
-			strKey = getKeyDescription(key);
-			printKey(index, key, strKey.c_str());
-			updateAnimation(baseLayer, key);
+
+				key = keys[index];
+				strKey = getKeyDescription(key);
+				printKey(index, key, strKey.c_str());
+				updateAnimation(baseLayer, key);
+			}			
 		}
-		else if (inputDown.WasReleased())
+		else if (inputDown.WasPressed())
 		{
-			if ((index+1) < keys.size()) {
+			if ((index+1) < (int)keys.size()) {
 				++index;
+
+				key = keys[index];
+				strKey = getKeyDescription(key);
+				printKey(index, key, strKey.c_str());
+				updateAnimation(baseLayer, key);
 			}
-			key = keys[index];
-			strKey = getKeyDescription(key);
-			printKey(index, key, strKey.c_str());
-			updateAnimation(baseLayer, key);
 		}
-		Sleep(100);
+		Sleep(1000/30);
 	}
 
 	ChromaAnimationAPI::StopAnimationName(baseLayer);
