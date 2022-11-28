@@ -1727,7 +1727,6 @@ void UnitTests::UnitTests8x24Keys()
 	keys.push_back(Keyboard::RZKEY::RZKEY_G);
 	keys.push_back(Keyboard::RZKEY::RZKEY_H);
 	keys.push_back(Keyboard::RZKEY::RZKEY_J);
-	keys.push_back(Keyboard::RZKEY::RZKEY_J);
 	keys.push_back(Keyboard::RZKEY::RZKEY_K);
 	keys.push_back(Keyboard::RZKEY::RZKEY_L);
 	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_7);
