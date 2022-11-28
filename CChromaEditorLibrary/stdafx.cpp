@@ -2417,15 +2417,24 @@ extern "C"
 		{
 			return;
 		}
-		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D &&
-			animation->GetDeviceId() == (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
 		{
-			Animation2D* animation2D = (Animation2D*)(animation);
-			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-			for (int frameId = 0; frameId < int(frames.size()); ++frameId)
+			switch (animation->GetDeviceId())
 			{
-				FChromaSDKColorFrame2D& frame = frames[frameId];
-				frame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = color;
+			case (int)EChromaSDKDevice2DEnum::DE_Keyboard:
+			case (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+				{
+					int customFlag = 1 << 24;
+					int keyColor = color | customFlag;
+					Animation2D* animation2D = (Animation2D*)(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					for (int frameId = 0; frameId < int(frames.size()); ++frameId)
+					{
+						FChromaSDKColorFrame2D& frame = frames[frameId];
+						frame.Keys[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = keyColor;
+					}
+				}
+				break;
 			}
 		}
 	}
@@ -2496,20 +2505,29 @@ extern "C"
 		{
 			return;
 		}
-		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D &&
-			animation->GetDeviceId() == (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D)
 		{
-			Animation2D* animation2D = (Animation2D*)(animation);
-			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-			if (frameId >= 0 &&
-				frameId < int(frames.size()))
+			switch (animation->GetDeviceId())
 			{
-				FChromaSDKColorFrame2D& frame = frames[frameId];
-				for (int index = 0; index < keyCount; ++index)
+			case (int)EChromaSDKDevice2DEnum::DE_Keyboard:
+			case (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended:
 				{
-					const int* rzkey = &rzkeys[index];
-					frame.Colors[HIBYTE(*rzkey)].Colors[LOBYTE(*rzkey)] = color;
+					int customFlag = 1 << 24;
+					int keyColor = color | customFlag;
+					Animation2D* animation2D = (Animation2D*)(animation);
+					vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+					if (frameId >= 0 &&
+						frameId < int(frames.size()))
+					{
+						FChromaSDKColorFrame2D& frame = frames[frameId];
+						for (int index = 0; index < keyCount; ++index)
+						{
+							const int* rzkey = &rzkeys[index];
+							frame.Keys[HIBYTE(*rzkey)].Colors[LOBYTE(*rzkey)] = keyColor;
+						}
+					}
 				}
+				break;
 			}
 		}
 	}

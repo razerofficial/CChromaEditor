@@ -1,4 +1,4 @@
-#include "ChromaAnimationAPI.h"
+﻿#include "ChromaAnimationAPI.h"
 #include "UnitTests.h"
 #include "ChromaLogger.h"
 #include "HandleInput.h"
@@ -1607,7 +1607,7 @@ void UnitTests::UnitTestsFrameValidation()
 void UnitTests::UnitTestsSpecialCharacters()
 {
 	printf("Play animation with special characters in path.\r\n");
-	ChromaAnimationAPI::PlayComposite("Animations/Andr�/Message", false);
+	ChromaAnimationAPI::PlayComposite("Animations/André/Message", false);
 	Sleep(3000);
 }
 
@@ -1651,6 +1651,452 @@ void UnitTests::UnitTestsLarge()
 	Sleep(3000);
 }
 
+void UnitTests::UnitTests8x24Keys()
+{
+	unsigned int index = 0;
+
+	vector<int> keys;
+	keys.push_back(Keyboard::RZKEY::RZKEY_MACRO1);
+	keys.push_back(Keyboard::RZKEY::RZKEY_MACRO2);
+	keys.push_back(Keyboard::RZKEY::RZKEY_MACRO3);
+	keys.push_back(Keyboard::RZKEY::RZKEY_MACRO4);
+	keys.push_back(Keyboard::RZKEY::RZKEY_MACRO5);
+	keys.push_back(Keyboard::RZKEY::RZKEY_ESC);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F1);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F2);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F3);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F4);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F5);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F6);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F7);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F8);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F9);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F10);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F11);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F12);
+	keys.push_back(Keyboard::RZKEY::RZKEY_PRINTSCREEN);
+	keys.push_back(Keyboard::RZKEY::RZKEY_SCROLL);
+	keys.push_back(Keyboard::RZKEY::RZKEY_PAUSE);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_1);
+	keys.push_back(Keyboard::RZKEY::RZKEY_1);
+	keys.push_back(Keyboard::RZKEY::RZKEY_2);
+	keys.push_back(Keyboard::RZKEY::RZKEY_3);
+	keys.push_back(Keyboard::RZKEY::RZKEY_4);
+	keys.push_back(Keyboard::RZKEY::RZKEY_5);
+	keys.push_back(Keyboard::RZKEY::RZKEY_6);
+	keys.push_back(Keyboard::RZKEY::RZKEY_7);
+	keys.push_back(Keyboard::RZKEY::RZKEY_8);
+	keys.push_back(Keyboard::RZKEY::RZKEY_9);
+	keys.push_back(Keyboard::RZKEY::RZKEY_0);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_2);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_3);
+	keys.push_back(Keyboard::RZKEY::RZKEY_BACKSPACE);
+	keys.push_back(Keyboard::RZKEY::RZKEY_INSERT);
+	keys.push_back(Keyboard::RZKEY::RZKEY_HOME);
+	keys.push_back(Keyboard::RZKEY::RZKEY_PAGEUP);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMLOCK);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD_DIVIDE);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD_MULTIPLY);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD_SUBTRACT);
+	keys.push_back(Keyboard::RZKEY::RZKEY_TAB);
+	keys.push_back(Keyboard::RZKEY::RZKEY_Q);
+	keys.push_back(Keyboard::RZKEY::RZKEY_W);
+	keys.push_back(Keyboard::RZKEY::RZKEY_E);
+	keys.push_back(Keyboard::RZKEY::RZKEY_R);
+	keys.push_back(Keyboard::RZKEY::RZKEY_T);
+	keys.push_back(Keyboard::RZKEY::RZKEY_Y);
+	keys.push_back(Keyboard::RZKEY::RZKEY_U);
+	keys.push_back(Keyboard::RZKEY::RZKEY_I);
+	keys.push_back(Keyboard::RZKEY::RZKEY_O);
+	keys.push_back(Keyboard::RZKEY::RZKEY_P);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_4);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_5);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_6);
+	keys.push_back(Keyboard::RZKEY::RZKEY_DELETE);
+	keys.push_back(Keyboard::RZKEY::RZKEY_END);
+	keys.push_back(Keyboard::RZKEY::RZKEY_PAGEDOWN);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD7);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD8);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD9);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD_ADD);
+	keys.push_back(Keyboard::RZKEY::RZKEY_CAPSLOCK);
+	keys.push_back(Keyboard::RZKEY::RZKEY_A);
+	keys.push_back(Keyboard::RZKEY::RZKEY_S);
+	keys.push_back(Keyboard::RZKEY::RZKEY_D);
+	keys.push_back(Keyboard::RZKEY::RZKEY_F);
+	keys.push_back(Keyboard::RZKEY::RZKEY_G);
+	keys.push_back(Keyboard::RZKEY::RZKEY_H);
+	keys.push_back(Keyboard::RZKEY::RZKEY_J);
+	keys.push_back(Keyboard::RZKEY::RZKEY_J);
+	keys.push_back(Keyboard::RZKEY::RZKEY_K);
+	keys.push_back(Keyboard::RZKEY::RZKEY_L);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_7);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_8);
+	keys.push_back(Keyboard::RZKEY::RZKEY_ENTER);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD4);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD5);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD6);
+	keys.push_back(Keyboard::RZKEY::RZKEY_LSHIFT);
+	keys.push_back(Keyboard::RZKEY::RZKEY_Z);
+	keys.push_back(Keyboard::RZKEY::RZKEY_X);
+	keys.push_back(Keyboard::RZKEY::RZKEY_C);
+	keys.push_back(Keyboard::RZKEY::RZKEY_V);
+	keys.push_back(Keyboard::RZKEY::RZKEY_B);
+	keys.push_back(Keyboard::RZKEY::RZKEY_N);
+	keys.push_back(Keyboard::RZKEY::RZKEY_M);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_9);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_10);
+	keys.push_back(Keyboard::RZKEY::RZKEY_OEM_11);
+	keys.push_back(Keyboard::RZKEY::RZKEY_RSHIFT);
+	keys.push_back(Keyboard::RZKEY::RZKEY_UP);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD1);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD2);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD3);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD_ENTER);
+	keys.push_back(Keyboard::RZKEY::RZKEY_LCTRL);
+	keys.push_back(Keyboard::RZKEY::RZKEY_LWIN);
+	keys.push_back(Keyboard::RZKEY::RZKEY_LALT);
+	keys.push_back(Keyboard::RZKEY::RZKEY_SPACE);
+	keys.push_back(Keyboard::RZKEY::RZKEY_RALT);
+	keys.push_back(Keyboard::RZKEY::RZKEY_FN);
+	keys.push_back(Keyboard::RZKEY::RZKEY_RMENU);
+	keys.push_back(Keyboard::RZKEY::RZKEY_RCTRL);
+	keys.push_back(Keyboard::RZKEY::RZKEY_LEFT);
+	keys.push_back(Keyboard::RZKEY::RZKEY_DOWN);
+	keys.push_back(Keyboard::RZKEY::RZKEY_RIGHT);
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD0);	
+	keys.push_back(Keyboard::RZKEY::RZKEY_NUMPAD_DECIMAL);
+	
+	keys.push_back(Keyboard::RZKEY::RZKEY_EUR_1);
+	keys.push_back(Keyboard::RZKEY::RZKEY_EUR_2);
+	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_1);
+	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_2);
+	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_3);
+	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_4);
+	keys.push_back(Keyboard::RZKEY::RZKEY_JPN_5);
+
+	auto getKeyDescription = [] (int key) -> const wchar_t*
+	{
+		switch (key)
+		{
+		case Keyboard::RZKEY::RZKEY_ESC:
+			return L"RZKEY_ESC";
+		case Keyboard::RZKEY::RZKEY_F1:
+			return L"RZKEY_F1";
+		case Keyboard::RZKEY::RZKEY_F2:
+			return L"RZKEY_F2";
+		case Keyboard::RZKEY::RZKEY_F3:
+			return L"RZKEY_F3";
+		case Keyboard::RZKEY::RZKEY_F4:
+			return L"RZKEY_F4";
+		case Keyboard::RZKEY::RZKEY_F5:
+			return L"RZKEY_F5";
+		case Keyboard::RZKEY::RZKEY_F6:
+			return L"RZKEY_F6";
+		case Keyboard::RZKEY::RZKEY_F7:
+			return L"RZKEY_F7";
+		case Keyboard::RZKEY::RZKEY_F8:
+			return L"RZKEY_F8";
+		case Keyboard::RZKEY::RZKEY_F9:
+			return L"RZKEY_F9";
+		case Keyboard::RZKEY::RZKEY_F10:
+			return L"RZKEY_F10";
+		case Keyboard::RZKEY::RZKEY_F11:
+			return L"RZKEY_F11";
+		case Keyboard::RZKEY::RZKEY_F12:
+			return L"RZKEY_F12";
+		case Keyboard::RZKEY::RZKEY_1:
+			return L"RZKEY_1";
+		case Keyboard::RZKEY::RZKEY_2:
+			return L"RZKEY_2";
+		case Keyboard::RZKEY::RZKEY_3:
+			return L"RZKEY_3";
+		case Keyboard::RZKEY::RZKEY_4:
+			return L"RZKEY_4";
+		case Keyboard::RZKEY::RZKEY_5:
+			return L"RZKEY_5";
+		case Keyboard::RZKEY::RZKEY_6:
+			return L"RZKEY_6";
+		case Keyboard::RZKEY::RZKEY_7:
+			return L"RZKEY_7";
+		case Keyboard::RZKEY::RZKEY_8:
+			return L"RZKEY_8";
+		case Keyboard::RZKEY::RZKEY_9:
+			return L"RZKEY_9";
+		case Keyboard::RZKEY::RZKEY_0:
+			return L"RZKEY_0";
+		case Keyboard::RZKEY::RZKEY_A:
+			return L"RZKEY_A";
+		case Keyboard::RZKEY::RZKEY_B:
+			return L"RZKEY_B";
+		case Keyboard::RZKEY::RZKEY_C:
+			return L"RZKEY_C";
+		case Keyboard::RZKEY::RZKEY_D:
+			return L"RZKEY_D";
+		case Keyboard::RZKEY::RZKEY_E:
+			return L"RZKEY_E";
+		case Keyboard::RZKEY::RZKEY_F:
+			return L"RZKEY_F";
+		case Keyboard::RZKEY::RZKEY_G:
+			return L"RZKEY_G";
+		case Keyboard::RZKEY::RZKEY_H:
+			return L"RZKEY_H";
+		case Keyboard::RZKEY::RZKEY_I:
+			return L"RZKEY_I";
+		case Keyboard::RZKEY::RZKEY_J:
+			return L"RZKEY_J";
+		case Keyboard::RZKEY::RZKEY_K:
+			return L"RZKEY_K";
+		case Keyboard::RZKEY::RZKEY_L:
+			return L"RZKEY_L";
+		case Keyboard::RZKEY::RZKEY_M:
+			return L"RZKEY_M";
+		case Keyboard::RZKEY::RZKEY_N:
+			return L"RZKEY_N";
+		case Keyboard::RZKEY::RZKEY_O:
+			return L"RZKEY_O";
+		case Keyboard::RZKEY::RZKEY_P:
+			return L"RZKEY_P";
+		case Keyboard::RZKEY::RZKEY_Q:
+			return L"RZKEY_Q";
+		case Keyboard::RZKEY::RZKEY_R:
+			return L"RZKEY_R";
+		case Keyboard::RZKEY::RZKEY_S:
+			return L"RZKEY_S";
+		case Keyboard::RZKEY::RZKEY_T:
+			return L"RZKEY_T";
+		case Keyboard::RZKEY::RZKEY_U:
+			return L"RZKEY_U";
+		case Keyboard::RZKEY::RZKEY_V:
+			return L"RZKEY_V";
+		case Keyboard::RZKEY::RZKEY_W:
+			return L"RZKEY_W";
+		case Keyboard::RZKEY::RZKEY_X:
+			return L"RZKEY_X";
+		case Keyboard::RZKEY::RZKEY_Y:
+			return L"RZKEY_Y";
+		case Keyboard::RZKEY::RZKEY_Z:
+			return L"RZKEY_Z";
+		case Keyboard::RZKEY::RZKEY_NUMLOCK:
+			return L"RZKEY_NUMLOCK";
+		case Keyboard::RZKEY::RZKEY_NUMPAD0:
+			return L"RZKEY_NUMPAD0";
+		case Keyboard::RZKEY::RZKEY_NUMPAD1:
+			return L"RZKEY_NUMPAD1";
+		case Keyboard::RZKEY::RZKEY_NUMPAD2:
+			return L"RZKEY_NUMPAD2";
+		case Keyboard::RZKEY::RZKEY_NUMPAD3:
+			return L"RZKEY_NUMPAD3";
+		case Keyboard::RZKEY::RZKEY_NUMPAD4:
+			return L"RZKEY_NUMPAD4";
+		case Keyboard::RZKEY::RZKEY_NUMPAD5:
+			return L"RZKEY_NUMPAD5";
+		case Keyboard::RZKEY::RZKEY_NUMPAD6:
+			return L"RZKEY_NUMPAD6";
+		case Keyboard::RZKEY::RZKEY_NUMPAD7:
+			return L"RZKEY_NUMPAD7";
+		case Keyboard::RZKEY::RZKEY_NUMPAD8:
+			return L"RZKEY_NUMPAD8";
+		case Keyboard::RZKEY::RZKEY_NUMPAD9:
+			return L"RZKEY_NUMPAD9";
+		case Keyboard::RZKEY::RZKEY_NUMPAD_DIVIDE:
+			return L"RZKEY_NUMPAD_DIVIDE";
+		case Keyboard::RZKEY::RZKEY_NUMPAD_MULTIPLY:
+			return L"RZKEY_NUMPAD_MULTIPLY";
+		case Keyboard::RZKEY::RZKEY_NUMPAD_SUBTRACT:
+			return L"RZKEY_NUMPAD_SUBTRACT";
+		case Keyboard::RZKEY::RZKEY_NUMPAD_ADD:
+			return L"RZKEY_NUMPAD_ADD";
+		case Keyboard::RZKEY::RZKEY_NUMPAD_ENTER:
+			return L"RZKEY_NUMPAD_ENTER";
+		case Keyboard::RZKEY::RZKEY_NUMPAD_DECIMAL:
+			return L"RZKEY_NUMPAD_DECIMAL";
+		case Keyboard::RZKEY::RZKEY_PRINTSCREEN:
+			return L"RZKEY_PRINTSCREEN";
+		case Keyboard::RZKEY::RZKEY_SCROLL:
+			return L"RZKEY_SCROLL";
+		case Keyboard::RZKEY::RZKEY_PAUSE:
+			return L"RZKEY_PAUSE";
+		case Keyboard::RZKEY::RZKEY_INSERT:
+			return L"RZKEY_INSERT";
+		case Keyboard::RZKEY::RZKEY_HOME:
+			return L"RZKEY_HOME";
+		case Keyboard::RZKEY::RZKEY_PAGEUP:
+			return L"RZKEY_PAGEUP";
+		case Keyboard::RZKEY::RZKEY_DELETE:
+			return L"RZKEY_DELETE";
+		case Keyboard::RZKEY::RZKEY_END:
+			return L"RZKEY_END";
+		case Keyboard::RZKEY::RZKEY_PAGEDOWN:
+			return L"RZKEY_PAGEDOWN";
+		case Keyboard::RZKEY::RZKEY_UP:
+			return L"RZKEY_UP";
+		case Keyboard::RZKEY::RZKEY_LEFT:
+			return L"RZKEY_LEFT";
+		case Keyboard::RZKEY::RZKEY_DOWN:
+			return L"RZKEY_DOWN";
+		case Keyboard::RZKEY::RZKEY_RIGHT:
+			return L"RZKEY_RIGHT";
+		case Keyboard::RZKEY::RZKEY_TAB:
+			return L"RZKEY_TAB";
+		case Keyboard::RZKEY::RZKEY_CAPSLOCK:
+			return L"RZKEY_CAPSLOCK";
+		case Keyboard::RZKEY::RZKEY_BACKSPACE:
+			return L"RZKEY_BACKSPACE";
+		case Keyboard::RZKEY::RZKEY_ENTER:
+			return L"RZKEY_ENTER";
+		case Keyboard::RZKEY::RZKEY_LCTRL:
+			return L"RZKEY_LCTRL";
+		case Keyboard::RZKEY::RZKEY_LWIN:
+			return L"RZKEY_LWIN";
+		case Keyboard::RZKEY::RZKEY_LALT:
+			return L"RZKEY_LALT";
+		case Keyboard::RZKEY::RZKEY_SPACE:
+			return L"RZKEY_SPACE";
+		case Keyboard::RZKEY::RZKEY_RALT:
+			return L"RZKEY_RALT";
+		case Keyboard::RZKEY::RZKEY_FN:
+			return L"RZKEY_FN";
+		case Keyboard::RZKEY::RZKEY_RMENU:
+			return L"RZKEY_RMENU";
+		case Keyboard::RZKEY::RZKEY_RCTRL:
+			return L"RZKEY_RCTRL";
+		case Keyboard::RZKEY::RZKEY_LSHIFT:
+			return L"RZKEY_LSHIFT";
+		case Keyboard::RZKEY::RZKEY_RSHIFT:
+			return L"RZKEY_RSHIFT";
+		case Keyboard::RZKEY::RZKEY_MACRO1:
+			return L"RZKEY_MACRO1";
+		case Keyboard::RZKEY::RZKEY_MACRO2:
+			return L"RZKEY_MACRO2";
+		case Keyboard::RZKEY::RZKEY_MACRO3:
+			return L"RZKEY_MACRO3";
+		case Keyboard::RZKEY::RZKEY_MACRO4:
+			return L"RZKEY_MACRO4";
+		case Keyboard::RZKEY::RZKEY_MACRO5:
+			return L"RZKEY_MACRO5";
+		case Keyboard::RZKEY::RZKEY_OEM_1:
+			return L"(tilde/半角/全角) (VK_OEM_3)";
+		case Keyboard::RZKEY::RZKEY_OEM_2:
+			return L"(minus) (VK_OEM_MINUS)";
+		case Keyboard::RZKEY::RZKEY_OEM_3:
+			return L"(equal) (VK_OEM_PLUS)";
+		case Keyboard::RZKEY::RZKEY_OEM_4:
+			return L"(left sqaure bracket) (VK_OEM_4)";
+		case Keyboard::RZKEY::RZKEY_OEM_5:
+			return L"(right square bracket) (VK_OEM_6)";
+		case Keyboard::RZKEY::RZKEY_OEM_6:
+			return L"(backslash) (VK_OEM_5)";
+		case Keyboard::RZKEY::RZKEY_OEM_7:
+			return L"(semi-colon) (VK_OEM_1)";
+		case Keyboard::RZKEY::RZKEY_OEM_8:
+			return L"(apostrophe) (VK_OEM_7)";
+		case Keyboard::RZKEY::RZKEY_OEM_9:
+			return L"(comma) (VK_OEM_COMMA)";
+		case Keyboard::RZKEY::RZKEY_OEM_10:
+			return L"(period) (VK_OEM_PERIOD)";
+		case Keyboard::RZKEY::RZKEY_OEM_11:
+			return L"(forward slash) (VK_OEM_2)";
+		case Keyboard::RZKEY::RZKEY_EUR_1:
+			return L"\"#\" (VK_OEM_5)";
+		case Keyboard::RZKEY::RZKEY_EUR_2:
+			return L"\\ (VK_OEM_102)";
+		case Keyboard::RZKEY::RZKEY_JPN_1:
+			return L"¥ (0xFF)";
+		case Keyboard::RZKEY::RZKEY_JPN_2:
+			return L"\\ (0xC1)";
+		case Keyboard::RZKEY::RZKEY_JPN_3:
+			return L"無変換 (VK_OEM_PA1)";
+		case Keyboard::RZKEY::RZKEY_JPN_4:
+			return L"変換 (0xFF)";
+		case Keyboard::RZKEY::RZKEY_JPN_5:
+			return L"ひらがな/カタカナ (0xFF)";
+		case Keyboard::RZKEY::RZKEY_INVALID:
+			return L"RZKEY_INVALID";
+		}
+		return L"UNKNOWN";
+	};
+
+	int key = keys[index];
+	wstring strKey = getKeyDescription(key);
+
+	auto printLegend = []() {
+		printf("Press Esc to end unit test...\r\n");
+		printf("Press UP to cycle test key...\r\n");
+		printf("Press DOWN to cycle test key...\r\n");
+	};
+
+	auto printKey = [](int index, int key, const wchar_t* strKey) {
+		wprintf(L"Current Index: %d Key: %d: Description: %s\r\n", index, key, strKey);
+	};
+
+	const char* baseLayer = "Dynamic_KeyboardExtended.chroma";
+
+	ChromaAnimationAPI::CreateAnimation(baseLayer, (int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended);
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+
+	auto updateAnimation = [](const char* baseLayer, int key) {
+
+		ChromaAnimationAPI::StopAnimationName(baseLayer);
+		ChromaAnimationAPI::MakeBlankFramesName(baseLayer, 1, 0.033f, 0);
+		int color = ChromaAnimationAPI::GetRGB(255, 255, 255);		
+		int row = HIBYTE(key);
+		int column = LOBYTE(key);
+		if (row < 6 && column < 22)
+		{
+			ChromaAnimationAPI::SetKeyColorAllFramesName(baseLayer, key, color);
+			//ChromaAnimationAPI::SetKeysColorName(baseLayer, 0, &key, 1, color);
+		}
+		ChromaAnimationAPI::UnloadAnimationName(baseLayer);
+		ChromaAnimationAPI::LoadAnimationName(baseLayer);
+		ChromaAnimationAPI::PlayAnimationName(baseLayer, false);
+	};
+
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	HandleInput inputUp = HandleInput(VK_UP);
+	HandleInput inputDown = HandleInput(VK_DOWN);
+
+	strKey = getKeyDescription(key);
+	printLegend();
+	printKey(index, key, strKey.c_str());
+
+	Sleep(100);
+	updateAnimation(baseLayer, key);
+
+	while (true)
+	{
+		if (inputEscape.WasReleased())
+		{
+			printf("UnitTests8x24Keys: Complete.\r\n");
+			break;
+		}
+		if (inputUp.WasReleased())
+		{
+			if (index > 0) {
+				--index;
+			}
+			key = keys[index];
+			strKey = getKeyDescription(key);
+			printKey(index, key, strKey.c_str());
+			updateAnimation(baseLayer, key);
+		}
+		else if (inputDown.WasReleased())
+		{
+			if ((index+1) < keys.size()) {
+				++index;
+			}
+			key = keys[index];
+			strKey = getKeyDescription(key);
+			printKey(index, key, strKey.c_str());
+			updateAnimation(baseLayer, key);
+		}
+		Sleep(100);
+	}
+
+	ChromaAnimationAPI::StopAnimationName(baseLayer);
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+}
+
 void UnitTests::Run()
 {
 	printf("Start of unit tests...\r\n");
@@ -1675,7 +2121,7 @@ void UnitTests::Run()
 	//UnitTestsDuplicateFirstFrame();
 	//UnitTestsCreateRandomBlackAndWhite();
 	//UnitTestsKeyboardCustom();
-	UnitTestsPlayComposite();
+	//UnitTestsPlayComposite();
 	//UnitTestsHDKIndividualLEDsGradient();
 	//UnitTestsHDKIndividualLEDs();
 	//UnitTestsOffset();
@@ -1694,6 +2140,8 @@ void UnitTests::Run()
 
 	//UnitTestsEmpty();
 	//UnitTestsLarge();
+
+	UnitTests8x24Keys();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
