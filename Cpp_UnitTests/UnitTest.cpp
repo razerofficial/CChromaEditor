@@ -2023,8 +2023,11 @@ void UnitTests::UnitTests8x24Keys()
 
 	const char* baseLayer = "Dynamic_KeyboardExtended.chroma";
 
-	// Create an animation for unit testing
-	ChromaAnimationAPI::CreateAnimation(baseLayer, (int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended);
+	// Create an animation in memory for unit testing
+	int animationId = ChromaAnimationAPI::CreateAnimationInMemory((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended);
+
+	// Copy the animation to name it
+	ChromaAnimationAPI::CopyAnimation(animationId, baseLayer);
 	
 	// use Keys array
 	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
