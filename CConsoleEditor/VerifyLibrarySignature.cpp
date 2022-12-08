@@ -261,7 +261,8 @@ namespace ChromaSDK
 	BOOL VerifyLibrarySignature::IsFileVersionSameOrNewer(const std::wstring& filename, const int minMajor, const int minMinor, const int minRevision, const int minBuild)
 	{
 		std::filesystem::path p = filename.c_str();
-		if (!std::filesystem::exists(p))
+		std::error_code pathError;
+		if (!std::filesystem::exists(p, pathError))
 		{
 			ChromaLogger::fwprintf(stderr, L"Library not found! %s\r\n", filename.c_str());
 			return false;
