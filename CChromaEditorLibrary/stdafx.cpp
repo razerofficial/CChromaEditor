@@ -2324,17 +2324,30 @@ extern "C"
 		{
 			return;
 		}
-		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D &&
-			animation->GetDeviceId() == (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (animation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D)
 		{
-			Animation2D* animation2D = (Animation2D*)(animation);
-			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-			if (frameId >= 0 &&
-				frameId < int(frames.size()))
-			{
-				FChromaSDKColorFrame2D& frame = frames[frameId];
-				frame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = color;
-			}
+			return;
+		}
+
+		switch (animation->GetDeviceId())
+		{
+		case (int)EChromaSDKDevice2DEnum::DE_Keyboard:
+		case (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+			break;
+		default:
+			return;
+		}
+
+		int customFlag = 1 << 24;
+		int keyColor = color | customFlag;
+
+		Animation2D* animation2D = (Animation2D*)(animation);
+		vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+		if (frameId >= 0 &&
+			frameId < int(frames.size()))
+		{
+			FChromaSDKColorFrame2D& frame = frames[frameId];
+			frame.Keys[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)] = keyColor;
 		}
 	}
 
