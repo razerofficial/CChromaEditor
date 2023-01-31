@@ -1310,7 +1310,7 @@ extern "C"
 							frame.Keys = newKeys;
 						}
 						break;
-					}					
+					}
 				}
 				break;
 			}
@@ -1331,7 +1331,7 @@ extern "C"
 		return PluginUpdateFrame(animationId, frameIndex, duration, colors, length, keys, keysLength);
 	}
 
-	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length)
+	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength)
 	{
 		PluginStopAnimation(animationId);
 
@@ -1388,6 +1388,31 @@ extern "C"
 							++index;
 						}
 					}
+					
+					switch (animation2D->GetDevice()) {
+					case EChromaSDKDevice2DEnum::DE_Keyboard:
+					case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+						if (keys)
+						{
+							// Keyboard and KeyboardExtended are 6x22
+							maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
+							maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
+
+							vector<FChromaSDKColors>& keyColors = frame.Keys;
+
+							index = 0;
+							for (int i = 0; i < maxRow && index < keysLength; ++i)
+							{
+								const std::vector<COLORREF>& row = keyColors[i].Colors;
+								for (int j = 0; j < maxColumn && index < keysLength; ++j)
+								{
+									keys[index] = row[j];
+									++index;
+								}
+							}
+						}
+						break;
+					}
 				}
 				break;
 			}
@@ -1395,6 +1420,17 @@ extern "C"
 		}
 
 		return -1;
+	}
+
+	EXPORT_API int PluginGetFrameName(const char* path, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			LogError("PluginGetFrameName: Animation not found! %s\r\n", path);
+			return -1;
+		}
+		return PluginGetFrame(animationId, frameIndex, duration, colors, length, keys, keysLength);
 	}
 
 	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex)

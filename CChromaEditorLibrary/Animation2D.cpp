@@ -81,7 +81,7 @@ vector<FChromaSDKColorFrame2D>& Animation2D::GetFrames()
 
 int Animation2D::GetFrameCount()
 {
-	return _mFrames.size();
+	return (int)_mFrames.size();
 }
 
 float Animation2D::GetDuration(unsigned int index)
@@ -369,7 +369,7 @@ int Animation2D::Save(const char* path)
 
 		int version = ANIMATION_VERSION;
 		expectedSize = sizeof(int);
-		write = fwrite(&version, expectedSize, 1, stream);
+		write = (long)fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
 			ChromaLogger::fprintf(stderr, "Save: Failed to write version!\r\n");
@@ -410,7 +410,7 @@ int Animation2D::Save(const char* path)
 		}
 
 		//frame count
-		unsigned int frameCount = _mFrames.size();
+		unsigned int frameCount = (unsigned int)_mFrames.size();
 		expectedSize = sizeof(unsigned int);
 		fwrite(&frameCount, expectedSize, 1, stream);
 

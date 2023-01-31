@@ -95,7 +95,7 @@ void EditorAnimationBase::ImportTextureImageSequence()
 		int index = atoi(filename.c_str());
 		string strIndex = to_string(index);
 
-		int hasExtraDigits = filename.length() - strIndex.length();
+		int hasExtraDigits = (int)filename.length() - (int)strIndex.length();
 
 		ChromaLogger::printf(" path: %s\r\n", path.c_str());
 		ChromaLogger::printf(" file: %s\r\n", filename.c_str());

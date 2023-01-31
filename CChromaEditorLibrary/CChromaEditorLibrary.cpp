@@ -168,7 +168,7 @@ void CMainViewDlg::SaveFile()
 
 		int version = ANIMATION_VERSION;
 		expectedSize = sizeof(int);
-		write = fwrite(&version, expectedSize, 1, stream);
+		write = (long)fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
 			ChromaLogger::fprintf(stderr, "SaveFile: Failed to write version!\r\n");
@@ -638,18 +638,18 @@ void CMainViewDlg::RefreshFrames()
 {
 	//update frames label
 	char bufferFrameInfo[48] = { 0 };
-	int currentFrame = 0;
+	unsigned int currentFrame = 0;
 	int frameCount = 0;
 
 	switch (_mDeviceType)
 	{
 	case EChromaSDKDeviceTypeEnum::DE_1D:
 		currentFrame = _mEdit1D.GetCurrentFrame();
-		frameCount = _mEdit1D.GetFrames().size();
+		frameCount = (unsigned int)_mEdit1D.GetFrames().size();
 		break;
 	case EChromaSDKDeviceTypeEnum::DE_2D:
 		currentFrame = _mEdit2D.GetCurrentFrame();
-		frameCount = _mEdit2D.GetFrames().size();
+		frameCount = (unsigned int)_mEdit2D.GetFrames().size();
 		break;
 	}
 
@@ -839,7 +839,7 @@ BOOL CMainViewDlg::OnInitDialog()
 		OnBnClickedButtonPlay();
 	}
 
-	_mTimer = SetTimer(IDT_TIMER_0, 100, NULL);
+	_mTimer = (UINT)SetTimer(IDT_TIMER_0, 100, NULL);
 	_mWasPlaying = false;
 
 	return TRUE;
@@ -2567,7 +2567,7 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 				frames.erase(it+currentFrame);
 				if (currentFrame == frames.size())
 				{
-					currentFrame = frames.size() - 1;
+					currentFrame = (unsigned int)frames.size() - 1;
 					_mEdit1D.SetCurrentFrame(currentFrame);
 				}
 			}
@@ -2596,7 +2596,7 @@ void CMainViewDlg::OnBnClickedButtonDelete()
 				frames.erase(it+currentFrame);
 				if (currentFrame == frames.size())
 				{
-					currentFrame = frames.size() - 1;
+					currentFrame = (unsigned int)frames.size() - 1;
 					_mEdit2D.SetCurrentFrame(currentFrame);
 				}
 			}

@@ -649,6 +649,7 @@ Methods:
 * [PluginGetFrameCount](#PluginGetFrameCount)
 * [PluginGetFrameCountName](#PluginGetFrameCountName)
 * [PluginGetFrameCountNameD](#PluginGetFrameCountNameD)
+* [PluginGetFrameName](#PluginGetFrameName)
 * [PluginGetKeyColor](#PluginGetKeyColor)
 * [PluginGetKeyColorD](#PluginGetKeyColorD)
 * [PluginGetKeyColorName](#PluginGetKeyColorName)
@@ -5146,22 +5147,26 @@ double result = ChromaAnimationAPI::GetDeviceTypeNameD(const char* path);
 <a name="PluginGetFrame"></a>
 **PluginGetFrame**
 
-Gets the frame colors and duration (in seconds) for a `Chroma` animation.
-The `color` is expected to be an array of the expected dimensions for the
-`deviceType/device`. The `length` parameter is the size of the `color`
-array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`.
-For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX
-COLUMN`. Returns the animation id upon success. Returns negative one upon
-failure.
+Get the frame colors and duration (in seconds) for a `Chroma` animation
+referenced by id. The `color` is expected to be an array of the expected
+dimensions for the `deviceType/device`. The `length` parameter is the size
+of the `color` array. For `EChromaSDKDevice1DEnum` the array size should
+be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX
+ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
 EXPORT_API int PluginGetFrame(
- int animationId, int frameIndex, float* duration, int* colors, int length);
+ int animationId, int frameIndex, float* duration, int* colors, int length,
+ int* keys, int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::GetFrame(
- int animationId, int frameIndex, float* duration, int* colors, int length);
+ int animationId, int frameIndex, float* duration, int* colors, int length,
+ int* keys, int keysLength);
 ```
 
 ---
@@ -5206,6 +5211,32 @@ EXPORT_API double PluginGetFrameCountNameD(const char* path);
 
 // Class Plugin
 double result = ChromaAnimationAPI::GetFrameCountNameD(const char* path);
+```
+
+---
+<a name="PluginGetFrameName"></a>
+**PluginGetFrameName**
+
+Get the frame colors and duration (in seconds) for a `Chroma` animation
+referenced by name. The `color` is expected to be an array of the expected
+dimensions for the `deviceType/device`. The `length` parameter is the size
+of the `color` array. For `EChromaSDKDevice1DEnum` the array size should
+be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX
+ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+Returns the animation id upon success. Returns negative one upon failure.
+
+```C++
+// DLL Interface
+EXPORT_API int PluginGetFrameName(
+ const char* path, int frameIndex, float* duration, int* colors, int length,
+ int* keys, int keysLength);
+
+// Class Plugin
+int result = ChromaAnimationAPI::GetFrameName(
+ const char* path, int frameIndex, float* duration, int* colors, int length,
+ int* keys, int keysLength);
 ```
 
 ---
@@ -8052,7 +8083,7 @@ RZRESULT result = ChromaAnimationAPI::SetEffectCustom1D(
 <a name="PluginSetEffectCustom2D"></a>
 **PluginSetEffectCustom2D**
 
-SetEffectCustom2D will display the referenced colors immediately
+SetEffectCustom2D will display the referenced colors immediately.
 
 ```C++
 // DLL Interface
@@ -8069,16 +8100,17 @@ RZRESULT result = ChromaAnimationAPI::SetEffectCustom2D(
 **PluginSetEffectKeyboardCustom2D**
 
 SetEffectKeyboardCustom2D will display the referenced custom keyboard colors
-immediately
+immediately. Colors represent a visual grid layout. Keys represent the
+hotkeys for any layout.
 
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(
- const int device, const int* colors);
+ const int device, const int* colors, const int* keys);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::SetEffectKeyboardCustom2D(
- const int device, const int* colors);
+ const int device, const int* colors, const int* keys);
 ```
 
 ---
@@ -9910,11 +9942,13 @@ one upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginUpdateFrame(
- int animationId, int frameIndex, float duration, int* colors, int length);
+ int animationId, int frameIndex, float duration, int* colors, int length,
+ int* keys, int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::UpdateFrame(
- int animationId, int frameIndex, float duration, int* colors, int length);
+ int animationId, int frameIndex, float duration, int* colors, int length,
+ int* keys, int keysLength);
 ```
 
 ---
@@ -9932,11 +9966,13 @@ one upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginUpdateFrameName(
- const char* path, int frameIndex, float duration, int* colors, int length);
+ const char* path, int frameIndex, float duration, int* colors, int length,
+ int* keys, int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::UpdateFrameName(
- const char* path, int frameIndex, float duration, int* colors, int length);
+ const char* path, int frameIndex, float duration, int* colors, int length,
+ int* keys, int keysLength);
 ```
 
 ---

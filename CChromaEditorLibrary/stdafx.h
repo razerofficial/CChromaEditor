@@ -1326,15 +1326,17 @@ extern "C"
 	*/
 	EXPORT_API double PluginGetDeviceTypeNameD(const char* path);
 	/*
-		Gets the frame colors and duration (in seconds) for a `Chroma` animation.
-		The `color` is expected to be an array of the expected dimensions for the
-		`deviceType/device`. The `length` parameter is the size of the `color`
-		array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`.
-		For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX
-		COLUMN`. Returns the animation id upon success. Returns negative one upon
-		failure.
+		Get the frame colors and duration (in seconds) for a `Chroma` animation
+		referenced by id. The `color` is expected to be an array of the expected
+		dimensions for the `deviceType/device`. The `length` parameter is the size
+		of the `color` array. For `EChromaSDKDevice1DEnum` the array size should
+		be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX
+		ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+		and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+		Returns the animation id upon success. Returns negative one upon failure.
 	*/
-	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length);
+	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength);
 	/*
 		Returns the frame count of a `Chroma` animation upon success. Returns negative
 		one upon failure.
@@ -1349,6 +1351,18 @@ extern "C"
 		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetFrameCountNameD(const char* path);
+	/*
+		Get the frame colors and duration (in seconds) for a `Chroma` animation
+		referenced by name. The `color` is expected to be an array of the expected
+		dimensions for the `deviceType/device`. The `length` parameter is the size
+		of the `color` array. For `EChromaSDKDevice1DEnum` the array size should
+		be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX
+		ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+		and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+		Returns the animation id upon success. Returns negative one upon failure.
+	*/
+	EXPORT_API int PluginGetFrameName(const char* path, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength);
 	/*
 		Get the color of an animation key for the given frame referenced by id.
 	*/

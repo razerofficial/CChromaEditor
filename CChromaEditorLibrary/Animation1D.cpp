@@ -79,7 +79,7 @@ vector<FChromaSDKColorFrame1D>& Animation1D::GetFrames()
 
 int Animation1D::GetFrameCount()
 {
-	return _mFrames.size();
+	return (int)_mFrames.size();
 }
 
 float Animation1D::GetDuration(unsigned int index)
@@ -315,7 +315,7 @@ int Animation1D::Save(const char* path)
 
 		int version = ANIMATION_VERSION;
 		expectedSize = sizeof(int);
-		write = fwrite(&version, expectedSize, 1, stream);
+		write = (long)fwrite(&version, expectedSize, 1, stream);
 		if (expectedWrite != write)
 		{
 			ChromaLogger::fprintf(stderr, "Save: Failed to write version!\r\n");

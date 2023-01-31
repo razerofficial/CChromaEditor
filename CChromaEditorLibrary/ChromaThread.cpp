@@ -326,7 +326,7 @@ void ChromaThread::DeleteAnimation(AnimationBase* animation)
 int ChromaThread::GetAnimationCount()
 {
 	lock_guard<mutex> guard(_sMutex);
-	return _sAnimations.size();
+	return (int)_sAnimations.size();
 }
 
 int ChromaThread::GetAnimationId(int index)

@@ -1270,15 +1270,17 @@ typedef int			(*PLUGIN_GET_DEVICE_TYPE_NAME)(const char* path);
 */
 typedef double		(*PLUGIN_GET_DEVICE_TYPE_NAME_D)(const char* path);
 /*
-	Gets the frame colors and duration (in seconds) for a `Chroma` animation. 
-	The `color` is expected to be an array of the expected dimensions for the 
-	`deviceType/device`. The `length` parameter is the size of the `color` 
-	array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. 
-	For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX 
-	COLUMN`. Returns the animation id upon success. Returns negative one upon 
-	failure.
+	Get the frame colors and duration (in seconds) for a `Chroma` animation 
+	referenced by id. The `color` is expected to be an array of the expected 
+	dimensions for the `deviceType/device`. The `length` parameter is the size 
+	of the `color` array. For `EChromaSDKDevice1DEnum` the array size should 
+	be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX 
+	ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
+	and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
+	EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
+	Returns the animation id upon success. Returns negative one upon failure.
 */
-typedef int			(*PLUGIN_GET_FRAME)(int animationId, int frameIndex, float* duration, int* colors, int length);
+typedef int			(*PLUGIN_GET_FRAME)(int animationId, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength);
 /*
 	Returns the frame count of a `Chroma` animation upon success. Returns negative 
 	one upon failure.
@@ -1293,6 +1295,18 @@ typedef int			(*PLUGIN_GET_FRAME_COUNT_NAME)(const char* path);
 	D suffix for limited data types.
 */
 typedef double		(*PLUGIN_GET_FRAME_COUNT_NAME_D)(const char* path);
+/*
+	Get the frame colors and duration (in seconds) for a `Chroma` animation 
+	referenced by name. The `color` is expected to be an array of the expected 
+	dimensions for the `deviceType/device`. The `length` parameter is the size 
+	of the `color` array. For `EChromaSDKDevice1DEnum` the array size should 
+	be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX 
+	ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
+	and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
+	EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
+	Returns the animation id upon success. Returns negative one upon failure.
+*/
+typedef int			(*PLUGIN_GET_FRAME_NAME)(const char* path, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength);
 /*
 	Get the color of an animation key for the given frame referenced by id.
 */
@@ -2680,7 +2694,7 @@ typedef void		(*PLUGIN_UNLOAD_LIBRARY_STREAMING_PLUGIN)();
 	times `MAX COLUMN`. Returns the animation id upon success. Returns negative 
 	one upon failure.
 */
-typedef int			(*PLUGIN_UPDATE_FRAME)(int animationId, int frameIndex, float duration, int* colors, int length);
+typedef int			(*PLUGIN_UPDATE_FRAME)(int animationId, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
 /*
 	Updates the `frameIndex` of the `Chroma` animation and sets the `duration` 
 	(in seconds). The `color` is expected to be an array of the dimensions 
@@ -3990,13 +4004,15 @@ namespace ChromaSDK
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_TYPE_NAME_D, GetDeviceTypeNameD);
 		/*
-			Gets the frame colors and duration (in seconds) for a `Chroma` animation. 
-			The `color` is expected to be an array of the expected dimensions for the 
-			`deviceType/device`. The `length` parameter is the size of the `color` 
-			array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`. 
-			For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX 
-			COLUMN`. Returns the animation id upon success. Returns negative one upon 
-			failure.
+			Get the frame colors and duration (in seconds) for a `Chroma` animation 
+			referenced by id. The `color` is expected to be an array of the expected 
+			dimensions for the `deviceType/device`. The `length` parameter is the size 
+			of the `color` array. For `EChromaSDKDevice1DEnum` the array size should 
+			be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX 
+			ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
+			and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
+			EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
+			Returns the animation id upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME, GetFrame);
 		/*
@@ -4013,6 +4029,18 @@ namespace ChromaSDK
 			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME_D, GetFrameCountNameD);
+		/*
+			Get the frame colors and duration (in seconds) for a `Chroma` animation 
+			referenced by name. The `color` is expected to be an array of the expected 
+			dimensions for the `deviceType/device`. The `length` parameter is the size 
+			of the `color` array. For `EChromaSDKDevice1DEnum` the array size should 
+			be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX 
+			ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
+			and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
+			EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
+			Returns the animation id upon success. Returns negative one upon failure.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_NAME, GetFrameName);
 		/*
 			Get the color of an animation key for the given frame referenced by id.
 		*/
