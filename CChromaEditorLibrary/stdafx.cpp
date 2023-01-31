@@ -1296,7 +1296,7 @@ extern "C"
 							maxRow = ChromaSDKPlugin::GetInstance()->GetMaxRow(EChromaSDKDevice2DEnum::DE_Keyboard);
 							maxColumn = ChromaSDKPlugin::GetInstance()->GetMaxColumn(EChromaSDKDevice2DEnum::DE_Keyboard);
 
-							vector<FChromaSDKColors> newKeys = ChromaSDKPlugin::GetInstance()->CreateColors2D(animation2D->GetDevice());
+							vector<FChromaSDKColors> newKeys = ChromaSDKPlugin::GetInstance()->CreateColors2D(EChromaSDKDevice2DEnum::DE_Keyboard);
 							index = 0;
 							for (int i = 0; i < maxRow && index < keysLength; ++i)
 							{

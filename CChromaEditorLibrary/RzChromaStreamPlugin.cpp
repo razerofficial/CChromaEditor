@@ -92,7 +92,7 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 		path += CHROMA_STREAMING_DLL;
 
 		// check the library file version
-		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path, 1, 0, 0, 6))
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path, 1, 0, 0, 7))
 		{
 			ChromaLogger::fprintf(stderr, "Detected old version of Chroma Stream Library!\r\n");
 			return RZRESULT_DLL_NOT_FOUND;
