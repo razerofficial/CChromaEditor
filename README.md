@@ -9931,13 +9931,15 @@ ChromaAnimationAPI::UnloadLibraryStreamingPlugin();
 <a name="PluginUpdateFrame"></a>
 **PluginUpdateFrame**
 
-Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
-(in seconds). The `color` is expected to be an array of the dimensions
-for the `deviceType/device`. The `length` parameter is the size of the
-`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
-LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-times `MAX COLUMN`. Returns the animation id upon success. Returns negative
-one upon failure.
+Updates the `frameIndex` of the `Chroma` animation referenced by id and
+sets the `duration` (in seconds). The `color` is expected to be an array
+of the dimensions for the `deviceType/device`. The `length` parameter is
+the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size
+should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should
+be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -9955,13 +9957,15 @@ int result = ChromaAnimationAPI::UpdateFrame(
 <a name="PluginUpdateFrameName"></a>
 **PluginUpdateFrameName**
 
-Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
-(in seconds). The `color` is expected to be an array of the dimensions
-for the `deviceType/device`. The `length` parameter is the size of the
-`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
-LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-times `MAX COLUMN`. Returns the animation id upon success. Returns negative
-one upon failure.
+Update the `frameIndex` of the `Chroma` animation referenced by name and
+sets the `duration` (in seconds). The `color` is expected to be an array
+of the dimensions for the `deviceType/device`. The `length` parameter is
+the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size
+should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should
+be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
