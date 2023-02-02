@@ -341,7 +341,14 @@ extern "C"
 
 	EXPORT_API int PluginOpenEditorDialog(const char* path)
 	{
-		PluginIsInitialized();
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginPlayAnimation: Plugin is not initialized!\r\n");
+			return -1;
+		}
 
 		//LogDebug("PluginOpenEditorDialog %s\r\n", path);
 
@@ -366,7 +373,14 @@ extern "C"
 
 	EXPORT_API int PluginOpenEditorDialogAndPlay(const char* path)
 	{
-		PluginIsInitialized();
+		// Chroma thread plays animations
+		SetupChromaThread();
+
+		if (!PluginIsInitialized())
+		{
+			LogError("PluginPlayAnimation: Plugin is not initialized!\r\n");
+			return -1;
+		}
 
 		//LogDebug("PluginOpenEditorDialogAndPlay %s\r\n", path);
 

@@ -17,7 +17,7 @@ namespace ChromaSDK
 		void SetCopy(FChromaSDKColorFrame2D& copy);
 		FChromaSDKColorFrame2D& GetCopy();
 		void OverrideTime(float time);
-		float GetDuration(unsigned int index);
+		float GetDuration(int index);
 		void Reset();
 		void CopyPixels(COLORREF* pColor, UINT width, UINT height);
 		void AddFrame();

@@ -70,7 +70,7 @@ void EditorAnimation2D::OverrideTime(float time)
 	}
 }
 
-float EditorAnimation2D::GetDuration(unsigned int index)
+float EditorAnimation2D::GetDuration(int index)
 {
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
 	if (index < frames.size())
@@ -118,7 +118,7 @@ void EditorAnimation2D::CopyPixels(COLORREF* pColor, const UINT width, const UIN
 	}
 
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
-	unsigned int currentFrame = GetCurrentFrame();
+	int currentFrame = GetCurrentFrame();
 	if (currentFrame < 0 ||
 		currentFrame >= frames.size())
 	{
@@ -132,7 +132,7 @@ void EditorAnimation2D::CopyPixels(COLORREF* pColor, const UINT width, const UIN
 
 void EditorAnimation2D::AddFrame()
 {
-	unsigned int currentFrame = GetCurrentFrame();
+	int currentFrame = GetCurrentFrame();
 	if (currentFrame < 0 ||
 		currentFrame >= GetFrameCount())
 	{

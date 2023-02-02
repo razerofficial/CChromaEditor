@@ -7,9 +7,9 @@ class EditorAnimationBase
 public:
 	virtual ChromaSDK::AnimationBase* GetAnimation() = 0;
 	int GetCurrentFrame();
-	void SetCurrentFrame(unsigned int index);
-	unsigned int GetFrameCount();
-	virtual float GetDuration(unsigned int index) = 0;
+	void SetCurrentFrame(int index);
+	int GetFrameCount();
+	virtual float GetDuration(int index) = 0;
 	void ImportTextureImage();
 	void ImportTextureImageSequence();
 	void ImportTextureAnimation();

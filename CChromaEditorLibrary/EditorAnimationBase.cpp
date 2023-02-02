@@ -12,12 +12,12 @@ int EditorAnimationBase::GetCurrentFrame()
 	return GetAnimation()->GetCurrentFrame();
 }
 
-void EditorAnimationBase::SetCurrentFrame(unsigned int index)
+void EditorAnimationBase::SetCurrentFrame(int index)
 {
 	GetAnimation()->SetCurrentFrame(index);
 }
 
-unsigned int EditorAnimationBase::GetFrameCount()
+int EditorAnimationBase::GetFrameCount()
 {
 	return GetAnimation()->GetFrameCount();
 }
