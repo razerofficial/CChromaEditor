@@ -1,10 +1,10 @@
 [Setup]
 AppName=Chroma Editor
-AppVerName=Chroma Editor 1.14
+AppVerName=Chroma Editor 1.15
 AppPublisher=Razer, Inc.
-AppPublisherURL=https://razerzone.com
-AppSupportURL=https://razerzone.com
-AppUpdatesURL=https://razerzone.com
+AppPublisherURL=https://razer.com
+AppSupportURL=https://razer.com
+AppUpdatesURL=https://razer.com
 DefaultDirName={pf32}\Razer\ChromaEditor
 DefaultGroupName=Razer\ChromaEditor
 OutputBaseFilename=ChromaEditorSetup
