@@ -2068,12 +2068,12 @@ void UnitTests::UnitTests8x24Keys()
 
 	while (true)
 	{
-		if (inputEscape.WasReleased())
+		if (inputEscape.WasReleased(true))
 		{
 			printf("UnitTests8x24Keys: Complete.\r\n");
 			break;
 		}
-		if (inputUp.WasPressed())
+		if (inputUp.WasPressed(true))
 		{
 			if (index > 0) {
 				--index;
@@ -2084,7 +2084,7 @@ void UnitTests::UnitTests8x24Keys()
 				updateAnimation(baseLayer, key);
 			}			
 		}
-		else if (inputDown.WasPressed())
+		else if (inputDown.WasPressed(true))
 		{
 			if ((index+1) < (int)keys.size()) {
 				++index;
@@ -2152,7 +2152,7 @@ void UnitTests::Run()
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
 	while (true)
 	{
-		if (inputEscape.WasReleased())
+		if (inputEscape.WasReleased(true))
 		{
 			printf("Exiting...\r\n");
 			break;

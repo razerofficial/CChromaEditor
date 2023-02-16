@@ -250,8 +250,11 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 
+#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
 		// verify the library has a valid signature
 		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(path);
+#endif
+
 		if (_sInvalidSignature)
 		{
 			ChromaLogger::fprintf(stderr, "Chroma SDK Library has an invalid signature!\r\n");
@@ -328,8 +331,11 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 				return RZRESULT_DLL_NOT_FOUND;
 			}
 
+#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
 			// verify the library has a valid signature
 			_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(strPathSearch);
+#endif
+
 			if (_sInvalidSignature)
 			{
 				ChromaLogger::fprintf(stderr, "Chroma SDK Library has an invalid signature!\r\n");

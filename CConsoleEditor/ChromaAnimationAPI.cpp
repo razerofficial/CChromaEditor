@@ -608,8 +608,10 @@ int ChromaAnimationAPI::InitAPI()
 	}
 
 #ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
+	// verify the library has a valid signature
 	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(path);
 #endif
+
 	if (_sInvalidSignature)
 	{
 		ChromaLogger::fprintf(stderr, "Chroma Editor Library has an invalid signature!\r\n");
