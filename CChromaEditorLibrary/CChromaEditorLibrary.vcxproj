@@ -222,6 +222,8 @@
       <ModuleDefinitionFile>.\CChromaEditorLibrary.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(TargetName)64$(TargetExt)</OutputFile>
       <AdditionalDependencies>version.lib</AdditionalDependencies>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName)$(PlatformArchitecture).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(OutDir)$(TargetName)$(PlatformArchitecture).lib</ImportLibrary>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -247,6 +249,8 @@
       <ModuleDefinitionFile>.\CChromaEditorLibrary.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(TargetName)64$(TargetExt)</OutputFile>
       <AdditionalDependencies>version.lib</AdditionalDependencies>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName)$(PlatformArchitecture).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(OutDir)$(TargetName)$(PlatformArchitecture).lib</ImportLibrary>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -332,6 +336,8 @@
       <ModuleDefinitionFile>.\CChromaEditorLibrary.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(TargetName)64$(TargetExt)</OutputFile>
       <AdditionalDependencies>version.lib</AdditionalDependencies>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName)$(PlatformArchitecture).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(OutDir)$(TargetName)$(PlatformArchitecture).lib</ImportLibrary>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -361,6 +367,8 @@
       <ModuleDefinitionFile>.\CChromaEditorLibrary.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(TargetName)64$(TargetExt)</OutputFile>
       <AdditionalDependencies>version.lib</AdditionalDependencies>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName)$(PlatformArchitecture).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(OutDir)$(TargetName)$(PlatformArchitecture).lib</ImportLibrary>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
