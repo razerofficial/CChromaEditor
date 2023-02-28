@@ -125,6 +125,8 @@ void CMainViewDlg::LoadFile()
 	
 	UpdateWindowTitle();
 
+	OnBnClickedButtonUnload();
+
 	AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(_mPath);
 	if (animation)
 	{
@@ -152,6 +154,8 @@ void CMainViewDlg::LoadFile()
 			return;
 		}
 	}
+
+	OnBnClickedButtonLoad();
 }
 
 void CMainViewDlg::SaveFile()
