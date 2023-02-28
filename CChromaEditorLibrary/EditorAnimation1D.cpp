@@ -69,10 +69,10 @@ void EditorAnimation1D::OverrideTime(float time)
 	}
 }
 
-float EditorAnimation1D::GetDuration(unsigned int index)
+float EditorAnimation1D::GetDuration(int index)
 {
 	vector<FChromaSDKColorFrame1D>& frames = GetFrames();
-	if (index < frames.size())
+	if (index < (int)frames.size())
 	{
 		FChromaSDKColorFrame1D& frame = frames[index];
 		return frame.Duration;
@@ -112,13 +112,13 @@ void EditorAnimation1D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
 	}
 
 	vector<FChromaSDKColorFrame1D>& frames = GetFrames();
-	unsigned int currentFrame = GetCurrentFrame();
+	int currentFrame = GetCurrentFrame();
 	if (currentFrame < 0 ||
-		currentFrame >= frames.size())
+		currentFrame >= (int)frames.size())
 	{
 		currentFrame = 0;
 	}
-	if (currentFrame < frames.size())
+	if (currentFrame < (int)frames.size())
 	{
 		frames[currentFrame] = GetCopy();
 	}
@@ -126,7 +126,7 @@ void EditorAnimation1D::CopyPixels(COLORREF* pColor, UINT width, UINT height)
 
 void EditorAnimation1D::AddFrame()
 {
-	unsigned int currentFrame = GetCurrentFrame();
+	int currentFrame = GetCurrentFrame();
 	if (currentFrame < 0 ||
 		currentFrame >= GetFrameCount())
 	{

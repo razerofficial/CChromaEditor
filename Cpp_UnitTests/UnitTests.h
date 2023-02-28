@@ -84,6 +84,11 @@ public:
 
 	static void UnitTestsSpecialCharacters();
 
+	static void UnitTestsEmpty();
+	static void UnitTestsLarge();
+
+	static void UnitTests8x24Keys();
+
 	static void Run();
 
 };

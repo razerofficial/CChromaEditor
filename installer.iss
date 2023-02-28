@@ -1,10 +1,10 @@
 [Setup]
 AppName=Chroma Editor
-AppVerName=Chroma Editor 1.13
+AppVerName=Chroma Editor 1.15
 AppPublisher=Razer, Inc.
-AppPublisherURL=https://razerzone.com
-AppSupportURL=https://razerzone.com
-AppUpdatesURL=https://razerzone.com
+AppPublisherURL=https://razer.com
+AppSupportURL=https://razer.com
+AppUpdatesURL=https://razer.com
 DefaultDirName={pf32}\Razer\ChromaEditor
 DefaultGroupName=Razer\ChromaEditor
 OutputBaseFilename=ChromaEditorSetup
@@ -30,7 +30,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: "ChromaAppInfo.xml"; DestDir: "{pf32}\Razer\ChromaEditor"; CopyMode: alwaysoverwrite
 Source: "Win32\Release\CChromaEditorLibrary.dll"; DestDir: "{pf32}\Razer\ChromaEditor"; CopyMode: alwaysoverwrite
-Source: "Release\CConsoleEditor.exe"; DestDir: "{pf32}\Razer\ChromaEditor"; CopyMode: alwaysoverwrite
+Source: "Win32\Release\CConsoleEditor.exe"; DestDir: "{pf32}\Razer\ChromaEditor"; CopyMode: alwaysoverwrite
 
 [Icons]
 Name: "{group}\Chroma Editor"; Filename: "{pf32}\Razer\ChromaEditor\CConsoleEditor.exe"; WorkingDir: "{app}";

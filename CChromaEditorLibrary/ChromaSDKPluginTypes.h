@@ -266,10 +266,11 @@ namespace ChromaSDK
 	struct FChromaSDKColorFrame2D
 	{
 		std::vector<FChromaSDKColors> Colors;
+		std::vector<FChromaSDKColors> Keys;
 
 		float Duration;
 
-		FChromaSDKColorFrame2D();
+		FChromaSDKColorFrame2D(const EChromaSDKDevice2DEnum device);
 		FChromaSDKColorFrame2D(const FChromaSDKColorFrame2D& copy);
 	};
 }

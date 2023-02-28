@@ -318,13 +318,13 @@ void CColorButton::DrawButtonText(CDC *pDC, CRect rc, CString strCaption, COLORR
 	oldColour = pDC->SetTextColor(textcolor);
 	pDC->SetBkMode(TRANSPARENT);
 	
-	int nStartPos = (int)((rc.Height() - arLines.GetSize()*sizeText.cy)/2-1);
+	int nStartPos = (rc.Height() - (int)arLines.GetSize()*sizeText.cy)/2-1;
 	if((uStyle & BS_TOP) == BS_TOP)
 		nStartPos = rc.top+2;
 	if((uStyle & BS_BOTTOM) == BS_BOTTOM)
-		nStartPos = (int)(rc.bottom- arLines.GetSize()*sizeText.cy-2);
+		nStartPos = rc.bottom- (int)arLines.GetSize()*sizeText.cy-2;
 	if((uStyle & BS_VCENTER) == BS_VCENTER)
-		nStartPos = (int)((rc.Height() - arLines.GetSize()*sizeText.cy)/2-1);
+		nStartPos = (rc.Height() - (int)arLines.GetSize()*sizeText.cy)/2-1;
 	
 	UINT uDrawStyles = 0;
 	if((uStyle & BS_CENTER) == BS_CENTER)

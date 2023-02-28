@@ -92,14 +92,17 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 		path += CHROMA_STREAMING_DLL;
 
 		// check the library file version
-		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path, 1, 0, 0, 4))
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path, 1, 0, 0, 7))
 		{
 			ChromaLogger::fprintf(stderr, "Detected old version of Chroma Stream Library!\r\n");
 			return RZRESULT_DLL_NOT_FOUND;
 		}
 
+#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
 		// verify the library has a valid signature
 		_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(path);
+#endif
+
 		if (_sInvalidSignature)
 		{
 			ChromaLogger::fprintf(stderr, "Chroma Stream Library has an invalid signature!\r\n");
@@ -162,7 +165,8 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 
 			// check if DLL exists in search path
 			std::filesystem::path p = strPathSearch.c_str();
-			if (!std::filesystem::exists(p))
+			std::error_code pathError;
+			if (!std::filesystem::exists(p, pathError))
 			{
 				// not found
 				continue;
@@ -175,8 +179,11 @@ RZRESULT RzChromaStreamPlugin::GetLibraryLoadedState()
 				return RZRESULT_DLL_NOT_FOUND;
 			}
 
+#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
 			// verify the library has a valid signature
 			_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(strPathSearch);
+#endif
+
 			if (_sInvalidSignature)
 			{
 				ChromaLogger::fprintf(stderr, "Chroma Stream Library has an invalid signature!\r\n");

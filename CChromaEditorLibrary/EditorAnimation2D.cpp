@@ -5,7 +5,8 @@
 using namespace ChromaSDK;
 using namespace std;
 
-EditorAnimation2D::EditorAnimation2D()
+EditorAnimation2D::EditorAnimation2D() :
+	_mFrameCopy(EChromaSDKDevice2DEnum::DE_Keyboard)
 {
 	Reset();
 }
@@ -69,10 +70,10 @@ void EditorAnimation2D::OverrideTime(float time)
 	}
 }
 
-float EditorAnimation2D::GetDuration(unsigned int index)
+float EditorAnimation2D::GetDuration(int index)
 {
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
-	if (index < frames.size())
+	if (index < (int)frames.size())
 	{
 		FChromaSDKColorFrame2D& frame = frames[index];
 		return frame.Duration;
@@ -117,13 +118,13 @@ void EditorAnimation2D::CopyPixels(COLORREF* pColor, const UINT width, const UIN
 	}
 
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
-	unsigned int currentFrame = GetCurrentFrame();
+	int currentFrame = GetCurrentFrame();
 	if (currentFrame < 0 ||
-		currentFrame >= frames.size())
+		currentFrame >= (int)frames.size())
 	{
 		currentFrame = 0;
 	}
-	if (currentFrame < frames.size())
+	if (currentFrame < (int)frames.size())
 	{
 		frames[currentFrame] = GetCopy();
 	}
@@ -131,7 +132,7 @@ void EditorAnimation2D::CopyPixels(COLORREF* pColor, const UINT width, const UIN
 
 void EditorAnimation2D::AddFrame()
 {
-	unsigned int currentFrame = GetCurrentFrame();
+	int currentFrame = GetCurrentFrame();
 	if (currentFrame < 0 ||
 		currentFrame >= GetFrameCount())
 	{
@@ -139,7 +140,7 @@ void EditorAnimation2D::AddFrame()
 	}
 
 	vector<FChromaSDKColorFrame2D>& frames = GetFrames();
-	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D();
+	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D(GetDevice());
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(GetDevice());
 
 	if (currentFrame == GetFrameCount())
