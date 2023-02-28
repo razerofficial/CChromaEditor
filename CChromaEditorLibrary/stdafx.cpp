@@ -2167,6 +2167,7 @@ extern "C"
 		PluginLoadAnimationName((baseName + L"_ChromaLink.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Headset.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Keyboard.chroma").c_str());
+		PluginLoadAnimationName((baseName + L"_KeyboardExtended.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Keypad.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Mouse.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Mousepad.chroma").c_str());
@@ -2178,6 +2179,7 @@ extern "C"
 		PluginUnloadAnimationName((baseName + L"_ChromaLink.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Headset.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Keyboard.chroma").c_str());
+		PluginUnloadAnimationName((baseName + L"_KeyboardExtended.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Keypad.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Mouse.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Mousepad.chroma").c_str());
@@ -2189,6 +2191,7 @@ extern "C"
 		PluginPlayAnimationName((baseName + L"_ChromaLink.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Headset.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Keyboard.chroma").c_str(), loop);
+		PluginPlayAnimationName((baseName + L"_KeyboardExtended.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Keypad.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Mouse.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Mousepad.chroma").c_str(), loop);
@@ -2213,6 +2216,7 @@ extern "C"
 		PluginStopAnimationName((baseName + L"_ChromaLink.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Headset.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Keyboard.chroma").c_str());
+		PluginStopAnimationName((baseName + L"_KeyboardExtended.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Keypad.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Mouse.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Mousepad.chroma").c_str());
@@ -2230,6 +2234,7 @@ extern "C"
 		PluginCloseAnimationName((baseName + L"_ChromaLink.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Headset.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Keyboard.chroma").c_str());
+		PluginCloseAnimationName((baseName + L"_KeyboardExtended.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Keypad.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Mouse.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Mousepad.chroma").c_str());
