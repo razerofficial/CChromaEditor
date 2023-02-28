@@ -1154,8 +1154,7 @@ void CMainViewDlg::OnBnClickedMenuOpen()
 
 	if (dlgFile.DoModal() == IDOK)
 	{
-		string cstr = string(CT2CA(fileName));
-		wstring wstr(cstr.begin(), cstr.end());
+		wstring wstr(fileName);
 		SetPath(wstr);
 		if (_mPath.size() <= 2 ||
 			_mPath.substr(_mPath.find_last_of(L".") + 1) != L"chroma")
@@ -1217,8 +1216,7 @@ void CMainViewDlg::OnBnClickedMenuSaveAs()
 
 	if (dlgFile.DoModal() == IDOK)
 	{
-		string cstr = string(CT2CA(fileName));
-		wstring wstr(cstr.begin(), cstr.end());
+		wstring wstr(fileName);
 		SetPath(wstr);
 		if (_mPath.size() <= 2 ||
 			_mPath.substr(_mPath.find_last_of(L".") + 1) != L"chroma")
