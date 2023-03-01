@@ -951,7 +951,7 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vecto
 
 	if (maxRow != colors.size() ||
 		(colors.size() > 0 &&
-		maxColumn != colors[0].Colors.size()))
+			maxColumn != colors[0].Colors.size()))
 	{
 		LogError(L"ChromaSDKPlugin::CreateEffectKeyboardCustom2D Colors Array size mismatch row: %d==%d column: %d==%d!\r\n",
 			maxRow,
@@ -996,8 +996,8 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vecto
 		}
 
 		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, &pParam, &effectId);
-	}	
-	
+	}
+
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
