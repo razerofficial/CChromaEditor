@@ -244,7 +244,7 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 		path += CHROMASDKDLL;
 
 		// check the library file version
-		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path, 1, 0, 0, 7))
+		if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path, 1, 0, 0, 8))
 		{
 			ChromaLogger::fprintf(stderr, "Detected old version of Chroma SDK Library!\r\n");
 			return RZRESULT_DLL_NOT_FOUND;
@@ -325,7 +325,7 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 			}
 
 			// check the library file version
-			if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(strPathSearch, 3, 7, 3, 130))
+			if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(strPathSearch, 3, 8, 0, 154))
 			{
 				ChromaLogger::fprintf(stderr, "Detected old version of Chroma SDK Library!\r\n");
 				return RZRESULT_DLL_NOT_FOUND;
