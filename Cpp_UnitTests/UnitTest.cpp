@@ -109,6 +109,10 @@ void UnitTests::UnitTestsOpenDialog()
 
 void UnitTests::UnitTestsOpenClose()
 {
+	wprintf(L"UnitTestsOpenClose:\r\n");
+	this_thread::sleep_for(chrono::seconds(10));
+	wprintf(L"Start...\r\n");
+
 	/*
 	if (ChromaAnimationAPI::IsInitialized() == 0)
 	{
@@ -117,11 +121,11 @@ void UnitTests::UnitTestsOpenClose()
 	}
 	*/
 
-	int waitSeconds = 1;
+	int waitMilliseconds = 33;
 
-	for (int i = 0; i < 25; ++i)
+	for (int i = 0; i < 20000; ++i)
 	{
-		ChromaLogger::wprintf(L"Playing effects...\r\n");
+		wprintf(L"UnitTest %d Play/Sleep/Close Loop...\r\n", i);
 		int idChromaLink = OpenAndPlay(L"Animations/Random_ChromaLink.chroma");
 		int idHeadset = OpenAndPlay(L"Animations/Random_Headset.chroma");
 		int idKeyboard = OpenAndPlay(L"Animations/Random_Keyboard.chroma");
@@ -129,7 +133,7 @@ void UnitTests::UnitTestsOpenClose()
 		int idKeypad = OpenAndPlay(L"Animations/Random_Keypad.chroma");
 		int idMouse = OpenAndPlay(L"Animations/Random_Mouse.chroma");
 		int idMousepad = OpenAndPlay(L"Animations/Random_Mousepad.chroma");
-		this_thread::sleep_for(chrono::seconds(waitSeconds));
+		this_thread::sleep_for(chrono::milliseconds(waitMilliseconds));
 
 		ChromaAnimationAPI::CloseAnimation(idChromaLink);
 		ChromaAnimationAPI::CloseAnimation(idHeadset);
@@ -1025,10 +1029,11 @@ void UnitTests::UnitTestsDuplicateFirstFrame()
 
 int UnitTests::OpenAndPlay(const wchar_t* path)
 {
-	int animationId = (int)ChromaAnimationAPI::OpenAnimation(path);
+	int animationId = ChromaAnimationAPI::GetAnimation(path);
 	ChromaLogger::wprintf(L"OpenAnimation: %s result=%d\r\n", path, animationId);
 	if (animationId >= 0)
 	{
+		ChromaAnimationAPI::UsePreloading(animationId, false);
 		ChromaAnimationAPI::PlayAnimationLoop(animationId, true);
 		ChromaLogger::wprintf(L"PlayAnimationLoop: %d\r\n", animationId);
 		return animationId;
