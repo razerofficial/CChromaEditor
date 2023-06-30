@@ -109,33 +109,47 @@ void UnitTests::UnitTestsOpenDialog()
 
 void UnitTests::UnitTestsOpenClose()
 {
+	/*
+	if (ChromaAnimationAPI::IsInitialized() == 0)
+	{
+		ChromaLogger::wprintf(L"Init...\r\n");
+		ChromaAnimationAPI::Init();
+	}
+	*/
+
+	int waitSeconds = 1;
+
 	for (int i = 0; i < 25; ++i)
 	{
-		if (ChromaAnimationAPI::IsInitialized() == 0)
-		{
-			ChromaLogger::wprintf(L"Init...\r\n");
-			ChromaAnimationAPI::Init();
-		}
-
 		ChromaLogger::wprintf(L"Playing effects...\r\n");
-		int randomChromaLinkEffect = OpenAndPlay(L"Animations/Random_ChromaLink.chroma");
-		int randomHeadsetEffect = OpenAndPlay(L"Animations/Random_Headset.chroma");
-		int randomKeyboardEffect = OpenAndPlay(L"Animations/Random_Keyboard.chroma");
-		int randomKeypadEffect = OpenAndPlay(L"Animations/Random_Keypad.chroma");
-		int randomMouseEffect = OpenAndPlay(L"Animations/Random_Mouse.chroma");
-		int randomMousepadEffect = OpenAndPlay(L"Animations/Random_Mousepad.chroma");
-		this_thread::sleep_for(chrono::seconds(1));
+		int idChromaLink = OpenAndPlay(L"Animations/Random_ChromaLink.chroma");
+		int idHeadset = OpenAndPlay(L"Animations/Random_Headset.chroma");
+		int idKeyboard = OpenAndPlay(L"Animations/Random_Keyboard.chroma");
+		int idKeyboardExtended = OpenAndPlay(L"Animations/Random_KeyboardExtended.chroma");
+		int idKeypad = OpenAndPlay(L"Animations/Random_Keypad.chroma");
+		int idMouse = OpenAndPlay(L"Animations/Random_Mouse.chroma");
+		int idMousepad = OpenAndPlay(L"Animations/Random_Mousepad.chroma");
+		this_thread::sleep_for(chrono::seconds(waitSeconds));
 
-		ChromaAnimationAPI::CloseAnimation(randomChromaLinkEffect);
-		ChromaAnimationAPI::CloseAnimation(randomHeadsetEffect);
-		ChromaAnimationAPI::CloseAnimation(randomKeyboardEffect);
-		ChromaAnimationAPI::CloseAnimation(randomKeypadEffect);
-		ChromaAnimationAPI::CloseAnimation(randomMouseEffect);
-		ChromaAnimationAPI::CloseAnimation(randomMousepadEffect);
+		ChromaAnimationAPI::CloseAnimation(idChromaLink);
+		ChromaAnimationAPI::CloseAnimation(idHeadset);
+		ChromaAnimationAPI::CloseAnimation(idKeyboard);
+		ChromaAnimationAPI::CloseAnimation(idKeyboardExtended);
+		ChromaAnimationAPI::CloseAnimation(idKeypad);
+		ChromaAnimationAPI::CloseAnimation(idMouse);
+		ChromaAnimationAPI::CloseAnimation(idMousepad);
 
-		ChromaLogger::wprintf(L"Simulate exit...\r\n");
-		ChromaAnimationAPI::Uninit();
+		if (true)
+		{
+			int noop = 10;
+			noop++;
+		}
 	}
+
+	/*
+	ChromaLogger::wprintf(L"Simulate exit...\r\n");
+	ChromaAnimationAPI::Uninit();
+	*/
 }
 
 void UnitTests::UnitTestsLayering()
@@ -1015,9 +1029,9 @@ int UnitTests::OpenAndPlay(const wchar_t* path)
 	ChromaLogger::wprintf(L"OpenAnimation: %s result=%d\r\n", path, animationId);
 	if (animationId >= 0)
 	{
-		int result = (int)ChromaAnimationAPI::PlayAnimation(animationId);
-		ChromaLogger::wprintf(L"PlayAnimation: %d result=%d\r\n", animationId, result);
-		return result;
+		ChromaAnimationAPI::PlayAnimationLoop(animationId, true);
+		ChromaLogger::wprintf(L"PlayAnimationLoop: %d\r\n", animationId);
+		return animationId;
 	}
 	else
 	{
@@ -2152,7 +2166,9 @@ void UnitTests::Run()
 	//UnitTestsEmpty();
 	//UnitTestsLarge();
 
-	UnitTests8x24Keys();
+	//UnitTests8x24Keys();
+
+	UnitTestsOpenClose();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);

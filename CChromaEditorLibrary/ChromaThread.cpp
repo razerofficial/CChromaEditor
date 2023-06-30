@@ -171,7 +171,10 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 			}
 			else
 			{
-				doneList.push_back(animation);
+				if (!animation->HasLoop())
+				{
+					doneList.push_back(animation);
+				}
 			}
 		}
 	}
@@ -318,6 +321,9 @@ void ChromaThread::DeleteAnimation(AnimationBase* animation)
 		}
 		// unload the animation if loaded
 		animation->Unload();
+		// clear memory
+		animation->SetName(L"");
+		animation->ClearFrames();
 		//delete animation safely
 		delete animation;
 	}

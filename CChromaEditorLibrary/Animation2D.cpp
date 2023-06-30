@@ -337,14 +337,24 @@ void Animation2D::InternalUpdate(float deltaTime)
 	}
 }
 
-void Animation2D::ResetFrames()
+void Animation2D::ClearFrames()
 {
 	_mCurrentFrame = 0;
 	while (_mFrames.size() > 0)
 	{
 		auto it = _mFrames.begin();
+		FChromaSDKColorFrame2D& frame = *it;
+		frame.Colors.clear();
+		frame.Keys.clear();
 		_mFrames.erase(it);
 	}
+	_mFrames.clear();
+}
+
+void Animation2D::ResetFrames()
+{
+	ClearFrames();
+
 	FChromaSDKColorFrame2D frame = FChromaSDKColorFrame2D(_mDevice);
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors2D(_mDevice);
 	frame.Duration = 1;

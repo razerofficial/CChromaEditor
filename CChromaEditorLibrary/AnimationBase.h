@@ -28,6 +28,7 @@ namespace ChromaSDK
 		virtual void Unload() = 0;
 		virtual void Stop() = 0;
 		virtual void Update(float deltaTime) = 0;
+		virtual void ClearFrames() = 0;
 		virtual void ResetFrames() = 0;
 		virtual int Save(const wchar_t* path) = 0;
 		void UsePreloading(bool flag);

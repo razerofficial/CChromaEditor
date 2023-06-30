@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build"
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug_Cloud|Win32">
       <Configuration>Debug_Cloud</Configuration>
@@ -372,6 +373,7 @@
     <None Include="Animations\Random_ChromaLink.chroma" />
     <None Include="Animations\Random_Headset.chroma" />
     <None Include="Animations\Random_Keyboard.chroma" />
+    <None Include="Animations\Random_KeyboardExtended.chroma" />
     <None Include="Animations\Random_Keypad.chroma" />
     <None Include="Animations\Random_Mouse.chroma" />
     <None Include="Animations\Random_Mousepad.chroma" />

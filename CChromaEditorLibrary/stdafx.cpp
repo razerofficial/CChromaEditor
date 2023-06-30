@@ -751,6 +751,28 @@ extern "C"
 					return -1;
 				}
 				animation->Stop();
+				EChromaSDKDeviceTypeEnum deviceType = animation->GetDeviceType();
+				int deviceId = animation->GetDeviceId();
+				if (deviceType == EChromaSDKDeviceTypeEnum::DE_2D &&
+					deviceId == (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended)
+				{
+					deviceId = (int)EChromaSDKDevice2DEnum::DE_Keyboard;
+				}
+				switch (deviceType)
+				{
+					case EChromaSDKDeviceTypeEnum::DE_1D:
+						if (_gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId] == animationId)
+						{
+							_gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId] = -1;
+						}
+						break;
+					case EChromaSDKDeviceTypeEnum::DE_2D:
+						if (_gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId] == animationId)
+						{
+							_gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId] = -1;
+						}
+						break;
+				}
 				return animationId;
 			}
 		}
@@ -778,9 +800,9 @@ extern "C"
 					LogError(L"PluginCloseAnimation: Animation is null! id=%d\r\n", animationId);
 					return -1;
 				}
-				animation->Stop();
+				PluginStopAnimation(animationId);				
 				animation->Unload();
-				wstring animationName = animation->GetName();
+				const wstring& animationName = animation->GetName();
 				if (_gAnimationMapID.find(animationName) != _gAnimationMapID.end())
 				{
 					_gAnimationMapID.erase(animationName);
@@ -1132,7 +1154,7 @@ extern "C"
 			LogError(L"PluginSetDevice: Animation is null! id=%d\r\n", animationId);
 			return -1;
 		}
-		wstring path = animation->GetName();
+		const wstring& path = animation->GetName();
 		PluginCloseAnimation(animationId);
 		return PluginCreateAnimation(path.c_str(), deviceType, device);
 	}
@@ -2067,7 +2089,6 @@ extern "C"
 				if (prevAnimation != -1)
 				{
 					PluginStopAnimation(prevAnimation);
-					_gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId] = -1;
 				}
 			}
 		}
@@ -2080,7 +2101,6 @@ extern "C"
 				if (prevAnimation != -1)
 				{
 					PluginStopAnimation(prevAnimation);
-					_gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId] = -1;
 				}
 			}
 		}
