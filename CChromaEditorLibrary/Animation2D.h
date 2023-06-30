@@ -9,6 +9,7 @@ namespace ChromaSDK
 	{
 	public:
 		Animation2D();
+		~Animation2D();
 		Animation2D& operator=(const Animation2D& rhs);
 		void Reset();
 		EChromaSDKDeviceTypeEnum GetDeviceType();

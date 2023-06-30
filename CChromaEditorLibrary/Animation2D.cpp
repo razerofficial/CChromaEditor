@@ -17,6 +17,12 @@ Animation2D::Animation2D()
 	Reset();
 }
 
+Animation2D::~Animation2D()
+{
+	SetName(L"");
+	ClearFrames();
+}
+
 Animation2D& Animation2D::operator=(const Animation2D& rhs)
 {
 	_mDevice = rhs._mDevice;
