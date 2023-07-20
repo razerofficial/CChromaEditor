@@ -1590,8 +1590,6 @@ extern "C"
 
 	EXPORT_API int PluginOverrideFrameDuration(int animationId, float duration)
 	{
-		PluginStopAnimation(animationId);
-
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
 			AnimationBase* animation = _gAnimations[animationId];
