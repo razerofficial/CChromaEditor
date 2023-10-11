@@ -9,6 +9,7 @@ namespace ChromaSDK
 	{
 	public:
 		Animation2D();
+		~Animation2D();
 		Animation2D& operator=(const Animation2D& rhs);
 		void Reset();
 		EChromaSDKDeviceTypeEnum GetDeviceType();
@@ -25,6 +26,7 @@ namespace ChromaSDK
 		void Resume(bool loop);
 		void Stop();
 		void Update(float deltaTime);
+		void ClearFrames();
 		void ResetFrames();
 		int Save(const char* path);
 		void SetChromaCustom(bool flag);

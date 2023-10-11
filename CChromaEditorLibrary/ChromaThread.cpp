@@ -171,7 +171,10 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 			}
 			else
 			{
-				doneList.push_back(animation);
+				if (!animation->HasLoop())
+				{
+					doneList.push_back(animation);
+				}
 			}
 		}
 	}
@@ -318,8 +321,25 @@ void ChromaThread::DeleteAnimation(AnimationBase* animation)
 		}
 		// unload the animation if loaded
 		animation->Unload();
+		// clear memory
+		animation->SetName("");
+		animation->ClearFrames();
 		//delete animation safely
-		delete animation;
+		switch (animation->GetDeviceType())
+		{
+		case EChromaSDKDeviceTypeEnum::DE_1D:
+		{
+			Animation1D* animation1D = (Animation1D*)animation;
+			delete animation1D;
+		}
+		break;
+		case EChromaSDKDeviceTypeEnum::DE_2D:
+		{
+			Animation2D* animation2D = (Animation2D*)animation;
+			delete animation2D;
+		}
+		break;
+		}
 	}
 }
 

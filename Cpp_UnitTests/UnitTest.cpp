@@ -103,22 +103,30 @@ void UnitTests::UnitTestsOpenDialog()
 
 void UnitTests::UnitTestsOpenClose()
 {
-	for (int i = 0; i < 25; ++i)
-	{
-		if (ChromaAnimationAPI::IsInitialized() == 0)
-		{
-			printf("Init...\r\n");
-			ChromaAnimationAPI::Init();
-		}
+	printf("UnitTestsOpenClose:\r\n");
+	this_thread::sleep_for(chrono::seconds(10));
+	printf("Start...\r\n");
 
-		printf("Playing effects...\r\n");
+	/*
+	if (ChromaAnimationAPI::IsInitialized() == 0)
+	{
+		ChromaLogger::printf("Init...\r\n");
+		ChromaAnimationAPI::Init();
+	}
+	*/
+
+	int waitMilliseconds = 33;
+
+	for (int i = 0; i < 20000; ++i)
+	{
+		printf("UnitTest %d Play/Sleep/Close Loop...\r\n", i);
 		int randomChromaLinkEffect = OpenAndPlay("Animations/Random_ChromaLink.chroma");
 		int randomHeadsetEffect = OpenAndPlay("Animations/Random_Headset.chroma");
 		int randomKeyboardEffect = OpenAndPlay("Animations/Random_Keyboard.chroma");
 		int randomKeypadEffect = OpenAndPlay("Animations/Random_Keypad.chroma");
 		int randomMouseEffect = OpenAndPlay("Animations/Random_Mouse.chroma");
 		int randomMousepadEffect = OpenAndPlay("Animations/Random_Mousepad.chroma");
-		this_thread::sleep_for(chrono::seconds(1));
+		this_thread::sleep_for(chrono::milliseconds(waitMilliseconds));
 
 		ChromaAnimationAPI::CloseAnimation(randomChromaLinkEffect);
 		ChromaAnimationAPI::CloseAnimation(randomHeadsetEffect);
@@ -127,9 +135,17 @@ void UnitTests::UnitTestsOpenClose()
 		ChromaAnimationAPI::CloseAnimation(randomMouseEffect);
 		ChromaAnimationAPI::CloseAnimation(randomMousepadEffect);
 
-		printf("Simulate exit...\r\n");
-		ChromaAnimationAPI::Uninit();
+		if (true)
+		{
+			int noop = 10;
+			noop++;
+		}
 	}
+
+	/*
+	ChromaLogger::printf("Simulate exit...\r\n");
+	ChromaAnimationAPI::Uninit();
+	*/
 }
 
 void UnitTests::UnitTestsLayering()
@@ -2102,6 +2118,43 @@ void UnitTests::UnitTests8x24Keys()
 	ChromaAnimationAPI::CloseAnimationName(baseLayer);
 }
 
+void UnitTests::UnitTestsGetSetKeyColor()
+{
+	const char* baseLayer = "Animations/Blank_Keyboard.chroma";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+
+	const int frameCount = 100;
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 0, 0, 0); // start black
+
+	int key = Keyboard::RZKEY::RZKEY_W;
+	int color = ChromaAnimationAPI::GetRGB(255, 0, 0);
+
+	for (int frameId = 0; frameId < frameCount; ++frameId)
+	{
+		// SetKeyColor sets the alpha channel on the key color
+		ChromaAnimationAPI::SetKeyColorName(baseLayer, frameId, key, color);
+		int savedColor = ChromaAnimationAPI::GetKeyColorName(baseLayer, frameId, key);
+
+		// Compare only RGB channels
+		if ((color & 0xFFFFFF) == (savedColor & 0xFFFFFF))
+		{
+			ChromaLogger::printf("Frame: %d Color matches...\r\n", frameId);
+		}
+		else
+		{
+			ChromaLogger::printf("Frame: %d Color does not match!\r\n", frameId);
+		}
+	}
+
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+
+	Sleep(1000);
+}
+
 void UnitTests::Run()
 {
 	printf("Start of unit tests...\r\n");
@@ -2113,6 +2166,8 @@ void UnitTests::Run()
 		printf("Library hasn't loaded, aborting unit tests...\r\n");
 		return;
 	}
+
+	Sleep(1000);
 
 	//UnitTestsLoadedAnimations();
 	//UnitTestsDamage();
@@ -2146,7 +2201,11 @@ void UnitTests::Run()
 	//UnitTestsEmpty();
 	//UnitTestsLarge();
 
-	UnitTests8x24Keys();
+	//UnitTests8x24Keys();
+
+	//UnitTestsOpenClose();
+
+	UnitTestsGetSetKeyColor();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);

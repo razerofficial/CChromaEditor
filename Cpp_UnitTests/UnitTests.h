@@ -89,6 +89,8 @@ public:
 
 	static void UnitTests8x24Keys();
 
+	static void UnitTestsGetSetKeyColor();
+
 	static void Run();
 
 };

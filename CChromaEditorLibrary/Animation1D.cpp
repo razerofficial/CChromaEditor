@@ -16,6 +16,12 @@ Animation1D::Animation1D()
 	Reset();
 }
 
+Animation1D::~Animation1D()
+{
+	SetName("");
+	ClearFrames();
+}
+
 void Animation1D::Reset()
 {
 	_mFrames.clear();
@@ -283,14 +289,23 @@ void Animation1D::InternalUpdate(float deltaTime)
 	}
 }
 
-void Animation1D::ResetFrames()
+void Animation1D::ClearFrames()
 {
 	_mCurrentFrame = 0;
 	while (_mFrames.size() > 0)
 	{
 		auto it = _mFrames.begin();
+		FChromaSDKColorFrame1D& frame = *it;
+		frame.Colors.clear();
 		_mFrames.erase(it);
 	}
+	_mFrames.clear();
+}
+
+void Animation1D::ResetFrames()
+{
+	ClearFrames();
+
 	FChromaSDKColorFrame1D frame = FChromaSDKColorFrame1D();
 	frame.Colors = ChromaSDKPlugin::GetInstance()->CreateColors1D(_mDevice);
 	frame.Duration = 1;
