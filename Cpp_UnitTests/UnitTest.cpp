@@ -2127,6 +2127,43 @@ void UnitTests::UnitTests8x24Keys()
 	ChromaAnimationAPI::CloseAnimationName(baseLayer);
 }
 
+void UnitTests::UnitTestsGetSetKeyColor()
+{
+	const wchar_t* baseLayer = L"Animations/Blank_Keyboard.chroma";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+
+	const int frameCount = 100;
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 0, 0, 0); // start black
+
+	int key = Keyboard::RZKEY::RZKEY_W;
+	int color = ChromaAnimationAPI::GetRGB(255, 0, 0);
+
+	for (int frameId = 0; frameId < frameCount; ++frameId)
+	{
+		// SetKeyColor sets the alpha channel on the key color
+		ChromaAnimationAPI::SetKeyColorName(baseLayer, frameId, key, color);
+		int savedColor = ChromaAnimationAPI::GetKeyColorName(baseLayer, frameId, key);
+
+		// Compare only RGB channels
+		if ((color & 0xFFFFFF) == (savedColor & 0xFFFFFF))
+		{
+			ChromaLogger::wprintf(L"Frame: %d Color matches...\r\n", frameId);
+		}
+		else
+		{
+			ChromaLogger::wprintf(L"Frame: %d Color does not match!\r\n", frameId);
+		}
+	}
+
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+
+	Sleep(1000);
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::wprintf(L"Start of unit tests...\r\n");
@@ -2138,6 +2175,8 @@ void UnitTests::Run()
 		ChromaLogger::wprintf(L"Library hasn't loaded, aborting unit tests...\r\n");
 		return;
 	}
+
+	Sleep(1000);
 
 	//UnitTestsLoadedAnimations();
 	//UnitTestsDamage();
@@ -2173,7 +2212,9 @@ void UnitTests::Run()
 
 	//UnitTests8x24Keys();
 
-	UnitTestsOpenClose();
+	//UnitTestsOpenClose();
+
+	UnitTestsGetSetKeyColor();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);

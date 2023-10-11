@@ -2185,7 +2185,6 @@ extern "C"
 		PluginLoadAnimationName((baseName + L"_ChromaLink.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Headset.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Keyboard.chroma").c_str());
-		PluginLoadAnimationName((baseName + L"_KeyboardExtended.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Keypad.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Mouse.chroma").c_str());
 		PluginLoadAnimationName((baseName + L"_Mousepad.chroma").c_str());
@@ -2197,7 +2196,6 @@ extern "C"
 		PluginUnloadAnimationName((baseName + L"_ChromaLink.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Headset.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Keyboard.chroma").c_str());
-		PluginUnloadAnimationName((baseName + L"_KeyboardExtended.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Keypad.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Mouse.chroma").c_str());
 		PluginUnloadAnimationName((baseName + L"_Mousepad.chroma").c_str());
@@ -2209,7 +2207,6 @@ extern "C"
 		PluginPlayAnimationName((baseName + L"_ChromaLink.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Headset.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Keyboard.chroma").c_str(), loop);
-		PluginPlayAnimationName((baseName + L"_KeyboardExtended.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Keypad.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Mouse.chroma").c_str(), loop);
 		PluginPlayAnimationName((baseName + L"_Mousepad.chroma").c_str(), loop);
@@ -2234,7 +2231,6 @@ extern "C"
 		PluginStopAnimationName((baseName + L"_ChromaLink.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Headset.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Keyboard.chroma").c_str());
-		PluginStopAnimationName((baseName + L"_KeyboardExtended.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Keypad.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Mouse.chroma").c_str());
 		PluginStopAnimationName((baseName + L"_Mousepad.chroma").c_str());
@@ -2252,7 +2248,6 @@ extern "C"
 		PluginCloseAnimationName((baseName + L"_ChromaLink.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Headset.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Keyboard.chroma").c_str());
-		PluginCloseAnimationName((baseName + L"_KeyboardExtended.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Keypad.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Mouse.chroma").c_str());
 		PluginCloseAnimationName((baseName + L"_Mousepad.chroma").c_str());
@@ -2271,18 +2266,29 @@ extern "C"
 		{
 			return 0;
 		}
-		if (animation->GetDeviceType() == EChromaSDKDeviceTypeEnum::DE_2D &&
-			animation->GetDeviceId() == (int)EChromaSDKDevice2DEnum::DE_Keyboard)
+		if (animation->GetDeviceType() != EChromaSDKDeviceTypeEnum::DE_2D)
 		{
-			Animation2D* animation2D = (Animation2D*)(animation);
-			vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
-			if (frameId >= 0 &&
-				frameId < int(frames.size()))
-			{
-				FChromaSDKColorFrame2D& frame = frames[frameId];
-				return frame.Colors[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)];
-			}
+			return 0;
 		}
+
+		switch (animation->GetDeviceId())
+		{
+		case (int)EChromaSDKDevice2DEnum::DE_Keyboard:
+		case (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended:
+			break;
+		default:
+			return 0;
+		}
+
+		Animation2D* animation2D = (Animation2D*)(animation);
+		vector<FChromaSDKColorFrame2D>& frames = animation2D->GetFrames();
+		if (frameId >= 0 &&
+			frameId < int(frames.size()))
+		{
+			const FChromaSDKColorFrame2D& frame = frames[frameId];
+			return frame.Keys[HIBYTE(rzkey)].Colors[LOBYTE(rzkey)];
+		}
+
 		return 0;
 	}
 
