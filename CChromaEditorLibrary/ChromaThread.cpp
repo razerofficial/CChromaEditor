@@ -46,6 +46,9 @@ void ChromaThread::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
 {
 	switch (device)
 	{
+	case EChromaSDKDeviceEnum::DE_KeyboardExtended:
+		_sUseIdleAnimation[(int)EChromaSDKDeviceEnum::DE_Keyboard] = flag;
+		break;
 	case EChromaSDKDeviceEnum::DE_ChromaLink:
 	case EChromaSDKDeviceEnum::DE_Headset:
 	case EChromaSDKDeviceEnum::DE_Keyboard:
@@ -90,6 +93,7 @@ void ChromaThread::SetIdleAnimationName(const char* name)
 			switch (animation2D->GetDevice())
 			{
 			case EChromaSDKDevice2DEnum::DE_Keyboard:
+			case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
 				_sIdleAnimation[(int)EChromaSDKDeviceEnum::DE_Keyboard] = name;
 				break;
 			case EChromaSDKDevice2DEnum::DE_Keypad:
@@ -157,6 +161,7 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 					switch (animation2D->GetDevice())
 					{
 					case EChromaSDKDevice2DEnum::DE_Keyboard:
+					case EChromaSDKDevice2DEnum::DE_KeyboardExtended:
 						detectIdle[(int)EChromaSDKDeviceEnum::DE_Keyboard] = false;
 						break;
 					case EChromaSDKDevice2DEnum::DE_Keypad:
