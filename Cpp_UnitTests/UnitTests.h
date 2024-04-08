@@ -91,6 +91,8 @@ public:
 
 	static void UnitTestsGetSetKeyColor();
 
+	static void UnitTestsSetCurrentFrameName();
+
 	static void Run();
 
 };

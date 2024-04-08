@@ -2155,6 +2155,47 @@ void UnitTests::UnitTestsGetSetKeyColor()
 	Sleep(1000);
 }
 
+void UnitTests::UnitTestsSetCurrentFrameName()
+{
+	// 10 second animation, animation is white from 60 to 120 frames
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string animationName = "Animations/GradientRedWhiteBlue_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), true);
+	}
+
+	printf("Press SPACE to to set current frame to 30 (changes to white)...\r\n");
+	printf("Press ESC to end UnitTestsSetCurrentFrameName...\r\n");
+	HandleInput inputSpace = HandleInput(VK_SPACE);
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	while (true)
+	{
+		if (inputSpace.WasReleased(true))
+		{
+			for (int i = 0; i < deviceCategories.size(); ++i)
+			{
+				string animationName = "Animations/GradientRedWhiteBlue_" + deviceCategories[i] + ".chroma";
+				int frameCount = ChromaAnimationAPI::GetFrameCountName(animationName.c_str());
+				ChromaAnimationAPI::SetCurrentFrameName(animationName.c_str(), frameCount / 2);
+			}
+		}
+		if (inputEscape.WasReleased(true))
+		{
+			break;
+		}
+		Sleep(1000/30);
+	}
+}
+
 void UnitTests::Run()
 {
 	printf("Start of unit tests...\r\n");
@@ -2205,7 +2246,9 @@ void UnitTests::Run()
 
 	//UnitTestsOpenClose();
 
-	UnitTestsGetSetKeyColor();
+	//UnitTestsGetSetKeyColor();
+
+	UnitTestsSetCurrentFrameName();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
