@@ -1100,64 +1100,6 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 	printf("UnitTestsOpenAnimationFromMemory: Complete!\r\n");
 }
 
-void UnitTests::UnitTestsIdleAnimation()
-{
-	const char* randomAnimation = "Animations/Random_Keyboard.chroma";
-	const char* idleAnimation = "Animations/Fire_Keyboard.chroma";
-
-	const int delay = 3000;
-
-	printf("Idle is [ON].\r\n");
-	ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, true);
-
-	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
-	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
-	ChromaAnimationAPI::SetIdleAnimationName(idleAnimation);
-	
-	ChromaAnimationAPI::CloseAnimationName(randomAnimation);
-	ChromaAnimationAPI::OverrideFrameDurationName(randomAnimation, 0.1f);
-
-	printf("Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	printf("Waiting 3 sec...\r\n");
-	Sleep(delay);
-	printf("\r\n");
-
-	printf("Close idle animation while active...\r\n");
-	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
-	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
-	Sleep(delay);
-	printf("\r\n");
-
-	printf("Set idle animation.\r\n");
-	ChromaAnimationAPI::SetIdleAnimationName(idleAnimation);
-
-	printf("Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	printf("Waiting 3 sec...\r\n");
-	Sleep(delay);
-	printf("\r\n");
-
-	printf("Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	printf("Waiting 3 sec...\r\n");
-	Sleep(delay);
-	printf("\r\n");
-
-	printf("Clear all animations with idle [ON].\r\n");
-	ChromaAnimationAPI::ClearAll();
-	printf("Waiting 3 sec...\r\n");
-	Sleep(delay);
-	printf("\r\n");
-
-	printf("Idle is [OFF].\r\n");
-	ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, false);
-	ChromaAnimationAPI::ClearAll();
-	printf("Waiting 3 sec...\r\n");
-	Sleep(delay);
-	printf("\r\n");
-}
-
 void UnitTests::UnitTestsDamage()
 {
 	vector<string> damageList;
@@ -2173,7 +2115,7 @@ void UnitTests::UnitTestsSetCurrentFrameName()
 		ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), true);
 	}
 
-	printf("Press SPACE to to set current frame to 30 (changes to white)...\r\n");
+	printf("Press SPACE to set current frame to 30 (changes to white)...\r\n");
 	printf("Press ESC to end UnitTestsSetCurrentFrameName...\r\n");
 	HandleInput inputSpace = HandleInput(VK_SPACE);
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
@@ -2194,6 +2136,75 @@ void UnitTests::UnitTestsSetCurrentFrameName()
 		}
 		Sleep(1000/30);
 	}
+}
+
+void UnitTests::UnitTestsIdleAnimation()
+{
+	// make an animation to hold a static color
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+	
+	// enable idle animations
+	ChromaAnimationAPI::UseIdleAnimations(true);
+
+	// create idle animations, 1 frame each with no caching
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string blankAnimation = "Animations/Blank_" + deviceCategories[i] + ".chroma";
+		string idleAnimation = "Animations/Idle_" + deviceCategories[i] + ".chroma";
+		// create the idle animation
+		ChromaAnimationAPI::CopyAnimationName(blankAnimation.c_str(), idleAnimation.c_str());
+		// set initial color
+		ChromaAnimationAPI::MakeBlankFramesRGBName(idleAnimation.c_str(), 1, 0.033f, 255, 0, 0);
+		// don't cache frames
+		ChromaAnimationAPI::UsePreloadingName(idleAnimation.c_str(), false);
+		// turn on the idle animation
+		ChromaAnimationAPI::SetIdleAnimationName(idleAnimation.c_str());
+	}
+
+	printf("Press C to pick a random static idle color...\r\n");
+	printf("Press SPACE to play an animation once and then fallback to idle...\r\n");
+	printf("Press ESC to end UnitTestsIdleAnimation...\r\n");
+	HandleInput inputC = HandleInput('C');
+	HandleInput inputSpace = HandleInput(VK_SPACE);
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	while (true)
+	{
+		// assign a random color to the idle animation
+		if (inputC.WasReleased(true))
+		{
+			int color = ChromaAnimationAPI::GetRGB(rand() % 256, rand() % 256, rand() % 256);
+			for (int i = 0; i < deviceCategories.size(); ++i)
+			{
+				string animationName = "Animations/Idle_" + deviceCategories[i] + ".chroma";
+				// play animation once
+				ChromaAnimationAPI::FillColorAllFramesName(animationName.c_str(), color);
+			}
+		}
+		// play the misc animation
+		if (inputSpace.WasReleased(true))
+		{
+			for (int i = 0; i < deviceCategories.size(); ++i)
+			{
+				string animationName = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+				// play animation once
+				ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), false);
+			}
+		}
+		// exit the unit test
+		if (inputEscape.WasReleased(true))
+		{
+			break;
+		}
+		Sleep(1000 / 30);
+	}	
 }
 
 void UnitTests::Run()
@@ -2232,7 +2243,6 @@ void UnitTests::Run()
 	//UnitTestsMeasurePreloadingWithCaching();
 	//UnitTestsMeasureGetAnimation();
 	//UnitTestsMeasureGetAnimationWithCaching();
-	//UnitTestsIdleAnimation();
 	//UnitTestsFrameValidation();
 
 	//UnitTestsCopyKeysColorAllFramesName();
@@ -2248,7 +2258,8 @@ void UnitTests::Run()
 
 	//UnitTestsGetSetKeyColor();
 
-	UnitTestsSetCurrentFrameName();
+	//UnitTestsSetCurrentFrameName();
+	UnitTestsIdleAnimation();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
