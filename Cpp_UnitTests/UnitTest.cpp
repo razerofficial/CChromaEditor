@@ -2207,6 +2207,138 @@ void UnitTests::UnitTestsIdleAnimation()
 	}	
 }
 
+void UnitTests::UnitTestsPauseAnimations()
+{
+	bool loop = true;
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+
+	printf("Play animations with looping\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::PlayAnimationName(miscAnimation.c_str(), loop);	
+	}
+
+	printf("let animations loop for a sec...\r\n");
+	Sleep(1000);
+
+	printf("Are animations paused after playing (Should be no)?\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Pause animations.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::PauseAnimationName(miscAnimation.c_str());
+	}
+
+	printf("Are animations paused after pausing? (Should be yes)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Resume animations.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::ResumeAnimationName(miscAnimation.c_str(), loop);
+	}
+
+	printf("Are animations paused after resuming? (Should be no)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Stop animations.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::StopAnimationName(miscAnimation.c_str());
+	}
+
+	printf("Are animations paused after stopping? (Should be no)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Play animations.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::PlayAnimationName(miscAnimation.c_str(), loop);
+	}
+
+	printf("Are animations paused after playing? (Should be no)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+}
+
 void UnitTests::Run()
 {
 	printf("Start of unit tests...\r\n");
@@ -2259,7 +2391,8 @@ void UnitTests::Run()
 	//UnitTestsGetSetKeyColor();
 
 	//UnitTestsSetCurrentFrameName();
-	UnitTestsIdleAnimation();
+	//UnitTestsIdleAnimation();
+	UnitTestsPauseAnimations();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);

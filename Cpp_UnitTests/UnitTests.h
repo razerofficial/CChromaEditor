@@ -93,6 +93,8 @@ public:
 
 	static void UnitTestsSetCurrentFrameName();
 
+	static void UnitTestsPauseAnimations();
+
 	static void Run();
 
 };
