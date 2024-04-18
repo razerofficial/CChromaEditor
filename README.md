@@ -7,6 +7,7 @@
 **Table of Contents**
 
 * [See Also](#see-also)
+* [User Privacy](#user-privacy)
 * [Frameworks supported](#frameworks-supported)
 * [Prerequisites](#prerequisites)
 * [Security](#security)
@@ -29,6 +30,12 @@
 **Plugins:**
 
 * [CChromaEditor](https://github.com/RazerOfficial/CChromaEditor) - C++ library for playing and editing Chroma animations
+
+<a name="user-privacy"></a>
+
+## User Privacy
+
+Note: The Chroma SDK requires only the minimum amount of information necessary to operate during initialization, including the title of the application or game, description of the application or game, application or game author, and application or game support contact information. This information is displayed in the Chroma app. The Chroma SDK does not monitor or collect any personal data related to users. 
 
 <a name="frameworks-supported"></a>
 
