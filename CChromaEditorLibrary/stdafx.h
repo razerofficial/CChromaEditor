@@ -664,31 +664,43 @@ extern "C"
 	/*
 		Direct access to low level API.
 	*/
+	EXPORT_API RZRESULT PluginCoreIsActive(BOOL& Active);
+	/*
+		Direct access to low level API.
+	*/
+	EXPORT_API RZRESULT PluginCoreIsConnected(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+	/*
+		Direct access to low level API.
+	*/
 	EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
 	/*
 		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreSetEffect(RZEFFECTID EffectId);
 	/*
+		Direct access to low level API.
+	*/
+	EXPORT_API RZRESULT PluginCoreSetEventName(LPCTSTR Name);
+	/*
 		Begin broadcasting Chroma RGB data using the stored stream key as the endpoint.
-		Intended for Cloud Gaming Platforms,  restore the streaming key when the
-		game instance is launched to continue streaming.  streamId is a null terminated
-		string  streamKey is a null terminated string  StreamGetStatus() should
-		return the READY status to use this method.
+		Intended for Cloud Gaming Platforms, restore the streaming key when the
+		game instance is launched to continue streaming. streamId is a null terminated
+		string streamKey is a null terminated string StreamGetStatus() should return
+		the READY status to use this method.
 	*/
 	EXPORT_API bool PluginCoreStreamBroadcast(const char* streamId, const char* streamKey);
 	/*
-		End broadcasting Chroma RGB data.  StreamGetStatus() should return the BROADCASTING
+		End broadcasting Chroma RGB data. StreamGetStatus() should return the BROADCASTING
 		status to use this method.
 	*/
 	EXPORT_API bool PluginCoreStreamBroadcastEnd();
 	/*
 		shortcode: Pass the address of a preallocated character buffer to get the
-		streaming auth code. The buffer should have a minimum length of 6.  length:
+		streaming auth code. The buffer should have a minimum length of 6. length:
 		Length will return as zero if the streaming auth code could not be obtained.
 		If length is greater than zero, it will be the length of the returned streaming
-		auth code.  Once you have the shortcode, it should be shown to the user
-		so they can associate the stream with their Razer ID  StreamGetStatus()
+		auth code. Once you have the shortcode, it should be shown to the user
+		so they can associate the stream with their Razer ID StreamGetStatus()
 		should return the READY status before invoking this method. platform: is
 		the null terminated string that identifies the source of the stream: {
 		GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string
@@ -697,7 +709,7 @@ extern "C"
 	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 	/*
 		focus: Pass the address of a preallocated character buffer to get the stream
-		focus. The buffer should have a length of 48  length: Length will return
+		focus. The buffer should have a length of 48 length: Length will return
 		as zero if the stream focus could not be obtained. If length is greater
 		than zero, it will be the length of the returned stream focus.
 	*/
@@ -706,30 +718,28 @@ extern "C"
 		Intended for Cloud Gaming Platforms, store the stream id to persist in user
 		preferences to continue streaming if the game is suspended or closed. shortcode:
 		The shortcode is a null terminated string. Use the shortcode that authorized
-		the stream to obtain the stream id.  streamId should be a preallocated
-		buffer to get the stream key. The buffer should have a length of 48.  length:
-		Length will return zero if the key could not be obtained. If the length
-		is greater than zero, it will be the length of the returned streaming id.
-		Retrieve the stream id after authorizing the shortcode. The authorization
-		window will expire in 5 minutes. Be sure to save the stream key before
-		the window expires. StreamGetStatus() should return the READY status to
-		use this method.
+		the stream to obtain the stream id. streamId should be a preallocated buffer
+		to get the stream key. The buffer should have a length of 48. length: Length
+		will return zero if the key could not be obtained. If the length is greater
+		than zero, it will be the length of the returned streaming id. Retrieve
+		the stream id after authorizing the shortcode. The authorization window
+		will expire in 5 minutes. Be sure to save the stream key before the window
+		expires. StreamGetStatus() should return the READY status to use this method.
 	*/
 	EXPORT_API void PluginCoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length);
 	/*
 		Intended for Cloud Gaming Platforms, store the streaming key to persist
 		in user preferences to continue streaming if the game is suspended or closed.
 		shortcode: The shortcode is a null terminated string. Use the shortcode
-		that authorized the stream to obtain the stream key.  If the status is
-		in the BROADCASTING or WATCHING state, passing a NULL shortcode will return
-		the active streamId.  streamKey should be a preallocated buffer to get
-		the stream key. The buffer should have a length of 48.  length: Length
-		will return zero if the key could not be obtained. If the length is greater
-		than zero, it will be the length of the returned streaming key.  Retrieve
+		that authorized the stream to obtain the stream key. If the status is in
+		the BROADCASTING or WATCHING state, passing a NULL shortcode will return
+		the active streamId. streamKey should be a preallocated buffer to get the
+		stream key. The buffer should have a length of 48. length: Length will
+		return zero if the key could not be obtained. If the length is greater
+		than zero, it will be the length of the returned streaming key. Retrieve
 		the stream key after authorizing the shortcode. The authorization window
 		will expire in 5 minutes. Be sure to save the stream key before the window
-		expires.  StreamGetStatus() should return the READY status to use this
-		method.
+		expires. StreamGetStatus() should return the READY status to use this method.
 	*/
 	EXPORT_API void PluginCoreStreamGetKey(const char* shortcode, char* streamKey, unsigned char* length);
 	/*
@@ -742,14 +752,14 @@ extern "C"
 	EXPORT_API const char* PluginCoreStreamGetStatusString(ChromaSDK::Stream::StreamStatusType status);
 	/*
 		This prevents the stream id and stream key from being obtained through the
-		shortcode. This closes the auth window.  shortcode is a null terminated
-		string.  StreamGetStatus() should return the READY status to use this method.
+		shortcode. This closes the auth window. shortcode is a null terminated
+		string. StreamGetStatus() should return the READY status to use this method.
 		returns success when shortcode has been released
 	*/
 	EXPORT_API bool PluginCoreStreamReleaseShortcode(const char* shortcode);
 	/*
 		The focus is a null terminated string. Set the focus identifer for the application
-		designated to automatically change the streaming state.  Returns true on
+		designated to automatically change the streaming state. Returns true on
 		success.
 	*/
 	EXPORT_API bool PluginCoreStreamSetFocus(const char* focus);
@@ -759,13 +769,13 @@ extern "C"
 	*/
 	EXPORT_API bool PluginCoreStreamSupportsStreaming();
 	/*
-		Begin watching the Chroma RGB data using streamID parameter.  streamId is
-		a null terminated string.  StreamGetStatus() should return the READY status
+		Begin watching the Chroma RGB data using streamID parameter. streamId is
+		a null terminated string. StreamGetStatus() should return the READY status
 		to use this method.
 	*/
 	EXPORT_API bool PluginCoreStreamWatch(const char* streamId, unsigned long long timestamp);
 	/*
-		End watching Chroma RGB data stream.  StreamGetStatus() should return the
+		End watching Chroma RGB data stream. StreamGetStatus() should return the
 		WATCHING status to use this method.
 	*/
 	EXPORT_API bool PluginCoreStreamWatchEnd();
@@ -1445,7 +1455,7 @@ extern "C"
 	*/
 	EXPORT_API double PluginHasAnimationLoopNameD(const char* path);
 	/*
-		Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many
+		Initialize the ChromaSDK. Zero indicates success, otherwise failure. Many
 		API methods auto initialize the ChromaSDK if not already initialized.
 	*/
 	EXPORT_API RZRESULT PluginInit();
@@ -1455,7 +1465,7 @@ extern "C"
 	EXPORT_API double PluginInitD();
 	/*
 		Initialize the ChromaSDK. AppInfo populates the details in Synapse. Zero
-		indicates  success, otherwise failure. Many API methods auto initialize
+		indicates success, otherwise failure. Many API methods auto initialize
 		the ChromaSDK if not already initialized.
 	*/
 	EXPORT_API RZRESULT PluginInitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
@@ -2742,28 +2752,33 @@ extern "C"
 	*/
 	EXPORT_API void PluginUnloadLibraryStreamingPlugin();
 	/*
-		Updates the `frameIndex` of the `Chroma` animation referenced by id and 
-		sets the `duration` (in seconds). The `color` is expected to be an array 
-		of the dimensions for the `deviceType/device`. The `length` parameter is 
-		the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size 
-		should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should 
-		be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
-		and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
+		Updates the `frameIndex` of the `Chroma` animation referenced by id and
+		sets the `duration` (in seconds). The `color` is expected to be an array
+		of the dimensions for the `deviceType/device`. The `length` parameter is
+		the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size
+		should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should
+		be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+		and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
 		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 	*/
 	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
 	/*
-		Update the `frameIndex` of the `Chroma` animation referenced by name and 
-		sets the `duration` (in seconds). The `color` is expected to be an array 
-		of the dimensions for the `deviceType/device`. The `length` parameter is 
-		the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size 
-		should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should 
-		be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
-		and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
-		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
+		Update the `frameIndex` of the `Chroma` animation referenced by name and
+		sets the `duration` (in seconds). The `color` is expected to be an array
+		of the dimensions for the `deviceType/device`. The `length` parameter is
+		the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size
+		should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should
+		be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+		and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 		Returns the animation id upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginUpdateFrameName(const char* path, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
+	/*
+		On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName`
+		automatically when `PlayAnimationName` is called.
+	*/
+	EXPORT_API void PluginUseForwardChromaEvents(bool flag);
 	/*
 		When the idle animation flag is true, when no other animations are playing,
 		the idle animation will be used. The idle animation will not be affected

@@ -48,13 +48,15 @@
      {
          enum DeviceType
          {
-             DEVICE_KEYBOARD    = 1, 
-             DEVICE_MOUSE       = 2, 
-             DEVICE_HEADSET     = 3, 
-             DEVICE_MOUSEPAD    = 4, 
-             DEVICE_KEYPAD      = 5, 
-             DEVICE_SYSTEM      = 6, 
-             DEVICE_SPEAKERS    = 7, 
+             DEVICE_KEYBOARD = 1, //!< \~english Keyboard device. \~japanese キーボードデバイス。 \~korean 키보드 장치. \~polish Urządzenie typu klawiatura. \~russian Клавиатура. \~chinese 键盘设备。
+             DEVICE_MOUSE = 2, //!< \~english Mouse device. \~japanese マウスデバイス。 \~korean 마우스 장치. \~polish Urządzenie typu mysz. \~russian Мышь. \~chinese 鼠标设备。
+             DEVICE_HEADSET = 3, //!< \~english Headset device. \~japanese ヘッドセットデバイス。 \~korean 헤드셋 장치. \~polish Urządzenie typu zestaw słuchawkowy. \~russian Гарнитура. \~chinese 耳麦设备。
+             DEVICE_MOUSEPAD = 4, //!< \~english Mousepad device. \~japanese マウスパッドデバイス。 \~korean 마우스 패드 장치. \~polish Urządzenie typu mousepad. \~russian Коврик для мыши. \~chinese 鼠标垫设备。
+             DEVICE_KEYPAD = 5, //!< \~english Keypad device. \~japanese キーパッドデバイス。 \~korean 키패드 장치. \~polish Urządzenie typu keypad. \~russian Клавишный блок. \~chinese 小键盘设备。
+             DEVICE_SYSTEM = 6, //!< \~english System device.
+             DEVICE_SPEAKERS = 7, //!< \~english Speakers.
+             DEVICE_CHROMALINK = 8,  //!< \~english Chroma Link device.
+             DEVICE_ALL = 255,
              DEVICE_INVALID          
          } DeviceType;
   

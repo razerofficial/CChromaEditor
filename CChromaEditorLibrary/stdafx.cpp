@@ -73,6 +73,7 @@ map<string, int> _gAnimationMapID;
 map<int, AnimationBase*> _gAnimations;
 map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
 map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
+bool _gForwardChromaEvents = true;
 
 void SetupChromaThread()
 {
@@ -194,6 +195,18 @@ extern "C"
 	EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo)
 	{
 		return RzChromaSDK::QueryDevice(DeviceId, DeviceInfo);
+	}
+	EXPORT_API RZRESULT PluginCoreIsActive(BOOL& Active)
+	{
+		return RzChromaSDK::IsActive(Active);
+	}
+	EXPORT_API RZRESULT PluginCoreIsConnected(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo)
+	{
+		return RzChromaSDK::IsConnected(DeviceInfo);
+	}
+	EXPORT_API RZRESULT PluginCoreSetEventName(LPCTSTR Name)
+	{
+		return RzChromaSDK::SetEventName(Name);
 	}
 
 	EXPORT_API bool PluginCoreStreamSetFocus(const char* focus)
@@ -1971,8 +1984,20 @@ extern "C"
 		}
 	}
 
+	EXPORT_API void PluginUseForwardChromaEvents(bool flag)
+	{
+		_gForwardChromaEvents = flag;
+	}
+
 	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop)
 	{
+		if (_gForwardChromaEvents)
+		{
+			// default is ON, forward animation names to SetEventName
+			string strPath = path;
+			wstring wPath(strPath.begin(), strPath.end());
+			RzChromaSDK::SetEventName(wPath.c_str());
+		}
 
 		int animationId = PluginGetAnimation(path);
 		if (animationId < 0)
@@ -2008,7 +2033,6 @@ extern "C"
 			}
 			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
 			//LogDebug("PluginPlayAnimationFrame: %s\r\n", animation->GetName().c_str());
-			animation->SetCurrentFrame(frameId);
 			switch (animation->GetDeviceType())
 			{
 			case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -2022,7 +2046,10 @@ extern "C"
 			{
 				animation->Load();
 			}
+			// resets the current frame
 			animation->Play(loop);
+			// set the current frame after playing
+			animation->SetCurrentFrame(frameId);
 		}
 	}
 

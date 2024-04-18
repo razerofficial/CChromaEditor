@@ -90,10 +90,16 @@ public:
 	static void UnitTests8x24Keys();
 
 	static void UnitTestsGetSetKeyColor();
-
+	
 	static void UnitTestsSetCurrentFrameName();
 
 	static void UnitTestsPauseAnimations();
+
+	static void UnitTestsIsActive();
+
+	static void UnitTestsIsConnected();
+
+	static void UnitTestsSetEventName();
 
 	static void Run();
 
