@@ -13,6 +13,7 @@ AnimationBase::AnimationBase()
 	_mIsPaused = true;
 	_mTime = 0.0f;
 	_mUsePreloading = true;
+	_mLoop = false;
 }
 
 const wstring& AnimationBase::GetName()

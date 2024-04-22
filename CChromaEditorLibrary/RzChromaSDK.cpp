@@ -9,9 +9,9 @@
 
 
 #ifdef _WIN64
-#define CHROMASDKDLL        L"RzChromaSDK64.dll"
+#define CHROMASDKDLL        L"RzChromatic64.dll"
 #else
-#define CHROMASDKDLL        L"RzChromaSDK.dll"
+#define CHROMASDKDLL        L"RzChromatic.dll"
 #endif
 
 
@@ -42,7 +42,9 @@ CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_DELETE_EFFECT, DeleteEffect);
 CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_REGISTER_EVENT_NOTIFICATION, RegisterEventNotification);
 CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_UNREGISTER_EVENT_NOTIFICATION, UnregisterEventNotification);
 CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
-
+CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_IS_ACTIVE, IsActive);
+CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_IS_CONNECTED, IsConnected);
+CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_SET_EVENT_NAME, SetEventName);
 
 // validate static methods
 #undef CHROMASDK_VALIDATE_METHOD
@@ -209,6 +211,36 @@ RZRESULT RzChromaSDK::QueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TY
 	return _sMethodQueryDevice(DeviceId, DeviceInfo);
 }
 
+RZRESULT RzChromaSDK::IsActive(BOOL& Active)
+{
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
+	{
+		return state;
+	}
+	return _sMethodIsActive(Active);
+}
+
+RZRESULT RzChromaSDK::IsConnected(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo)
+{
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
+	{
+		return state;
+	}
+	return _sMethodIsConnected(DeviceInfo);
+}
+
+RZRESULT RzChromaSDK::SetEventName(LPCTSTR Name)
+{
+	RZRESULT state = GetLibraryLoadedState();
+	if (state != RZRESULT_SUCCESS)
+	{
+		return state;
+	}
+	return _sMethodSetEventName(Name);
+}
+
 // EXTRA METHODS
 
 RZRESULT RzChromaSDK::GetLibraryLoadedState()
@@ -325,7 +357,7 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 			}
 
 			// check the library file version
-			if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(strPathSearch, 3, 8, 0, 154))
+			if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(strPathSearch, 1, 0, 0, 6))
 			{
 				ChromaLogger::fprintf(stderr, "Detected old version of Chroma SDK Library!\r\n");
 				return RZRESULT_DLL_NOT_FOUND;
@@ -375,6 +407,9 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_REGISTER_EVENT_NOTIFICATION, RegisterEventNotification);
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_UNREGISTER_EVENT_NOTIFICATION, UnregisterEventNotification);
 	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_QUERY_DEVICE, QueryDevice);
+	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_IS_ACTIVE, IsActive);
+	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_IS_CONNECTED, IsConnected);
+	CHROMASDK_VALIDATE_METHOD(CHROMA_SDK_SET_EVENT_NAME, SetEventName);
 
 	_sLoaded = true;
 	return RZRESULT_SUCCESS;

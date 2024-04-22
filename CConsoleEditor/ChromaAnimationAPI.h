@@ -608,11 +608,23 @@ typedef RZRESULT	(*PLUGIN_CORE_INIT_SDK)(ChromaSDK::APPINFOTYPE* AppInfo);
 /*
 	Direct access to low level API.
 */
+typedef RZRESULT	(*PLUGIN_CORE_IS_ACTIVE)(BOOL& Active);
+/*
+	Direct access to low level API.
+*/
+typedef RZRESULT	(*PLUGIN_CORE_IS_CONNECTED)(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+/*
+	Direct access to low level API.
+*/
 typedef RZRESULT	(*PLUGIN_CORE_QUERY_DEVICE)(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
 /*
 	Direct access to low level API.
 */
 typedef RZRESULT	(*PLUGIN_CORE_SET_EFFECT)(RZEFFECTID EffectId);
+/*
+	Direct access to low level API.
+*/
+typedef RZRESULT	(*PLUGIN_CORE_SET_EVENT_NAME)(LPCTSTR Name);
 /*
 	Begin broadcasting Chroma RGB data using the stored stream key as the endpoint. 
 	Intended for Cloud Gaming Platforms, restore the streaming key when the 
@@ -2707,6 +2719,11 @@ typedef int			(*PLUGIN_UPDATE_FRAME)(int animationId, int frameIndex, float dura
 */
 typedef int			(*PLUGIN_UPDATE_FRAME_NAME)(const wchar_t* path, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
 /*
+	On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName` 
+	automatically when `PlayAnimationName` is called.
+*/
+typedef void		(*PLUGIN_USE_FORWARD_CHROMA_EVENTS)(bool flag);
+/*
 	When the idle animation flag is true, when no other animations are playing, 
 	the idle animation will be used. The idle animation will not be affected 
 	by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId, 
@@ -3343,11 +3360,23 @@ namespace ChromaSDK
 		/*
 			Direct access to low level API.
 		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_IS_ACTIVE, CoreIsActive);
+		/*
+			Direct access to low level API.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_IS_CONNECTED, CoreIsConnected);
+		/*
+			Direct access to low level API.
+		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_QUERY_DEVICE, CoreQueryDevice);
 		/*
 			Direct access to low level API.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_SET_EFFECT, CoreSetEffect);
+		/*
+			Direct access to low level API.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_SET_EVENT_NAME, CoreSetEventName);
 		/*
 			Begin broadcasting Chroma RGB data using the stored stream key as the endpoint. 
 			Intended for Cloud Gaming Platforms, restore the streaming key when the 
@@ -5441,6 +5470,11 @@ namespace ChromaSDK
 			Returns the animation id upon success. Returns negative one upon failure.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_UPDATE_FRAME_NAME, UpdateFrameName);
+		/*
+			On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName` 
+			automatically when `PlayAnimationName` is called.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_FORWARD_CHROMA_EVENTS, UseForwardChromaEvents);
 		/*
 			When the idle animation flag is true, when no other animations are playing, 
 			the idle animation will be used. The idle animation will not be affected 

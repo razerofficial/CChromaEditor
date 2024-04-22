@@ -9,6 +9,7 @@
 **Table of Contents**
 
 * [See Also](#see-also)
+* [User Privacy](#user-privacy)
 * [Frameworks supported](#frameworks-supported)
 * [Prerequisites](#prerequisites)
 * [Security](#security)
@@ -16,8 +17,9 @@
 * [Dialog](#dialog)
 * [Streaming](#streaming)
 * [Streaming Logic Flow](#streaming-logic-flow)
-* [API](#api)
 * [File Format](#file-format)
+* [Extras](#extras)
+* [Full API](#full-api)
 
 <a name="see-also"></a>
 
@@ -29,7 +31,13 @@
 
 **Plugins:**
 
-* [CChromaEditor](https://github.com/RazerOfficial/CChromaEditor) - C++ native MFC library for playing and editing Chroma animations
+* [CChromaEditor](https://github.com/RazerOfficial/CChromaEditor) - C++ library for playing and editing Chroma animations
+
+<a name="user-privacy"></a>
+
+## User Privacy
+
+Note: The Chroma SDK requires only the minimum amount of information necessary to operate during initialization, including the title of the application or game, description of the application or game, application or game author, and application or game support contact information. This information is displayed in the Chroma app. The Chroma SDK does not monitor or collect any personal data related to users. 
 
 <a name="frameworks-supported"></a>
 
@@ -69,7 +77,7 @@
 
 ## Security
 
-The C++ Chroma Editor Library loads the core Razer DLL `RzChromaSDK.dll` and the Razer stream library `RzChromaStreamPlugin.dll`. To avoid a 3rd party injecting malicious code, the C++ Chroma Editor Library checks for a valid signature on the Razer libraries. The DLL issuer is validated to be `Razer USA Ltd.` Init and InitSDK will return `RZRESULT_DLL_INVALID_SIGNATURE` if the signature check fails.
+The C++ Chroma Editor Library loads the core Razer DLL `Chromatic.dll` and the Razer stream library `RzChromaStreamPlugin.dll`. To avoid a 3rd party injecting malicious code, the C++ Chroma Editor Library checks for a valid signature on the Razer libraries. The DLL issuer is validated to be `Razer USA Ltd.` Init and InitSDK will return `RZRESULT_DLL_INVALID_SIGNATURE` if the signature check fails.
 
 The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition to enable signature checking on the Chroma Editor Library. Signature checking can be used on the Razer libraries downloaded from Github releases.
 
@@ -89,7 +97,7 @@ The latest versions of the `Chroma Editor Library` can be found in [Releases](ht
 
 ## Windows PC
 
-For `Windows PC` builds the `RzChromaSDK.dll` and `RzChromaStreamPlugin.dll` are not packaged with the build. These libraries are automatically updated and managed by Synapse and the Chroma Connect module. Avoid including these files in your build folder for `Windows PC` builds.
+For `Windows PC` builds the `RzChromatic.dll` and `RzChromaStreamPlugin.dll` are not packaged with the build. These libraries are automatically updated and managed by Synapse and the Chroma Connect module. Avoid including these files in your build folder for `Windows PC` builds.
 
 **32-bit libraries**
 
@@ -107,23 +115,7 @@ Win64BuildFolder\CChromaEditorLibrary64.dll
 
 ## Windows Cloud
 
-`Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. By running the `Windows Cloud` version of the library `Chroma` effects can reach your local machine and connected hardware. Cloud instances won't have Synapse installed which requires special cloud versions of the libraries. The `Chroma Editor Library` uses the core `RzChromaSDK` low-level library to send Chroma effects to the cloud with the `RzChromaStreamPlugin` streaming library. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
-
-**32-bit libraries**
-
-```
-Win32BuildFolder\CChromaEditorLibrary.dll
-Win32BuildFolder\RzChromaSDK.dll
-Win32BuildFolder\RzChromaStreamPlugin.dll
-```
-
-**64-bit libraries**
-
-```
-Win64BuildFolder\CChromaEditorLibrary64.dll
-Win64BuildFolder\RzChromaSDK64.dll
-Win64BuildFolder\RzChromaStreamPlugin64.dll
-```
+`Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. Chroma effects stream across the Internet to reach your local machine and connected hardware. No extra code is required to add Cloud support. In the case with `NVidia GeForce Now`, the cloud runs the same Epic Games and Steam builds as the desktop version and support Chroma streaming. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
 
 ## API Class
 
@@ -387,9 +379,249 @@ Step 8. The game can now invoke `StreamBroadcast` to begin broadcasting `Chroma 
 
 Step 9. The game can invoke `StreamWatch` to watch the `Chroma RGB` stream for a given `Stream Id`. Watching a stream will end by invoking `StreamWatchEnd`.
 
-<a name="api"></a>
+<a name="file-format"></a>
 
-## API
+## File Format
+
+**Version: (int)**
+
+**EChromaSDKDeviceTypeEnum: (byte)**
+
+```c++
+enum EChromaSDKDeviceTypeEnum
+{
+    DE_1D = 0,
+    DE_2D,
+};
+```
+
+* Depending on the `EChromaSDKDeviceTypeEnum`, the file will use either the `1D` or `2D` file format.
+
+**1D File Format**
+
+**EChromaSDKDevice1DEnum: (byte)**
+
+```c++
+enum EChromaSDKDevice1DEnum
+{
+    DE_ChromaLink = 0,
+    DE_Headset,
+    DE_Mousepad,
+};
+```
+
+**Frame Count: (unsigned int)**
+
+**Frames: (FChromaSDKColorFrame1D[])**
+
+```c++
+struct FChromaSDKColorFrame1D
+{
+    float Duration;
+    std::vector<COLORREF> Colors;
+};
+```
+
+**Duration: (float)**
+
+**Color Array: (int[])**
+
+**2D File Format**
+
+**EChromaSDKDevice2DEnum: (byte)**
+
+```c++
+enum EChromaSDKDevice2DEnum
+{
+    DE_Keyboard = 0,
+    DE_Keypad,
+    DE_Mouse,
+};
+```
+
+**Frame Count: (unsigned int)**
+
+**Frames: (FChromaSDKColorFrame2D[])**
+
+```c++
+struct FChromaSDKColors
+{
+    std::vector<COLORREF> Colors;
+};
+```
+
+```c++
+struct FChromaSDKColorFrame2D
+{
+    float Duration;
+    std::vector<FChromaSDKColors> Colors;
+};
+```
+
+**Duration: (float)**
+
+**Color Array: (int[][])**
+
+<a name="extras"></a>
+
+## Extras
+
+<a name="PluginPlayComposite"></a>
+**PluginPlayComposite**
+
+`PluginPlayComposite` automatically handles initializing the `ChromaSDK`. The named animation files for the `.chroma` set will be automatically opened. The set of animations will play with looping `on` or `off`.
+
+```C++
+EXPORT_API void PluginPlayComposite(const char* name, bool loop);
+
+// Given "Random" this will invoke:
+// PluginPlayAnimationName("Random_ChromaLink.chroma", loop);
+// PluginPlayAnimationName("Random_Headset.chroma", loop);
+// PluginPlayAnimationName("Random_Keyboard.chroma", loop);
+// PluginPlayAnimationName("Random_Keypad.chroma", loop);
+// PluginPlayAnimationName("Random_Mouse.chroma", loop);
+// PluginPlayAnimationName("Random_Mousepad.chroma", loop);
+```
+
+<a name="PluginStopComposite"></a>
+**PluginStopComposite**
+
+`PluginStopComposite` automatically handles initializing the `ChromaSDK`. The named animation files for the `.chroma` set will be automatically opened. The set of animations will be stopped if playing.
+
+```C++
+EXPORT_API void PluginStopComposite(const char* name);
+
+// Given "Random" this will invoke:
+// PluginStopAnimationName("Random_ChromaLink.chroma");
+// PluginStopAnimationName("Random_Headset.chroma");
+// PluginStopAnimationName("Random_Keyboard.chroma");
+// PluginStopAnimationName("Random_Keypad.chroma");
+// PluginStopAnimationName("Random_Mouse.chroma");
+// PluginStopAnimationName("Random_Mousepad.chroma");
+```
+
+<a name="PluginCloseComposite"></a>
+**PluginCloseComposite**
+
+`PluginCloseComposite` closes a set of animations so they can be reloaded from disk. The set of animations will be stopped if playing.
+
+```C++
+EXPORT_API void PluginCloseComposite(const char* name);
+
+// Given "Random" this will invoke:
+// PluginCloseAnimationName("Random_ChromaLink.chroma");
+// PluginCloseAnimationName("Random_Headset.chroma");
+// PluginCloseAnimationName("Random_Keyboard.chroma");
+// PluginCloseAnimationName("Random_Keypad.chroma");
+// PluginCloseAnimationName("Random_Mouse.chroma");
+// PluginCloseAnimationName("Random_Mousepad.chroma");
+```
+
+<a name="EChromaSDKDeviceTypeEnum"></a>
+**EChromaSDKDeviceTypeEnum**
+
+The supported device types are `1D` and `2D`.
+
+```C++
+enum EChromaSDKDeviceTypeEnum
+{
+    DE_1D = 0,
+    DE_2D,
+};
+```
+
+<a name="EChromaSDKDevice1DEnum"></a>
+**EChromaSDKDevice1DEnum**
+
+`1D` devices are `ChromaLink`, `Headset`, and `Mousepad`.
+
+```C++
+enum EChromaSDKDevice1DEnum
+{
+    DE_ChromaLink = 0,
+    DE_Headset,
+    DE_Mousepad,
+};
+```
+
+<a name="EChromaSDKDevice2DEnum"></a>
+**EChromaSDKDevice2DEnum**
+
+`2D` devices are `Keyboard`, `Keypad`, and `Mouse`.
+
+```C++
+enum EChromaSDKDevice2DEnum
+{
+    DE_Keyboard = 0,
+    DE_Keypad,
+    DE_Mouse,
+};
+```
+
+(Auto-documentation needs sample snippet section)
+
+<a name="PluginSetKeysColorName"></a>
+**PluginSetKeysColorName**
+
+Set an array of animation keys to a static color for the given frame.
+
+```C++
+EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
+```
+
+Usage:
+
+```C++
+const char* animationName = "Blank_Keyboard.chroma";
+int frameCount = _gMethodGetFrameCountName(animationName);
+
+int wasdKeys[4] =
+{
+  (int)Keyboard::RZKEY::RZKEY_W,
+  (int)Keyboard::RZKEY::RZKEY_A,
+  (int)Keyboard::RZKEY::RZKEY_S,
+  (int)Keyboard::RZKEY::RZKEY_D,
+};
+for (int i = 0; i < frameCount; ++i)
+{
+  _gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
+}
+_gMethodPlayAnimationName(animationName, false);
+```
+
+<a name="PluginSetKeysNonZeroColorName"></a>
+**PluginSetKeysNonZeroColorName**
+
+Set an array of animation keys to a static color for the given frame if the existing color is not already black.
+
+```C++
+EXPORT_API void PluginSetKeysNonZeroColorName(const char* path, int frameId,
+  const int* rzkeys, int keyCount, int color);
+```
+
+Usage:
+
+```C++
+const char* animationName = "Blank_Keyboard.chroma";
+int frameCount = _gMethodGetFrameCountName(animationName);
+
+int wasdKeys[4] =
+{
+  (int)Keyboard::RZKEY::RZKEY_W,
+  (int)Keyboard::RZKEY::RZKEY_A,
+  (int)Keyboard::RZKEY::RZKEY_S,
+  (int)Keyboard::RZKEY::RZKEY_D,
+};
+for (int i = 0; i < frameCount; ++i)
+{
+  _gMethodSetKeysNonZeroColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
+}
+_gMethodPlayAnimationName(animationName, false);
+```
+
+<a name="full-api"></a>
+
+## Full API
 
 * Note: See the [Chroma Animation Guide](http://chroma.razer.com/ChromaGuide/) for visual examples of the API methods.
 
@@ -520,8 +752,11 @@ Methods:
 * [PluginCoreDeleteEffect](#PluginCoreDeleteEffect)
 * [PluginCoreInit](#PluginCoreInit)
 * [PluginCoreInitSDK](#PluginCoreInitSDK)
+* [PluginCoreIsActive](#PluginCoreIsActive)
+* [PluginCoreIsConnected](#PluginCoreIsConnected)
 * [PluginCoreQueryDevice](#PluginCoreQueryDevice)
 * [PluginCoreSetEffect](#PluginCoreSetEffect)
+* [PluginCoreSetEventName](#PluginCoreSetEventName)
 * [PluginCoreStreamBroadcast](#PluginCoreStreamBroadcast)
 * [PluginCoreStreamBroadcastEnd](#PluginCoreStreamBroadcastEnd)
 * [PluginCoreStreamGetAuthShortcode](#PluginCoreStreamGetAuthShortcode)
@@ -938,6 +1173,7 @@ Methods:
 * [PluginUnloadLibraryStreamingPlugin](#PluginUnloadLibraryStreamingPlugin)
 * [PluginUpdateFrame](#PluginUpdateFrame)
 * [PluginUpdateFrameName](#PluginUpdateFrameName)
+* [PluginUseForwardChromaEvents](#PluginUseForwardChromaEvents)
 * [PluginUseIdleAnimation](#PluginUseIdleAnimation)
 * [PluginUseIdleAnimations](#PluginUseIdleAnimations)
 * [PluginUsePreloading](#PluginUsePreloading)
@@ -2996,6 +3232,36 @@ RZRESULT result = ChromaAnimationAPI::CoreInitSDK(
 ```
 
 ---
+<a name="PluginCoreIsActive"></a>
+**PluginCoreIsActive**
+
+Direct access to low level API.
+
+```C++
+// DLL Interface
+EXPORT_API RZRESULT PluginCoreIsActive(BOOL& Active);
+
+// Class Plugin
+RZRESULT result = ChromaAnimationAPI::CoreIsActive(BOOL& Active);
+```
+
+---
+<a name="PluginCoreIsConnected"></a>
+**PluginCoreIsConnected**
+
+Direct access to low level API.
+
+```C++
+// DLL Interface
+EXPORT_API RZRESULT PluginCoreIsConnected(
+	ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+
+// Class Plugin
+RZRESULT result = ChromaAnimationAPI::CoreIsConnected(
+	ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+```
+
+---
 <a name="PluginCoreQueryDevice"></a>
 **PluginCoreQueryDevice**
 
@@ -3026,14 +3292,28 @@ RZRESULT result = ChromaAnimationAPI::CoreSetEffect(RZEFFECTID EffectId);
 ```
 
 ---
+<a name="PluginCoreSetEventName"></a>
+**PluginCoreSetEventName**
+
+Direct access to low level API.
+
+```C++
+// DLL Interface
+EXPORT_API RZRESULT PluginCoreSetEventName(LPCTSTR Name);
+
+// Class Plugin
+RZRESULT result = ChromaAnimationAPI::CoreSetEventName(LPCTSTR Name);
+```
+
+---
 <a name="PluginCoreStreamBroadcast"></a>
 **PluginCoreStreamBroadcast**
 
 Begin broadcasting Chroma RGB data using the stored stream key as the endpoint.
 Intended for Cloud Gaming Platforms,  restore the streaming key when the
 game instance is launched to continue streaming.  streamId is a null terminated
-string  streamKey is a null terminated string  StreamGetStatus() should
-return the READY status to use this method.
+string streamKey is a null terminated string StreamGetStatus() should return 
+the READY status to use this method.
 
 ```C++
 // DLL Interface
@@ -3111,14 +3391,13 @@ bool result = ChromaAnimationAPI::CoreStreamGetFocus(
 Intended for Cloud Gaming Platforms, store the stream id to persist in user
 preferences to continue streaming if the game is suspended or closed. shortcode:
 The shortcode is a null terminated string. Use the shortcode that authorized
-the stream to obtain the stream id.  streamId should be a preallocated
-buffer to get the stream key. The buffer should have a length of 48.  length:
-Length will return zero if the key could not be obtained. If the length
-is greater than zero, it will be the length of the returned streaming id.
-Retrieve the stream id after authorizing the shortcode. The authorization
-window will expire in 5 minutes. Be sure to save the stream key before
-the window expires. StreamGetStatus() should return the READY status to
-use this method.
+the stream to obtain the stream id. streamId should be a preallocated buffer 
+to get the stream key. The buffer should have a length of 48. length: Length 
+will return zero if the key could not be obtained. If the length is greater 
+than zero, it will be the length of the returned streaming id. Retrieve 
+the stream id after authorizing the shortcode. The authorization window 
+will expire in 5 minutes. Be sure to save the stream key before the window 
+expires. StreamGetStatus() should return the READY status to use this method.
 
 ```C++
 // DLL Interface
@@ -3137,16 +3416,15 @@ ChromaAnimationAPI::CoreStreamGetId(
 Intended for Cloud Gaming Platforms, store the streaming key to persist
 in user preferences to continue streaming if the game is suspended or closed.
 shortcode: The shortcode is a null terminated string. Use the shortcode
-that authorized the stream to obtain the stream key.  If the status is
-in the BROADCASTING or WATCHING state, passing a NULL shortcode will return
-the active streamId.  streamKey should be a preallocated buffer to get
-the stream key. The buffer should have a length of 48.  length: Length
-will return zero if the key could not be obtained. If the length is greater
+that authorized the stream to obtain the stream key. If the status is in 
+the BROADCASTING or WATCHING state, passing a NULL shortcode will return 
+the active streamId. streamKey should be a preallocated buffer to get the 
+stream key. The buffer should have a length of 48. length: Length will 
+return zero if the key could not be obtained. If the length is greater 
 than zero, it will be the length of the returned streaming key.  Retrieve
 the stream key after authorizing the shortcode. The authorization window
 will expire in 5 minutes. Be sure to save the stream key before the window
-expires.  StreamGetStatus() should return the READY status to use this
-method.
+expires. StreamGetStatus() should return the READY status to use this method.
 
 ```C++
 // DLL Interface
@@ -9941,7 +10219,6 @@ should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should
 be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
 and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
 EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
-Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -9979,6 +10256,21 @@ EXPORT_API int PluginUpdateFrameName(
 int result = ChromaAnimationAPI::UpdateFrameName(
  const char* path, int frameIndex, float duration, int* colors, int length,
  int* keys, int keysLength);
+```
+
+---
+<a name="PluginUseForwardChromaEvents"></a>
+**PluginUseForwardChromaEvents**
+
+On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName` 
+automatically when `PlayAnimationName` is called.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginUseForwardChromaEvents(bool flag);
+
+// Class Plugin
+ChromaAnimationAPI::UseForwardChromaEvents(bool flag);
 ```
 
 ---
@@ -10056,239 +10348,3 @@ ChromaAnimationAPI::UsePreloadingName(
 *(End of automation)*
 
 <br/><br/>
-
-<a name="PluginPlayComposite"></a>
-**PluginPlayComposite**
-
-`PluginPlayComposite` automatically handles initializing the `ChromaSDK`. The named animation files for the `.chroma` set will be automatically opened. The set of animations will play with looping `on` or `off`.
-
-```C++
-EXPORT_API void PluginPlayComposite(const char* name, bool loop);
-
-// Given "Random" this will invoke:
-// PluginPlayAnimationName("Random_ChromaLink.chroma", loop);
-// PluginPlayAnimationName("Random_Headset.chroma", loop);
-// PluginPlayAnimationName("Random_Keyboard.chroma", loop);
-// PluginPlayAnimationName("Random_Keypad.chroma", loop);
-// PluginPlayAnimationName("Random_Mouse.chroma", loop);
-// PluginPlayAnimationName("Random_Mousepad.chroma", loop);
-```
-
-<a name="PluginStopComposite"></a>
-**PluginStopComposite**
-
-`PluginStopComposite` automatically handles initializing the `ChromaSDK`. The named animation files for the `.chroma` set will be automatically opened. The set of animations will be stopped if playing.
-
-```C++
-EXPORT_API void PluginStopComposite(const char* name);
-
-// Given "Random" this will invoke:
-// PluginStopAnimationName("Random_ChromaLink.chroma");
-// PluginStopAnimationName("Random_Headset.chroma");
-// PluginStopAnimationName("Random_Keyboard.chroma");
-// PluginStopAnimationName("Random_Keypad.chroma");
-// PluginStopAnimationName("Random_Mouse.chroma");
-// PluginStopAnimationName("Random_Mousepad.chroma");
-```
-
-<a name="PluginCloseComposite"></a>
-**PluginCloseComposite**
-
-`PluginCloseComposite` closes a set of animations so they can be reloaded from disk. The set of animations will be stopped if playing.
-
-```C++
-EXPORT_API void PluginCloseComposite(const char* name);
-
-// Given "Random" this will invoke:
-// PluginCloseAnimationName("Random_ChromaLink.chroma");
-// PluginCloseAnimationName("Random_Headset.chroma");
-// PluginCloseAnimationName("Random_Keyboard.chroma");
-// PluginCloseAnimationName("Random_Keypad.chroma");
-// PluginCloseAnimationName("Random_Mouse.chroma");
-// PluginCloseAnimationName("Random_Mousepad.chroma");
-```
-
-<a name="EChromaSDKDeviceTypeEnum"></a>
-**EChromaSDKDeviceTypeEnum**
-
-The supported device types are `1D` and `2D`.
-
-```C++
-enum EChromaSDKDeviceTypeEnum
-{
-    DE_1D = 0,
-    DE_2D,
-};
-```
-
-<a name="EChromaSDKDevice1DEnum"></a>
-**EChromaSDKDevice1DEnum**
-
-`1D` devices are `ChromaLink`, `Headset`, and `Mousepad`.
-
-```C++
-enum EChromaSDKDevice1DEnum
-{
-    DE_ChromaLink = 0,
-    DE_Headset,
-    DE_Mousepad,
-};
-```
-
-<a name="EChromaSDKDevice2DEnum"></a>
-**EChromaSDKDevice2DEnum**
-
-`2D` devices are `Keyboard`, `Keypad`, and `Mouse`.
-
-```C++
-enum EChromaSDKDevice2DEnum
-{
-    DE_Keyboard = 0,
-    DE_Keypad,
-    DE_Mouse,
-};
-```
-
-(Auto-documentation needs sample snippet section)
-
-<a name="PluginSetKeysColorName"></a>
-**PluginSetKeysColorName**
-
-Set an array of animation keys to a static color for the given frame.
-
-```C++
-EXPORT_API void PluginSetKeysColorName(const char* path, int frameId, const int* rzkeys, int keyCount, int color);
-```
-
-Usage:
-
-```C++
-const char* animationName = "Blank_Keyboard.chroma";
-int frameCount = _gMethodGetFrameCountName(animationName);
-
-int wasdKeys[4] =
-{
-  (int)Keyboard::RZKEY::RZKEY_W,
-  (int)Keyboard::RZKEY::RZKEY_A,
-  (int)Keyboard::RZKEY::RZKEY_S,
-  (int)Keyboard::RZKEY::RZKEY_D,
-};
-for (int i = 0; i < frameCount; ++i)
-{
-  _gMethodSetKeysColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
-}
-_gMethodPlayAnimationName(animationName, false);
-```
-
-<a name="PluginSetKeysNonZeroColorName"></a>
-**PluginSetKeysNonZeroColorName**
-
-Set an array of animation keys to a static color for the given frame if the existing color is not already black.
-
-```C++
-EXPORT_API void PluginSetKeysNonZeroColorName(const char* path, int frameId,
-  const int* rzkeys, int keyCount, int color);
-```
-
-Usage:
-
-```C++
-const char* animationName = "Blank_Keyboard.chroma";
-int frameCount = _gMethodGetFrameCountName(animationName);
-
-int wasdKeys[4] =
-{
-  (int)Keyboard::RZKEY::RZKEY_W,
-  (int)Keyboard::RZKEY::RZKEY_A,
-  (int)Keyboard::RZKEY::RZKEY_S,
-  (int)Keyboard::RZKEY::RZKEY_D,
-};
-for (int i = 0; i < frameCount; ++i)
-{
-  _gMethodSetKeysNonZeroColorName(animationName, i, wasdKeys, size(wasdKeys), 0xFF);
-}
-_gMethodPlayAnimationName(animationName, false);
-```
-
-<a name="file-format"></a>
-
-## File Format
-
-**Version: (int)**
-
-**EChromaSDKDeviceTypeEnum: (byte)**
-
-```c++
-enum EChromaSDKDeviceTypeEnum
-{
-    DE_1D = 0,
-    DE_2D,
-};
-```
-
-* Depending on the `EChromaSDKDeviceTypeEnum`, the file will use either the `1D` or `2D` file format.
-
-**1D File Format**
-
-**EChromaSDKDevice1DEnum: (byte)**
-
-```c++
-enum EChromaSDKDevice1DEnum
-{
-    DE_ChromaLink = 0,
-    DE_Headset,
-    DE_Mousepad,
-};
-```
-
-**Frame Count: (unsigned int)**
-
-**Frames: (FChromaSDKColorFrame1D[])**
-
-```c++
-struct FChromaSDKColorFrame1D
-{
-    float Duration;
-    std::vector<COLORREF> Colors;
-};
-```
-
-**Duration: (float)**
-
-**Color Array: (int[])**
-
-**2D File Format**
-
-**EChromaSDKDevice2DEnum: (byte)**
-
-```c++
-enum EChromaSDKDevice2DEnum
-{
-    DE_Keyboard = 0,
-    DE_Keypad,
-    DE_Mouse,
-};
-```
-
-**Frame Count: (unsigned int)**
-
-**Frames: (FChromaSDKColorFrame2D[])**
-
-```c++
-struct FChromaSDKColors
-{
-    std::vector<COLORREF> Colors;
-};
-```
-
-```c++
-struct FChromaSDKColorFrame2D
-{
-    float Duration;
-    std::vector<FChromaSDKColors> Colors;
-};
-```
-
-**Duration: (float)**
-
-**Color Array: (int[][])**

@@ -1109,64 +1109,6 @@ void UnitTests::UnitTestsOpenAnimationFromMemory()
 	ChromaLogger::wprintf(L"UnitTestsOpenAnimationFromMemory: Complete!\r\n");
 }
 
-void UnitTests::UnitTestsIdleAnimation()
-{
-	const wchar_t* randomAnimation = L"Animations/Random_Keyboard.chroma";
-	const wchar_t* idleAnimation = L"Animations/Fire_Keyboard.chroma";
-
-	const int delay = 3000;
-
-	ChromaLogger::wprintf(L"Idle is [ON].\r\n");
-	ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, true);
-
-	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
-	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
-	ChromaAnimationAPI::SetIdleAnimationName(idleAnimation);
-	
-	ChromaAnimationAPI::CloseAnimationName(randomAnimation);
-	ChromaAnimationAPI::OverrideFrameDurationName(randomAnimation, 0.1f);
-
-	ChromaLogger::wprintf(L"Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	ChromaLogger::wprintf(L"Waiting 3 sec...\r\n");
-	Sleep(delay);
-	ChromaLogger::wprintf(L"\r\n");
-
-	ChromaLogger::wprintf(L"Close idle animation while active...\r\n");
-	ChromaAnimationAPI::CloseAnimationName(idleAnimation);
-	ChromaAnimationAPI::OverrideFrameDurationName(idleAnimation, 0.1f);
-	Sleep(delay);
-	ChromaLogger::wprintf(L"\r\n");
-
-	ChromaLogger::wprintf(L"Set idle animation.\r\n");
-	ChromaAnimationAPI::SetIdleAnimationName(idleAnimation);
-
-	ChromaLogger::wprintf(L"Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	ChromaLogger::wprintf(L"Waiting 3 sec...\r\n");
-	Sleep(delay);
-	ChromaLogger::wprintf(L"\r\n");
-
-	ChromaLogger::wprintf(L"Play random animation.\r\n");
-	ChromaAnimationAPI::PlayAnimationName(randomAnimation, false);
-	ChromaLogger::wprintf(L"Waiting 3 sec...\r\n");
-	Sleep(delay);
-	ChromaLogger::wprintf(L"\r\n");
-
-	ChromaLogger::wprintf(L"Clear all animations with idle [ON].\r\n");
-	ChromaAnimationAPI::ClearAll();
-	ChromaLogger::wprintf(L"Waiting 3 sec...\r\n");
-	Sleep(delay);
-	ChromaLogger::wprintf(L"\r\n");
-
-	ChromaLogger::wprintf(L"Idle is [OFF].\r\n");
-	ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, false);
-	ChromaAnimationAPI::ClearAll();
-	ChromaLogger::wprintf(L"Waiting 3 sec...\r\n");
-	Sleep(delay);
-	ChromaLogger::wprintf(L"\r\n");
-}
-
 void UnitTests::UnitTestsDamage()
 {
 	vector<wstring> damageList;
@@ -2164,6 +2106,322 @@ void UnitTests::UnitTestsGetSetKeyColor()
 	Sleep(1000);
 }
 
+void UnitTests::UnitTestsSetCurrentFrameName()
+{
+	// 10 second animation, animation is white from 60 to 120 frames
+	vector<wstring> deviceCategories =
+	{
+		L"ChromaLink",
+		L"Headset",
+		L"Keyboard",
+		L"Keypad",
+		L"Mouse",
+		L"Mousepad",
+	};
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring animationName = L"Animations/GradientRedWhiteBlue_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), true);
+	}
+
+	printf("Press SPACE to set current frame to 30 (changes to white)...\r\n");
+	printf("Press ESC to end UnitTestsSetCurrentFrameName...\r\n");
+	HandleInput inputSpace = HandleInput(VK_SPACE);
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	while (true)
+	{
+		if (inputSpace.WasReleased(true))
+		{
+			for (int i = 0; i < deviceCategories.size(); ++i)
+			{
+				wstring animationName = L"Animations/GradientRedWhiteBlue_" + deviceCategories[i] + L".chroma";
+				int frameCount = ChromaAnimationAPI::GetFrameCountName(animationName.c_str());
+				ChromaAnimationAPI::SetCurrentFrameName(animationName.c_str(), frameCount / 2);
+			}
+		}
+		if (inputEscape.WasReleased(true))
+		{
+			break;
+		}
+		Sleep(1000/30);
+	}
+}
+
+void UnitTests::UnitTestsIdleAnimation()
+{
+	// make an animation to hold a static color
+	vector<wstring> deviceCategories =
+	{
+		L"ChromaLink",
+		L"Headset",
+		L"Keyboard",
+		L"Keypad",
+		L"Mouse",
+		L"Mousepad",
+	};
+	
+	// enable idle animations
+	ChromaAnimationAPI::UseIdleAnimations(true);
+
+	// create idle animations, 1 frame each with no caching
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring blankAnimation = L"Animations/Blank_" + deviceCategories[i] + L".chroma";
+		wstring idleAnimation = L"Animations/Idle_" + deviceCategories[i] + L".chroma";
+		// create the idle animation
+		ChromaAnimationAPI::CopyAnimationName(blankAnimation.c_str(), idleAnimation.c_str());
+		// set initial color
+		ChromaAnimationAPI::MakeBlankFramesRGBName(idleAnimation.c_str(), 1, 0.033f, 255, 0, 0);
+		// don't cache frames
+		ChromaAnimationAPI::UsePreloadingName(idleAnimation.c_str(), false);
+		// turn on the idle animation
+		ChromaAnimationAPI::SetIdleAnimationName(idleAnimation.c_str());
+	}
+
+	printf("Press C to pick a random static idle color...\r\n");
+	printf("Press SPACE to play an animation once and then fallback to idle...\r\n");
+	printf("Press ESC to end UnitTestsIdleAnimation...\r\n");
+	HandleInput inputC = HandleInput('C');
+	HandleInput inputSpace = HandleInput(VK_SPACE);
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	while (true)
+	{
+		// assign a random color to the idle animation
+		if (inputC.WasReleased(true))
+		{
+			int color = ChromaAnimationAPI::GetRGB(rand() % 256, rand() % 256, rand() % 256);
+			for (int i = 0; i < deviceCategories.size(); ++i)
+			{
+				wstring animationName = L"Animations/Idle_" + deviceCategories[i] + L".chroma";
+				// play animation once
+				ChromaAnimationAPI::FillColorAllFramesName(animationName.c_str(), color);
+			}
+		}
+		// play the misc animation
+		if (inputSpace.WasReleased(true))
+		{
+			for (int i = 0; i < deviceCategories.size(); ++i)
+			{
+				wstring animationName = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+				// play animation once
+				ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), false);
+			}
+		}
+		// exit the unit test
+		if (inputEscape.WasReleased(true))
+		{
+			break;
+		}
+		Sleep(1000 / 30);
+	}	
+}
+
+void UnitTests::UnitTestsPauseAnimations()
+{
+	bool loop = true;
+	vector<wstring> deviceCategories =
+	{
+		L"ChromaLink",
+		L"Headset",
+		L"Keyboard",
+		L"Keypad",
+		L"Mouse",
+		L"Mousepad",
+	};
+
+	printf("Play animations with looping\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::PlayAnimationName(miscAnimation.c_str(), loop);	
+	}
+
+	printf("let animations loop for a sec...\r\n");
+	Sleep(1000);
+
+	printf("Are animations paused after playing (Should be no)?\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Pause animations.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::PauseAnimationName(miscAnimation.c_str());
+	}
+
+	printf("Are animations paused after pausing? (Should be yes)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Resume animations.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::ResumeAnimationName(miscAnimation.c_str(), loop);
+	}
+
+	printf("Are animations paused after resuming? (Should be no)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Stop animations.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::StopAnimationName(miscAnimation.c_str());
+	}
+
+	printf("Are animations paused after stopping? (Should be no)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Play animations.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::PlayAnimationName(miscAnimation.c_str(), loop);
+	}
+
+	printf("Are animations paused after playing? (Should be no)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+
+	printf("Play animation frame.\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		int frameCount = ChromaAnimationAPI::GetFrameCountName(miscAnimation.c_str());
+		int frameId = frameCount / 3;
+		ChromaAnimationAPI::PlayAnimationFrameName(miscAnimation.c_str(), frameId, loop);
+		printf("Animation: %s play frame=%d\r\n", miscAnimation.c_str(), frameId);
+	}
+
+	printf("Are animations paused after playing? (Should be no)\r\n");
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+		bool isPaused = ChromaAnimationAPI::IsAnimationPausedName(miscAnimation.c_str());
+		int currentFrame = ChromaAnimationAPI::GetCurrentFrameName(miscAnimation.c_str());
+		if (isPaused)
+		{
+			printf("Animation: %s is paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+		else
+		{
+			printf("Animation: %s is not paused frame=%d\r\n", miscAnimation.c_str(), currentFrame);
+		}
+	}
+}
+
+void UnitTests::UnitTestsIsActive()
+{
+	BOOL active;
+	RZRESULT result = ChromaAnimationAPI::CoreIsActive(active);
+	printf("CoreIsActive returned=%d active=%d\r\n", result, active);
+}
+
+void UnitTests::UnitTestsIsConnected()
+{
+	DEVICE_INFO_TYPE devices[] =
+	{
+		DEVICE_INFO_TYPE::DEVICE_KEYBOARD, // 0
+		DEVICE_INFO_TYPE::DEVICE_MOUSE, // 1
+		DEVICE_INFO_TYPE::DEVICE_HEADSET, // 2
+		DEVICE_INFO_TYPE::DEVICE_MOUSEPAD, // 3
+		DEVICE_INFO_TYPE::DEVICE_KEYPAD, // 4
+		DEVICE_INFO_TYPE::DEVICE_SYSTEM, // 5
+		DEVICE_INFO_TYPE::DEVICE_SPEAKERS, // 6
+		DEVICE_INFO_TYPE::DEVICE_CHROMALINK, // 7
+		DEVICE_INFO_TYPE::DEVICE_ALL, // 8
+	};
+	const int size = 9;
+	for (int index = 0; index < size; ++index)
+	{
+		DEVICE_INFO_TYPE deviceInfo = { devices[index] };
+		RZRESULT result = ChromaAnimationAPI::CoreIsConnected(deviceInfo);
+		printf("CoreIsConnected device=%d returned=%d connected=%d\r\n", index, result, deviceInfo.Connected);
+	}
+}
+
+void UnitTests::UnitTestsSetEventName()
+{
+	RZRESULT result = ChromaAnimationAPI::CoreSetEventName(_T("Jump_2s"));
+	printf("CoreSetEventName returned=%d\r\n", result);
+
+	const wchar_t* RANDOM_KEYBOARD = L"Animations/Random_Keyboard.chroma";
+	printf("Playing random animation.\r\n");
+	ChromaAnimationAPI::PlayAnimationName(RANDOM_KEYBOARD, false);
+	Sleep(1000);
+
+	ChromaAnimationAPI::UseForwardChromaEvents(false);
+
+	const wchar_t* FIRE_KEYBOARD = L"Animations/Fire_Keyboard.chroma";
+	printf("Playing fire animation.\r\n");
+	ChromaAnimationAPI::PlayAnimationName(FIRE_KEYBOARD, false);
+	Sleep(1000);
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::wprintf(L"Start of unit tests...\r\n");
@@ -2200,7 +2458,6 @@ void UnitTests::Run()
 	//UnitTestsMeasurePreloadingWithCaching();
 	//UnitTestsMeasureGetAnimation();
 	//UnitTestsMeasureGetAnimationWithCaching();
-	//UnitTestsIdleAnimation();
 	//UnitTestsFrameValidation();
 
 	//UnitTestsCopyKeysColorAllFramesName();
@@ -2214,7 +2471,15 @@ void UnitTests::Run()
 
 	//UnitTestsOpenClose();
 
-	UnitTestsGetSetKeyColor();
+	//UnitTestsGetSetKeyColor();
+
+	//UnitTestsSetCurrentFrameName();
+	//UnitTestsIdleAnimation();
+	//UnitTestsPauseAnimations();
+
+	UnitTestsIsActive();
+	UnitTestsIsConnected();
+	UnitTestsSetEventName();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);

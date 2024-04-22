@@ -664,11 +664,23 @@ extern "C"
 	/*
 		Direct access to low level API.
 	*/
+	EXPORT_API RZRESULT PluginCoreIsActive(BOOL& Active);
+	/*
+		Direct access to low level API.
+	*/
+	EXPORT_API RZRESULT PluginCoreIsConnected(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+	/*
+		Direct access to low level API.
+	*/
 	EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
 	/*
 		Direct access to low level API.
 	*/
 	EXPORT_API RZRESULT PluginCoreSetEffect(RZEFFECTID EffectId);
+	/*
+		Direct access to low level API.
+	*/
+	EXPORT_API RZRESULT PluginCoreSetEventName(LPCTSTR Name);
 	/*
 		Begin broadcasting Chroma RGB data using the stored stream key as the endpoint.
 		Intended for Cloud Gaming Platforms, restore the streaming key when the
@@ -2762,6 +2774,11 @@ extern "C"
 		Returns the animation id upon success. Returns negative one upon failure.
 	*/
 	EXPORT_API int PluginUpdateFrameName(const wchar_t* path, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
+	/*
+		On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName`
+		automatically when `PlayAnimationName` is called.
+	*/
+	EXPORT_API void PluginUseForwardChromaEvents(bool flag);
 	/*
 		When the idle animation flag is true, when no other animations are playing,
 		the idle animation will be used. The idle animation will not be affected
