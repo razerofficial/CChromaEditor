@@ -117,6 +117,8 @@ Win64BuildFolder\CChromaEditorLibrary64.dll
 
 `Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. Chroma effects stream across the Internet to reach your local machine and connected hardware. No extra code is required to add Cloud support. In the case with `NVidia GeForce Now`, the cloud runs the same Epic Games and Steam builds as the desktop version and support Chroma streaming. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
 
+<a name="api-class"></a>
+
 ## API Class
 
 The `ChromaAnimationAPI` class provides a wrapper for the Chroma Editor Library. The wrapper for the API can be found at [CConsoleEditor/ChromaAnimationAPI.h](CConsoleEditor/ChromaAnimationAPI.h) and [CConsoleEditor/ChromaAnimationAPI.cpp](CConsoleEditor/ChromaAnimationAPI.cpp).
