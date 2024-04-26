@@ -101,6 +101,8 @@ public:
 
 	static void UnitTestsSetEventName();
 
+	static void UnitTestsUnicode();
+
 	static void Run();
 
 };

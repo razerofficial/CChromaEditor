@@ -1,4 +1,4 @@
-#include "ChromaAnimationAPI.h"
+﻿#include "ChromaAnimationAPI.h"
 #include "UnitTests.h"
 #include "ChromaLogger.h"
 #include "HandleInput.h"
@@ -1574,7 +1574,7 @@ void UnitTests::UnitTestsFrameValidation()
 void UnitTests::UnitTestsSpecialCharacters()
 {
 	ChromaLogger::wprintf(L"Play animation with special characters in path.\r\n");
-	ChromaAnimationAPI::PlayComposite(L"Animations/Andr�/Message", false);
+	ChromaAnimationAPI::PlayComposite(L"Animations/André/Message", false);
 	Sleep(3000);
 }
 
@@ -1960,7 +1960,7 @@ void UnitTests::UnitTests8x24Keys()
 		case Keyboard::RZKEY::RZKEY_EUR_2:
 			return L"\\ (VK_OEM_102)";
 		case Keyboard::RZKEY::RZKEY_JPN_1:
-			return L"� (0xFF)";
+			return L"¥ (0xFF)";
 		case Keyboard::RZKEY::RZKEY_JPN_2:
 			return L"\\ (0xC1)";
 		case Keyboard::RZKEY::RZKEY_JPN_3:
@@ -2422,6 +2422,14 @@ void UnitTests::UnitTestsSetEventName()
 	Sleep(1000);
 }
 
+void UnitTests::UnitTestsUnicode()
+{
+	const wchar_t* animationName = L"Animations/你好";
+	ChromaLogger::wprintf(L"Playing %s animations.\r\n", animationName);
+	ChromaAnimationAPI::PlayComposite(animationName, true);
+	Sleep(1000);
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::wprintf(L"Start of unit tests...\r\n");
@@ -2477,9 +2485,11 @@ void UnitTests::Run()
 	//UnitTestsIdleAnimation();
 	//UnitTestsPauseAnimations();
 
-	UnitTestsIsActive();
-	UnitTestsIsConnected();
-	UnitTestsSetEventName();
+	//UnitTestsIsActive();
+	//UnitTestsIsConnected();
+	//UnitTestsSetEventName();
+
+	UnitTestsUnicode();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
