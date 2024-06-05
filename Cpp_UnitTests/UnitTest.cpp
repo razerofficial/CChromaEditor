@@ -2229,12 +2229,15 @@ void UnitTests::UnitTestsIdleAnimation2()
 	for (int i = 0; i < deviceCategories.size(); ++i)
 	{
 		string idleAnimation = "Animations/Gradient1_" + deviceCategories[i] + ".chroma";
+		// print animation duration
+		PrintAnimationDuration(idleAnimation.c_str());
 		// turn on the idle animation
 		ChromaAnimationAPI::SetIdleAnimationName(idleAnimation.c_str());
 	}
 
-	printf("Press A to play play animation without looping and then fallback to idle animation...\r\n");
 	HandleInput inputA = HandleInput('A');
+
+	printf("Press A to play play animation without looping and then fallback to idle animation...\r\n");
 	while (true)
 	{
 		if (inputA.WasReleased(true))
@@ -2242,12 +2245,15 @@ void UnitTests::UnitTestsIdleAnimation2()
 			printf("Playing Misc animation without looping...\r\n");
 			break;
 		}
+		Sleep(1000 / 30);
 	}
 
 	// play animation without looping and then fallback to Idle #2
 	for (int i = 0; i < deviceCategories.size(); ++i)
 	{
 		string animationName = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		// print animation duration
+		PrintAnimationDuration(animationName.c_str());
 		// play animation once
 		ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), false);
 	}
@@ -2258,9 +2264,24 @@ void UnitTests::UnitTestsIdleAnimation2()
 	for (int i = 0; i < deviceCategories.size(); ++i)
 	{
 		string idleAnimation2 = "Animations/Gradient2_" + deviceCategories[i] + ".chroma";
+		// print animation duration
+		PrintAnimationDuration(idleAnimation2.c_str());
 		// turn on the idle2 animation
 		ChromaAnimationAPI::SetIdleAnimationName(idleAnimation2.c_str());
 	}
+}
+
+void UnitTests::PrintAnimationDuration(const char* path)
+{
+	float totalDuration = 0;
+	int frameCount = ChromaAnimationAPI::GetFrameCountName(path);
+	for (int i = 0; i < frameCount; ++i)
+	{
+		float duration;
+		ChromaAnimationAPI::GetFrameName(path, i, &duration, nullptr, 0, nullptr, 0);
+		totalDuration += duration;
+	}
+	ChromaLogger::printf("Animation %s duration=%f seconds.\r\n", path, totalDuration);
 }
 
 void UnitTests::UnitTestsPauseAnimations()

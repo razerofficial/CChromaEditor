@@ -103,6 +103,8 @@ public:
 
 	static void UnitTestsIdleAnimation2();
 
+	static void PrintAnimationDuration(const char* path);
+
 	static void Run();
 
 };
