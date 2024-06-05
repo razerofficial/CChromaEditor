@@ -2207,6 +2207,62 @@ void UnitTests::UnitTestsIdleAnimation()
 	}	
 }
 
+void UnitTests::UnitTestsIdleAnimation2()
+{
+	// make an animation to hold a static color
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+
+	// enable idle animations
+	ChromaAnimationAPI::UseIdleAnimations(true);
+
+	printf("Set Gradient1 animation as the idle animation...\r\n");
+
+	// set first idle animation
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string idleAnimation = "Animations/Gradient1_" + deviceCategories[i] + ".chroma";
+		// turn on the idle animation
+		ChromaAnimationAPI::SetIdleAnimationName(idleAnimation.c_str());
+	}
+
+	printf("Press A to play play animation without looping and then fallback to idle animation...\r\n");
+	HandleInput inputA = HandleInput('A');
+	while (true)
+	{
+		if (inputA.WasReleased(true))
+		{
+			printf("Playing Misc animation without looping...\r\n");
+			break;
+		}
+	}
+
+	// play animation without looping and then fallback to Idle #2
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string animationName = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		// play animation once
+		ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), false);
+	}
+
+	printf("Set Gradient2 animation as the idle animation...\r\n");
+
+	// set second idle animation
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string idleAnimation2 = "Animations/Gradient2_" + deviceCategories[i] + ".chroma";
+		// turn on the idle2 animation
+		ChromaAnimationAPI::SetIdleAnimationName(idleAnimation2.c_str());
+	}
+}
+
 void UnitTests::UnitTestsPauseAnimations()
 {
 	bool loop = true;
@@ -2465,12 +2521,14 @@ void UnitTests::Run()
 	//UnitTestsGetSetKeyColor();
 
 	//UnitTestsSetCurrentFrameName();
-	//UnitTestsIdleAnimation();
-	UnitTestsPauseAnimations();
+	//UnitTestsPauseAnimations();
 
 	//UnitTestsIsActive();
 	//UnitTestsIsConnected();
 	//UnitTestsSetEventName();
+
+	//UnitTestsIdleAnimation();
+	UnitTestsIdleAnimation2();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
