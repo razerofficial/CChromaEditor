@@ -1346,7 +1346,7 @@ extern "C"
 		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 		Returns the animation id upon success. Returns negative one upon failure.
 	*/
-	EXPORT_API int PluginGetFrame(int animationId, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength);
+	EXPORT_API int PluginGetFrame(int animationId, int frameId, float* duration, int* colors, int length, int* keys, int keysLength);
 	/*
 		Returns the frame count of a `Chroma` animation upon success. Returns negative
 		one upon failure.
@@ -1362,6 +1362,16 @@ extern "C"
 	*/
 	EXPORT_API double PluginGetFrameCountNameD(const char* path);
 	/*
+		Returns the duration of an animation frame in seconds upon success. Returns
+		zero upon failure.
+	*/
+	EXPORT_API float PluginGetFrameDuration(int animationId, int frameId);
+	/*
+		Returns the duration of an animation frame in seconds upon success. Returns
+		zero upon failure.
+	*/
+	EXPORT_API float PluginGetFrameDurationName(const char* path, int frameId);
+	/*
 		Get the frame colors and duration (in seconds) for a `Chroma` animation
 		referenced by name. The `color` is expected to be an array of the expected
 		dimensions for the `deviceType/device`. The `length` parameter is the size
@@ -1372,7 +1382,7 @@ extern "C"
 		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 		Returns the animation id upon success. Returns negative one upon failure.
 	*/
-	EXPORT_API int PluginGetFrameName(const char* path, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength);
+	EXPORT_API int PluginGetFrameName(const char* path, int frameId, float* duration, int* colors, int length, int* keys, int keysLength);
 	/*
 		Get the color of an animation key for the given frame referenced by id.
 	*/
@@ -1442,6 +1452,16 @@ extern "C"
 		D suffix for limited data types.
 	*/
 	EXPORT_API double PluginGetRGBD(double red, double green, double blue);
+	/*
+		Returns the total duration of an animation in seconds upon success. Returns
+		zero upon failure.
+	*/
+	EXPORT_API float PluginGetTotalDuration(int animationId);
+	/*
+		Returns the total duration of an animation in seconds upon success. Returns
+		zero upon failure.
+	*/
+	EXPORT_API float PluginGetTotalDurationName(const char* path);
 	/*
 		Check if the animation has loop enabled referenced by id.
 	*/
@@ -2061,19 +2081,19 @@ extern "C"
 	*/
 	EXPORT_API double PluginPlayCompositeD(const char* name, double loop);
 	/*
-		Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`.
+		Displays the `Chroma` animation frame on `Chroma` hardware given the `frameId`.
 		Returns the animation id upon success. Returns negative one upon failure.
 	*/
-	EXPORT_API int PluginPreviewFrame(int animationId, int frameIndex);
+	EXPORT_API int PluginPreviewFrame(int animationId, int frameId);
 	/*
 		D suffix for limited data types.
 	*/
-	EXPORT_API double PluginPreviewFrameD(double animationId, double frameIndex);
+	EXPORT_API double PluginPreviewFrameD(double animationId, double frameId);
 	/*
-		Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`.
+		Displays the `Chroma` animation frame on `Chroma` hardware given the `frameId`.
 		Animaton is referenced by name.
 	*/
-	EXPORT_API void PluginPreviewFrameName(const char* path, int frameIndex);
+	EXPORT_API void PluginPreviewFrameName(const char* path, int frameId);
 	/*
 		Reduce the frames of the animation by removing every nth element. Animation
 		is referenced by id.
@@ -2752,7 +2772,7 @@ extern "C"
 	*/
 	EXPORT_API void PluginUnloadLibraryStreamingPlugin();
 	/*
-		Updates the `frameIndex` of the `Chroma` animation referenced by id and
+		Updates the `frameId` of the `Chroma` animation referenced by id and
 		sets the `duration` (in seconds). The `color` is expected to be an array
 		of the dimensions for the `deviceType/device`. The `length` parameter is
 		the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size
@@ -2761,9 +2781,9 @@ extern "C"
 		and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
 		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 	*/
-	EXPORT_API int PluginUpdateFrame(int animationId, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
+	EXPORT_API int PluginUpdateFrame(int animationId, int frameId, float duration, int* colors, int length, int* keys, int keysLength);
 	/*
-		Update the `frameIndex` of the `Chroma` animation referenced by name and
+		Update the `frameId` of the `Chroma` animation referenced by name and
 		sets the `duration` (in seconds). The `color` is expected to be an array
 		of the dimensions for the `deviceType/device`. The `length` parameter is
 		the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size
@@ -2773,7 +2793,7 @@ extern "C"
 		EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 		Returns the animation id upon success. Returns negative one upon failure.
 	*/
-	EXPORT_API int PluginUpdateFrameName(const char* path, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength);
+	EXPORT_API int PluginUpdateFrameName(const char* path, int frameId, float duration, int* colors, int length, int* keys, int keysLength);
 	/*
 		On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName`
 		automatically when `PlayAnimationName` is called.

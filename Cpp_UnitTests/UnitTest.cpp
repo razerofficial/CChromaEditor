@@ -2493,6 +2493,48 @@ void UnitTests::UnitTestsSetEventName()
 	Sleep(1000);
 }
 
+void UnitTests::UnitTestsFrameDuration()
+{
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+
+	int frameId = 0;
+
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string path = "Animations/GradientRedWhiteBlue_" + deviceCategories[i] + ".chroma";
+		float duration = ChromaAnimationAPI::GetFrameDurationName(path.c_str(), frameId);
+		ChromaLogger::printf("Animation %s frameId=%d duration=%f seconds.\r\n", path.c_str(), frameId, duration);
+	}
+}
+
+void UnitTests::UnitTestsTotalDuration()
+{
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string path = "Animations/Gradient1_" + deviceCategories[i] + ".chroma";
+		float duration = ChromaAnimationAPI::GetTotalDurationName(path.c_str());
+		ChromaLogger::printf("Animation %s duration=%f seconds.\r\n", path.c_str(), duration);
+	}
+}
+
 void UnitTests::Run()
 {
 	printf("Start of unit tests...\r\n");
@@ -2552,7 +2594,10 @@ void UnitTests::Run()
 	//UnitTestsSetEventName();
 
 	//UnitTestsIdleAnimation();
-	UnitTestsIdleAnimation2();
+	//UnitTestsIdleAnimation2();
+
+	UnitTestsFrameDuration();
+	UnitTestsTotalDuration();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
