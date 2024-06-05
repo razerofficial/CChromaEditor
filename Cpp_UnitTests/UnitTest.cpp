@@ -74,6 +74,9 @@ RZRESULT UnitTests::UnitTestsInitSDK()
 
 void UnitTests::UnitTestsUninit()
 {
+	// disable idle animations
+	ChromaAnimationAPI::UseIdleAnimations(false);
+
 	ChromaAnimationAPI::StopAll();
 
 	ChromaAnimationAPI::CloseAll();
