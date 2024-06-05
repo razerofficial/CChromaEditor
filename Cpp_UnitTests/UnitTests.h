@@ -58,8 +58,6 @@ public:
 
 	static void UnitTestsDuplicateFirstFrame();
 
-	static void UnitTestsIdleAnimation();
-
 	static void UnitTestsDamage();
 
 	static int OpenAndPlay(const wchar_t* path);
@@ -102,6 +100,10 @@ public:
 	static void UnitTestsSetEventName();
 
 	static void UnitTestsUnicode();
+
+	static void UnitTestsIdleAnimation();
+
+	static void UnitTestsIdleAnimation2();
 
 	static void Run();
 
