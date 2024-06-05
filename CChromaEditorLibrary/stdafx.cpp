@@ -12378,4 +12378,62 @@ extern "C"
 		PluginSubtractThresholdColorsMinMaxAllFramesRGBName(path, (int)minThreshold, (int)minRed, (int)minGreen, (int)minBlue, (int)maxThreshold, (int)maxRed, (int)maxGreen, (int)maxBlue);
 		return 0;
 	}
+
+	EXPORT_API float PluginGetFrameDuration(int animationId, int frameId)
+	{
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError(L"PluginGetFrameDuration: Animation is null! id=%d\r\n", animationId);
+				return 0;
+			}
+			int frameCount = PluginGetFrameCount(animationId);
+			if (frameId >= 0 && frameId < frameCount)
+			{
+				return animation->GetDuration(frameId);
+			}
+		}
+		return 0;
+	}
+	EXPORT_API float PluginGetFrameDurationName(const wchar_t* path, int frameId)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			ChromaLogger::fwprintf(stderr, L"PluginGetFrameDurationName: Animation not found! %s\r\n", path);
+			return 0;
+		}
+		return PluginGetFrameDuration(animationId, frameId);
+	}
+	EXPORT_API float PluginGetTotalDuration(int animationId)
+	{
+		if (_gAnimations.find(animationId) != _gAnimations.end())
+		{
+			AnimationBase* animation = _gAnimations[animationId];
+			if (animation == nullptr)
+			{
+				LogError(L"PluginGetTotalDuration: Animation is null! id=%d\r\n", animationId);
+				return 0;
+			}
+			int frameCount = PluginGetFrameCount(animationId);
+			float duration = 0;
+			for (int index = 0; index < frameCount; ++index)
+			{
+				duration += animation->GetDuration(index);
+			}
+			return duration;
+		}
+	}
+	EXPORT_API float PluginGetTotalDurationName(const wchar_t* path)
+	{
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			ChromaLogger::fwprintf(stderr, L"PluginGetTotalDurationName: Animation not found! %s\r\n", path);
+			return 0;
+		}
+		return PluginGetTotalDuration(animationId);
+	}
 }

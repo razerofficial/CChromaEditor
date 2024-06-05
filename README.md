@@ -888,6 +888,8 @@ Methods:
 * [PluginGetFrameCount](#PluginGetFrameCount)
 * [PluginGetFrameCountName](#PluginGetFrameCountName)
 * [PluginGetFrameCountNameD](#PluginGetFrameCountNameD)
+* [PluginGetFrameDuration](#PluginGetFrameDuration)
+* [PluginGetFrameDurationName](#PluginGetFrameDurationName)
 * [PluginGetFrameName](#PluginGetFrameName)
 * [PluginGetKeyColor](#PluginGetKeyColor)
 * [PluginGetKeyColorD](#PluginGetKeyColorD)
@@ -904,6 +906,8 @@ Methods:
 * [PluginGetPlayingAnimationId](#PluginGetPlayingAnimationId)
 * [PluginGetRGB](#PluginGetRGB)
 * [PluginGetRGBD](#PluginGetRGBD)
+* [PluginGetTotalDuration](#PluginGetTotalDuration)
+* [PluginGetTotalDurationName](#PluginGetTotalDurationName)
 * [PluginHasAnimationLoop](#PluginHasAnimationLoop)
 * [PluginHasAnimationLoopName](#PluginHasAnimationLoopName)
 * [PluginHasAnimationLoopNameD](#PluginHasAnimationLoopNameD)
@@ -5464,13 +5468,13 @@ Returns the animation id upon success. Returns negative one upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGetFrame(
-	int animationId, int frameIndex, float* duration, int* colors, int length,
-	int* keys, int keysLength);
+	int animationId, int frameId, float* duration, int* colors, int length, int* keys,
+	int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::GetFrame(
-	int animationId, int frameIndex, float* duration, int* colors, int length,
-	int* keys, int keysLength);
+	int animationId, int frameId, float* duration, int* colors, int length, int* keys,
+	int keysLength);
 ```
 
 ---
@@ -5518,6 +5522,40 @@ double result = ChromaAnimationAPI::GetFrameCountNameD(const wchar_t* path);
 ```
 
 ---
+<a name="PluginGetFrameDuration"></a>
+**PluginGetFrameDuration**
+
+Returns the duration of an animation frame in seconds upon success. Returns 
+zero upon failure.
+
+```C++
+// DLL Interface
+EXPORT_API float PluginGetFrameDuration(
+	int animationId, int frameId);
+
+// Class Plugin
+float result = ChromaAnimationAPI::GetFrameDuration(
+	int animationId, int frameId);
+```
+
+---
+<a name="PluginGetFrameDurationName"></a>
+**PluginGetFrameDurationName**
+
+Returns the duration of an animation frame in seconds upon success. Returns 
+zero upon failure.
+
+```C++
+// DLL Interface
+EXPORT_API float PluginGetFrameDurationName(
+	const wchar_t* path, int frameId);
+
+// Class Plugin
+float result = ChromaAnimationAPI::GetFrameDurationName(
+	const wchar_t* path, int frameId);
+```
+
+---
 <a name="PluginGetFrameName"></a>
 **PluginGetFrameName**
 
@@ -5534,12 +5572,12 @@ Returns the animation id upon success. Returns negative one upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginGetFrameName(
-	const wchar_t* path, int frameIndex, float* duration, int* colors, int length,
+	const wchar_t* path, int frameId, float* duration, int* colors, int length,
 	int* keys, int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::GetFrameName(
-	const wchar_t* path, int frameIndex, float* duration, int* colors, int length,
+	const wchar_t* path, int frameId, float* duration, int* colors, int length,
 	int* keys, int keysLength);
 ```
 
@@ -5770,6 +5808,36 @@ EXPORT_API double PluginGetRGBD(
 // Class Plugin
 double result = ChromaAnimationAPI::GetRGBD(
 	double red, double green, double blue);
+```
+
+---
+<a name="PluginGetTotalDuration"></a>
+**PluginGetTotalDuration**
+
+Returns the total duration of an animation in seconds upon success. Returns 
+zero upon failure.
+
+```C++
+// DLL Interface
+EXPORT_API float PluginGetTotalDuration(int animationId);
+
+// Class Plugin
+float result = ChromaAnimationAPI::GetTotalDuration(int animationId);
+```
+
+---
+<a name="PluginGetTotalDurationName"></a>
+**PluginGetTotalDurationName**
+
+Returns the total duration of an animation in seconds upon success. Returns 
+zero upon failure.
+
+```C++
+// DLL Interface
+EXPORT_API float PluginGetTotalDurationName(const wchar_t* path);
+
+// Class Plugin
+float result = ChromaAnimationAPI::GetTotalDurationName(const wchar_t* path);
 ```
 
 ---
@@ -7818,17 +7886,17 @@ double result = ChromaAnimationAPI::PlayCompositeD(
 <a name="PluginPreviewFrame"></a>
 **PluginPreviewFrame**
 
-Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`. 
+Displays the `Chroma` animation frame on `Chroma` hardware given the `frameId`. 
 Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
 EXPORT_API int PluginPreviewFrame(
-	int animationId, int frameIndex);
+	int animationId, int frameId);
 
 // Class Plugin
 int result = ChromaAnimationAPI::PreviewFrame(
-	int animationId, int frameIndex);
+	int animationId, int frameId);
 ```
 
 ---
@@ -7840,28 +7908,28 @@ D suffix for limited data types.
 ```C++
 // DLL Interface
 EXPORT_API double PluginPreviewFrameD(
-	double animationId, double frameIndex);
+	double animationId, double frameId);
 
 // Class Plugin
 double result = ChromaAnimationAPI::PreviewFrameD(
-	double animationId, double frameIndex);
+	double animationId, double frameId);
 ```
 
 ---
 <a name="PluginPreviewFrameName"></a>
 **PluginPreviewFrameName**
 
-Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`. 
+Displays the `Chroma` animation frame on `Chroma` hardware given the `frameId`. 
 Animaton is referenced by name.
 
 ```C++
 // DLL Interface
 EXPORT_API void PluginPreviewFrameName(
-	const wchar_t* path, int frameIndex);
+	const wchar_t* path, int frameId);
 
 // Class Plugin
 ChromaAnimationAPI::PreviewFrameName(
-	const wchar_t* path, int frameIndex);
+	const wchar_t* path, int frameId);
 ```
 
 ---
@@ -10245,10 +10313,10 @@ ChromaAnimationAPI::UnloadLibraryStreamingPlugin();
 <a name="PluginUpdateFrame"></a>
 **PluginUpdateFrame**
 
-Updates the `frameIndex` of the `Chroma` animation referenced by id and 
-sets the `duration` (in seconds). The `color` is expected to be an array 
-of the dimensions for the `deviceType/device`. The `length` parameter is 
-the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size 
+Updates the `frameId` of the `Chroma` animation referenced by id and sets 
+the `duration` (in seconds). The `color` is expected to be an array of 
+the dimensions for the `deviceType/device`. The `length` parameter is the 
+size of the `color` array. For `EChromaSDKDevice1DEnum` the array size 
 should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should 
 be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
 and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
@@ -10257,23 +10325,23 @@ EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 ```C++
 // DLL Interface
 EXPORT_API int PluginUpdateFrame(
-	int animationId, int frameIndex, float duration, int* colors, int length,
-	int* keys, int keysLength);
+	int animationId, int frameId, float duration, int* colors, int length, int* keys,
+	int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::UpdateFrame(
-	int animationId, int frameIndex, float duration, int* colors, int length,
-	int* keys, int keysLength);
+	int animationId, int frameId, float duration, int* colors, int length, int* keys,
+	int keysLength);
 ```
 
 ---
 <a name="PluginUpdateFrameName"></a>
 **PluginUpdateFrameName**
 
-Update the `frameIndex` of the `Chroma` animation referenced by name and 
-sets the `duration` (in seconds). The `color` is expected to be an array 
-of the dimensions for the `deviceType/device`. The `length` parameter is 
-the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size 
+Update the `frameId` of the `Chroma` animation referenced by name and sets 
+the `duration` (in seconds). The `color` is expected to be an array of 
+the dimensions for the `deviceType/device`. The `length` parameter is the 
+size of the `color` array. For `EChromaSDKDevice1DEnum` the array size 
 should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should 
 be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
 and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
@@ -10283,12 +10351,12 @@ Returns the animation id upon success. Returns negative one upon failure.
 ```C++
 // DLL Interface
 EXPORT_API int PluginUpdateFrameName(
-	const wchar_t* path, int frameIndex, float duration, int* colors, int length,
+	const wchar_t* path, int frameId, float duration, int* colors, int length,
 	int* keys, int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::UpdateFrameName(
-	const wchar_t* path, int frameIndex, float duration, int* colors, int length,
+	const wchar_t* path, int frameId, float duration, int* colors, int length,
 	int* keys, int keysLength);
 ```
 

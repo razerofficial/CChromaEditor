@@ -107,6 +107,10 @@ public:
 
 	static void PrintAnimationDuration(const wchar_t* path);
 
+	static void UnitTestsFrameDuration();
+
+	static void UnitTestsTotalDuration();
+
 	static void Run();
 
 };
