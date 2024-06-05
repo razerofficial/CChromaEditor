@@ -2562,7 +2562,6 @@ void UnitTests::Run()
 	//UnitTestsGetSetKeyColor();
 
 	//UnitTestsSetCurrentFrameName();
-	//UnitTestsIdleAnimation();
 	//UnitTestsPauseAnimations();
 
 	//UnitTestsIsActive();
@@ -2571,6 +2570,7 @@ void UnitTests::Run()
 
 	//UnitTestsUnicode();
 
+	//UnitTestsIdleAnimation();
 	UnitTestsIdleAnimation2();
 
 	printf("Press Esc to end unit tests...\r\n");
