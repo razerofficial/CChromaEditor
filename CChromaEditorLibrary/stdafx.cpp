@@ -12428,6 +12428,7 @@ extern "C"
 			}
 			return duration;
 		}
+		return 0;
 	}
 	EXPORT_API float PluginGetTotalDurationName(const char* path)
 	{
