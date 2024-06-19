@@ -2380,6 +2380,68 @@ void UnitTests::UnitTestsIdleAnimation4()
 	ChromaAnimationAPI::SetStaticColorAll(ChromaAnimationAPI::GetRGB(0, 255, 255));
 }
 
+void UnitTests::UnitTestsIdleAnimation5()
+{
+	vector<wstring> deviceCategories =
+	{
+		L"ChromaLink",
+		L"Headset",
+		L"Keyboard",
+		L"Keypad",
+		L"Mouse",
+		L"Mousepad",
+	};
+
+	// Set an idle animation
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring idleAnimation = L"Animations/Gradient1_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::SetIdleAnimationName(idleAnimation.c_str());
+	}
+
+	// Run repeat tests
+	for (int test = 0; test < 1000; ++test)
+	{
+		printf("Playing animations\r\n");
+
+		// alternate between idle and playing animations
+		if (rand() % 2)
+		{
+			// Use Idle animations
+			ChromaAnimationAPI::UseIdleAnimations(true);
+		}
+		else
+		{
+			for (int i = 0; i < deviceCategories.size(); ++i)
+			{
+				wstring idleAnimation = L"Animations/Gradient2_" + deviceCategories[i] + L".chroma";
+				ChromaAnimationAPI::PlayAnimationName(idleAnimation.c_str(), true);
+			}
+		}
+
+		// Let animation play so idle and other animation are both playing
+		Sleep(100 + rand() % 5000);
+
+		printf("Stopping animations\r\n");
+
+		// Stop using idle animations
+		ChromaAnimationAPI::UseIdleAnimations(false);
+
+		// Switch to None state
+		ChromaAnimationAPI::ClearAll();
+
+		// Stop all animations
+		ChromaAnimationAPI::StopAll();
+
+		// Set static color to Cyan
+		ChromaAnimationAPI::SetStaticColorAll(ChromaAnimationAPI::GetRGB(0, 255, 255));
+
+		printf("Static color should be set\r\n");
+
+		Sleep(1000);
+	}
+}
+
 void UnitTests::UnitTestsPauseAnimations()
 {
 	bool loop = true;
@@ -2732,7 +2794,8 @@ void UnitTests::Run()
 	//UnitTestsIdleAnimation();
 	//UnitTestsIdleAnimation2();
 	//UnitTestsIdleAnimation3();
-	UnitTestsIdleAnimation4();
+	//UnitTestsIdleAnimation4();
+	UnitTestsIdleAnimation5();
 
 	//UnitTestsFrameDuration();
 	//UnitTestsTotalDuration();

@@ -109,6 +109,8 @@ public:
 	
 	static void UnitTestsIdleAnimation4();
 
+	static void UnitTestsIdleAnimation5();
+
 	static void PrintAnimationDuration(const wchar_t* path);
 
 	static void UnitTestsFrameDuration();
