@@ -111,6 +111,8 @@ public:
 
 	static void UnitTestsTotalDuration();
 
+	static void UnitTestsSetStaticColor();
+
 	static void Run();
 
 };

@@ -46,8 +46,8 @@ RZRESULT UnitTests::UnitTestsInitSDK()
 {
 	APPINFOTYPE appInfo = {};
 
-	_tcscpy_s(appInfo.Title, 256, _T("Razer Chroma Editor"));
-	_tcscpy_s(appInfo.Description, 1024, _T("Standalone Editor for Chroma"));
+	_tcscpy_s(appInfo.Title, 256, _T("Chroma Editor - Unit Tests"));
+	_tcscpy_s(appInfo.Description, 1024, _T("Validate the Chroma SDK"));
 	_tcscpy_s(appInfo.Author.Name, 256, _T("Razer"));
 	_tcscpy_s(appInfo.Author.Contact, 256, _T("https://developer.razer.com/chroma"));
 
@@ -2552,6 +2552,39 @@ void UnitTests::UnitTestsTotalDuration()
 	}
 }
 
+void UnitTests::UnitTestsSetStaticColor()
+{
+	vector<wstring> deviceCategories =
+	{
+		L"ChromaLink",
+		L"Headset",
+		L"Keyboard",
+		L"Keypad",
+		L"Mouse",
+		L"Mousepad",
+	};
+
+	// play a looping animation
+	bool loop = true;
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring path = L"Animations/Gradient1_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::PlayAnimationName(path.c_str(), loop);
+	}
+
+	// Wait for the animation to loop
+	Sleep(15000);
+
+	// Stop all animations
+	ChromaAnimationAPI::StopAll();
+
+	// Switch to None state
+	ChromaAnimationAPI::ClearAll();
+
+	// Set static color to black
+	ChromaAnimationAPI::SetStaticColorAll(ChromaAnimationAPI::GetRGB(0, 0, 0));
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::wprintf(L"Start of unit tests...\r\n");
@@ -2615,8 +2648,10 @@ void UnitTests::Run()
 	//UnitTestsIdleAnimation();
 	//UnitTestsIdleAnimation2();
 
-	UnitTestsFrameDuration();
-	UnitTestsTotalDuration();
+	//UnitTestsFrameDuration();
+	//UnitTestsTotalDuration();
+
+	UnitTestsSetStaticColor();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
