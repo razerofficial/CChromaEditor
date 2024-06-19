@@ -2221,7 +2221,6 @@ void UnitTests::UnitTestsIdleAnimation()
 
 void UnitTests::UnitTestsIdleAnimation2()
 {
-	// make an animation to hold a static color
 	vector<wstring> deviceCategories =
 	{
 		L"ChromaLink",
@@ -2294,6 +2293,44 @@ void UnitTests::PrintAnimationDuration(const wchar_t* path)
 		totalDuration += duration;
 	}
 	ChromaLogger::wprintf(L"Animation %s duration=%f seconds.\r\n", path, totalDuration);
+}
+
+void UnitTests::UnitTestsIdleAnimation3()
+{
+	vector<wstring> deviceCategories =
+	{
+		L"ChromaLink",
+		L"Headset",
+		L"Keyboard",
+		L"Keypad",
+		L"Mouse",
+		L"Mousepad",
+	};
+
+	// Set an idle animation
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		wstring idleAnimation = L"Animations/Gradient1_" + deviceCategories[i] + L".chroma";
+		ChromaAnimationAPI::SetIdleAnimationName(idleAnimation.c_str());
+	}
+
+	// Use Idle animations
+	ChromaAnimationAPI::UseIdleAnimations(true);
+
+	// Wait for the animation to loop
+	Sleep(15000);
+
+	// Stop using idle animations
+	ChromaAnimationAPI::UseIdleAnimations(false);
+
+	// Switch to None state
+	ChromaAnimationAPI::ClearAll();
+
+	// Stop all animations
+	ChromaAnimationAPI::StopAll();
+
+	// Set static color to Cyan
+	ChromaAnimationAPI::SetStaticColorAll(ChromaAnimationAPI::GetRGB(0, 255, 255));
 }
 
 void UnitTests::UnitTestsPauseAnimations()
@@ -2647,11 +2684,12 @@ void UnitTests::Run()
 
 	//UnitTestsIdleAnimation();
 	//UnitTestsIdleAnimation2();
+	UnitTestsIdleAnimation3();
 
 	//UnitTestsFrameDuration();
 	//UnitTestsTotalDuration();
 
-	UnitTestsSetStaticColor();
+	//UnitTestsSetStaticColor();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
