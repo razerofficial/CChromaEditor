@@ -106,6 +106,8 @@ public:
 	static void UnitTestsIdleAnimation3();
 
 	static void UnitTestsIdleAnimation4();
+	
+	static void UnitTestsIdleAnimation5();
 
 	static void PrintAnimationDuration(const char* path);
 
