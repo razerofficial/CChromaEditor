@@ -10,9 +10,31 @@
 
 * [See Also](#see-also)
 * [User Privacy](#user-privacy)
-* [Frameworks supported](#frameworks-supported)
-* [Prerequisites](#prerequisites)
+* [Dependencies](#dependencies)
+* [About](#about)
 * [Security](#security)
+* [Windows PC](#windows-pc)
+* [Windows Cloud](#windows-cloud)
+* [SDK Integration](#sdk-integration)
+* [Chroma Design](#chroma-design)
+* [Revisions](#revisions)
+* [Sample Project](#sample-project)
+* [Tools](#tools)
+* [Integration](#integration)
+* [Testing](#testing)
+* [Haptic Design](#haptic-design)
+* [Modding](#modding)
+* [General](#general)
+* [Chroma Sensa](#chroma-sensa)
+* [Synesthesia](#synesthesia)
+* [Initialize SDK](#initialize-sdk)
+* [Is Active](#is-active)
+* [Is Connected](#is-connected)
+* [Play Chroma Animation](#play-chroma-animation)
+* [Set Event Name](#set-event-name)
+* [Use Forward Chroma Events](#use-forward-chroma-events)
+* [Microsoft Dynamic Lighting](#microsoft-dynamic-lighting)
+* [Frameworks supported](#frameworks-supported)
 * [Assets](#assets)
 * [Dialog](#dialog)
 * [Streaming](#streaming)
@@ -39,27 +61,17 @@
 
 Note: The Chroma SDK requires only the minimum amount of information necessary to operate during initialization, including the title of the application or game, description of the application or game, application or game author, and application or game support contact information. This information is displayed in the Chroma app. The Chroma SDK does not monitor or collect any personal data related to users. 
 
-<a name="frameworks-supported"></a>
+<a name="dependencies"></a>
 
-## Frameworks supported
+## Dependencies
 
-* Windows ChromaSDK (32-bit)
+To use the Chroma SDK first install the new [Razer Synapse and Chroma App](https://www.razer.com/synapse-new).
 
-* Windows ChromaSDK (64-bit)
-
-<a name="prerequisites"></a>
-
-## Prerequisites
-
-* Install [Synapse](https://www.razer.com/synapse-3)
-
-* Make sure the Chroma Connect module is installed.
-
-![image_5](images/image_5.png)
+![image_2](images/image_2.png)
 
 * If you don't have Chroma hardware, you can see Chroma effects with the [Chroma Emulator](https://github.com/razerofficial/ChromaEmulator)
 
-* This library is full source and can build with VS 2015/2017/2019 so make sure you include the corresponding [Microsoft Visual C++ Redistributable for Visual Studio](https://www.visualstudio.com/downloads/) with your application for the versions that you build with. The core ChromaSDK is built with VS 2015, so you'll want that redistributable at a minimum.
+* The CChromaEditor library is full source and can build with VS 2015/2017/2019/2022 so make sure you include the corresponding [Microsoft Visual C++ Redistributable for Visual Studio](https://www.visualstudio.com/downloads/) with your application for the versions that you build with. The core ChromaSDK is built with VS 2015, so you'll want that redistributable at a minimum.
 
 * To compile: Install [Visual Studio](https://www.visualstudio.com/)
 
@@ -67,11 +79,15 @@ Note: The Chroma SDK requires only the minimum amount of information necessary t
 
 * To compile: Install `Templates->Other Languages->Visual C++->Visual C++ 2015 Tools for Windows Desktop` which can be installed through the `Visual Studio New Project Dialog`
 
-![image_42](images/image_2.png)
+![image_24](images/image_24.png)
 
 * Use retarget solution to select an available Windows SDK.
 
----
+<a name="about"></a>
+
+## About
+
+The CChromaEditorLibrary is a DLL that is shared by Chroma RGB plugins to provide a common API and universal animation format with playback and editing capabilities.
 
 <a name="security"></a>
 
@@ -83,9 +99,16 @@ The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition
 
 ```
 #ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
+	// verify the library has a valid signature
  _sInvalidSignature = !VerifyLibrarySignature::VerifyModule(path);
 #endif
 ```
+
+The project has `NoSignatureCheck` configurations to debug with unsigned builds for testing feature updates. The `NoSignatureCheck` configurations do not set the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition.
+
+![image_4](images/image_4.png)
+
+<a name="chroma-editor-library"></a>
 
 ## Chroma Editor Library
 
@@ -117,19 +140,226 @@ Win64BuildFolder\CChromaEditorLibrary64.dll
 
 `Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. Chroma effects stream across the Internet to reach your local machine and connected hardware. No extra code is required to add Cloud support. In the case with `NVidia GeForce Now`, the cloud runs the same Epic Games and Steam builds as the desktop version and support Chroma streaming. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
 
-<a name="api-class"></a>
+<a name="sdk-integration"></a>
 
-## API Class
+## SDK Integration
 
-The `ChromaAnimationAPI` class provides a wrapper for the Chroma Editor Library. The wrapper for the API can be found at [CConsoleEditor/ChromaAnimationAPI.h](CConsoleEditor/ChromaAnimationAPI.h) and [CConsoleEditor/ChromaAnimationAPI.cpp](CConsoleEditor/ChromaAnimationAPI.cpp).
+The SDK integration process involves the following:
 
-## Initialization
+1. [Chroma Design](#chroma-design)
 
----
+2. [Revisions](#revisions)
 
-The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initialization has succeeded. Avoid making calls to the Chroma API when anything other than success is returned. A unsuccessful result indicates `Chroma` is not present on the machine.
+3. [Sample Project](#sample-project)
+
+4. [Tools](#tools)
+
+5. [Integration](#integration)
+
+6. [Testing](#testing)
+
+7. [Haptic Design](#haptic-design)
+
+8. [Modding](#modding)
+
+<a name="chroma-design"></a>
+
+### Chroma Design
+
+The Chroma Design is the starting point. The team provides 15 sample effects that play on an animated web page. The sample effects correspond to short gameplay video clips and give an idea to the type of animation that could play for a set of game events. The samples are available to use for the specified effect or can be used for any other effect which is completely up to the developer. The developer may ask for effect revisions or additional sample effects. If gameplay video is not available, the developer can provide a description or reference art to conceptualize the desired effect.
+
+![image_9](images/image_9.png)
+
+<a name="revisions"></a>
+
+### Revisions
+
+Some Chroma Designs require revisions to add more requested effects or to make changes through the feedback of reviewing the Chroma Design. Revisions can be requested which result in a subset of alterations from the previous design or add completely new game events.
+
+<a name="sample-project"></a>
+
+### Sample Project
+
+The developer specifies which game engine is used by the game so that a sample project can be shared with sample code for the specified engine. The sample project will have the same effects that were defined in the Chroma Design and ported to the target language/game engine. The sample project will include a plugin to add the Chroma SDK to the specified game engine, and the ported sample code and sample animations from the `Chroma Design`.
+
+<a name="tools"></a>
+
+### Tools
+
+* The [Web Chroma Editor](https://chroma.razer.com/ChromaEditor/gradient/) creates Chroma animations and code snippets from several input sources. Designers can create Chroma animations without writing any code. The toolset can use input sources as video, text, camera, web cam, desktop capture, gradients, patterns, images, and blended animations.
+
+![image_10](images/image_10.png)
+
+* The [Chroma Design Converter](https://chroma.razer.com/ChromaDesignConverter/) can automatically port a web based Chroma Design to several languages and game engines.
+
+* The [Synesthesia Console](https://www.interhaptics.com/doc/chroma-sensa/#synesthesia) can generate haptic configurations automatically for your Chroma integration.
+
+<a name="integration"></a>
+
+### Integration
+
+The integration process can be as easy as copy and paste from the sample project into the game code. Most likely, it's a matter of finding game triggers in the game code to find the optimal place to add a call to `PlayAnimation()`. The typical Chroma integration process lasts 3 - 5 days for a single developer. Haptics integration can take 0 days by using automatic mode. Manually adding haptics can take about the same amount of work as Chroma to add the calls to `SetEventName()` in the right places. Chroma and haptics are independent meaning sometimes they play together and sometimes they play separately, which is completely up to the designer. **In most cases for game engines after the game build completes, the Chroma animations need to be copied to the animation folder within the game's content folder.**
+
+<a name="testing"></a>
+
+### Testing
+
+The team can provide QA on the game build when integration has completed. Steam beta keys and Epic Store beta keys make testing possible before a game launches. This can be a good way to provide design revisions by testing and giving feedback on the build. To support the QA process, it will be important to include a level selector and potentially console commands that make it easy to navigate the build to test the game triggers at the right moments to validate the visuals work as expected. Beta key access is limited to the engineering and QA review team.
+
+<a name="haptic-design"></a>
+
+### Haptic Design
+
+Just like Chroma Designs, the Haptic Design can be provided by the team. Adding haptic support does not require adding assets to the game. Haptics can be added to a game without code changes and after the game has released. Haptics can be added through creation of a haptic configuration file. Developers can use the [Synesthesia Console](https://www.interhaptics.com/doc/chroma-sensa/#synesthesia) which automates creation of the haptic configuration file within `HapticFolders` and will add some mockup haptic files (simple haptic effect which can be edited with [Haptic Composer](https://www.interhaptics.com/download/)) when event names follow a naming convention. Haptic configuration files are automatically distributed by the team through `Chroma App` updates.
+
+<a name="modding"></a>
+
+### Modding
+
+The decision to add Chroma mod support for a title is completely up to the developer. If the developer decides to block modding, Chroma animations can be loaded from a byte array which sandboxes and protects against any modifications to the Chroma animation assets. If the developer wants to use modding, Chroma animation assets are placed within the installation directory. Modders can modify the Chroma animations assets that are loaded by the title. The API provides `CloseAnimation` which reloads the Chroma animation from disk. This allows Chroma animations to be modified externally without needing to relaunch the title. Chroma animation playback also supports relative paths from the content folder. Relative paths can be used to organize several mods within the content folder. The title can have a configuration menu that switches between mod subfolder names which changes the relative path for loading the Chroma animations. The [C++ Chroma Mod Sample](https://github.com/razerofficial/CSDK_ChromaModSample) shows how relative paths can be used to detect and use mods, which is applicable for any game or custom engine.
+
+<a name="general"></a>
+
+## General
+
+* The Chroma SDK allows an application or game to set the details in the Chroma Apps list within the `Chroma App`.
+
+This document provides a guide to integrating Chroma RGB using the Chroma C++ SDK. Chroma can be included through premade Chroma animations or APIs. Here is the list of available methods:
+
+* [Initialize SDK](#initialize-sdk): Initialize the Chroma SDK to use the library.
+
+* [Is Active](#is-active): Check if the app/game has Chroma focus.
+
+* [Is Connected](#is-connected): Check if Chroma hardware is connected.
+
+* [Play Chroma Animation](#play-chroma-animation): Playback a Chroma animation asset.
+
+* [Set Event Name](#set-event-name): Name a game event or game trigger in order to also add Haptics to the Chroma event.
+
+* [Use Forward Chroma Events](#use-forward-chroma-events): Enable or disable automatic invocation of `SetEventName()` when invoking `PlayAnimation()` using the animation name.
+
+<a name="chroma-sensa"></a>
+
+## Chroma Sensa
+
+Chroma Sensa is the combination of Chroma and Razer Sensa HD Haptics in a single SDK. By integrating RGB lighting and haptics into game environments and events, players can enjoy a truly immersive gaming experience. The `Chroma SDK` is capable of playing Chroma animations and haptics on the Razer Sensa HD Haptics devices. The default mode allows automatic triggering of haptics effects when Chroma animations are played with `PlayAnimation()`. Manual mode is set by `UseForwardChromaEvents(false)` and haptics can be triggered independently of Chroma animations with SetEventName().
+
+![image_8](images/image_8.png)
+
+Event names can follow a naming convention which assists with the generation of the haptics configuration for your title. Event names are specified with the `SetEventName()` method. The event name suffix can be left off or used to prepopulate common settings for `_ON`, `_OFF`, and `_MERGE`.
+
+* "Jump" - (without a suffix) Existing haptics stop, the named haptic plays to completion and then ends
+
+* "Attack_ON" - Existing haptics continue to play, the named haptic plays as a continuous looping haptic
+
+* "Attack_OFF" - Existing haptics continue to play, the named looping haptic stops
+
+* "Punch_MERGE" - Existing haptics continue to play, the named haptic plays to completion and ends
+
+* "Block_MERGE" - Existing haptics continue to play, the named haptic plays to completion and ends
+
+Upon completion of Chroma and haptic implementation, the list of Chroma events and game triggers should be shared with the team to be add to the game's [Chroma Workshop](https://www.razer.com/chroma-workshop#--games) entry.
+ 
+Targeting features can be **optionally** described for each haptics effect.
+
+* "Target" defaults to `"All"`. GroupID options can be found at https://www.interhaptics.com/doc/interhaptics-engine/#groupid
+
+* "Spatialization" defaults to `"Global"`. Other LateralFlag options can be found at https://www.interhaptics.com/doc/interhaptics-engine/#lateralflag
+
+* "Gain" defaults to 1.0.
+
+
+## Synesthesia
+
+The [Synesthesia Console](https://www.interhaptics.com/doc/chroma-sensa/#synesthesia) makes creating the haptics configuration for game integration super easy. Download and run the installer to get started creating a haptics config.
+
+1. Run `SynesthesiaStop.exe` to stop any existing background or haptic consoles
+
+![image_33](images/image_33.png)
+
+2. Run the `Synesthesia Console` for the interactive prompt
+
+![image_34](images/image_34.png)
+
+3. Enter option `1` and press `Enter` to listen for incoming commands
+
+![image_35](images/image_35.png)
+
+4. Launch your game that uses `PlayAnimation` or `SetEvent` directly to trigger haptic commands.
+
+When the application launches and initializes Chroma, the command to `load` the haptic configuration file is sent. When the application receives Chroma focus, the `active` command is sent. When `PlayAnimation` or `SetEvent` is called, the `play` command is sent.
+```
+Command Received : "load;C++ Game Sample Application"
+Command Received : "active;C++ Game Sample Application"
+Command Received : "play;Effect1"
+```
+
+![image_36](images/image_36.png)
+
+5. Play through all the game triggers to send any possible commands the game might use. This will be useful for generating the haptic configuration next.
+
+![image_37](images/image_37.png)
+
+6. Enter option `2` and press `Enter` to generate the haptics configuration
+
+![image_38](images/image_38.png)
+
+7. Enter option `0` and press `Enter` to use the detected application name used by the Chroma initialization
+
+![image_39](images/image_39.png)
+
+8. Enter option `0` and press `Enter` to use activate the new haptic configuration file. Now when the game triggers haptic events, the configured haptic events will play.
+
+![image_40](images/image_40.png)
+
+The `haptic.config` and `haps` default haptics effects were generated in the `HapticFolders` by the console. 
+
+![image_41](images/image_41.png)
+
+The `haptic.config` contains default targeting for the generated entries for each detected command.
+
+```json
+{
+    "ExternalCommands": [
+        {
+            "External_Command_ID": "Effect1",
+            "Haptic_Events": [
+                {
+                    "Haptic_Effect": "Effect1",
+                    "Loop": 1,
+                    "Mixing": "Override",
+                    "Targeting": [
+                        {
+                            "Gain": 1.0,
+                            "Spatialization": "Global",
+                            "Target": "All"
+                        }
+                    ]
+                }
+            ]
+        },
+		...
+	]
+}
+```
+
+## Namespace
+
+Add the Chroma SDK namespace to use the API.
 
 ```
+#include "Razer\ChromaAnimationAPI.h"
+
+using namespace ChromaSDK;
+```
+
+## Initialize SDK
+
+Initialize the Chroma SDK in order to utilize the API. The `InitSDK` method takes an `AppInfo` parameter which defines the application or game details that will appear in the `Chroma App` within the `Chroma Apps` tab. The expected return result should be `RZRESULT_SUCCESS` which indicates the API is ready for use. If a non-success result is returned, the Chroma implementation should be disabled until the next time the application or game is launched. Reasons for failure are likely to be the user does not have the `Synapse` or the `Chroma App` installed. After successfully initializing the Chroma SDK, wait approximately 100 ms before playing Chroma animations.
+
+![image_5](images/image_5.png)
+
+```c++
  APPINFOTYPE appInfo = {};
 
  _tcscpy_s(appInfo.Title, 256, _T("Sample Game Title"));
@@ -150,14 +380,161 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
  appInfo.Category = 0x02;
 
  RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
- if (result != RZRESULT_SUCCESS)
+if (result == RZRESULT_SUCCESS)
+{
+    // Init Success! Ready to use the Chroma SDK!
+}
+else
  {
-  ChromaLogger::printf("Failed to initialize Chroma SDK with error=%ld\r\n", result);
- 
- // avoid making Chroma API calls after a non-zero init result
-  return;
- }
+    // Init Failed! Stop using the Chroma SDK until the next game launch!";
+}
 ```
+
+Applications should uninitialize the Chroma SDK with Uninit() for a clean exit. Uninitialization is only needed if the Chroma SDK was successfully initialized.
+
+```c++
+int result = ChromaAnimationAPI::Uninit();
+if (result == RZRESULT_SUCCESS)
+{
+    // Chroma has been uninitialized!
+}
+else
+{
+    // Uninitialization was unsuccessful!
+}
+```
+
+## Is Active
+
+Many applications and games can use the Chroma SDK at the same time, yet only one can have the Chroma focus. The `APP PRIORITY LIST` defines the priority order and the highest on the list receives the Chroma focus when more than one are actively using the Chroma SDK. Users can adjust the priority order by dragging and dropping or toggling the app completely off. The IsActive() method allows an application or game to check if it has Chroma focus. This allows the title to free up overhead when Chroma is not in use. If a title uses this to check for focus, the state should be periodically checked to turn Chroma back on when focus is returned. When active returns false, the title can stop playing Chroma animations, disable idle animations, and inactivate dynamic Chroma to free up some overhead. Keep in mind that some apps use Chroma notifications so they will only briefly take Chroma focus and then return it typically over a 5 second period.
+
+```c++
+bool isActive;
+int result = ChromaAnimationAPI::IsActive(isActive);
+if (result == RZRESULT_SUCCESS)
+{
+    if (isActive)
+    {
+        // The game currently has the Chroma focus!
+    }
+    else
+    {
+        // The game does not currently have the Chroma focus!"
+    }
+}
+else
+{
+    // Unable to check for Chroma focus. Unexpected result!
+}
+```
+
+## Is Connected
+
+To further reduce overhead, a title can check if supported devices are connected before showing Chroma effects. The IsConnected() method can indicate if supported devices are in use to help determine if Chroma should be active. Games often will include a menu settings option to toggle Chroma RGB support, with being on by default as an additional way that users can minimize overhead.
+
+```c++
+DEVICE_INFO_TYPE deviceInfo = { DEVICE_INFO_TYPE::DEVICE_ALL };
+int result = ChromaAnimationAPI::CoreIsConnected(deviceInfo);
+if (result == RZRESULT_SUCCESS)
+{
+    if (deviceInfo.Connected > 0)
+    {
+        // Chroma devices are connected!
+    }
+    else
+    {
+        // "No Chroma devices are connected!";
+    }
+}
+else
+{
+    // "Unable to check for Chroma devices. Unexpected result!";
+}
+```
+
+## Play Chroma Animation
+
+The Chroma SDK supports playing premade Chroma animations which are placed in the `StreamingAssets` folder or subfolders within. Chroma animations can be created in the web authoring tools, or dynamically created and modified using the API. Call PlayAnimation() to play Chroma animations with or without looping. Animations have a device category, and playing an animation will stop an existing animation from playing before playing the new animation for the given device category. The animation name is file path of the Chroma animation relative to the `StreamingAssets` folder.
+
+```c++
+bool loop = false;
+vector<wstring> devices =
+{
+	L"ChromaLink",
+	L"Headset",
+	L"Keyboard",
+	L"Keypad",
+	L"Mouse",
+	L"Mousepad"
+};
+for (int i = 0; i < devices.size(); ++i)
+{
+	wstring animationName = L"Animations/Spiral_" + devices[i] + L".chroma";
+	ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), loop);
+}
+```
+
+## Set Event Name
+ 
+Chroma events can be named to add supplemental technology to your lighting experience. By naming game events and game triggers, the event name can be used as a lookup to play things like haptics effects. `SetEventName(L"Jump")` could be used when playing a Chroma animation of a jump effect. Using `L"Jump"` a corresponding haptic effect can be added with the Chroma effect to enhance emersion for the title. No other APIs are required to add haptics effects other than to invoke SetEventName(). To stop haptics playback use `SetEventName(L"")` with an empty string. A Chroma animation does not need to be playing in order to trigger haptics manually with SetEventName().
+ 
+```c++
+// Trigger haptic effect
+int result = ChromaAnimationAPI::CoreSetEventName(L"Jump");
+if (result == RZRESULT_SUCCESS)
+{
+    // Chroma event named successfully!"
+}
+else
+{
+    // Unable to set event name. Unexpected result!"
+ }
+
+// Stop haptic playback
+result = ChromaAnimationAPI::CoreSetEventName(L"");
+if (result == RZRESULT_SUCCESS)
+{
+    // Haptics stopped successfully!"
+}
+else
+{
+    // Unable to stop haptics. Unexpected result!"
+}
+```
+
+## Use Forward Chroma Events
+
+By default when PlayAnimation is called, the animation name is automatically sent to SetEventName(). In order to disable the default behaviour set the toggle to false. PlayAnimation() as shown above is called for each device category. It will be more efficent to use SetEventName() once for the Chroma animation set. Manual mode gives the title explicit control over when SetEventName() is called.
+
+```c++
+bool toggle = false; // manual mode
+ChromaAnimationAPI::UseForwardChromaEvents(toggle);
+if (toggle)
+{
+    // When PlayAnimation is used, the name is sent to SetEventName().
+}
+else
+{
+    // The PlayAnimation name is not forwarded.
+}
+
+```
+
+## Microsoft Dynamic Lighting
+
+Windows 11 launched Microsoft Dynamic Lighting which is built-in to the Windows Settings Personalization on Windows. Microsoft DL became generally available in `Windows 11 22H2`. See the [list of supported devices](https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/dynamic-lighting-devices).
+
+![image_6](images/image_6.png)
+
+For HID compatible devices, with `Dynamic Lighting` set to `ON` and `Chroma App` set as the ambient controller, Chroma effects will display on DL compatible hardware. No extra coding is required to add this compatibility. `Chroma App` handles Chroma compatibility with DL and it is completely automatic.
+
+![image_7](images/image_7.png)
+
+<a name="api-class"></a>
+
+## API Class
+
+The `ChromaAnimationAPI` class provides a wrapper for the Chroma Editor Library. The wrapper for the API can be found at [CConsoleEditor/ChromaAnimationAPI.h](CConsoleEditor/ChromaAnimationAPI.h) and [CConsoleEditor/ChromaAnimationAPI.cpp](CConsoleEditor/ChromaAnimationAPI.cpp).
 
 ---
 
@@ -179,6 +556,16 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
 
 3 The `CConsoleEditor` project is a console project that uses the `DLL` and provides a command-line interface. The only parameter is the file path to a `Chroma` animation file. When no parameter is provided, the editor opens `temp.chroma` on the desktop.
 
+<a name="frameworks-supported"></a>
+
+## Frameworks supported
+
+* Windows ChromaSDK (32-bit)
+
+* Windows ChromaSDK (64-bit)
+
+---
+
 <a name="assets"></a>
 
 ## Assets
@@ -195,7 +582,7 @@ The standalone Chroma editor has a MFC dialog that can be used to create Chroma 
 
 **File Menu**
 
-![image_3](images/image_3.png)
+![image_25](images/image_25.png)
 
 **New**
 
@@ -215,7 +602,7 @@ Open a file dialog and save the open animation
 
 **Import Menu**
 
-![image_4](images/image_4.png)
+![image_26](images/image_26.png)
 
 **Import Image**
 
@@ -240,31 +627,31 @@ The [Razer Streaming Portal](https://stream.razer.com/) supports streaming Chrom
 
 The first step is to login into the [Razer Streaming Portal](https://stream.razer.com/) with Razer ID.
 
-![image_6](images/image_6.png)
+![image_28](images/image_28.png)
 
 **Profile**
 
 Navigate to the user profile by clicking `MY STREAMS`.
 
-![image_7](images/image_7.png)
+![image_29](images/image_29.png)
 
 **Stream Source**
 
 Create a `Stream Source` to broadcast `Chroma RGB` events.
 
-![image_8](images/image_8.png)
+![image_30](images/image_30.png)
 
 **Name Your Stream Source**
 
 Enter the name of your stream source and enter name of the game to generate the stream thumbnail. Make sure `GO LIVE` is turned on. The `Mature` toggle is optional and can be filtered.
 
-![image_9](images/image_9.png)
+![image_31](images/image_31.png)
 
 **Source**
 
 PC games set the source to `PC`. `Cloud Gaming`, `Console`, and `Mobile` games set the `Source` to `Other`.
 
-![image_10](images/image_10.png)
+![image_32](images/image_32.png)
 
 **Authorize**
 
@@ -438,6 +825,7 @@ enum EChromaSDKDevice2DEnum
     DE_Keyboard = 0,
     DE_Keypad,
     DE_Mouse,
+    DE_KeyboardExtended,
 };
 ```
 
