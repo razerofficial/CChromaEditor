@@ -47,7 +47,7 @@
 
 **Docs:**
 
-* [Chroma Animation Guide](http://chroma.razer.com/ChromaGuide/) - Visual examples of the Chroma Animation API methods
+* [Chroma Animation Guide](http://chroma.razer.com/ChromaGuide/) - Visual examples of the Chroma animation API methods
 
 **Plugins:**
 
@@ -456,18 +456,18 @@ The Chroma SDK supports playing premade Chroma animations which are placed in th
 
 ```c++
 bool loop = false;
-vector<wstring> devices =
+vector<string> devices =
 {
-	L"ChromaLink",
-	L"Headset",
-	L"Keyboard",
-	L"Keypad",
-	L"Mouse",
-	L"Mousepad"
+	"ChromaLink",
+	"Headset",
+	"Keyboard",
+	"Keypad",
+	"Mouse",
+	"Mousepad"
 };
 for (int i = 0; i < devices.size(); ++i)
 {
-	wstring animationName = L"Animations/Spiral_" + devices[i] + L".chroma";
+	string animationName = "Animations/Spiral_" + devices[i] + ".chroma";
 	ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), loop);
 }
 ```
