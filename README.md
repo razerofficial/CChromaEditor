@@ -174,7 +174,7 @@ The Chroma Design is the starting point. The team provides 15 sample effects tha
 
 ### Revisions
 
-Some Chroma Designs require revisions to add more requested effects or to make changes through the feedback of reviewing the Chroma Design. Revisions can be requested which result in a subset of alterations from the previous design or add completely new game events.
+Some Chroma Designs require revisions to add more requested effects or to make changes through the feedback of reviewing the Chroma Design. Revisions can be requested which result in a subset of alterations from the previous design or add completely new game events. **Fill out the [Chroma_Sensa_Template_Developers.xlsx Template](https://github.com/razerofficial/CChromaEditor/releases/tag/Templates) which provides all the necessary fields for making design requests and revisions.**
 
 <a name="sample-project"></a>
 
