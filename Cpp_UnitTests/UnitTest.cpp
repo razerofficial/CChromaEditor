@@ -2731,6 +2731,26 @@ void UnitTests::UnitTestsSetStaticColor()
 	ChromaAnimationAPI::SetStaticColorAll(ChromaAnimationAPI::GetRGB(0, 0, 0));
 }
 
+void UnitTests::UnitTestsSetKeysColorAllFramesRGB()
+{
+	const wchar_t* animToLoad = L"Animations/Gradient2_KeyboardExtended.chroma";
+
+	int hotkeys_move[] = {
+		(int)Keyboard::RZKEY::RZKEY_W,
+		(int)Keyboard::RZKEY::RZKEY_A,
+		(int)Keyboard::RZKEY::RZKEY_S,
+		(int)Keyboard::RZKEY::RZKEY_D,
+	};
+
+	const int size = sizeof(hotkeys_move) / sizeof(hotkeys_move[0]);
+
+	ChromaAnimationAPI::SetKeysColorAllFramesRGBName(animToLoad, hotkeys_move, size, 255, 255, 255);
+	ChromaAnimationAPI::SetChromaCustomFlagName(animToLoad, true);
+
+	ChromaAnimationAPI::UsePreloadingName(animToLoad, false);
+	ChromaAnimationAPI::PlayAnimationName(animToLoad, true);
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::wprintf(L"Start of unit tests...\r\n");
@@ -2795,12 +2815,14 @@ void UnitTests::Run()
 	//UnitTestsIdleAnimation2();
 	//UnitTestsIdleAnimation3();
 	//UnitTestsIdleAnimation4();
-	UnitTestsIdleAnimation5();
+	//UnitTestsIdleAnimation5();
 
 	//UnitTestsFrameDuration();
 	//UnitTestsTotalDuration();
 
 	//UnitTestsSetStaticColor();
+
+	UnitTestsSetKeysColorAllFramesRGB();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);

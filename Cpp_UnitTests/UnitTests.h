@@ -119,6 +119,8 @@ public:
 
 	static void UnitTestsSetStaticColor();
 
+	static void UnitTestsSetKeysColorAllFramesRGB();
+
 	static void Run();
 
 };
