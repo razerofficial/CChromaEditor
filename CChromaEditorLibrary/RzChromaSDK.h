@@ -59,6 +59,7 @@ private:
 	static HMODULE _sLibrary;
 	static bool _sInvalidSignature;
 	static bool _sLoaded;
+	static bool _sInitialized;
 
 	// Core API Methods
 	CHROMASDK_DECLARE_METHOD(CHROMA_SDK_INIT, Init);
