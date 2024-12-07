@@ -2,6 +2,7 @@
 #include "UnitTests.h"
 #include "ChromaLogger.h"
 #include "HandleInput.h"
+#include "SampleEmbeds.h"
 
 #include <chrono>
 #include <string>
@@ -2442,6 +2443,33 @@ void UnitTests::UnitTestsIdleAnimation5()
 	}
 }
 
+void UnitTests::UnitTestsIdleAnimation6()
+{
+	const wchar_t* idleAnimationName = L"Embedded/Gradient_Keyboard.chroma";
+	const wchar_t* playAnimationName = L"Embedded/Gradient2_Keyboard.chroma";
+	
+	// open the BYTEs from memory and name it, byte arrays are created with the tools use COPY EMBED for C++
+	int idleAnimationId = ChromaAnimationAPI::OpenAnimationFromMemory(EMBED_Gradient_Keyboard, idleAnimationName);
+	int playAnimationId = ChromaAnimationAPI::OpenAnimationFromMemory(EMBED_Gradient2_Keyboard, playAnimationName);
+
+	ChromaAnimationAPI::SetIdleAnimation(idleAnimationId);
+	ChromaAnimationAPI::UseIdleAnimations(true);
+
+	printf("Idle animations set. Press ENTER to trigger animation which should fall back to idle\r\n");
+	printf("Press ESC to end UnitTestsIdleAnimation6...\r\n");
+
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	HandleInput inputEnter = HandleInput(VK_RETURN);
+	while (!inputEscape.WasReleased(true))
+	{
+		if (inputEnter.WasPressed(true))
+		{
+			ChromaAnimationAPI::PlayAnimation(playAnimationId);
+		}
+		Sleep(1);
+	}
+}
+
 void UnitTests::UnitTestsPauseAnimations()
 {
 	bool loop = true;
@@ -2816,13 +2844,14 @@ void UnitTests::Run()
 	//UnitTestsIdleAnimation3();
 	//UnitTestsIdleAnimation4();
 	//UnitTestsIdleAnimation5();
+	UnitTestsIdleAnimation6();
 
 	//UnitTestsFrameDuration();
 	//UnitTestsTotalDuration();
 
 	//UnitTestsSetStaticColor();
 
-	UnitTestsSetKeysColorAllFramesRGB();
+	//UnitTestsSetKeysColorAllFramesRGB();
 
 	printf("Press Esc to end unit tests...\r\n");
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
