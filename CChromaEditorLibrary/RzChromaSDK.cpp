@@ -21,6 +21,7 @@ using namespace ChromaSDK;
 HMODULE RzChromaSDK::_sLibrary = NULL;
 bool RzChromaSDK::_sInvalidSignature = false;
 bool RzChromaSDK::_sLoaded = false;
+bool RzChromaSDK::_sInitialized = false;
 
 // assign static methods
 #undef CHROMASDK_DECLARE_METHOD_IMPL
@@ -63,32 +64,59 @@ CHROMASDK_DECLARE_METHOD_IMPL(CHROMA_SDK_SET_EVENT_NAME, SetEventName);
 
 RZRESULT RzChromaSDK::Init()
 {
+	if (_sInitialized)
+	{
+		return RZRESULT_SUCCESS;
+	}
 	RZRESULT state = GetLibraryLoadedState();
 	if (state != RZRESULT_SUCCESS)
 	{
 		return state;
+	}	
+	state = _sMethodInit();
+	if (state == RZRESULT_SUCCESS)
+	{
+		_sInitialized = true;
 	}
-	return _sMethodInit();
+	return state;
 }
 
 RZRESULT RzChromaSDK::InitSDK(ChromaSDK::APPINFOTYPE* AppInfo)
 {
+	if (_sInitialized)
+	{
+		return RZRESULT_SUCCESS;
+	}
 	RZRESULT state = GetLibraryLoadedState();
 	if (state != RZRESULT_SUCCESS)
 	{
 		return state;
 	}
-	return _sMethodInitSDK(AppInfo);
+	state = _sMethodInitSDK(AppInfo);
+	if (state == RZRESULT_SUCCESS)
+	{
+		_sInitialized = true;
+	}
+	return state;
 }
 
 RZRESULT RzChromaSDK::UnInit()
 {
+	if (!_sInitialized)
+	{
+		return RZRESULT_SUCCESS;
+	}
 	RZRESULT state = GetLibraryLoadedState();
 	if (state != RZRESULT_SUCCESS)
 	{
 		return state;
 	}
-	return _sMethodUnInit();
+	state = _sMethodUnInit();
+	if (state == RZRESULT_SUCCESS)
+	{
+		_sInitialized = false;
+	}
+	return state;
 }
 
 RZRESULT RzChromaSDK::CreateEffect(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID *pEffectId)
@@ -417,6 +445,11 @@ RZRESULT RzChromaSDK::GetLibraryLoadedState()
 
 void RzChromaSDK::Unload()
 {
+	if (_sInitialized)
+	{
+		UnInit();
+	}
+
 	if (!_sLoaded)
 	{
 		return;
