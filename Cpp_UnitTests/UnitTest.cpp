@@ -2676,6 +2676,37 @@ void UnitTests::UnitTestsSetEventName()
 	Sleep(1000);
 }
 
+void UnitTests::UnitTestsSetEventNamePerformance()
+{
+	printf("Measure CoreSetEventName Performance\r\n");
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		ChromaAnimationAPI::CoreSetEventName(L"GenericGameEvent");
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
 void UnitTests::UnitTestsUnicode()
 {
 	const wchar_t* animationName = L"Animations/你好";
@@ -2836,6 +2867,7 @@ void UnitTests::Run()
 	//UnitTestsIsActive();
 	//UnitTestsIsConnected();
 	//UnitTestsSetEventName();
+	UnitTestsSetEventNamePerformance();
 
 	//UnitTestsUnicode();
 
@@ -2844,7 +2876,7 @@ void UnitTests::Run()
 	//UnitTestsIdleAnimation3();
 	//UnitTestsIdleAnimation4();
 	//UnitTestsIdleAnimation5();
-	UnitTestsIdleAnimation6();
+	//UnitTestsIdleAnimation6();
 
 	//UnitTestsFrameDuration();
 	//UnitTestsTotalDuration();

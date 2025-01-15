@@ -3,6 +3,7 @@
 #include "Animation2D.h"
 #include "ChromaSDKPlugin.h"
 #include "ChromaThread.h"
+#include "RzChromaSDK.h"
 #include <chrono>
 #include <sstream>
 
@@ -17,6 +18,8 @@ thread* ChromaThread::_sThread = nullptr;
 vector<AnimationBase*> ChromaThread::_sAnimations;
 vector<bool> ChromaThread::_sUseIdleAnimation;
 vector<std::wstring> ChromaThread::_sIdleAnimation;
+std::map<std::wstring, std::wstring> ChromaThread::_sPendingEventNames;
+RZRESULT ChromaThread::_sLastResultSetEventName = RZRESULT_SUCCESS;
 
 ChromaThread::ChromaThread()
 {
@@ -221,6 +224,74 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 	}
 }
 
+RZRESULT ChromaThread::SetEventName(LPCTSTR Name)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return RZRESULT_FAILED;
+	}
+
+	// search vector for Name
+	if (_sPendingEventNames.find(Name) == _sPendingEventNames.end())
+	{
+		_sPendingEventNames[Name] = L"";
+	}
+
+	// return last result since method is asynchronous
+	return _sLastResultSetEventName;
+
+}
+
+std::vector<std::wstring> ChromaThread::GetPendingEventNames()
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	std::vector<std::wstring> results;
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return results;
+	}
+
+	for (auto it = _sPendingEventNames.begin(); it != _sPendingEventNames.end(); ++it)
+	{
+		results.push_back(it->first);
+	}
+
+	_sPendingEventNames.clear();
+
+	return results;
+}
+
+void ChromaThread::ProcessEventNames()
+{
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// Get the pending names and clear the list
+	std::vector<std::wstring> eventNames = GetPendingEventNames();
+
+	// execute the event names from the worker thread
+	for (std::vector<std::wstring>::iterator it = eventNames.begin(); it != eventNames.end(); ++it)
+	{
+		// module shutdown early abort
+		if (!_sWaitForExit)
+		{
+			return;
+		}
+
+		std::wstring eventName = *it;
+		_sLastResultSetEventName = RzChromaSDK::SetEventName(eventName.c_str());
+	}
+}
+
 void ChromaThread::ChromaWorker()
 {
 	// get current time
@@ -240,6 +311,9 @@ void ChromaThread::ChromaWorker()
 		timerLast = timer;
 
 		ProcessAnimations(deltaTime);
+
+		// process event names from the worker
+		ProcessEventNames();
 
 		if (!_sWaitForExit)
 		{

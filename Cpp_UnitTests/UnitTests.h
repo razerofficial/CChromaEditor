@@ -98,6 +98,8 @@ public:
 	static void UnitTestsIsConnected();
 
 	static void UnitTestsSetEventName();
+	
+	static void UnitTestsSetEventNamePerformance();
 
 	static void UnitTestsUnicode();
 
