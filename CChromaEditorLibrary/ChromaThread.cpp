@@ -18,7 +18,7 @@ thread* ChromaThread::_sThread = nullptr;
 vector<AnimationBase*> ChromaThread::_sAnimations;
 vector<bool> ChromaThread::_sUseIdleAnimation;
 vector<std::wstring> ChromaThread::_sIdleAnimation;
-std::map<std::wstring, std::wstring> ChromaThread::_sPendingEventNames;
+std::set<std::wstring> ChromaThread::_sPendingEventNames;
 RZRESULT ChromaThread::_sLastResultSetEventName = RZRESULT_SUCCESS;
 
 ChromaThread::ChromaThread()
@@ -237,7 +237,7 @@ RZRESULT ChromaThread::SetEventName(LPCTSTR Name)
 	// search vector for Name
 	if (_sPendingEventNames.find(Name) == _sPendingEventNames.end())
 	{
-		_sPendingEventNames[Name] = L"";
+		_sPendingEventNames.insert(Name);
 	}
 
 	// return last result since method is asynchronous
@@ -259,7 +259,7 @@ std::vector<std::wstring> ChromaThread::GetPendingEventNames()
 
 	for (auto it = _sPendingEventNames.begin(); it != _sPendingEventNames.end(); ++it)
 	{
-		results.push_back(it->first);
+		results.push_back(*it);
 	}
 
 	_sPendingEventNames.clear();

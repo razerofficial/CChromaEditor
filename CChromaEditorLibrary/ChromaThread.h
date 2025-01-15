@@ -2,6 +2,7 @@
 
 #include "AnimationBase.h"
 #include <mutex>
+#include <set>
 #include <string>
 #include <thread>
 #include <vector>
@@ -36,7 +37,7 @@ namespace ChromaSDK
 		static std::vector<AnimationBase*> _sAnimations;
 		static std::vector<bool> _sUseIdleAnimation;
 		static std::vector<std::wstring> _sIdleAnimation;
-		static std::map<std::wstring, std::wstring> _sPendingEventNames;
+		static std::set<std::wstring> _sPendingEventNames;
 		static RZRESULT _sLastResultSetEventName;
 	};
 }
