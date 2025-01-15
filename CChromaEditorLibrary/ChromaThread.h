@@ -22,10 +22,13 @@ namespace ChromaSDK
 		int GetAnimationId(int index);
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
 		void SetIdleAnimationName(const char* name);
+		RZRESULT SetEventName(LPCTSTR Name);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
+		void ProcessEventNames();
 		void ChromaWorker();
+		std::vector<std::wstring> GetPendingEventNames();
 		static ChromaThread* _sInstance;
 		static std::mutex _sMutex;
 		static bool _sWaitForExit;
@@ -33,5 +36,7 @@ namespace ChromaSDK
 		static std::vector<AnimationBase*> _sAnimations;
 		static std::vector<bool> _sUseIdleAnimation;
 		static std::vector<std::string> _sIdleAnimation;
+		static std::map<std::wstring, std::wstring> _sPendingEventNames;
+		static RZRESULT _sLastResultSetEventName;
 	};
 }

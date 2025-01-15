@@ -206,7 +206,11 @@ extern "C"
 	}
 	EXPORT_API RZRESULT PluginCoreSetEventName(LPCTSTR Name)
 	{
-		return RzChromaSDK::SetEventName(Name);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return RZRESULT_FAILED;
+		}
+		return ChromaThread::Instance()->SetEventName(Name);
 	}
 
 	EXPORT_API bool PluginCoreStreamSetFocus(const char* focus)

@@ -99,6 +99,8 @@ public:
 
 	static void UnitTestsSetEventName();
 
+	static void UnitTestsSetEventNamePerformance();
+
 	static void UnitTestsIdleAnimation();
 
 	static void UnitTestsIdleAnimation2();
