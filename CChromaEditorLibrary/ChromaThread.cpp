@@ -18,8 +18,11 @@ thread* ChromaThread::_sThread = nullptr;
 vector<AnimationBase*> ChromaThread::_sAnimations;
 vector<bool> ChromaThread::_sUseIdleAnimation;
 vector<std::string> ChromaThread::_sIdleAnimation;
+std::map<std::string, bool> ChromaThread::_sPendingPlayAnimationNames;
 std::set<std::wstring> ChromaThread::_sPendingEventNames;
 RZRESULT ChromaThread::_sLastResultSetEventName = RZRESULT_SUCCESS;
+
+extern bool _gForwardChromaEvents;
 
 ChromaThread::ChromaThread()
 {
@@ -224,6 +227,87 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 	}
 }
 
+void ChromaThread::PlayAnimationName(const char* path, bool loop)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the loop state
+	_sPendingPlayAnimationNames[path] = loop;
+}
+
+std::vector<PendingPlayChromaAnimation> ChromaThread::GetPendingPlayAnimationNames()
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	std::vector<PendingPlayChromaAnimation> results;
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return results;
+	}
+
+	for (auto it = _sPendingPlayAnimationNames.begin(); it != _sPendingPlayAnimationNames.end(); ++it)
+	{
+		PendingPlayChromaAnimation item;
+		item._mPath = it->first;
+		item._mLoop = it->second;
+		results.push_back(item);
+	}
+
+	_sPendingPlayAnimationNames.clear();
+
+	return results;
+}
+
+void ChromaThread::ProcessPlayAnimationNames()
+{
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// Get the pending items and clear the list
+	std::vector<PendingPlayChromaAnimation> list = GetPendingPlayAnimationNames();
+
+	// execute the method from the worker thread
+	for (std::vector<PendingPlayChromaAnimation>::iterator it = list.begin(); it != list.end(); ++it)
+	{
+		// module shutdown early abort
+		if (!_sWaitForExit)
+		{
+			return;
+		}
+
+		const PendingPlayChromaAnimation& item = *it;
+
+		const char* path = item._mPath.c_str();
+
+		if (_gForwardChromaEvents)
+		{
+			// default is ON, forward animation names to SetEventName
+			const string& strPath = item._mPath;
+			wstring wPath(strPath.begin(), strPath.end());
+			PluginCoreSetEventName(wPath.c_str());
+		}
+
+		int animationId = PluginGetAnimation(path);
+		if (animationId < 0)
+		{
+			//LogError("ProcessPlayAnimationNames: Animation not found! %s\r\n", path);
+			return;
+		}
+		PluginPlayAnimationLoop(animationId, item._mLoop);
+	}
+}
+
 RZRESULT ChromaThread::SetEventName(LPCTSTR Name)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -234,7 +318,7 @@ RZRESULT ChromaThread::SetEventName(LPCTSTR Name)
 		return RZRESULT_FAILED;
 	}
 
-	// search vector for Name
+	// Add only a new item
 	if (_sPendingEventNames.find(Name) == _sPendingEventNames.end())
 	{
 		_sPendingEventNames.insert(Name);
@@ -312,7 +396,8 @@ void ChromaThread::ChromaWorker()
 
 		ProcessAnimations(deltaTime);
 
-		// process event names from the worker
+		// process items from the worker
+		ProcessPlayAnimationNames();
 		ProcessEventNames();
 
 		if (!_sWaitForExit)

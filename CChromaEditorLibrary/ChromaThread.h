@@ -9,6 +9,12 @@
 
 namespace ChromaSDK
 {
+	struct PendingPlayChromaAnimation
+	{
+		std::string _mPath;
+		bool _mLoop;
+	};
+
 	class ChromaThread
 	{
 	public:
@@ -23,12 +29,15 @@ namespace ChromaSDK
 		int GetAnimationId(int index);
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
 		void SetIdleAnimationName(const char* name);
+		void PlayAnimationName(const char* path, bool loop);
 		RZRESULT SetEventName(LPCTSTR Name);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
+		void ProcessPlayAnimationNames();
 		void ProcessEventNames();
 		void ChromaWorker();
+		std::vector<PendingPlayChromaAnimation> GetPendingPlayAnimationNames();
 		std::vector<std::wstring> GetPendingEventNames();
 		static ChromaThread* _sInstance;
 		static std::mutex _sMutex;
@@ -37,6 +46,7 @@ namespace ChromaSDK
 		static std::vector<AnimationBase*> _sAnimations;
 		static std::vector<bool> _sUseIdleAnimation;
 		static std::vector<std::string> _sIdleAnimation;
+		static std::map<std::string, bool> _sPendingPlayAnimationNames;
 		static std::set<std::wstring> _sPendingEventNames;
 		static RZRESULT _sLastResultSetEventName;
 	};

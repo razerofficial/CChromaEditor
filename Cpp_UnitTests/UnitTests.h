@@ -101,6 +101,8 @@ public:
 
 	static void UnitTestsSetEventNamePerformance();
 
+	static void UnitTestsPlayAnimationNamePerformance();
+
 	static void UnitTestsIdleAnimation();
 
 	static void UnitTestsIdleAnimation2();

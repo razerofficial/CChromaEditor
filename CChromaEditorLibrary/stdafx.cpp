@@ -1991,21 +1991,11 @@ extern "C"
 
 	EXPORT_API void PluginPlayAnimationName(const char* path, bool loop)
 	{
-		if (_gForwardChromaEvents)
+		if (ChromaThread::Instance() == nullptr)
 		{
-			// default is ON, forward animation names to SetEventName
-			string strPath = path;
-			wstring wPath(strPath.begin(), strPath.end());
-			RzChromaSDK::SetEventName(wPath.c_str());
-		}
-
-		int animationId = PluginGetAnimation(path);
-		if (animationId < 0)
-		{
-			//LogError("PluginPlayAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
-		PluginPlayAnimationLoop(animationId, loop);
+		ChromaThread::Instance()->PlayAnimationName(path, loop);
 	}
 
 	EXPORT_API double PluginPlayAnimationNameD(const char* path, double loop)
