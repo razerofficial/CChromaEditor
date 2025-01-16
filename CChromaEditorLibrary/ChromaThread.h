@@ -9,10 +9,105 @@
 
 namespace ChromaSDK
 {
-	struct PendingPlayChromaAnimation
+	struct ParamsPlayChromaAnimation
 	{
 		std::wstring _mPath;
 		bool _mLoop;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"PlayChromaAnimation_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsSetEventName
+	{
+		std::wstring _mName;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SetEventName_";
+			key += _mName;
+			return key;
+		}
+	};
+
+	struct ParamsSetIdleAnimationName
+	{
+		std::wstring _mPath;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SetIdleAnimationName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsStopChromaAnimation
+	{
+		std::wstring _mPath;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"StopChromaAnimation_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsStopAll
+	{
+		const std::wstring GenerateKey() {
+			std::wstring key = L"StopAll";
+			return key;
+		}
+	};
+
+	struct ParamsStopAnimationType
+	{
+		int _mDeviceType;
+		int _mDevice;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"StopAnimationType_";
+			key += std::to_wstring(_mDeviceType);
+			key += L"_";
+			key += std::to_wstring(_mDevice);
+			return key;
+		}
+	};
+
+	struct ParamsUseIdleAnimations
+	{
+		bool _mFlag;
+
+		static const std::wstring GenerateKey() {
+			std::wstring key = L"UseIdleAnimations";
+			return key;
+		}
+	};
+
+	enum class PendingCommandType
+	{
+		Command_Unknown,
+		Command_PlayChromaAnimation,
+		Command_SetEventName,
+		Command_SetIdleAnimationName,
+		Command_StopChromaAnimation,
+		Command_StopAll,
+		Command_StopAnimationType,
+		Command_UseIdleAnimations
+	};
+
+	struct PendingCommand
+	{
+		PendingCommandType _mType;
+		ParamsPlayChromaAnimation _mPlayChromaAnimation;
+		ParamsSetEventName _mSetEventName;
+		ParamsSetIdleAnimationName _mSetIdleAnimation;
+		ParamsStopAll _mStopAll;
+		ParamsStopAnimationType _mStopAnimationType;
+		ParamsStopChromaAnimation _mStopChromaAnimation;
+		ParamsUseIdleAnimations _mUseIdleAnimations;
 	};
 
 	class ChromaThread
@@ -34,11 +129,9 @@ namespace ChromaSDK
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
-		void ProcessPlayAnimationNames();
-		void ProcessEventNames();
+		void ProcessPendingCommands();
 		void ChromaWorker();
-		std::vector<PendingPlayChromaAnimation> GetPendingPlayAnimationNames();
-		std::vector<std::wstring> GetPendingEventNames();
+		std::vector<PendingCommand> GetPendingCommands();
 		static ChromaThread* _sInstance;
 		static std::mutex _sMutex;
 		static bool _sWaitForExit;
@@ -46,8 +139,7 @@ namespace ChromaSDK
 		static std::vector<AnimationBase*> _sAnimations;
 		static std::vector<bool> _sUseIdleAnimation;
 		static std::vector<std::wstring> _sIdleAnimation;
-		static std::map<std::wstring, bool> _sPendingPlayAnimationNames;
-		static std::set<std::wstring> _sPendingEventNames;
+		static std::map<std::wstring, PendingCommand> _sPendingCommands;
 		static RZRESULT _sLastResultSetEventName;
 	};
 }

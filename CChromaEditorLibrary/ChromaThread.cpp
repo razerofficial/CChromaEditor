@@ -18,8 +18,7 @@ thread* ChromaThread::_sThread = nullptr;
 vector<AnimationBase*> ChromaThread::_sAnimations;
 vector<bool> ChromaThread::_sUseIdleAnimation;
 vector<std::wstring> ChromaThread::_sIdleAnimation;
-std::map<std::wstring, bool> ChromaThread::_sPendingPlayAnimationNames;
-std::set<std::wstring> ChromaThread::_sPendingEventNames;
+std::map<std::wstring, PendingCommand> ChromaThread::_sPendingCommands;
 RZRESULT ChromaThread::_sLastResultSetEventName = RZRESULT_SUCCESS;
 
 extern bool _gForwardChromaEvents;
@@ -238,72 +237,14 @@ void ChromaThread::PlayAnimationName(const wchar_t* path, bool loop)
 	}
 
 	// use the path as key and save the loop state
-	_sPendingPlayAnimationNames[path] = loop;
-}
-
-std::vector<PendingPlayChromaAnimation> ChromaThread::GetPendingPlayAnimationNames()
-{
-	lock_guard<mutex> guard(_sMutex);
-
-	std::vector<PendingPlayChromaAnimation> results;
-
-	// module shutdown early abort
-	if (!_sWaitForExit)
-	{
-		return results;
-	}
-
-	for (auto it = _sPendingPlayAnimationNames.begin(); it != _sPendingPlayAnimationNames.end(); ++it)
-	{
-		PendingPlayChromaAnimation item;
-		item._mPath = it->first;
-		item._mLoop = it->second;
-		results.push_back(item);
-	}
-
-	_sPendingPlayAnimationNames.clear();
-
-	return results;
-}
-
-void ChromaThread::ProcessPlayAnimationNames()
-{
-	// module shutdown early abort
-	if (!_sWaitForExit)
-	{
-		return;
-	}
-
-	// Get the pending items and clear the list
-	std::vector<PendingPlayChromaAnimation> list = GetPendingPlayAnimationNames();
-
-	// execute the method from the worker thread
-	for (std::vector<PendingPlayChromaAnimation>::iterator it = list.begin(); it != list.end(); ++it)
-	{
-		// module shutdown early abort
-		if (!_sWaitForExit)
-		{
-			return;
-		}
-
-		const PendingPlayChromaAnimation& item = *it;
-
-		const wchar_t* path = item._mPath.c_str();
-
-		if (_gForwardChromaEvents)
-		{
-			// default is ON, forward animation names to SetEventName
-			PluginCoreSetEventName(path);
-		}
-
-		int animationId = PluginGetAnimation(path);
-		if (animationId < 0)
-		{
-			//LogError("ProcessPlayAnimationNames: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginPlayAnimationLoop(animationId, item._mLoop);
-	}
+	ParamsPlayChromaAnimation params;
+	params._mPath = path;
+	params._mLoop = loop;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_PlayChromaAnimation;
+	command._mPlayChromaAnimation = params;
+	_sPendingCommands[key] = command;
 }
 
 RZRESULT ChromaThread::SetEventName(LPCTSTR Name)
@@ -317,21 +258,26 @@ RZRESULT ChromaThread::SetEventName(LPCTSTR Name)
 	}
 
 	// Add only a new item
-	if (_sPendingEventNames.find(Name) == _sPendingEventNames.end())
+	ParamsSetEventName params;
+	params._mName = Name;
+	wstring key = params.GenerateKey();
+	if (_sPendingCommands.find(key) == _sPendingCommands.end())
 	{
-		_sPendingEventNames.insert(Name);
+		PendingCommand command;
+		command._mType = PendingCommandType::Command_SetEventName;
+		command._mSetEventName = params;
+		_sPendingCommands[key] = command;
 	}
 
 	// return last result since method is asynchronous
 	return _sLastResultSetEventName;
-
 }
 
-std::vector<std::wstring> ChromaThread::GetPendingEventNames()
+std::vector<PendingCommand> ChromaThread::GetPendingCommands()
 {
 	lock_guard<mutex> guard(_sMutex);
 
-	std::vector<std::wstring> results;
+	std::vector<PendingCommand> results;
 
 	// module shutdown early abort
 	if (!_sWaitForExit)
@@ -339,17 +285,17 @@ std::vector<std::wstring> ChromaThread::GetPendingEventNames()
 		return results;
 	}
 
-	for (auto it = _sPendingEventNames.begin(); it != _sPendingEventNames.end(); ++it)
+	for (auto it = _sPendingCommands.begin(); it != _sPendingCommands.end(); ++it)
 	{
-		results.push_back(*it);
+		results.push_back(it->second);
 	}
 
-	_sPendingEventNames.clear();
+	_sPendingCommands.clear();
 
 	return results;
 }
 
-void ChromaThread::ProcessEventNames()
+void ChromaThread::ProcessPendingCommands()
 {
 	// module shutdown early abort
 	if (!_sWaitForExit)
@@ -357,11 +303,11 @@ void ChromaThread::ProcessEventNames()
 		return;
 	}
 
-	// Get the pending names and clear the list
-	std::vector<std::wstring> eventNames = GetPendingEventNames();
+	// Get the pending commands and clear the list
+	std::vector<PendingCommand> pendingCommands = GetPendingCommands();
 
-	// execute the event names from the worker thread
-	for (std::vector<std::wstring>::iterator it = eventNames.begin(); it != eventNames.end(); ++it)
+	// execute the commands from the worker thread
+	for (std::vector<PendingCommand>::iterator it = pendingCommands.begin(); it != pendingCommands.end(); ++it)
 	{
 		// module shutdown early abort
 		if (!_sWaitForExit)
@@ -369,8 +315,38 @@ void ChromaThread::ProcessEventNames()
 			return;
 		}
 
-		std::wstring eventName = *it;
-		_sLastResultSetEventName = RzChromaSDK::SetEventName(eventName.c_str());
+		const PendingCommand& pendingCommand = *it;
+
+		switch (pendingCommand._mType)
+		{
+			case PendingCommandType::Command_PlayChromaAnimation:
+			{
+				const ParamsPlayChromaAnimation& params = pendingCommand._mPlayChromaAnimation;
+				const wchar_t* path = params._mPath.c_str();
+
+				if (_gForwardChromaEvents)
+				{
+					// default is ON, forward animation names to SetEventName
+					PluginCoreSetEventName(path);
+				}
+
+				int animationId = PluginGetAnimation(path);
+				if (animationId < 0)
+				{
+					//LogError("ProcessPendingCommands: Animation not found! %s\r\n", path);
+					break;
+				}
+				PluginPlayAnimationLoop(animationId, params._mLoop);
+			}
+			break;
+			case PendingCommandType::Command_SetEventName:
+			{
+				const ParamsSetEventName& params = pendingCommand._mSetEventName;
+				const std::wstring& eventName = params._mName;
+				_sLastResultSetEventName = RzChromaSDK::SetEventName(eventName.c_str());
+			}
+			break;
+		}
 	}
 }
 
@@ -395,8 +371,7 @@ void ChromaThread::ChromaWorker()
 		ProcessAnimations(deltaTime);
 
 		// process items from the worker
-		ProcessPlayAnimationNames();
-		ProcessEventNames();
+		ProcessPendingCommands();
 
 		if (!_sWaitForExit)
 		{
