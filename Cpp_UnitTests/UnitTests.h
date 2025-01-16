@@ -100,6 +100,8 @@ public:
 	static void UnitTestsSetEventName();
 	
 	static void UnitTestsSetEventNamePerformance();
+	
+	static void UnitTestsPlayAnimationNamePerformance();
 
 	static void UnitTestsUnicode();
 

@@ -2707,6 +2707,53 @@ void UnitTests::UnitTestsSetEventNamePerformance()
 	}
 }
 
+void UnitTests::UnitTestsPlayAnimationNamePerformance()
+{
+	printf("Measure PlayAnimationName Performance\r\n");
+
+	bool loop = true;
+	vector<wstring> deviceCategories =
+	{
+		L"ChromaLink",
+		L"Headset",
+		L"Keyboard",
+		L"Keypad",
+		L"Mouse",
+		L"Mousepad",
+	};
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}		
+
+		for (int i = 0; i < deviceCategories.size(); ++i)
+		{
+			wstring miscAnimation = L"Animations/Misc_" + deviceCategories[i] + L".chroma";
+			ChromaAnimationAPI::PlayAnimationName(miscAnimation.c_str(), loop);
+		}
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
 void UnitTests::UnitTestsUnicode()
 {
 	const wchar_t* animationName = L"Animations/你好";
@@ -2867,7 +2914,8 @@ void UnitTests::Run()
 	//UnitTestsIsActive();
 	//UnitTestsIsConnected();
 	//UnitTestsSetEventName();
-	UnitTestsSetEventNamePerformance();
+	//UnitTestsSetEventNamePerformance();
+	UnitTestsPlayAnimationNamePerformance();
 
 	//UnitTestsUnicode();
 
