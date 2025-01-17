@@ -213,7 +213,7 @@ extern "C"
 		{
 			return RZRESULT_FAILED;
 		}
-		return ChromaThread::Instance()->SetEventName(Name);
+		return ChromaThread::Instance()->AsyncSetEventName(Name);
 	}
 
 	EXPORT_API bool PluginCoreStreamSetFocus(const char* focus)
@@ -439,17 +439,20 @@ extern "C"
 
 	EXPORT_API void PluginStopAll()
 	{
-		PluginStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink);
-		PluginStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset);
-		PluginStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
-		PluginStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad);
-		PluginStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse);
-		PluginStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+		ChromaThread::Instance()->AsyncStopAll();
 	}
 
 	EXPORT_API void PluginClearAnimationType(int deviceType, int device)
 	{
-		PluginStopAnimationType(deviceType, device);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+		ChromaThread::Instance()->ImplStopAnimationType(deviceType, device);
 
 		FChromaSDKEffectResult result;
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
@@ -667,8 +670,10 @@ extern "C"
 	{
 		try
 		{
-			// Chroma thread plays animations
-			SetupChromaThread();
+			if (ChromaThread::Instance() == nullptr)
+			{
+				return -1;
+			}
 
 			if (!PluginIsInitialized())
 			{
@@ -691,7 +696,7 @@ extern "C"
 				{
 					deviceId = (int)EChromaSDKDevice2DEnum::DE_Keyboard;
 				}
-				PluginStopAnimationType(deviceType, deviceId);
+				ChromaThread::Instance()->ImplStopAnimationType(deviceType, deviceId);
 				switch (animation->GetDeviceType())
 				{
 				case EChromaSDKDeviceTypeEnum::DE_1D:
@@ -1942,8 +1947,10 @@ extern "C"
 
 	EXPORT_API void PluginPlayAnimationLoop(int animationId, bool loop)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
 
 		if (!PluginIsInitialized())
 		{
@@ -1966,7 +1973,7 @@ extern "C"
 			{
 				deviceId = (int)EChromaSDKDevice2DEnum::DE_Keyboard;
 			}
-			PluginStopAnimationType(deviceType, deviceId);
+			ChromaThread::Instance()->ImplStopAnimationType(deviceType, deviceId);
 			//LogDebug("PluginPlayAnimationLoop: %s\r\n", animation->GetName().c_str());
 			switch (deviceType)
 			{
@@ -1987,7 +1994,11 @@ extern "C"
 	
 	EXPORT_API void PluginUseForwardChromaEvents(bool flag)
 	{
-		_gForwardChromaEvents = flag;
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+		ChromaThread::Instance()->AsyncUseForwardChromaEvents(flag);
 	}
 
 	EXPORT_API void PluginPlayAnimationName(const wchar_t* path, bool loop)
@@ -1996,7 +2007,7 @@ extern "C"
 		{
 			return;
 		}
-		ChromaThread::Instance()->PlayAnimationName(path, loop);
+		ChromaThread::Instance()->AsyncPlayAnimationName(path, loop);
 	}
 
 	EXPORT_API double PluginPlayAnimationNameD(const wchar_t* path, double loop)
@@ -2014,6 +2025,11 @@ extern "C"
 
 	EXPORT_API void PluginPlayAnimationFrame(int animationId, int frameId, bool loop)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
 		if (_gAnimations.find(animationId) != _gAnimations.end())
 		{
 			AnimationBase* animation = _gAnimations[animationId];
@@ -2022,7 +2038,7 @@ extern "C"
 				LogError(L"PluginPlayAnimationFrame: Animation is null! id=%d\r\n", animationId);
 				return;
 			}
-			PluginStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
+			ChromaThread::Instance()->ImplStopAnimationType(animation->GetDeviceType(), animation->GetDeviceId());
 			//ChromaLogger::wprintf(L"PluginPlayAnimationFrame: %s\r\n", animation->GetName().c_str());
 			switch (animation->GetDeviceType())
 			{
@@ -2070,13 +2086,11 @@ extern "C"
 
 	EXPORT_API void PluginStopAnimationName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
-		if (animationId < 0)
+		if (ChromaThread::Instance() == nullptr)
 		{
-			LogError(L"PluginStopAnimationName: Animation not found! %s\r\n", path);
 			return;
 		}
-		PluginStopAnimation(animationId);
+		ChromaThread::Instance()->AsyncStopAnimationName(path);
 	}
 
 	EXPORT_API double PluginStopAnimationNameD(const wchar_t* path)
@@ -2087,40 +2101,11 @@ extern "C"
 
 	EXPORT_API void PluginStopAnimationType(int deviceType, int device)
 	{
-		int deviceId = device;
-		if (deviceType == (int)EChromaSDKDeviceTypeEnum::DE_2D &&
-			device == (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended)
+		if (ChromaThread::Instance() == nullptr)
 		{
-			deviceId = (int)EChromaSDKDevice2DEnum::DE_Keyboard;
+			return;
 		}
-
-		switch ((EChromaSDKDeviceTypeEnum)deviceType)
-		{
-		case EChromaSDKDeviceTypeEnum::DE_1D:
-		{
-			if (_gPlayMap1D.find((EChromaSDKDevice1DEnum)deviceId) != _gPlayMap1D.end())
-			{
-				int prevAnimation = _gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId];
-				if (prevAnimation != -1)
-				{
-					PluginStopAnimation(prevAnimation);
-				}
-			}
-		}
-		break;
-		case EChromaSDKDeviceTypeEnum::DE_2D:
-		{
-			if (_gPlayMap2D.find((EChromaSDKDevice2DEnum)deviceId) != _gPlayMap2D.end())
-			{
-				int prevAnimation = _gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId];
-				if (prevAnimation != -1)
-				{
-					PluginStopAnimation(prevAnimation);
-				}
-			}
-		}
-		break;
-		}
+		ChromaThread::Instance()->AsyncStopAnimationType(deviceType, device);
 	}
 
 	EXPORT_API double PluginStopAnimationTypeD(double deviceType, double device)
@@ -11947,18 +11932,19 @@ extern "C"
 
 	EXPORT_API void PluginUseIdleAnimations(bool flag)
 	{
-		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_ChromaLink, flag);
-		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Headset, flag);
-		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keyboard, flag);
-		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keypad, flag);
-		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mouse, flag);
-		ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mousepad, flag);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+		ChromaThread::Instance()->AsyncUseIdleAnimations(flag);
 	}
 
 	EXPORT_API void PluginSetIdleAnimation(int animationId)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
 
 		AnimationBase* animation = GetAnimationInstance(animationId);
 		if (nullptr == animation)
@@ -11967,15 +11953,16 @@ extern "C"
 			return;
 		}
 
-		ChromaSDKPlugin::GetInstance()->SetIdleAnimationName(animation->GetName().c_str());
+		ChromaThread::Instance()->AsyncSetIdleAnimationName(animation->GetName().c_str());
 	}
 
 	EXPORT_API void PluginSetIdleAnimationName(const wchar_t* path)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
-
-		ChromaSDKPlugin::GetInstance()->SetIdleAnimationName(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+		ChromaThread::Instance()->AsyncSetIdleAnimationName(path);
 	}
 
 	EXPORT_API void PluginUsePreloading(int animationId, bool flag)
@@ -12010,7 +11997,11 @@ extern "C"
 
 	EXPORT_API void PluginSetStaticColor(int deviceType, int device, int color)
 	{
-		PluginStopAnimationType(deviceType, device);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+		ChromaThread::Instance()->ImplStopAnimationType(deviceType, device);
 		FChromaSDKEffectResult result;
 		switch ((EChromaSDKDeviceTypeEnum)deviceType)
 		{

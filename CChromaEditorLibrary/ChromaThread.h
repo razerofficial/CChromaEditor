@@ -9,7 +9,7 @@
 
 namespace ChromaSDK
 {
-	struct ParamsPlayChromaAnimation
+	struct ParamsPlayChromaAnimationName
 	{
 		std::wstring _mPath;
 		bool _mLoop;
@@ -43,7 +43,7 @@ namespace ChromaSDK
 		}
 	};
 
-	struct ParamsStopChromaAnimation
+	struct ParamsStopAnimationName
 	{
 		std::wstring _mPath;
 
@@ -76,6 +76,16 @@ namespace ChromaSDK
 		}
 	};
 
+	struct ParamsUseForwardChromaEvents
+	{
+		bool _mFlag;
+
+		static const std::wstring GenerateKey() {
+			std::wstring key = L"UseForwardChromaEvents";
+			return key;
+		}
+	};
+
 	struct ParamsUseIdleAnimations
 	{
 		bool _mFlag;
@@ -89,24 +99,26 @@ namespace ChromaSDK
 	enum class PendingCommandType
 	{
 		Command_Unknown,
-		Command_PlayChromaAnimation,
+		Command_PlayChromaAnimationName,
 		Command_SetEventName,
 		Command_SetIdleAnimationName,
-		Command_StopChromaAnimation,
+		Command_StopAnimationName,
 		Command_StopAll,
 		Command_StopAnimationType,
+		Command_UseForwardChromaEvents,
 		Command_UseIdleAnimations
 	};
 
 	struct PendingCommand
 	{
 		PendingCommandType _mType;
-		ParamsPlayChromaAnimation _mPlayChromaAnimation;
+		ParamsPlayChromaAnimationName _mPlayChromaAnimationName;
 		ParamsSetEventName _mSetEventName;
-		ParamsSetIdleAnimationName _mSetIdleAnimation;
+		ParamsSetIdleAnimationName _mSetIdleAnimationName;
 		ParamsStopAll _mStopAll;
+		ParamsStopAnimationName _mStopAnimationName;
 		ParamsStopAnimationType _mStopAnimationType;
-		ParamsStopChromaAnimation _mStopChromaAnimation;
+		ParamsUseForwardChromaEvents _mUseForwardChromaEvents;
 		ParamsUseIdleAnimations _mUseIdleAnimations;
 	};
 
@@ -122,15 +134,24 @@ namespace ChromaSDK
 		void DeleteAnimation(AnimationBase* animation);
 		int GetAnimationCount();
 		int GetAnimationId(int index);
+		void ImplSetIdleAnimationName(const wchar_t* name);
+		void ImplStopAnimationType(int deviceType, int device);
+		// async calls
+		void AsyncPlayAnimationName(const wchar_t* path, bool loop);
+		RZRESULT AsyncSetEventName(LPCTSTR Name);
+		void AsyncSetIdleAnimationName(const wchar_t* path);
+		void AsyncStopAll();
+		void AsyncStopAnimationName(const wchar_t* path);
+		void AsyncStopAnimationType(int deviceType, int device);
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
-		void SetIdleAnimationName(const wchar_t* name);
-		void PlayAnimationName(const wchar_t* path, bool loop);
-		RZRESULT SetEventName(LPCTSTR Name);
+		void AsyncUseForwardChromaEvents(bool flag);
+		void AsyncUseIdleAnimations(bool flag);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
 		void ProcessPendingCommands();
 		void ChromaWorker();
+		void AddPendingCommandInOrder(const std::wstring& key, const PendingCommand& command);
 		std::vector<PendingCommand> GetPendingCommands();
 		static ChromaThread* _sInstance;
 		static std::mutex _sMutex;
@@ -139,6 +160,7 @@ namespace ChromaSDK
 		static std::vector<AnimationBase*> _sAnimations;
 		static std::vector<bool> _sUseIdleAnimation;
 		static std::vector<std::wstring> _sIdleAnimation;
+		static std::vector<std::wstring> _sOrderPendingCommands;
 		static std::map<std::wstring, PendingCommand> _sPendingCommands;
 		static RZRESULT _sLastResultSetEventName;
 	};
