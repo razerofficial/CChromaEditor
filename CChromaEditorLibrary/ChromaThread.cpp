@@ -18,10 +18,12 @@ thread* ChromaThread::_sThread = nullptr;
 vector<AnimationBase*> ChromaThread::_sAnimations;
 vector<bool> ChromaThread::_sUseIdleAnimation;
 vector<std::string> ChromaThread::_sIdleAnimation;
-std::map<std::string, bool> ChromaThread::_sPendingPlayAnimationNames;
-std::set<std::wstring> ChromaThread::_sPendingEventNames;
+std::vector<std::wstring> ChromaThread::_sOrderPendingCommands;
+std::map<std::wstring, PendingCommand> ChromaThread::_sPendingCommands;
 RZRESULT ChromaThread::_sLastResultSetEventName = RZRESULT_SUCCESS;
 
+extern map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
+extern map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
 extern bool _gForwardChromaEvents;
 
 ChromaThread::ChromaThread()
@@ -65,7 +67,7 @@ void ChromaThread::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
 		break;
 	}
 }
-void ChromaThread::SetIdleAnimationName(const char* name)
+void ChromaThread::ImplSetIdleAnimationName(const char* name)
 {
 	lock_guard<mutex> guard(_sMutex);
 	AnimationBase* animation = GetAnimationInstanceName(name);
@@ -111,6 +113,44 @@ void ChromaThread::SetIdleAnimationName(const char* name)
 			}
 			break;
 		}
+	}
+}
+
+void ChromaThread::ImplStopAnimationType(int deviceType, int device)
+{
+	int deviceId = device;
+	if (deviceType == (int)EChromaSDKDeviceTypeEnum::DE_2D &&
+		device == (int)EChromaSDKDevice2DEnum::DE_KeyboardExtended)
+	{
+		deviceId = (int)EChromaSDKDevice2DEnum::DE_Keyboard;
+	}
+
+	switch ((EChromaSDKDeviceTypeEnum)deviceType)
+	{
+	case EChromaSDKDeviceTypeEnum::DE_1D:
+	{
+		if (_gPlayMap1D.find((EChromaSDKDevice1DEnum)deviceId) != _gPlayMap1D.end())
+		{
+			int prevAnimation = _gPlayMap1D[(EChromaSDKDevice1DEnum)deviceId];
+			if (prevAnimation != -1)
+			{
+				PluginStopAnimation(prevAnimation);
+			}
+		}
+	}
+	break;
+	case EChromaSDKDeviceTypeEnum::DE_2D:
+	{
+		if (_gPlayMap2D.find((EChromaSDKDevice2DEnum)deviceId) != _gPlayMap2D.end())
+		{
+			int prevAnimation = _gPlayMap2D[(EChromaSDKDevice2DEnum)deviceId];
+			if (prevAnimation != -1)
+			{
+				PluginStopAnimation(prevAnimation);
+			}
+		}
+	}
+	break;
 	}
 }
 
@@ -227,7 +267,19 @@ void ChromaThread::ProcessAnimations(float deltaTime)
 	}
 }
 
-void ChromaThread::PlayAnimationName(const char* path, bool loop)
+void ChromaThread::AddPendingCommandInOrder(const wstring& key, const PendingCommand& command)
+{
+	_sPendingCommands[key] = command;
+	// maintain the order of pending commands
+	auto it = std::find(_sOrderPendingCommands.begin(), _sOrderPendingCommands.end(), key);
+	if (it != _sOrderPendingCommands.end())
+	{
+		_sOrderPendingCommands.erase(it);
+	}
+	_sOrderPendingCommands.push_back(key);
+}
+
+void ChromaThread::AsyncPlayAnimationName(const char* path, bool loop)
 {
 	lock_guard<mutex> guard(_sMutex);
 
@@ -238,77 +290,102 @@ void ChromaThread::PlayAnimationName(const char* path, bool loop)
 	}
 
 	// use the path as key and save the loop state
-	_sPendingPlayAnimationNames[path] = loop;
+	ParamsPlayChromaAnimationName params;
+	params._mPath = path;
+	params._mLoop = loop;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_PlayChromaAnimationName;
+	command._mPlayChromaAnimationName = params;
+	AddPendingCommandInOrder(key, command);
 }
 
-std::vector<PendingPlayChromaAnimation> ChromaThread::GetPendingPlayAnimationNames()
+void ChromaThread::AsyncStopAnimationName(const char* path)
 {
 	lock_guard<mutex> guard(_sMutex);
 
-	std::vector<PendingPlayChromaAnimation> results;
-
-	// module shutdown early abort
-	if (!_sWaitForExit)
-	{
-		return results;
-	}
-
-	for (auto it = _sPendingPlayAnimationNames.begin(); it != _sPendingPlayAnimationNames.end(); ++it)
-	{
-		PendingPlayChromaAnimation item;
-		item._mPath = it->first;
-		item._mLoop = it->second;
-		results.push_back(item);
-	}
-
-	_sPendingPlayAnimationNames.clear();
-
-	return results;
-}
-
-void ChromaThread::ProcessPlayAnimationNames()
-{
 	// module shutdown early abort
 	if (!_sWaitForExit)
 	{
 		return;
 	}
 
-	// Get the pending items and clear the list
-	std::vector<PendingPlayChromaAnimation> list = GetPendingPlayAnimationNames();
+	// use the path as key and save the loop state
+	ParamsStopAnimationName params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
 
-	// execute the method from the worker thread
-	for (std::vector<PendingPlayChromaAnimation>::iterator it = list.begin(); it != list.end(); ++it)
-	{
-		// module shutdown early abort
-		if (!_sWaitForExit)
-		{
-			return;
-		}
-
-		const PendingPlayChromaAnimation& item = *it;
-
-		const char* path = item._mPath.c_str();
-
-		if (_gForwardChromaEvents)
-		{
-			// default is ON, forward animation names to SetEventName
-			const string& strPath = item._mPath;
-			wstring wPath(strPath.begin(), strPath.end());
-			PluginCoreSetEventName(wPath.c_str());
-		}
-
-		int animationId = PluginGetAnimation(path);
-		if (animationId < 0)
-		{
-			//LogError("ProcessPlayAnimationNames: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginPlayAnimationLoop(animationId, item._mLoop);
-	}
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_StopAnimationName;
+	command._mStopAnimationName = params;
+	AddPendingCommandInOrder(key, command);
 }
 
-RZRESULT ChromaThread::SetEventName(LPCTSTR Name)
+void ChromaThread::AsyncStopAnimationType(int deviceType, int device)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the loop state
+	ParamsStopAnimationType params;
+	params._mDeviceType = deviceType;
+	params._mDevice = device;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_StopAnimationType;
+	command._mStopAnimationType = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncSetIdleAnimationName(const char* path)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the loop state
+	ParamsSetIdleAnimationName params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_SetIdleAnimationName;
+	command._mSetIdleAnimationName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncStopAll()
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the loop state
+	ParamsStopAll params;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_StopAll;
+	command._mStopAll = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+RZRESULT ChromaThread::AsyncSetEventName(LPCTSTR Name)
 {
 	lock_guard<mutex> guard(_sMutex);
 
@@ -319,21 +396,66 @@ RZRESULT ChromaThread::SetEventName(LPCTSTR Name)
 	}
 
 	// Add only a new item
-	if (_sPendingEventNames.find(Name) == _sPendingEventNames.end())
-	{
-		_sPendingEventNames.insert(Name);
-	}
+	ParamsSetEventName params;
+	params._mName = Name;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_SetEventName;
+	command._mSetEventName = params;
+	AddPendingCommandInOrder(key, command);
 
 	// return last result since method is asynchronous
 	return _sLastResultSetEventName;
-
 }
 
-std::vector<std::wstring> ChromaThread::GetPendingEventNames()
+void ChromaThread::AsyncUseForwardChromaEvents(bool flag)
 {
 	lock_guard<mutex> guard(_sMutex);
 
-	std::vector<std::wstring> results;
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// Add only a new item
+	ParamsUseForwardChromaEvents params;
+	params._mFlag = flag;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_UseForwardChromaEvents;
+	command._mUseForwardChromaEvents = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncUseIdleAnimations(bool flag)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// Add only a new item
+	ParamsUseIdleAnimations params;
+	params._mFlag = flag;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_UseIdleAnimations;
+	command._mUseIdleAnimations = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+std::vector<PendingCommand> ChromaThread::GetPendingCommands()
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	std::vector<PendingCommand> results;
 
 	// module shutdown early abort
 	if (!_sWaitForExit)
@@ -341,17 +463,22 @@ std::vector<std::wstring> ChromaThread::GetPendingEventNames()
 		return results;
 	}
 
-	for (auto it = _sPendingEventNames.begin(); it != _sPendingEventNames.end(); ++it)
+	// build a list of pending commands in the original order
+	for (auto it = _sOrderPendingCommands.begin(); it != _sOrderPendingCommands.end(); ++it)
 	{
-		results.push_back(*it);
+		const wstring& key = *it;
+		//printf("GetPendingCommands: %S\r\n", key.c_str());
+		const PendingCommand& command = _sPendingCommands[key];
+		results.push_back(command);
 	}
 
-	_sPendingEventNames.clear();
+	_sOrderPendingCommands.clear();
+	_sPendingCommands.clear();
 
 	return results;
 }
 
-void ChromaThread::ProcessEventNames()
+void ChromaThread::ProcessPendingCommands()
 {
 	// module shutdown early abort
 	if (!_sWaitForExit)
@@ -359,11 +486,11 @@ void ChromaThread::ProcessEventNames()
 		return;
 	}
 
-	// Get the pending names and clear the list
-	std::vector<std::wstring> eventNames = GetPendingEventNames();
+	// Get the pending commands and clear the list
+	std::vector<PendingCommand> pendingCommands = GetPendingCommands();
 
-	// execute the event names from the worker thread
-	for (std::vector<std::wstring>::iterator it = eventNames.begin(); it != eventNames.end(); ++it)
+	// execute the commands from the worker thread
+	for (std::vector<PendingCommand>::iterator it = pendingCommands.begin(); it != pendingCommands.end(); ++it)
 	{
 		// module shutdown early abort
 		if (!_sWaitForExit)
@@ -371,8 +498,98 @@ void ChromaThread::ProcessEventNames()
 			return;
 		}
 
-		std::wstring eventName = *it;
-		_sLastResultSetEventName = RzChromaSDK::SetEventName(eventName.c_str());
+		const PendingCommand& pendingCommand = *it;
+
+		switch (pendingCommand._mType)
+		{
+			case PendingCommandType::Command_PlayChromaAnimationName:
+			{
+				const ParamsPlayChromaAnimationName& params = pendingCommand._mPlayChromaAnimationName;
+				const char* path = params._mPath.c_str();
+
+				if (_gForwardChromaEvents)
+				{
+					// default is ON, forward animation names to SetEventName
+					string strPath = path;
+					wstring eventName(strPath.begin(), strPath.end());
+					_sLastResultSetEventName = RzChromaSDK::SetEventName(eventName.c_str());
+				}
+
+				int animationId = PluginGetAnimation(path);
+				if (animationId < 0)
+				{
+					//LogError("ProcessPendingCommands: Animation not found! %s\r\n", path);
+					break;
+				}
+				PluginPlayAnimationLoop(animationId, params._mLoop);
+			}
+			break;
+			case PendingCommandType::Command_SetIdleAnimationName:
+			{
+				const ParamsSetIdleAnimationName& params = pendingCommand._mSetIdleAnimationName;
+				const std::string& path = params._mPath;
+				ImplSetIdleAnimationName(path.c_str());
+			}
+			break;
+			case PendingCommandType::Command_SetEventName:
+			{
+				const ParamsSetEventName& params = pendingCommand._mSetEventName;
+				const std::wstring& eventName = params._mName;
+				_sLastResultSetEventName = RzChromaSDK::SetEventName(eventName.c_str());
+			}
+			break;
+			case PendingCommandType::Command_StopAll:
+			{
+				const ParamsStopAll& params = pendingCommand._mStopAll;				
+				ImplStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink);
+				ImplStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset);
+				ImplStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
+				ImplStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad);
+				ImplStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse);
+				ImplStopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad);
+			}
+			break;
+			case PendingCommandType::Command_StopAnimationName:
+			{
+				const ParamsStopAnimationName& params = pendingCommand._mStopAnimationName;
+				const char* path = params._mPath.c_str();
+
+				int animationId = PluginGetAnimation(path);
+				if (animationId < 0)
+				{
+					//LogError("ProcessPendingCommands: Animation not found! %s\r\n", path);
+					break;
+				}
+				PluginStopAnimation(animationId);
+			}
+			break;
+			case PendingCommandType::Command_StopAnimationType:
+			{
+				const ParamsStopAnimationType& params = pendingCommand._mStopAnimationType;
+				int device = params._mDevice;
+				int deviceType = params._mDeviceType;
+				ImplStopAnimationType(deviceType, device);
+			}
+			break;
+			case PendingCommandType::Command_UseForwardChromaEvents:
+			{
+				const ParamsUseForwardChromaEvents& params = pendingCommand._mUseForwardChromaEvents;
+				_gForwardChromaEvents = params._mFlag;
+			}
+			break;
+			case PendingCommandType::Command_UseIdleAnimations:
+			{
+				const ParamsUseIdleAnimations& params = pendingCommand._mUseIdleAnimations;
+				bool flag = params._mFlag;
+				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_ChromaLink, flag);
+				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Headset, flag);
+				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keyboard, flag);
+				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keypad, flag);
+				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mouse, flag);
+				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mousepad, flag);
+			}
+			break;
+		}
 	}
 }
 
@@ -397,8 +614,7 @@ void ChromaThread::ChromaWorker()
 		ProcessAnimations(deltaTime);
 
 		// process items from the worker
-		ProcessPlayAnimationNames();
-		ProcessEventNames();
+		ProcessPendingCommands();
 
 		if (!_sWaitForExit)
 		{

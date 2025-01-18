@@ -47,7 +47,6 @@ namespace ChromaSDK
 		AnimationBase* OpenAnimationFromMemory(const BYTE* data);
 
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
-		void SetIdleAnimationName(const char* path);
 
 	private:
 		ChromaSDKPlugin();

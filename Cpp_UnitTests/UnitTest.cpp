@@ -2716,6 +2716,285 @@ void UnitTests::UnitTestsPlayAnimationNamePerformance()
 	}
 }
 
+void UnitTests::UnitTestsStopAllPerformance()
+{
+	printf("Measure StopAll Performance\r\n");
+
+	bool loop = true;
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::PlayAnimationName(miscAnimation.c_str(), loop);
+	}
+
+	Sleep(1000);
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		ChromaAnimationAPI::StopAll();
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
+void UnitTests::UnitTestsStopAnimationNamePerformance()
+{
+	printf("Measure StopAnimationName Performance\r\n");
+
+	bool loop = true;
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::PlayAnimationName(miscAnimation.c_str(), loop);
+	}
+
+	Sleep(1000);
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		for (int i = 0; i < deviceCategories.size(); ++i)
+		{
+			string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+			ChromaAnimationAPI::StopAnimationName(miscAnimation.c_str());
+		}
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
+void UnitTests::UnitTestsStopAnimationTypePerformance()
+{
+	printf("Measure StopAnimationType Performance\r\n");
+
+	bool loop = true;
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+
+	printf("Initially play animations...\r\n");
+
+	for (int i = 0; i < deviceCategories.size(); ++i)
+	{
+		string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+		ChromaAnimationAPI::PlayAnimationName(miscAnimation.c_str(), loop);
+	}
+
+	Sleep(1000);
+
+	printf("Stop animations by type...\r\n");
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		ChromaAnimationAPI::StopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_ChromaLink);
+		ChromaAnimationAPI::StopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Headset);
+		ChromaAnimationAPI::StopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keyboard);
+		ChromaAnimationAPI::StopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Keypad);
+		ChromaAnimationAPI::StopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_2D, (int)EChromaSDKDevice2DEnum::DE_Mouse);
+		ChromaAnimationAPI::StopAnimationType((int)EChromaSDKDeviceTypeEnum::DE_1D, (int)EChromaSDKDevice1DEnum::DE_Mousepad);
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
+void UnitTests::UnitTestsUseForwardChromaEventsPerformance()
+{
+	printf("Measure UseForwardChromaEvents Performance\r\n");
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		ChromaAnimationAPI::UseForwardChromaEvents(false);
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
+void UnitTests::UnitTestsSetIdleAnimationNamePerformance()
+{
+	printf("Measure SetIdleAnimationName Performance\r\n");
+
+	ChromaAnimationAPI::UseIdleAnimations(true);
+
+	bool loop = true;
+	vector<string> deviceCategories =
+	{
+		"ChromaLink",
+		"Headset",
+		"Keyboard",
+		"Keypad",
+		"Mouse",
+		"Mousepad",
+	};
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		for (int i = 0; i < deviceCategories.size(); ++i)
+		{
+			string miscAnimation = "Animations/Misc_" + deviceCategories[i] + ".chroma";
+			ChromaAnimationAPI::SetIdleAnimationName(miscAnimation.c_str());
+		}
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
+void UnitTests::UnitTestsUseIdleAnimationsPerformance()
+{
+	printf("Measure UnitTestsUseIdleAnimations Performance\r\n");
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		ChromaAnimationAPI::UseIdleAnimations(true);
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
 void UnitTests::UnitTestsFrameDuration()
 {
 	vector<string> deviceCategories =
@@ -2868,8 +3147,16 @@ void UnitTests::Run()
 	//UnitTestsIsActive();
 	//UnitTestsIsConnected();
 	//UnitTestsSetEventName();
+
+	//UnitTestsPlayAnimationNamePerformance();
 	//UnitTestsSetEventNamePerformance();
-	UnitTestsPlayAnimationNamePerformance();
+	//UnitTestsSetIdleAnimationNamePerformance();
+	//UnitTestsStopAllPerformance();
+	//UnitTestsStopAnimationNamePerformance();
+	UnitTestsStopAnimationTypePerformance();
+	//UnitTestsUseForwardChromaEventsPerformance();
+	//UnitTestsUseIdleAnimationsPerformance();
+
 
 	//UnitTestsIdleAnimation();
 	//UnitTestsIdleAnimation2();

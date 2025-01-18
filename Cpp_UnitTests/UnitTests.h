@@ -100,8 +100,20 @@ public:
 	static void UnitTestsSetEventName();
 
 	static void UnitTestsSetEventNamePerformance();
-
+	
 	static void UnitTestsPlayAnimationNamePerformance();
+
+	static void UnitTestsUseForwardChromaEventsPerformance();
+
+	static void UnitTestsSetIdleAnimationNamePerformance();
+
+	static void UnitTestsStopAllPerformance();
+
+	static void UnitTestsStopAnimationNamePerformance();
+
+	static void UnitTestsStopAnimationTypePerformance();
+
+	static void UnitTestsUseIdleAnimationsPerformance();
 
 	static void UnitTestsIdleAnimation();
 
