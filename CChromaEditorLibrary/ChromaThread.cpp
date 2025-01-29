@@ -82,6 +82,16 @@ void ChromaThread::ImplCloseAnimationName(const wchar_t* path)
 	}
 	*/
 }
+
+int ChromaThread::ImplGetAnimation(const wchar_t* name)
+{
+	if (_gAnimationMapID.find(name) != _gAnimationMapID.end())
+	{
+		return _gAnimationMapID[name];
+	}
+	return PluginOpenAnimation(name);
+}
+
 void ChromaThread::ImplSetIdleAnimationName(const wchar_t* name)
 {
 	AnimationBase* animation = GetAnimationInstanceName(name);
@@ -166,6 +176,28 @@ void ChromaThread::ImplStopAnimationType(int deviceType, int device)
 	}
 	break;
 	}
+}
+
+void ChromaThread::ImplFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplFillThresholdColorsMinMaxAllFramesRGBName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginFillThresholdColorsMinMaxAllFramesRGB(animationId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
+}
+
+void ChromaThread::ImplMultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMultiplyIntensityAllFramesRGBName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginMultiplyIntensityAllFramesRGB(animationId, red, green, blue);
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
@@ -293,6 +325,27 @@ void ChromaThread::AddPendingCommandInOrder(const wstring& key, const PendingCom
 	_sOrderPendingCommands.push_back(key);
 }
 
+void ChromaThread::AsyncGetAnimation(const wchar_t* path)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsGetAnimation params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_GetAnimation;
+	command._mGetAnimation = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncCloseAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -303,7 +356,7 @@ void ChromaThread::AsyncCloseAnimationName(const wchar_t* path)
 		return;
 	}
 
-	// use the path as key and save the loop state
+	// use the path as key and save the state
 	ParamsCloseAnimationName params;
 	params._mPath = path;
 	wstring key = params.GenerateKey();
@@ -346,7 +399,7 @@ void ChromaThread::AsyncStopAnimationName(const wchar_t* path)
 		return;
 	}
 
-	// use the path as key and save the loop state
+	// use the path as key and save the state
 	ParamsStopAnimationName params;
 	params._mPath = path;
 	wstring key = params.GenerateKey();
@@ -367,7 +420,7 @@ void ChromaThread::AsyncStopAnimationType(int deviceType, int device)
 		return;
 	}
 
-	// use the path as key and save the loop state
+	// use the path as key and save the state
 	ParamsStopAnimationType params;
 	params._mDeviceType = deviceType;
 	params._mDevice = device;
@@ -376,6 +429,59 @@ void ChromaThread::AsyncStopAnimationType(int deviceType, int device)
 	PendingCommand command;
 	command._mType = PendingCommandType::Command_StopAnimationType;
 	command._mStopAnimationType = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsFillThresholdColorsMinMaxAllFramesRGBName params;
+	params._mPath = path;
+	params._mMinThreshold = minThreshold;
+	params._mMinRed = minRed;
+	params._mMinGreen = minGreen;
+	params._mMinBlue = minBlue;
+	params._mMaxThreshold = maxThreshold;
+	params._mMaxRed = maxRed;
+	params._mMaxGreen = maxGreen;
+	params._mMaxBlue = maxBlue;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_FillThresholdColorsMinMaxAllFramesRGBName;
+	command._mFillThresholdColorsMinMaxAllFramesRGBName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncMultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsMultiplyIntensityAllFramesRGBName params;
+	params._mPath = path;
+	params._mRed = red;
+	params._mGreen = green;
+	params._mBlue = blue;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MultiplyIntensityAllFramesRGBName;
+	command._mMultiplyIntensityAllFramesRGBName = params;
 	AddPendingCommandInOrder(key, command);
 }
 
@@ -389,7 +495,7 @@ void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 		return;
 	}
 
-	// use the path as key and save the loop state
+	// use the path as key and save the state
 	ParamsSetIdleAnimationName params;
 	params._mPath = path;
 	wstring key = params.GenerateKey();
@@ -410,7 +516,7 @@ void ChromaThread::AsyncStopAll()
 		return;
 	}
 
-	// use the path as key and save the loop state
+	// use the path as key and save the state
 	ParamsStopAll params;
 	wstring key = params.GenerateKey();
 
@@ -544,6 +650,13 @@ void ChromaThread::ProcessPendingCommands()
 				ImplCloseAnimationName(path);
 			}
 			break;
+		case PendingCommandType::Command_GetAnimation:
+			{
+				const ParamsGetAnimation& params = pendingCommand._mGetAnimation;
+				const wchar_t* path = params._mPath.c_str();
+				ImplGetAnimation(path);
+			}
+			break;
 			case PendingCommandType::Command_PlayChromaAnimationName:
 			{
 				const ParamsPlayChromaAnimationName& params = pendingCommand._mPlayChromaAnimationName;
@@ -555,7 +668,7 @@ void ChromaThread::ProcessPendingCommands()
 					_sLastResultSetEventName = RzChromaSDK::SetEventName(path);
 				}
 
-				int animationId = PluginGetAnimation(path);
+				int animationId = ImplGetAnimation(path);
 				if (animationId < 0)
 				{
 					//LogError("ProcessPendingCommands: Animation not found! %s\r\n", path);
@@ -594,7 +707,7 @@ void ChromaThread::ProcessPendingCommands()
 				const ParamsStopAnimationName& params = pendingCommand._mStopAnimationName;
 				const wchar_t* path = params._mPath.c_str();
 
-				int animationId = PluginGetAnimation(path);
+				int animationId = ImplGetAnimation(path);
 				if (animationId < 0)
 				{
 					//LogError("ProcessPendingCommands: Animation not found! %s\r\n", path);
@@ -627,6 +740,31 @@ void ChromaThread::ProcessPendingCommands()
 				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keypad, flag);
 				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mouse, flag);
 				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mousepad, flag);
+			}
+			break;
+			case PendingCommandType::Command_FillThresholdColorsMinMaxAllFramesRGBName:
+			{
+				const ParamsFillThresholdColorsMinMaxAllFramesRGBName& params = pendingCommand._mFillThresholdColorsMinMaxAllFramesRGBName;
+				const wchar_t* path = params._mPath.c_str();
+				int minThreshold = params._mMinThreshold;
+				int minRed = params._mMinRed;
+				int minGreen = params._mMinGreen;
+				int minBlue = params._mMinBlue;
+				int maxThreshold = params._mMaxThreshold;
+				int maxRed = params._mMaxRed;
+				int maxGreen = params._mMaxGreen;
+				int maxBlue = params._mMaxBlue;
+				ImplFillThresholdColorsMinMaxAllFramesRGBName(path, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
+			}
+			break;
+			case PendingCommandType::Command_MultiplyIntensityAllFramesRGBName:
+			{
+				const ParamsMultiplyIntensityAllFramesRGBName& params = pendingCommand._mMultiplyIntensityAllFramesRGBName;
+				const wchar_t* path = params._mPath.c_str();
+				int red = params._mRed;
+				int green = params._mGreen;
+				int blue = params._mBlue;
+				ImplMultiplyIntensityAllFramesRGBName(path, red, green, blue);
 			}
 			break;
 		}

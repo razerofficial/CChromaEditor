@@ -622,7 +622,12 @@ extern "C"
 
 	EXPORT_API void PluginLoadAnimationName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginLoadAnimationName: Animation not found! %s\r\n", path);
@@ -661,7 +666,12 @@ extern "C"
 
 	EXPORT_API void PluginUnloadAnimationName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginUnloadAnimationName: Animation not found! %s\r\n", path);
@@ -1015,7 +1025,12 @@ extern "C"
 
 	EXPORT_API int PluginSaveAnimationName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int animationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSaveAnimationName: Animation not found! %s\r\n", sourceAnimation);
@@ -1056,7 +1071,12 @@ extern "C"
 
 	EXPORT_API int PluginGetFrameCountName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginGetFrameCountName: Animation not found! %s\r\n", path);
@@ -1083,7 +1103,12 @@ extern "C"
 
 	EXPORT_API int PluginGetCurrentFrameName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginGetCurrentFrameName: Animation not found! %s\r\n", path);
@@ -1115,7 +1140,12 @@ extern "C"
 
 	EXPORT_API int PluginGetDeviceTypeName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginGetDeviceTypeName: Animation not found! %s\r\n", path);
@@ -1161,7 +1191,12 @@ extern "C"
 
 	EXPORT_API int PluginGetDeviceName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginGetDeviceName: Animation not found! %s\r\n", path);
@@ -1390,7 +1425,12 @@ extern "C"
 
 	EXPORT_API int PluginUpdateFrameName(const wchar_t* path, int frameIndex, float duration, int* colors, int length, int* keys, int keysLength)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginUpdateFrameName: Animation not found! %s\r\n", path);
@@ -1490,7 +1530,12 @@ extern "C"
 
 	EXPORT_API int PluginGetFrameName(const wchar_t* path, int frameIndex, float* duration, int* colors, int length, int* keys, int keysLength)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginGetFrameName: Animation not found! %s\r\n", path);
@@ -1601,7 +1646,12 @@ extern "C"
 
 	EXPORT_API void PluginPreviewFrameName(const wchar_t* path, int frameIndex)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginPreviewFrameName: Animation not found! %s\r\n", path);
@@ -1666,7 +1716,12 @@ extern "C"
 
 	EXPORT_API void PluginOverrideFrameDurationName(const wchar_t* path, float duration)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginOverrideFrameDurationName: Animation not found! %s\r\n", path);
@@ -1890,7 +1945,12 @@ extern "C"
 
 	AnimationBase* GetAnimationInstanceName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return nullptr;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			//LogError(L"GetAnimationInstanceName: Animation not found! %s\r\n", path);
@@ -1912,11 +1972,15 @@ extern "C"
 
 	EXPORT_API int PluginGetAnimation(const wchar_t* name)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
 		if (_gAnimationMapID.find(name) != _gAnimationMapID.end())
 		{
 			return _gAnimationMapID[name];
 		}
-		return PluginOpenAnimation(name);
+		ChromaThread::Instance()->AsyncGetAnimation(name);
 	}
 
 	EXPORT_API double PluginGetAnimationD(const wchar_t* name)
@@ -2065,7 +2129,12 @@ extern "C"
 
 	EXPORT_API void PluginPlayAnimationFrameName(const wchar_t* path, int frameId, bool loop)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginPlayAnimationFrameName: Animation not found! %s\r\n", path);
@@ -2119,7 +2188,12 @@ extern "C"
 
 	EXPORT_API bool PluginIsPlayingName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginIsPlayingName: Animation not found! %s\r\n", path);
@@ -2299,7 +2373,12 @@ extern "C"
 
 	EXPORT_API int PluginGetKeyColorName(const wchar_t* path, int frameId, int rzkey)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return 0;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginGetKeyColorName: Animation not found! %s\r\n", path);
@@ -2340,7 +2419,12 @@ extern "C"
 
 	EXPORT_API int PluginGet1DColorName(const wchar_t* path, int frameId, int index)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return 0;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginGet1DColorName: Animation not found! %s\r\n", path);
@@ -2386,7 +2470,12 @@ extern "C"
 
 	EXPORT_API int PluginGet2DColorName(const wchar_t* path, int frameId, int row, int column)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return 0;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginGet2DColorName: Animation not found! %s\r\n", path);
@@ -2438,7 +2527,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyColorName(const wchar_t* path, int frameId, int rzkey, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyColorName: Animation not found! %s\r\n", path);
@@ -2449,7 +2543,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyRowColumnColorName(const wchar_t* path, int frameId, int row, int column, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyColorName: Animation not found! %s\r\n", path);
@@ -2491,7 +2590,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyColorRGBName: Animation not found! %s\r\n", path);
@@ -2539,7 +2643,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyColorAllFramesName(const wchar_t* path, int rzkey, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyColorAllFramesName: Animation not found! %s\r\n", path);
@@ -2579,7 +2688,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyColorAllFramesRGBName(const wchar_t* path, int rzkey, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyColorAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -2632,7 +2746,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyColorName: Animation not found! %s\r\n", path);
@@ -2671,7 +2790,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyColorRGBName: Animation not found! %s\r\n", path);
@@ -2721,7 +2845,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeysColorAllFramesName: Animation not found! %s\r\n", path);
@@ -2782,7 +2911,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeysColorAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -2819,7 +2953,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyNonZeroColorName(const wchar_t* path, int frameId, int rzkey, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyNonZeroColorName: Animation not found! %s\r\n", path);
@@ -2863,7 +3002,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyNonZeroColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyNonZeroColorRGBName: Animation not found! %s\r\n", path);
@@ -2906,7 +3050,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyZeroColorName(const wchar_t* path, int frameId, int rzkey, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
@@ -2950,7 +3099,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeyZeroColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyZeroColorRGBName: Animation not found! %s\r\n", path);
@@ -2997,7 +3151,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysNonZeroColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyNonZeroColorName: Animation not found! %s\r\n", path);
@@ -3039,7 +3198,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysNonZeroColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyNonZeroColorRGBName: Animation not found! %s\r\n", path);
@@ -3080,7 +3244,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysZeroColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
@@ -3122,7 +3291,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysZeroColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeyZeroColorName: Animation not found! %s\r\n", path);
@@ -3162,7 +3336,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysNonZeroColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeysNonZeroColorAllFramesName: Animation not found! %s\r\n", path);
@@ -3202,7 +3381,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysZeroColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeysZeroColorAllFramesName: Animation not found! %s\r\n", path);
@@ -3243,7 +3427,12 @@ extern "C"
 
 	EXPORT_API void PluginSetKeysZeroColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetKeysZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -3280,7 +3469,12 @@ extern "C"
 
 	EXPORT_API void PluginSet1DColorName(const wchar_t* path, int frameId, int index, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSet1DColorName: Animation not found! %s\r\n", path);
@@ -3327,7 +3521,12 @@ extern "C"
 
 	EXPORT_API void PluginSet2DColorName(const wchar_t* path, int frameId, int row, int column, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSet2DColorName: Animation not found! %s\r\n", path);
@@ -3450,14 +3649,19 @@ extern "C"
 	}
 	EXPORT_API void PluginCopyKeysColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, const int* keys, int size)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeysColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeysColorName: Target Animation not found! %s\r\n", targetAnimation);
@@ -3513,14 +3717,19 @@ extern "C"
 	}
 	EXPORT_API void PluginCopyKeysColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeysColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeysColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -3580,14 +3789,19 @@ extern "C"
 	}
 	EXPORT_API void PluginCopyKeysColorOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int sourceFrameId, int targetFrameId, const int* keys, int size)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeysColorOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeysColorOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -3599,14 +3813,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
@@ -3695,14 +3914,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyKeyColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int rzkey)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeyColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeyColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -3742,14 +3966,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyKeyColorAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int rzkey, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeyColorAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyKeyColorAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -3844,14 +4073,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
@@ -3946,14 +4180,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
@@ -4058,14 +4297,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -4172,14 +4416,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -4312,14 +4561,19 @@ extern "C"
 
 	EXPORT_API void PluginAddNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -4454,14 +4708,19 @@ extern "C"
 
 	EXPORT_API void PluginAddNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -4594,14 +4853,19 @@ extern "C"
 
 	EXPORT_API void PluginSubtractNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -4736,14 +5000,19 @@ extern "C"
 
 	EXPORT_API void PluginSubtractNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroTargetAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroTargetAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -4844,14 +5113,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -4983,14 +5257,19 @@ extern "C"
 
 	EXPORT_API void PluginAddNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
@@ -5113,14 +5392,19 @@ extern "C"
 
 	EXPORT_API void PluginAddNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -5254,14 +5538,19 @@ extern "C"
 
 	EXPORT_API void PluginSubtractNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
@@ -5385,14 +5674,19 @@ extern "C"
 
 	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -5493,14 +5787,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -5603,14 +5902,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -5739,14 +6043,19 @@ extern "C"
 
 	EXPORT_API void PluginAddNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -5877,14 +6186,19 @@ extern "C"
 
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6015,14 +6329,19 @@ extern "C"
 
 	EXPORT_API void PluginAddNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginAddNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6151,14 +6470,19 @@ extern "C"
 
 	EXPORT_API void PluginSubtractNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6289,14 +6613,19 @@ extern "C"
 
 	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6427,14 +6756,19 @@ extern "C"
 
 	EXPORT_API void PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginSubtractNonZeroTargetAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6538,14 +6872,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6639,14 +6978,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6750,14 +7094,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroAllKeysOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroAllKeysOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6851,14 +7200,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroAllKeysAllFramesOffsetName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroAllKeysAllFramesOffsetName: Target Animation not found! %s\r\n", targetAnimation);
@@ -6960,14 +7314,19 @@ extern "C"
 	}
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
@@ -7069,14 +7428,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -7179,14 +7543,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroTargetZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroTargetZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -7292,14 +7661,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyZeroTargetAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroTargetAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroTargetAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
@@ -7395,14 +7769,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
@@ -7472,14 +7851,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyNonZeroKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyNonZeroKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
@@ -7549,14 +7933,19 @@ extern "C"
 
 	EXPORT_API void PluginCopyZeroKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
 
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginCopyZeroKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
@@ -7626,7 +8015,12 @@ extern "C"
 
 	EXPORT_API void PluginFillColorName(const wchar_t* path, int frameId, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillColorName: Animation not found! %s\r\n", path);
@@ -7717,7 +8111,12 @@ extern "C"
 
 	EXPORT_API void PluginFillThresholdColorsName(const wchar_t* path, int frameId, int threshold, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillThresholdColorsName: Animation not found! %s\r\n", path);
@@ -7787,7 +8186,12 @@ extern "C"
 
 	EXPORT_API void PluginFillColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillColorRGBName: Animation not found! %s\r\n", path);
@@ -7879,7 +8283,12 @@ extern "C"
 
 	EXPORT_API void PluginFillThresholdColorsRGBName(const wchar_t* path, int frameId, int threshold, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillThresholdColorsRGBName: Animation not found! %s\r\n", path);
@@ -7970,7 +8379,12 @@ extern "C"
 	}
 	EXPORT_API void PluginFillThresholdRGBColorsRGBName(const wchar_t* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillThresholdRGBColorsRGBName: Animation not found! %s\r\n", path);
@@ -8076,7 +8490,12 @@ extern "C"
 
 	EXPORT_API void PluginFillThresholdColorsMinMaxRGBName(const wchar_t* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillThresholdColorsMinMaxRGBName: Animation not found! %s\r\n", path);
@@ -8109,7 +8528,12 @@ extern "C"
 
 	EXPORT_API void PluginFillColorAllFramesName(const wchar_t* path, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillColorAllFramesName: Animation not found! %s\r\n", path);
@@ -8142,7 +8566,12 @@ extern "C"
 
 	EXPORT_API void PluginFillThresholdColorsAllFramesName(const wchar_t* path, int threshold, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillThresholdColorsAllFramesName: Animation not found! %s\r\n", path);
@@ -8175,7 +8604,12 @@ extern "C"
 
 	EXPORT_API void PluginFillColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillColorAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -8208,7 +8642,12 @@ extern "C"
 
 	EXPORT_API void PluginFillThresholdColorsAllFramesRGBName(const wchar_t* path, int threshold, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -8241,7 +8680,12 @@ extern "C"
 
 	EXPORT_API void PluginFillThresholdRGBColorsAllFramesRGBName(const wchar_t* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillThresholdRGBColorsAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -8274,13 +8718,12 @@ extern "C"
 
 	EXPORT_API void PluginFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
 	{
-		int animationId = PluginGetAnimation(path);
-		if (animationId < 0)
+		if (ChromaThread::Instance() == nullptr)
 		{
-			LogError(L"PluginFillThresholdColorsAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
-		PluginFillThresholdColorsMinMaxAllFramesRGB(animationId, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
+
+		ChromaThread::Instance()->AsyncFillThresholdColorsMinMaxAllFramesRGBName(path, minThreshold, minRed, minGreen, minBlue, maxThreshold, maxRed, maxGreen, maxBlue);
 	}
 
 	EXPORT_API double PluginFillThresholdColorsMinMaxAllFramesRGBNameD(const wchar_t* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue)
@@ -8349,7 +8792,12 @@ extern "C"
 
 	EXPORT_API void PluginFillNonZeroColorName(const wchar_t* path, int frameId, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillNonZeroColorName: Animation not found! %s\r\n", path);
@@ -8430,7 +8878,12 @@ extern "C"
 
 	EXPORT_API void PluginFillNonZeroColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillNonZeroColorRGBName: Animation not found! %s\r\n", path);
@@ -8505,7 +8958,12 @@ extern "C"
 
 	EXPORT_API void PluginFillZeroColorName(const wchar_t* path, int frameId, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillZeroColorName: Animation not found! %s\r\n", path);
@@ -8586,7 +9044,12 @@ extern "C"
 
 	EXPORT_API void PluginFillZeroColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillZeroColorRGBName: Animation not found! %s\r\n", path);
@@ -8619,7 +9082,12 @@ extern "C"
 
 	EXPORT_API void PluginFillNonZeroColorAllFramesName(const wchar_t* path, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillNonZeroColorAllFramesName: Animation not found! %s\r\n", path);
@@ -8652,7 +9120,12 @@ extern "C"
 
 	EXPORT_API void PluginFillNonZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillNonZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -8685,7 +9158,12 @@ extern "C"
 
 	EXPORT_API void PluginFillZeroColorAllFramesName(const wchar_t* path, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillZeroColorAllFramesName: Animation not found! %s\r\n", path);
@@ -8718,7 +9196,12 @@ extern "C"
 
 	EXPORT_API void PluginFillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -8777,7 +9260,12 @@ extern "C"
 
 	EXPORT_API void PluginFillRandomColorsName(const wchar_t* path, int frameId)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillRandomColorsName: Animation not found! %s\r\n", path);
@@ -8836,7 +9324,12 @@ extern "C"
 
 	EXPORT_API void PluginFillRandomColorsAllFramesName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillRandomColorsAllFramesName: Animation not found! %s\r\n", path);
@@ -8895,7 +9388,12 @@ extern "C"
 
 	EXPORT_API void PluginFillRandomColorsBlackAndWhiteName(const wchar_t* path, int frameId)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillRandomColorsBlackAndWhiteName: Animation not found! %s\r\n", path);
@@ -8954,7 +9452,12 @@ extern "C"
 
 	EXPORT_API void PluginFillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFillRandomColorsBlackAndWhiteNameAllFrames: Animation not found! %s\r\n", path);
@@ -9037,7 +9540,12 @@ extern "C"
 
 	EXPORT_API void PluginInvertColorsName(const wchar_t* path, int frameId)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginInvertColorsName: Animation not found! %s\r\n", path);
@@ -9120,7 +9628,12 @@ extern "C"
 
 	EXPORT_API void PluginInvertColorsAllFramesName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginInvertColorsAllFramesName: Animation not found! %s\r\n", path);
@@ -9205,7 +9718,12 @@ extern "C"
 
 	EXPORT_API void PluginOffsetColorsName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginOffsetColorsName: Animation not found! %s\r\n", path);
@@ -9238,7 +9756,12 @@ extern "C"
 
 	EXPORT_API void PluginOffsetColorsAllFramesName(const wchar_t* path, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginOffsetColorsAllFramesName: Animation not found! %s\r\n", path);
@@ -9329,7 +9852,12 @@ extern "C"
 
 	EXPORT_API void PluginOffsetNonZeroColorsName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginOffsetNonZeroColorsName: Animation not found! %s\r\n", path);
@@ -9362,7 +9890,12 @@ extern "C"
 
 	EXPORT_API void PluginOffsetNonZeroColorsAllFramesName(const wchar_t* path, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginOffsetNonZeroColorsAllFramesName: Animation not found! %s\r\n", path);
@@ -9447,7 +9980,12 @@ extern "C"
 
 	EXPORT_API void PluginMultiplyIntensityName(const wchar_t* path, int frameId, float intensity)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyIntensityName: Animation not found! %s\r\n", path);
@@ -9539,7 +10077,12 @@ extern "C"
 
 	EXPORT_API void PluginMultiplyIntensityColorName(const wchar_t* path, int frameId, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyIntensityColorName: Animation not found! %s\r\n", path);
@@ -9572,7 +10115,12 @@ extern "C"
 
 	EXPORT_API void PluginMultiplyIntensityColorAllFramesName(const wchar_t* path, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyIntensityColorAllFramesName: Animation not found! %s\r\n", path);
@@ -9661,7 +10209,12 @@ extern "C"
 
 	EXPORT_API void PluginMultiplyIntensityRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyIntensityRGBName: Animation not found! %s\r\n", path);
@@ -9694,7 +10247,12 @@ extern "C"
 
 	EXPORT_API void PluginMultiplyIntensityAllFramesName(const wchar_t* path, float intensity)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyIntensityAllFramesName: Animation not found! %s\r\n", path);
@@ -9727,13 +10285,12 @@ extern "C"
 
 	EXPORT_API void PluginMultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
-		if (animationId < 0)
+		if (ChromaThread::Instance() == nullptr)
 		{
-			LogError(L"PluginMultiplyIntensityAllFramesRGBName: Animation not found! %s\r\n", path);
 			return;
 		}
-		PluginMultiplyIntensityAllFramesRGB(animationId, red, green, blue);
+
+		ChromaThread::Instance()->AsyncMultiplyIntensityAllFramesRGBName(path, red, green, blue);
 	}
 
 	EXPORT_API double PluginMultiplyIntensityAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue)
@@ -9820,7 +10377,12 @@ extern "C"
 
 	EXPORT_API void PluginMultiplyTargetColorLerpName(const wchar_t* path, int frameId, int color1, int color2)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyTargetColorLerpName: Animation not found! %s\r\n", path);
@@ -9913,7 +10475,12 @@ extern "C"
 	}
 	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
@@ -9946,7 +10513,12 @@ extern "C"
 	}
 	EXPORT_API void PluginMultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyColorLerpAllFramesName: Animation not found! %s\r\n", path);
@@ -9979,7 +10551,12 @@ extern "C"
 	}
 	EXPORT_API void PluginMultiplyTargetColorLerpAllFramesRGBName(const wchar_t* path, int red1, int green1, int blue1, int red2, int green2, int blue2)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyTargetColorLerpAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -10010,7 +10587,12 @@ extern "C"
 	}
 	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyNonZeroTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
@@ -10043,7 +10625,12 @@ extern "C"
 	}
 	EXPORT_API void PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName(const wchar_t* path, int red1, int green1, int blue1, int red2, int green2, int blue2)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMultiplyNonZeroTargetColorLerpAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -10087,7 +10674,12 @@ extern "C"
 
 	EXPORT_API void PluginReverseAllFramesName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginReverseAllFramesName: Animation not found! %s\r\n", path);
@@ -10115,7 +10707,12 @@ extern "C"
 
 	EXPORT_API void PluginSetCurrentFrameName(const wchar_t* path, int frameId)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetCurrentFrameName: Animation not found! %s\r\n", path);
@@ -10142,7 +10739,12 @@ extern "C"
 
 	EXPORT_API void PluginPauseAnimationName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginPauseAnimationName: Animation not found! %s\r\n", path);
@@ -10169,7 +10771,12 @@ extern "C"
 
 	EXPORT_API bool PluginIsAnimationPausedName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginIsAnimationPausedName: Animation not found! %s\r\n", path);
@@ -10202,7 +10809,12 @@ extern "C"
 
 	EXPORT_API bool PluginHasAnimationLoopName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginHasAnimationLoopName: Animation not found! %s\r\n", path);
@@ -10235,7 +10847,12 @@ extern "C"
 
 	EXPORT_API void PluginResumeAnimationName(const wchar_t* path, bool loop)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginResumeAnimationName: Animation not found! %s\r\n", path);
@@ -10283,7 +10900,12 @@ extern "C"
 
 	EXPORT_API void PluginSetChromaCustomFlagName(const wchar_t* path, bool flag)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginKeyboardUseChromaCustomName: Animation not found! %s\r\n", path);
@@ -10377,7 +10999,12 @@ extern "C"
 
 	EXPORT_API void PluginSetChromaCustomColorAllFramesName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginSetChromaCustomColorAllFramesName: Animation not found! %s\r\n", path);
@@ -10446,7 +11073,12 @@ extern "C"
 
 	EXPORT_API void PluginMakeBlankFramesName(const wchar_t* path, int frameCount, float duration, int color)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMakeBlankFramesName: Animation not found! %s\r\n", path);
@@ -10516,7 +11148,12 @@ extern "C"
 
 	EXPORT_API void PluginMakeBlankFramesRGBName(const wchar_t* path, int frameCount, float duration, int red, int green, int blue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMakeBlankFramesRGBName: Animation not found! %s\r\n", path);
@@ -10594,7 +11231,12 @@ extern "C"
 
 	EXPORT_API void PluginMakeBlankFramesRandomName(const wchar_t* path, int frameCount, float duration)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMakeBlankFramesRandomName: Animation not found! %s\r\n", path);
@@ -10668,7 +11310,12 @@ extern "C"
 
 	EXPORT_API void PluginMakeBlankFramesRandomBlackAndWhiteName(const wchar_t* path, int frameCount, float duration)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginMakeBlankFramesRandomBlackAndWhiteName: Animation not found! %s\r\n", path);
@@ -10744,7 +11391,12 @@ extern "C"
 	}
 	EXPORT_API void PluginDuplicateFramesName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginDuplicateFramesName: Animation not found! %s\r\n", path);
@@ -10807,7 +11459,12 @@ extern "C"
 	}
 	EXPORT_API void PluginDuplicateFirstFrameName(const wchar_t* path, int frameCount)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginDuplicateFirstFrameName: Animation not found! %s\r\n", path);
@@ -10869,7 +11526,12 @@ extern "C"
 	}
 	EXPORT_API void PluginDuplicateMirrorFramesName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginDuplicateMirrorFramesName: Animation not found! %s\r\n", path);
@@ -10962,7 +11624,12 @@ extern "C"
 	}
 	EXPORT_API void PluginInsertFrameName(const wchar_t* path, int sourceFrame, int targetFrame)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginInsertFrameName: Animation not found! %s\r\n", path);
@@ -11052,7 +11719,12 @@ extern "C"
 	}
 	EXPORT_API void PluginInsertDelayName(const wchar_t* path, int frameId, int delay)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginInsertDelayName: Animation not found! %s\r\n", path);
@@ -11147,7 +11819,12 @@ extern "C"
 	}
 	EXPORT_API void PluginReduceFramesName(const wchar_t* path, int n)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginReduceFramesName: Animation not found! %s\r\n", path);
@@ -11224,7 +11901,12 @@ extern "C"
 	}
 	EXPORT_API void PluginTrimFrameName(const wchar_t* path, int frameId)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginTrimFrameName: Animation not found! %s\r\n", path);
@@ -11299,7 +11981,12 @@ extern "C"
 	}
 	EXPORT_API void PluginTrimStartFramesName(const wchar_t* path, int numberOfFrames)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginTrimStartFramesName: Animation not found! %s\r\n", path);
@@ -11358,7 +12045,12 @@ extern "C"
 	}
 	EXPORT_API void PluginTrimEndFramesName(const wchar_t* path, int lastFrameId)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginTrimEndFramesName: Animation not found! %s\r\n", path);
@@ -11399,7 +12091,12 @@ extern "C"
 	}
 	EXPORT_API void PluginFadeStartFramesName(const wchar_t* path, int fade)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFadeStartFramesName: Animation not found! %s\r\n", path);
@@ -11441,7 +12138,12 @@ extern "C"
 	}
 	EXPORT_API void PluginFadeEndFramesName(const wchar_t* path, int fade)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginFadeEndFramesName: Animation not found! %s\r\n", path);
@@ -11527,7 +12229,12 @@ extern "C"
 	}
 	EXPORT_API void PluginCopyRedChannelAllFramesName(const wchar_t* path, float greenIntensity, float blueIntensity)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginCopyRedChannelAllFramesName: Animation not found! %s\r\n", path);
@@ -11613,7 +12320,12 @@ extern "C"
 	}
 	EXPORT_API void PluginCopyGreenChannelAllFramesName(const wchar_t* path, float redIntensity, float blueIntensity)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginCopyGreenChannelAllFramesName: Animation not found! %s\r\n", path);
@@ -11699,7 +12411,12 @@ extern "C"
 	}
 	EXPORT_API void PluginCopyBlueChannelAllFramesName(const wchar_t* path, float redIntensity, float greenIntensity)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			LogError(L"PluginCopyBlueChannelAllFramesName: Animation not found! %s\r\n", path);
@@ -11785,7 +12502,12 @@ extern "C"
 	}
 	EXPORT_API void PluginCopyAnimationName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginCopyAnimationName: Source animation not found! %s\r\n", sourceAnimation);
@@ -11852,13 +12574,18 @@ extern "C"
 	}
 	EXPORT_API void PluginAppendAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
 	{
-		int sourceAnimationId = PluginGetAnimation(sourceAnimation);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
 		if (sourceAnimationId < 0)
 		{
 			LogError(L"PluginAppendAllFramesName: Source animation not found! %s\r\n", sourceAnimation);
 			return;
 		}
-		int targetAnimationId = PluginGetAnimation(targetAnimation);
+		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
 		if (targetAnimationId < 0)
 		{
 			LogError(L"PluginAppendAllFramesName: Target animation not found! %s\r\n", targetAnimation);
@@ -12383,7 +13110,12 @@ extern "C"
 	}
 	EXPORT_API void PluginSubtractThresholdColorsMinMaxRGBName(const wchar_t* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			ChromaLogger::fprintf(stderr, "PluginSubtractThresholdColorsMinMaxRGBName: Animation not found! %s\r\n", path);
@@ -12413,7 +13145,12 @@ extern "C"
 	}
 	EXPORT_API void PluginSubtractThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			ChromaLogger::fwprintf(stderr, L"PluginSubtractThresholdColorsMinMaxAllFramesRGBName: Animation not found! %s\r\n", path);
@@ -12447,7 +13184,12 @@ extern "C"
 	}
 	EXPORT_API float PluginGetFrameDurationName(const wchar_t* path, int frameId)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return 0;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			ChromaLogger::fwprintf(stderr, L"PluginGetFrameDurationName: Animation not found! %s\r\n", path);
@@ -12477,7 +13219,12 @@ extern "C"
 	}
 	EXPORT_API float PluginGetTotalDurationName(const wchar_t* path)
 	{
-		int animationId = PluginGetAnimation(path);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return 0;
+		}
+
+		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
 		if (animationId < 0)
 		{
 			ChromaLogger::fwprintf(stderr, L"PluginGetTotalDurationName: Animation not found! %s\r\n", path);

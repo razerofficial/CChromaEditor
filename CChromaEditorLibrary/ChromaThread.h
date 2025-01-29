@@ -9,6 +9,17 @@
 
 namespace ChromaSDK
 {
+	struct ParamsGetAnimation
+	{
+		std::wstring _mPath;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"GetAnimation_";
+			key += _mPath;
+			return key;
+		}
+	};
+
 	struct ParamsCloseAnimationName
 	{
 		std::wstring _mPath;
@@ -107,10 +118,44 @@ namespace ChromaSDK
 		}
 	};
 
+	struct ParamsFillThresholdColorsMinMaxAllFramesRGBName
+	{
+		std::wstring _mPath;
+		int _mMinThreshold;
+		int _mMinRed;
+		int _mMinGreen;
+		int _mMinBlue;
+		int _mMaxThreshold;
+		int _mMaxRed;
+		int _mMaxGreen;
+		int _mMaxBlue;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"FillThresholdColorsMinMaxAllFramesRGBName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsMultiplyIntensityAllFramesRGBName
+	{
+		std::wstring _mPath;
+		int _mRed = 0;
+		int _mGreen = 0;
+		int _mBlue = 0;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"MultiplyIntensityAllFramesRGBName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
 		Command_CloseAnimationName,
+		Command_GetAnimation,
 		Command_PlayChromaAnimationName,
 		Command_SetEventName,
 		Command_SetIdleAnimationName,
@@ -118,21 +163,26 @@ namespace ChromaSDK
 		Command_StopAll,
 		Command_StopAnimationType,
 		Command_UseForwardChromaEvents,
-		Command_UseIdleAnimations
+		Command_UseIdleAnimations,
+		Command_FillThresholdColorsMinMaxAllFramesRGBName,
+		Command_MultiplyIntensityAllFramesRGBName,
 	};
 
 	struct PendingCommand
 	{
-		PendingCommandType _mType;
-		ParamsCloseAnimationName _mCloseAnimationName;
-		ParamsPlayChromaAnimationName _mPlayChromaAnimationName;
-		ParamsSetEventName _mSetEventName;
-		ParamsSetIdleAnimationName _mSetIdleAnimationName;
-		ParamsStopAll _mStopAll;
-		ParamsStopAnimationName _mStopAnimationName;
-		ParamsStopAnimationType _mStopAnimationType;
-		ParamsUseForwardChromaEvents _mUseForwardChromaEvents;
-		ParamsUseIdleAnimations _mUseIdleAnimations;
+		PendingCommandType _mType = PendingCommandType::Command_Unknown;
+		ParamsCloseAnimationName _mCloseAnimationName = { };
+		ParamsGetAnimation _mGetAnimation = { };
+		ParamsPlayChromaAnimationName _mPlayChromaAnimationName = { };
+		ParamsSetEventName _mSetEventName = { };
+		ParamsSetIdleAnimationName _mSetIdleAnimationName = { };
+		ParamsStopAll _mStopAll = { };
+		ParamsStopAnimationName _mStopAnimationName = { };
+		ParamsStopAnimationType _mStopAnimationType = { };
+		ParamsUseForwardChromaEvents _mUseForwardChromaEvents = { };
+		ParamsUseIdleAnimations _mUseIdleAnimations = { };
+		ParamsFillThresholdColorsMinMaxAllFramesRGBName _mFillThresholdColorsMinMaxAllFramesRGBName = { };
+		ParamsMultiplyIntensityAllFramesRGBName _mMultiplyIntensityAllFramesRGBName = { };
 	};
 
 	class ChromaThread
@@ -147,10 +197,16 @@ namespace ChromaSDK
 		void DeleteAnimation(AnimationBase* animation);
 		int GetAnimationCount();
 		int GetAnimationId(int index);
+		// async implementation
+		int ImplGetAnimation(const wchar_t* name);
 		void ImplCloseAnimationName(const wchar_t* path);
 		void ImplSetIdleAnimationName(const wchar_t* name);
 		void ImplStopAnimationType(int deviceType, int device);
+		// color manipulation
+		void ImplFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+		void ImplMultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
 		// async calls
+		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
 		void AsyncPlayAnimationName(const wchar_t* path, bool loop);
 		RZRESULT AsyncSetEventName(LPCTSTR Name);
@@ -161,6 +217,9 @@ namespace ChromaSDK
 		void UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag);
 		void AsyncUseForwardChromaEvents(bool flag);
 		void AsyncUseIdleAnimations(bool flag);
+		// color manipulation
+		void AsyncFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
+		void AsyncMultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
