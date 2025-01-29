@@ -118,6 +118,22 @@ namespace ChromaSDK
 		}
 	};
 
+	struct ParamsMakeBlankFramesRGBName
+	{
+		std::wstring _mPath;
+		int _mFrameCount = 0;
+		float _mDuration = 0;
+		int _mRed = 0;
+		int _mGreen = 0;
+		int _mBlue = 0;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"MakeBlankFramesRGBName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
 	struct ParamsFillThresholdColorsMinMaxAllFramesRGBName
 	{
 		std::wstring _mPath;
@@ -151,6 +167,30 @@ namespace ChromaSDK
 		}
 	};
 
+	struct ParamsFadeStartFramesName
+	{
+		std::wstring _mPath;
+		int _mFade = 0;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"FadeStartFramesName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsFadeEndFramesName
+	{
+		std::wstring _mPath;
+		int _mFade = 0;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"FadeEndFramesName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -164,8 +204,11 @@ namespace ChromaSDK
 		Command_StopAnimationType,
 		Command_UseForwardChromaEvents,
 		Command_UseIdleAnimations,
+		Command_MakeBlankFramesRGBName,
 		Command_FillThresholdColorsMinMaxAllFramesRGBName,
 		Command_MultiplyIntensityAllFramesRGBName,
+		Command_FadeStartFramesName,
+		Command_FadeEndFramesName,
 	};
 
 	struct PendingCommand
@@ -181,8 +224,11 @@ namespace ChromaSDK
 		ParamsStopAnimationType _mStopAnimationType = { };
 		ParamsUseForwardChromaEvents _mUseForwardChromaEvents = { };
 		ParamsUseIdleAnimations _mUseIdleAnimations = { };
+		ParamsMakeBlankFramesRGBName _mMakeBlankFramesRGBName = { };
 		ParamsFillThresholdColorsMinMaxAllFramesRGBName _mFillThresholdColorsMinMaxAllFramesRGBName = { };
 		ParamsMultiplyIntensityAllFramesRGBName _mMultiplyIntensityAllFramesRGBName = { };
+		ParamsFadeStartFramesName _mFadeStartFramesName = { };
+		ParamsFadeEndFramesName _mFadeEndFramesName = { };
 	};
 
 	class ChromaThread
@@ -203,8 +249,11 @@ namespace ChromaSDK
 		void ImplSetIdleAnimationName(const wchar_t* name);
 		void ImplStopAnimationType(int deviceType, int device);
 		// color manipulation
+		void ImplMakeBlankFramesRGBName(const wchar_t* path, int frameCount, float duration, int red, int green, int blue);
 		void ImplFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 		void ImplMultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
+		void ImplFadeStartFramesName(const wchar_t* path, int fade);
+		void ImplFadeEndFramesName(const wchar_t* path, int fade);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -218,8 +267,11 @@ namespace ChromaSDK
 		void AsyncUseForwardChromaEvents(bool flag);
 		void AsyncUseIdleAnimations(bool flag);
 		// color manipulation
+		void AsyncMakeBlankFramesRGBName(const wchar_t* path, int frameCount, float duration, int red, int green, int blue);
 		void AsyncFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 		void AsyncMultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
+		void AsyncFadeStartFramesName(const wchar_t* path, int fade);
+		void AsyncFadeEndFramesName(const wchar_t* path, int fade);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);

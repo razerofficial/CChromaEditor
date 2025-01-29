@@ -11153,13 +11153,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginMakeBlankFramesRGBName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginMakeBlankFramesRGB(animationId, frameCount, duration, red, green, blue);
+		ChromaThread::Instance()->AsyncMakeBlankFramesRGBName(path, frameCount, duration, red, green, blue);
 	}
 
 	EXPORT_API double PluginMakeBlankFramesRGBNameD(const wchar_t* path, double frameCount, double duration, double red, double green, double blue)
@@ -12096,13 +12090,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginFadeStartFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginFadeStartFrames(animationId, fade);
+		ChromaThread::Instance()->AsyncFadeStartFramesName(path, fade);
 	}
 	EXPORT_API double PluginFadeStartFramesNameD(const wchar_t* path, double fade)
 	{
@@ -12143,13 +12131,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginFadeEndFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginFadeEndFrames(animationId, fade);
+		ChromaThread::Instance()->AsyncFadeEndFramesName(path, fade);
 	}
 	EXPORT_API double PluginFadeEndFramesNameD(const wchar_t* path, double fade)
 	{

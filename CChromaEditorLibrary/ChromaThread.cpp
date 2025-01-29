@@ -178,6 +178,17 @@ void ChromaThread::ImplStopAnimationType(int deviceType, int device)
 	}
 }
 
+void ChromaThread::ImplMakeBlankFramesRGBName(const wchar_t* path, int frameCount, float duration, int red, int green, int blue)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMakeBlankFramesRGBName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginMakeBlankFramesRGB(animationId, frameCount, duration, red, green, blue);
+}
+
 void ChromaThread::ImplFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
 {
 	int animationId = ImplGetAnimation(path);
@@ -198,6 +209,28 @@ void ChromaThread::ImplMultiplyIntensityAllFramesRGBName(const wchar_t* path, in
 		return;
 	}
 	PluginMultiplyIntensityAllFramesRGB(animationId, red, green, blue);
+}
+
+void ChromaThread::ImplFadeStartFramesName(const wchar_t* path, int fade)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplFadeStartFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginFadeStartFrames(animationId, fade);
+}
+
+void ChromaThread::ImplFadeEndFramesName(const wchar_t* path, int fade)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplFadeEndFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginFadeEndFrames(animationId, fade);
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
@@ -432,6 +465,32 @@ void ChromaThread::AsyncStopAnimationType(int deviceType, int device)
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncMakeBlankFramesRGBName(const wchar_t* path, int frameCount, float duration, int red, int green, int blue)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsMakeBlankFramesRGBName params;
+	params._mPath = path;
+	params._mFrameCount = frameCount;
+	params._mDuration = duration;
+	params._mRed = red;
+	params._mGreen = green;
+	params._mBlue = blue;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MakeBlankFramesRGBName;
+	command._mMakeBlankFramesRGBName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncFillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -482,6 +541,50 @@ void ChromaThread::AsyncMultiplyIntensityAllFramesRGBName(const wchar_t* path, i
 	PendingCommand command;
 	command._mType = PendingCommandType::Command_MultiplyIntensityAllFramesRGBName;
 	command._mMultiplyIntensityAllFramesRGBName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncFadeStartFramesName(const wchar_t* path, int fade)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsFadeStartFramesName params;
+	params._mPath = path;
+	params._mFade = fade;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_FadeStartFramesName;
+	command._mFadeStartFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncFadeEndFramesName(const wchar_t* path, int fade)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsFadeEndFramesName params;
+	params._mPath = path;
+	params._mFade = fade;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_FadeEndFramesName;
+	command._mFadeEndFramesName = params;
 	AddPendingCommandInOrder(key, command);
 }
 
@@ -742,6 +845,18 @@ void ChromaThread::ProcessPendingCommands()
 				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mousepad, flag);
 			}
 			break;
+			case PendingCommandType::Command_MakeBlankFramesRGBName:
+			{
+				const ParamsMakeBlankFramesRGBName& params = pendingCommand._mMakeBlankFramesRGBName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameCount = params._mFrameCount;
+				float duration = params._mDuration;
+				int red = params._mRed;
+				int green = params._mGreen;
+				int blue = params._mBlue;
+				ImplMakeBlankFramesRGBName(path, frameCount, duration, red, green, blue);
+			}
+			break;
 			case PendingCommandType::Command_FillThresholdColorsMinMaxAllFramesRGBName:
 			{
 				const ParamsFillThresholdColorsMinMaxAllFramesRGBName& params = pendingCommand._mFillThresholdColorsMinMaxAllFramesRGBName;
@@ -765,6 +880,22 @@ void ChromaThread::ProcessPendingCommands()
 				int green = params._mGreen;
 				int blue = params._mBlue;
 				ImplMultiplyIntensityAllFramesRGBName(path, red, green, blue);
+			}
+			break;
+			case PendingCommandType::Command_FadeStartFramesName:
+			{
+				const ParamsFadeStartFramesName& params = pendingCommand._mFadeStartFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int fade = params._mFade;
+				ImplFadeStartFramesName(path, fade);
+			}
+			break;
+			case PendingCommandType::Command_FadeEndFramesName:
+			{
+				const ParamsFadeEndFramesName& params = pendingCommand._mFadeEndFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int fade = params._mFade;
+				ImplFadeEndFramesName(path, fade);
 			}
 			break;
 		}
