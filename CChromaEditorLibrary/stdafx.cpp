@@ -1917,17 +1917,11 @@ extern "C"
 
 	EXPORT_API void PluginCloseAnimationName(const wchar_t* path)
 	{
-		if (_gAnimationMapID.find(path) != _gAnimationMapID.end())
+		if (ChromaThread::Instance() == nullptr)
 		{
-			int animationId = _gAnimationMapID[path];
-			PluginCloseAnimation(animationId);
+			return;
 		}
-		/*
-		else
-		{
-			LogError(L"PluginCloseAnimationName: Animation not found! %s\r\n", path);
-		}
-		*/
+		ChromaThread::Instance()->AsyncCloseAnimationName(path);
 	}
 
 	EXPORT_API double PluginCloseAnimationNameD(const wchar_t* path)

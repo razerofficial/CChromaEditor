@@ -25,6 +25,7 @@ RZRESULT ChromaThread::_sLastResultSetEventName = RZRESULT_SUCCESS;
 extern map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
 extern map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
 extern bool _gForwardChromaEvents;
+extern map<wstring, int> _gAnimationMapID;
 
 ChromaThread::ChromaThread()
 {
@@ -279,6 +280,27 @@ void ChromaThread::AddPendingCommandInOrder(const wstring& key, const PendingCom
 	_sOrderPendingCommands.push_back(key);
 }
 
+void ChromaThread::AsyncCloseAnimationName(const wchar_t* path)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the loop state
+	ParamsCloseAnimationName params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CloseAnimationName;
+	command._mCloseAnimationName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncPlayAnimationName(const wchar_t* path, bool loop)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -502,6 +524,23 @@ void ChromaThread::ProcessPendingCommands()
 
 		switch (pendingCommand._mType)
 		{
+		case PendingCommandType::Command_CloseAnimationName:
+			{
+				const ParamsCloseAnimationName& params = pendingCommand._mCloseAnimationName;
+				const wchar_t* path = params._mPath.c_str();
+				if (_gAnimationMapID.find(path) != _gAnimationMapID.end())
+				{
+					int animationId = _gAnimationMapID[path];
+					PluginCloseAnimation(animationId);
+				}
+				/*
+				else
+				{
+					LogError(L"PluginCloseAnimationName: Animation not found! %s\r\n", path);
+				}
+				*/
+			}
+			break;
 			case PendingCommandType::Command_PlayChromaAnimationName:
 			{
 				const ParamsPlayChromaAnimationName& params = pendingCommand._mPlayChromaAnimationName;

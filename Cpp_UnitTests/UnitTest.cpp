@@ -3033,6 +3033,41 @@ void UnitTests::UnitTestsUseIdleAnimationsPerformance()
 	}
 }
 
+void UnitTests::UnitTestsCloseAnimationPerformance()
+{
+	printf("Measure CloseAnimation Performance\r\n");
+
+	wstring animationName = L"Animations/Misc_Keyboard.chroma";
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), true);
+		ChromaAnimationAPI::CloseAnimationName(animationName.c_str());
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
 void UnitTests::UnitTestsUnicode()
 {
 	const wchar_t* animationName = L"Animations/你好";
@@ -3199,9 +3234,10 @@ void UnitTests::Run()
 	//UnitTestsSetIdleAnimationNamePerformance();
 	//UnitTestsStopAllPerformance();
 	//UnitTestsStopAnimationNamePerformance();
-	UnitTestsStopAnimationTypePerformance();
+	//UnitTestsStopAnimationTypePerformance();
 	//UnitTestsUseForwardChromaEventsPerformance();
 	//UnitTestsUseIdleAnimationsPerformance();
+	UnitTestsCloseAnimationPerformance();
 
 	//UnitTestsUnicode();
 

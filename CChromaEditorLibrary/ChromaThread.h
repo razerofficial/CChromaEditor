@@ -9,13 +9,24 @@
 
 namespace ChromaSDK
 {
+	struct ParamsCloseAnimationName
+	{
+		std::wstring _mPath;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CloseAnimationName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
 	struct ParamsPlayChromaAnimationName
 	{
 		std::wstring _mPath;
 		bool _mLoop;
 
 		const std::wstring GenerateKey() {
-			std::wstring key = L"PlayChromaAnimation_";
+			std::wstring key = L"PlayChromaAnimationName_";
 			key += _mPath;
 			return key;
 		}
@@ -48,7 +59,7 @@ namespace ChromaSDK
 		std::wstring _mPath;
 
 		const std::wstring GenerateKey() {
-			std::wstring key = L"StopChromaAnimation_";
+			std::wstring key = L"StopChromaAnimationName_";
 			key += _mPath;
 			return key;
 		}
@@ -99,6 +110,7 @@ namespace ChromaSDK
 	enum class PendingCommandType
 	{
 		Command_Unknown,
+		Command_CloseAnimationName,
 		Command_PlayChromaAnimationName,
 		Command_SetEventName,
 		Command_SetIdleAnimationName,
@@ -112,6 +124,7 @@ namespace ChromaSDK
 	struct PendingCommand
 	{
 		PendingCommandType _mType;
+		ParamsCloseAnimationName _mCloseAnimationName;
 		ParamsPlayChromaAnimationName _mPlayChromaAnimationName;
 		ParamsSetEventName _mSetEventName;
 		ParamsSetIdleAnimationName _mSetIdleAnimationName;
@@ -137,6 +150,7 @@ namespace ChromaSDK
 		void ImplSetIdleAnimationName(const wchar_t* name);
 		void ImplStopAnimationType(int deviceType, int device);
 		// async calls
+		void AsyncCloseAnimationName(const wchar_t* path);
 		void AsyncPlayAnimationName(const wchar_t* path, bool loop);
 		RZRESULT AsyncSetEventName(LPCTSTR Name);
 		void AsyncSetIdleAnimationName(const wchar_t* path);

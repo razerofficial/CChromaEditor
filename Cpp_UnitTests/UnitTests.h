@@ -115,6 +115,8 @@ public:
 
 	static void UnitTestsUseIdleAnimationsPerformance();
 
+	static void UnitTestsCloseAnimationPerformance();
+
 	static void UnitTestsUnicode();
 
 	static void UnitTestsIdleAnimation();
