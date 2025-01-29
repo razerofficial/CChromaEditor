@@ -147,6 +147,7 @@ namespace ChromaSDK
 		void DeleteAnimation(AnimationBase* animation);
 		int GetAnimationCount();
 		int GetAnimationId(int index);
+		void ImplCloseAnimationName(const wchar_t* path);
 		void ImplSetIdleAnimationName(const wchar_t* name);
 		void ImplStopAnimationType(int deviceType, int device);
 		// async calls

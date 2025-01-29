@@ -68,9 +68,22 @@ void ChromaThread::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
 		break;
 	}
 }
+void ChromaThread::ImplCloseAnimationName(const wchar_t* path)
+{
+	if (_gAnimationMapID.find(path) != _gAnimationMapID.end())
+	{
+		int animationId = _gAnimationMapID[path];
+		PluginCloseAnimation(animationId);
+	}
+	/*
+	else
+	{
+		LogError(L"ImplCloseAnimationName: Animation not found! %s\r\n", path);
+	}
+	*/
+}
 void ChromaThread::ImplSetIdleAnimationName(const wchar_t* name)
 {
-	lock_guard<mutex> guard(_sMutex);
 	AnimationBase* animation = GetAnimationInstanceName(name);
 	if (animation != nullptr)
 	{
@@ -528,17 +541,7 @@ void ChromaThread::ProcessPendingCommands()
 			{
 				const ParamsCloseAnimationName& params = pendingCommand._mCloseAnimationName;
 				const wchar_t* path = params._mPath.c_str();
-				if (_gAnimationMapID.find(path) != _gAnimationMapID.end())
-				{
-					int animationId = _gAnimationMapID[path];
-					PluginCloseAnimation(animationId);
-				}
-				/*
-				else
-				{
-					LogError(L"PluginCloseAnimationName: Animation not found! %s\r\n", path);
-				}
-				*/
+				ImplCloseAnimationName(path);
 			}
 			break;
 			case PendingCommandType::Command_PlayChromaAnimationName:

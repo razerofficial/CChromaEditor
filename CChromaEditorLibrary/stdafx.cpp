@@ -525,9 +525,13 @@ extern "C"
 
 	EXPORT_API int PluginOpenAnimation(const wchar_t* path)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
 		try
 		{
-			PluginCloseAnimationName(path);
+			ChromaThread::Instance()->ImplCloseAnimationName(path);
 
 			//return animation id
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimation(path);
@@ -555,9 +559,14 @@ extern "C"
 
 	EXPORT_API int PluginOpenAnimationFromMemory(const BYTE* data, const wchar_t* name)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
 		try
 		{
-			PluginCloseAnimationName(name);
+			ChromaThread::Instance()->ImplCloseAnimationName(name);
 
 			//return animation id
 			AnimationBase* animation = ChromaSDKPlugin::GetInstance()->OpenAnimationFromMemory(data);
@@ -11707,12 +11716,17 @@ extern "C"
 
 	EXPORT_API int PluginCopyAnimation(int sourceAnimationId, const wchar_t* targetAnimation)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return -1;
+		}
+
 		AnimationBase* sourceAnimation = GetAnimationInstance(sourceAnimationId);
 		if (nullptr == sourceAnimation)
 		{
 			return -1;
 		}
-		PluginCloseAnimationName(targetAnimation);
+		ChromaThread::Instance()->ImplCloseAnimationName(targetAnimation);
 		int deviceType = sourceAnimation->GetDeviceTypeId();
 		int device = sourceAnimation->GetDeviceId();
 		int targetAnimationId = PluginCreateAnimationInMemory(deviceType, device);
