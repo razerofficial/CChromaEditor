@@ -388,6 +388,71 @@ namespace ChromaSDK
 		}
 	};
 
+	struct ParamsReverseAllFramesName
+	{
+		std::wstring _mPath;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"ReverseAllFramesName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsInvertColorsAllFramesName
+	{
+		std::wstring _mPath;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"InvertColorsAllFramesName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsDuplicateMirrorFramesName
+	{
+		std::wstring _mPath;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"DuplicateMirrorFramesName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsInsertDelayName
+	{
+		std::wstring _mPath;
+		int _mFrameId = 0;
+		int _mDelay = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"InsertDelayName_";
+			key += _mPath;
+			key += L"_";
+			key += std::to_wstring(_mFrameId);
+			return key;
+		}
+	};
+
+	struct ParamsReduceFramesName
+	{
+		std::wstring _mPath;
+		int _mN = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"ReduceFramesName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsDuplicateFramesName
+	{
+		std::wstring _mPath;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"DuplicateFramesName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -420,6 +485,12 @@ namespace ChromaSDK
 		Command_FillZeroColorAllFramesRGBName,
 		Command_DuplicateFirstFrameName,
 		Command_OverrideFrameDurationName,
+		Command_ReverseAllFramesName,
+		Command_InvertColorsAllFramesName,
+		Command_DuplicateMirrorFramesName,
+		Command_InsertDelayName,
+		Command_ReduceFramesName,
+		Command_DuplicateFramesName,
 	};
 
 	struct PendingCommand
@@ -454,6 +525,12 @@ namespace ChromaSDK
 		ParamsFillZeroColorAllFramesRGBName _mFillZeroColorAllFramesRGBName = { };
 		ParamsDuplicateFirstFrameName _mDuplicateFirstFrameName = { };
 		ParamsOverrideFrameDurationName _mOverrideFrameDurationName = { };
+		ParamsReverseAllFramesName _mReverseAllFramesName = { };
+		ParamsInvertColorsAllFramesName _mInvertColorsAllFramesName = { };
+		ParamsDuplicateMirrorFramesName _mDuplicateMirrorFramesName = { };
+		ParamsInsertDelayName _mInsertDelayName = { };
+		ParamsReduceFramesName _mReduceFramesName = { };
+		ParamsDuplicateFramesName _mDuplicateFramesName = { };
 	};
 
 	class ChromaThread
@@ -493,6 +570,12 @@ namespace ChromaSDK
 		void ImplFillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
 		void ImplDuplicateFirstFrameName(const wchar_t* path, int frameCount);
 		void ImplOverrideFrameDurationName(const wchar_t* path, float duration);
+		void ImplReverseAllFramesName(const wchar_t* path);
+		void ImplInvertColorsAllFramesName(const wchar_t* path);
+		void ImplDuplicateMirrorFramesName(const wchar_t* path);
+		void ImplInsertDelayName(const wchar_t* path, int frameId, int delay);
+		void ImplReduceFramesName(const wchar_t* path, int n);
+		void ImplDuplicateFramesName(const wchar_t* path);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -525,6 +608,12 @@ namespace ChromaSDK
 		void AsyncFillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
 		void AsyncDuplicateFirstFrameName(const wchar_t* path, int frameCount);
 		void AsyncOverrideFrameDurationName(const wchar_t* path, float duration);
+		void AsyncReverseAllFramesName(const wchar_t* path);
+		void AsyncInvertColorsAllFramesName(const wchar_t* path);
+		void AsyncDuplicateMirrorFramesName(const wchar_t* path);
+		void AsyncInsertDelayName(const wchar_t* path, int frameId, int delay);
+		void AsyncReduceFramesName(const wchar_t* path, int n);
+		void AsyncDuplicateFramesName(const wchar_t* path);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);

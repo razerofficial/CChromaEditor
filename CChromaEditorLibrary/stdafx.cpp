@@ -9543,13 +9543,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginInvertColorsAllFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginInvertColorsAllFrames(animationId);
+		ChromaThread::Instance()->AsyncInvertColorsAllFramesName(path);
 	}
 
 	EXPORT_API double PluginInvertColorsAllFramesNameD(const wchar_t* path)
@@ -10571,13 +10565,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginReverseAllFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginReverseAllFrames(animationId);
+		ChromaThread::Instance()->AsyncReverseAllFramesName(path);
 	}
 
 	EXPORT_API double PluginReverseAllFramesNameD(const wchar_t* path)
@@ -11276,13 +11264,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginDuplicateFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginDuplicateFrames(animationId);
+		ChromaThread::Instance()->AsyncDuplicateFramesName(path);
 	}
 	EXPORT_API double PluginDuplicateFramesNameD(const wchar_t* path)
 	{
@@ -11405,13 +11387,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginDuplicateMirrorFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginDuplicateMirrorFrames(animationId);
+		ChromaThread::Instance()->AsyncDuplicateMirrorFramesName(path);
 	}
 	EXPORT_API double PluginDuplicateMirrorFramesNameD(const wchar_t* path)
 	{
@@ -11598,13 +11574,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginInsertDelayName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginInsertDelay(animationId, frameId, delay);
+		ChromaThread::Instance()->AsyncInsertDelayName(path, frameId, delay);
 	}
 	EXPORT_API double PluginInsertDelayNameD(const wchar_t* path, double frameId, double delay)
 	{
@@ -11698,13 +11668,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginReduceFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginReduceFrames(animationId, n);
+		ChromaThread::Instance()->AsyncReduceFramesName(path, n);
 	}
 	EXPORT_API double PluginReduceFramesNameD(const wchar_t* path, double n)
 	{

@@ -420,6 +420,72 @@ void ChromaThread::ImplOverrideFrameDurationName(const wchar_t* path, float dura
 	PluginOverrideFrameDuration(animationId, duration);
 }
 
+void ChromaThread::ImplReverseAllFramesName(const wchar_t* path)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplReverseAllFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginReverseAllFrames(animationId);
+}
+
+void ChromaThread::ImplInvertColorsAllFramesName(const wchar_t* path)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplInvertColorsAllFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginInvertColorsAllFrames(animationId);
+}
+
+void ChromaThread::ImplDuplicateMirrorFramesName(const wchar_t* path)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplDuplicateMirrorFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginDuplicateMirrorFrames(animationId);
+}
+
+void ChromaThread::ImplInsertDelayName(const wchar_t* path, int frameId, int delay)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplInsertDelayName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginInsertDelay(animationId, frameId, delay);
+}
+
+void ChromaThread::ImplReduceFramesName(const wchar_t* path, int n)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplReduceFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginReduceFrames(animationId, n);
+}
+
+void ChromaThread::ImplDuplicateFramesName(const wchar_t* path)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplDuplicateFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginDuplicateFrames(animationId);
+}
+
 void ChromaThread::ProcessAnimations(float deltaTime)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -1051,6 +1117,126 @@ void ChromaThread::AsyncOverrideFrameDurationName(const wchar_t* path, float dur
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncReverseAllFramesName(const wchar_t* path)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsReverseAllFramesName params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_ReverseAllFramesName;
+	command._mReverseAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncInvertColorsAllFramesName(const wchar_t* path)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsInvertColorsAllFramesName params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_InvertColorsAllFramesName;
+	command._mInvertColorsAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncDuplicateMirrorFramesName(const wchar_t* path)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsDuplicateMirrorFramesName params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_DuplicateMirrorFramesName;
+	command._mDuplicateMirrorFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncInsertDelayName(const wchar_t* path, int frameId, int delay)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsInsertDelayName params;
+	params._mPath = path;
+	params._mFrameId = frameId;
+	params._mDelay = delay;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_InsertDelayName;
+	command._mInsertDelayName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncReduceFramesName(const wchar_t* path, int n)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsReduceFramesName params;
+	params._mPath = path;
+	params._mN = n;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_ReduceFramesName;
+	command._mReduceFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncDuplicateFramesName(const wchar_t* path)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsDuplicateFramesName params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_DuplicateFramesName;
+	command._mDuplicateFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -1531,6 +1717,51 @@ void ChromaThread::ProcessPendingCommands()
 				const wchar_t* path = params._mPath.c_str();
 				float duration = params._mDuration;
 				ImplOverrideFrameDurationName(path, duration);
+			}
+			break;
+			case PendingCommandType::Command_ReverseAllFramesName:
+			{
+				const ParamsReverseAllFramesName& params = pendingCommand._mReverseAllFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				ImplReverseAllFramesName(path);
+			}
+			break;
+			case PendingCommandType::Command_InvertColorsAllFramesName:
+			{
+				const ParamsInvertColorsAllFramesName& params = pendingCommand._mInvertColorsAllFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				ImplInvertColorsAllFramesName(path);
+			}
+			break;
+			case PendingCommandType::Command_DuplicateMirrorFramesName:
+			{
+				const ParamsDuplicateMirrorFramesName& params = pendingCommand._mDuplicateMirrorFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				ImplDuplicateMirrorFramesName(path);
+			}
+			break;
+			case PendingCommandType::Command_InsertDelayName:
+			{
+				const ParamsInsertDelayName& params = pendingCommand._mInsertDelayName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameId = params._mFrameId;
+				int delay = params._mDelay;
+				ImplInsertDelayName(path, frameId, delay);
+			}
+			break;
+			case PendingCommandType::Command_ReduceFramesName:
+			{
+				const ParamsReduceFramesName& params = pendingCommand._mReduceFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int n = params._mN;
+				ImplReduceFramesName(path, n);
+			}
+			break;
+			case PendingCommandType::Command_DuplicateFramesName:
+			{
+				const ParamsDuplicateFramesName& params = pendingCommand._mDuplicateFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				ImplDuplicateFramesName(path);
 			}
 			break;
 		}
