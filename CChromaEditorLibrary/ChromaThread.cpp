@@ -4,6 +4,7 @@
 #include "ChromaSDKPlugin.h"
 #include "ChromaThread.h"
 #include "RzChromaSDK.h"
+#include "RzChromaStreamPlugin.h"
 #include <chrono>
 #include <sstream>
 
@@ -21,6 +22,8 @@ vector<std::wstring> ChromaThread::_sIdleAnimation;
 std::vector<std::wstring> ChromaThread::_sOrderPendingCommands;
 std::map<std::wstring, PendingCommand> ChromaThread::_sPendingCommands;
 RZRESULT ChromaThread::_sLastResultSetEventName = RZRESULT_SUCCESS;
+ResultCoreStreamGetAuthShortcode ChromaThread::_sLastResultCoreStreamGetAuthShortcode;
+ResultCoreStreamGetStatus ChromaThread::_sLastResultCoreStreamGetStatus;
 
 extern map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
 extern map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
@@ -618,6 +621,28 @@ void ChromaThread::ImplSetKeysColorAllFramesRGBName(const wchar_t* path, const i
 		return;
 	}
 	PluginSetKeysColorAllFramesRGB(animationId, rzkeys, keyCount, red, green, blue);
+}
+
+void ChromaThread::ImplCoreStreamGetAuthShortcode(const wchar_t* platform, const wchar_t* title)
+{
+	char shortcode[7] = { 0 };
+	unsigned char length = 0;
+	RzChromaStreamPlugin::StreamGetAuthShortcode(shortcode, &length, platform, title);
+	const int sizeShortcode = 6;
+	if (length == sizeShortcode)
+	{
+		_sLastResultCoreStreamGetAuthShortcode._mShortcode = shortcode;
+	}
+	else
+	{
+		_sLastResultCoreStreamGetAuthShortcode._mShortcode = "";
+	}
+}
+
+Stream::StreamStatusType ChromaThread::ImplCoreStreamGetStatus()
+{
+	_sLastResultCoreStreamGetStatus._mStatus = RzChromaStreamPlugin::StreamGetStatus();
+	return _sLastResultCoreStreamGetStatus._mStatus;
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
@@ -1600,6 +1625,62 @@ void ChromaThread::AsyncSetKeysColorAllFramesRGBName(const wchar_t* path, const 
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	const int sizeShortcode = 6;
+	if (_sLastResultCoreStreamGetAuthShortcode._mShortcode.size() == sizeShortcode)
+	{
+		for (int i = 0; i < sizeShortcode; ++i)
+		{
+			shortcode[i] = _sLastResultCoreStreamGetAuthShortcode._mShortcode[i];
+		}
+		*length = sizeShortcode;
+	}
+	else
+	{
+		*length = 0;
+	}
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsCoreStreamGetAuthShortcode params;
+	params._mPlatform = platform;
+	params._mTitle = title;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamGetAuthShortcode;
+	command._mCoreStreamGetAuthShortcode = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+Stream::StreamStatusType ChromaThread::AsyncCoreStreamGetStatus()
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	Stream::StreamStatusType result = _sLastResultCoreStreamGetStatus._mStatus;
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return result;
+	}
+	// use the path as key and save the state
+	ParamsCoreStreamGetStatus params;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamGetStatus;
+	command._mCoreStreamGetStatus = params;
+	AddPendingCommandInOrder(key, command);
+
+	return result;
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -2224,6 +2305,20 @@ void ChromaThread::ProcessPendingCommands()
 				int green = params._mGreen;
 				int blue = params._mBlue;
 				ImplSetKeysColorAllFramesRGBName(path, rzkeys, keyCount, red, green, blue);
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamGetAuthShortcode:
+			{
+				const ParamsCoreStreamGetAuthShortcode& params = pendingCommand._mCoreStreamGetAuthShortcode;
+				const wchar_t* platform = params._mPlatform.c_str();
+				const wchar_t* title = params._mTitle.c_str();
+				ImplCoreStreamGetAuthShortcode(platform, title);
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamGetStatus:
+			{
+				const ParamsCoreStreamGetStatus& params = pendingCommand._mCoreStreamGetStatus;
+				ImplCoreStreamGetStatus();
 			}
 			break;
 		}

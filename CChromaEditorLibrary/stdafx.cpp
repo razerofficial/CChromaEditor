@@ -243,7 +243,7 @@ extern "C"
 	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length,
 		const wchar_t* platform, const wchar_t* title)
 	{
-		RzChromaStreamPlugin::StreamGetAuthShortcode(shortcode, length, platform, title);
+		ChromaThread::Instance()->AsyncCoreStreamGetAuthShortcode(shortcode, length, platform, title);
 	}
 
 	EXPORT_API void PluginCoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length)
@@ -258,7 +258,7 @@ extern "C"
 
 	EXPORT_API Stream::StreamStatusType PluginCoreStreamGetStatus()
 	{
-		return RzChromaStreamPlugin::StreamGetStatus();
+		return ChromaThread::Instance()->AsyncCoreStreamGetStatus();
 	}
 
 	EXPORT_API const char* PluginCoreStreamGetStatusString(ChromaSDK::Stream::StreamStatusType status)
