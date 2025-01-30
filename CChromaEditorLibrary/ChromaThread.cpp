@@ -288,6 +288,48 @@ void ChromaThread::ImplFillThresholdColorsRGBName(const wchar_t* path, int frame
 	PluginFillThresholdColorsRGB(animationId, frameId, threshold, red, green, blue);
 }
 
+void ChromaThread::ImplCopyNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
+{
+	int sourceAnimationId = ImplGetAnimation(sourceAnimation);
+	if (sourceAnimationId < 0)
+	{
+		LogError(L"ImplCopyNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+		return;
+	}
+
+	int targetAnimationId = ImplGetAnimation(targetAnimation);
+	if (targetAnimationId < 0)
+	{
+		LogError(L"ImplCopyNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+		return;
+	}
+
+	PluginCopyNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+}
+
+void ChromaThread::ImplMakeBlankFramesName(const wchar_t* path, int frameCount, float duration, int color)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMakeBlankFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+
+	PluginMakeBlankFrames(animationId, frameCount, duration, color);
+}
+
+void ChromaThread::ImplFillThresholdColorsAllFramesName(const wchar_t* path, int threshold, int color)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplFillThresholdColorsAllFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginFillThresholdColorsAllFrames(animationId, threshold, color);
+}
+
 void ChromaThread::ProcessAnimations(float deltaTime)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -740,6 +782,51 @@ void ChromaThread::AsyncFillThresholdColorsRGBName(const wchar_t* path, int fram
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncCopyNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsCopyNonZeroAllKeysAllFramesName params;
+	params._mSourceAnimation = sourceAnimation;
+	params._mTargetAnimation = targetAnimation;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CopyNonZeroAllKeysAllFramesName;
+	command._mCopyNonZeroAllKeysAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncFillThresholdColorsAllFramesName(const wchar_t* path, int threshold, int color)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsFillThresholdColorsAllFramesName params;
+	params._mPath = path;
+	params._mThreshold = threshold;
+	params._mColor = color;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_FillThresholdColorsAllFramesName;
+	command._mFillThresholdColorsAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -866,6 +953,30 @@ void ChromaThread::AsyncMultiplyIntensityAllFramesName(const wchar_t* path, floa
 	PendingCommand command;
 	command._mType = PendingCommandType::Command_MultiplyIntensityAllFramesName;
 	command._mMultiplyIntensityAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncMakeBlankFramesName(const wchar_t* path, int frameCount, float duration, int color)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// Add only a new item
+	ParamsMakeBlankFramesName params;
+	params._mPath = path;
+	params._mFrameCount = frameCount;
+	params._mDuration = duration;
+	params._mColor = color;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MakeBlankFramesName;
+	command._mMakeBlankFramesName = params;
 	AddPendingCommandInOrder(key, command);
 }
 
@@ -1119,6 +1230,33 @@ void ChromaThread::ProcessPendingCommands()
 				int green = params._mGreen;
 				int blue = params._mBlue;
 				ImplFillThresholdColorsRGBName(path, frameId, threshold, red, green, blue);
+			}
+			break;
+			case PendingCommandType::Command_CopyNonZeroAllKeysAllFramesName:
+			{
+				const ParamsCopyNonZeroAllKeysAllFramesName& params = pendingCommand._mCopyNonZeroAllKeysAllFramesName;
+				const wchar_t* sourceAnimation = params._mSourceAnimation.c_str();
+				const wchar_t* targetAnimation = params._mTargetAnimation.c_str();
+				ImplCopyNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
+			}
+			break;
+			case PendingCommandType::Command_MakeBlankFramesName:
+			{
+				const ParamsMakeBlankFramesName& params = pendingCommand._mMakeBlankFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameCount = params._mFrameCount;
+				float duration = params._mDuration;
+				int color = params._mColor;
+				ImplMakeBlankFramesName(path, frameCount, duration, color);
+			}
+			break;
+			case PendingCommandType::Command_FillThresholdColorsAllFramesName:
+			{
+				const ParamsFillThresholdColorsAllFramesName& params = pendingCommand._mFillThresholdColorsAllFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int threshold = params._mThreshold;
+				int color = params._mColor;
+				ImplFillThresholdColorsAllFramesName(path, threshold, color);
 			}
 			break;
 		}

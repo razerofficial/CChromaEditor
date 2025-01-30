@@ -5118,21 +5118,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginCopyNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginCopyNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginCopyNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+		ChromaThread::Instance()->AsyncCopyNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 	}
 
 	EXPORT_API double PluginCopyNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
@@ -8555,13 +8541,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginFillThresholdColorsAllFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginFillThresholdColorsAllFrames(animationId, threshold, color);
+		ChromaThread::Instance()->AsyncFillThresholdColorsAllFramesName(path, threshold, color);
 	}
 
 	EXPORT_API double PluginFillThresholdColorsAllFramesNameD(const wchar_t* path, double threshold, double color)
@@ -11044,13 +11024,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginMakeBlankFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginMakeBlankFrames(animationId, frameCount, duration, color);
+		ChromaThread::Instance()->AsyncMakeBlankFramesName(path, frameCount, duration, color);
 	}
 
 	EXPORT_API double PluginMakeBlankFramesNameD(const wchar_t* path, double frameCount, double duration, double color)
