@@ -546,6 +546,80 @@ void ChromaThread::ImplMultiplyColorLerpAllFramesName(const wchar_t* path, int c
 	PluginMultiplyColorLerpAllFrames(animationId, color1, color2);
 }
 
+void ChromaThread::ImplSetKeyColorName(const wchar_t* path, int frameId, int rzkey, int color)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplSetKeyColorName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginSetKeyColor(animationId, frameId, rzkey, color);
+}
+
+void ChromaThread::ImplSetChromaCustomFlagName(const wchar_t* path, bool flag)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplSetChromaCustomFlagName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginSetChromaCustomFlag(animationId, flag);
+}
+
+void ChromaThread::ImplMultiplyTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMultiplyTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginMultiplyTargetColorLerpAllFrames(animationId, color1, color2);
+}
+
+void ChromaThread::ImplSetKeysColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplSetKeysColorAllFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginSetKeysColorAllFrames(animationId, rzkeys, keyCount, color);
+}
+
+void ChromaThread::ImplCopyKeysColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size)
+{
+	int sourceAnimationId = ImplGetAnimation(sourceAnimation);
+	if (sourceAnimationId < 0)
+	{
+		LogError(L"ImplCopyKeysColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+		return;
+	}
+
+	int targetAnimationId = ImplGetAnimation(targetAnimation);
+	if (targetAnimationId < 0)
+	{
+		LogError(L"ImplCopyKeysColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+		return;
+	}
+
+	PluginCopyKeysColorAllFrames(sourceAnimationId, targetAnimationId, keys, size);
+}
+
+void ChromaThread::ImplSetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplSetKeysColorAllFramesRGBName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginSetKeysColorAllFramesRGB(animationId, rzkeys, keyCount, red, green, blue);
+}
+
 void ChromaThread::ProcessAnimations(float deltaTime)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -1392,6 +1466,140 @@ void ChromaThread::AsyncMultiplyColorLerpAllFramesName(const wchar_t* path, int 
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncSetKeyColorName(const wchar_t* path, int frameId, int rzkey, int color)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsSetKeyColorName params;
+	params._mPath = path;
+	params._mFrameId = frameId;
+	params._mRzKey = rzkey;
+	params._mColor = color;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_SetKeyColorName;
+	command._mSetKeyColorName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncSetChromaCustomFlagName(const wchar_t* path, bool flag)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsSetChromaCustomFlagName params;
+	params._mPath = path;
+	params._mFlag = flag;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_SetChromaCustomFlagName;
+	command._mSetChromaCustomFlagName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncMultiplyTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsMultiplyTargetColorLerpAllFramesName params;
+	params._mPath = path;
+	params._mColor1 = color1;
+	params._mColor2 = color2;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MultiplyTargetColorLerpAllFramesName;
+	command._mMultiplyTargetColorLerpAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncSetKeysColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsSetKeysColorAllFramesName params;
+	params._mPath = path;
+	for (int i = 0; i < keyCount; ++i)
+	{
+		int rzkey = rzkeys[i];
+		params._mRzKeys.push_back(rzkey);
+	}
+	params._mColor = color;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_SetKeysColorAllFramesName;
+	command._mSetKeysColorAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncCopyKeysColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsCopyKeysColorAllFramesName params;
+	params._mSourceAnimation = sourceAnimation;
+	params._mTargetAnimation = targetAnimation;
+	for (int i = 0; i < size; ++i)
+	{
+		int rzkey = keys[i];
+		params._mKeys.push_back(rzkey);
+	}
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CopyKeysColorAllFramesName;
+	command._mCopyKeysColorAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncSetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsSetKeysColorAllFramesRGBName params;
+	params._mPath = path;
+	for (int i = 0; i < keyCount; ++i)
+	{
+		int rzkey = rzkeys[i];
+		params._mRzKeys.push_back(rzkey);
+	}
+	params._mRed = red;
+	params._mGreen = green;
+	params._mBlue = blue;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_SetKeysColorAllFramesRGBName;
+	command._mSetKeysColorAllFramesRGBName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -1957,6 +2165,65 @@ void ChromaThread::ProcessPendingCommands()
 				int color1 = params._mColor1;
 				int color2 = params._mColor2;
 				ImplMultiplyColorLerpAllFramesName(path, color1, color2);
+			}
+			break;
+			case PendingCommandType::Command_SetKeyColorName:
+			{
+				const ParamsSetKeyColorName& params = pendingCommand._mSetKeyColorName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameId = params._mFrameId;
+				int rzkey = params._mRzKey;
+				int color = params._mColor;
+				ImplSetKeyColorName(path, frameId, rzkey, color);
+			}
+			break;
+			case PendingCommandType::Command_SetChromaCustomFlagName:
+			{
+				const ParamsSetChromaCustomFlagName& params = pendingCommand._mSetChromaCustomFlagName;
+				const wchar_t* path = params._mPath.c_str();
+				bool flag = params._mFlag;
+				ImplSetChromaCustomFlagName(path, flag);
+			}
+			break;
+			case PendingCommandType::Command_MultiplyTargetColorLerpAllFramesName:
+			{
+				const ParamsMultiplyTargetColorLerpAllFramesName& params = pendingCommand._mMultiplyTargetColorLerpAllFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int color1 = params._mColor1;
+				int color2 = params._mColor2;
+				ImplMultiplyTargetColorLerpAllFramesName(path, color1, color2);
+			}
+			break;
+			case PendingCommandType::Command_SetKeysColorAllFramesName:
+			{
+				const ParamsSetKeysColorAllFramesName& params = pendingCommand._mSetKeysColorAllFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				const int* rzkeys = params._mRzKeys.data();
+				int keyCount = (int)params._mRzKeys.size();
+				int color = params._mColor;
+				ImplSetKeysColorAllFramesName(path, rzkeys, keyCount, color);
+			}
+			break;
+			case PendingCommandType::Command_CopyKeysColorAllFramesName:
+			{
+				const ParamsCopyKeysColorAllFramesName& params = pendingCommand._mCopyKeysColorAllFramesName;
+				const wchar_t* sourceAnimation = params._mSourceAnimation.c_str();
+				const wchar_t* targetAnimation = params._mTargetAnimation.c_str();
+				const int* keys = params._mKeys.data();
+				int size = (int)params._mKeys.size();
+				ImplCopyKeysColorAllFramesName(sourceAnimation, targetAnimation, keys, size);
+			}
+			break;
+			case PendingCommandType::Command_SetKeysColorAllFramesRGBName:
+			{
+				const ParamsSetKeysColorAllFramesRGBName& params = pendingCommand._mSetKeysColorAllFramesRGBName;
+				const wchar_t* path = params._mPath.c_str();
+				const int* rzkeys = params._mRzKeys.data();
+				int keyCount = (int)params._mRzKeys.size();
+				int red = params._mRed;
+				int green = params._mGreen;
+				int blue = params._mBlue;
+				ImplSetKeysColorAllFramesRGBName(path, rzkeys, keyCount, red, green, blue);
 			}
 			break;
 		}

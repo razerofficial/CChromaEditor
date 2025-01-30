@@ -2526,13 +2526,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginSetKeyColorName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginSetKeyColor(animationId, frameId, rzkey, color);
+		ChromaThread::Instance()->AsyncSetKeyColorName(path, frameId, rzkey, color);
 	}
 
 	EXPORT_API void PluginSetKeyRowColumnColorName(const wchar_t* path, int frameId, int row, int column, int color)
@@ -2844,13 +2838,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginSetKeysColorAllFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginSetKeysColorAllFrames(animationId, rzkeys, keyCount, color);
+		ChromaThread::Instance()->AsyncSetKeysColorAllFramesName(path, rzkeys, keyCount, color);
 	}
 
 
@@ -2910,13 +2898,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginSetKeysColorAllFramesRGBName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginSetKeysColorAllFramesRGB(animationId, rzkeys, keyCount, red, green, blue);
+		ChromaThread::Instance()->AsyncSetKeysColorAllFramesRGBName(path, rzkeys, keyCount, red, green, blue);
 	}
 
 
@@ -3716,21 +3698,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginCopyKeysColorAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginCopyKeysColorAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginCopyKeysColorAllFrames(sourceAnimationId, targetAnimationId, keys, size);
+		ChromaThread::Instance()->AsyncCopyKeysColorAllFramesName(sourceAnimation, targetAnimation, keys, size);
 	}
 
 	EXPORT_API void PluginCopyKeysColorOffset(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, const int* keys, int size)
@@ -10360,13 +10328,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginMultiplyTargetColorLerpAllFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginMultiplyTargetColorLerpAllFrames(animationId, color1, color2);
+		ChromaThread::Instance()->AsyncMultiplyTargetColorLerpAllFramesName(path, color1, color2);
 	}
 	EXPORT_API double PluginMultiplyTargetColorLerpAllFramesNameD(const wchar_t* path, double color1, double color2)
 	{
@@ -10773,13 +10735,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginKeyboardUseChromaCustomName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginSetChromaCustomFlag(animationId, flag);
+		ChromaThread::Instance()->AsyncSetChromaCustomFlagName(path, flag);
 	}
 
 	EXPORT_API double PluginSetChromaCustomFlagNameD(const wchar_t* path, double flag)

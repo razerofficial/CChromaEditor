@@ -490,6 +490,80 @@ namespace ChromaSDK
 		}
 	};
 
+	struct ParamsSetKeyColorName
+	{
+		std::wstring _mPath;
+		int _mFrameId = 0;
+		int _mRzKey = 0;
+		int _mColor = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SetKeyColorName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsSetChromaCustomFlagName
+	{
+		std::wstring _mPath;
+		bool _mFlag;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SetChromaCustomFlagName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsMultiplyTargetColorLerpAllFramesName
+	{
+		std::wstring _mPath;
+		int _mColor1 = 0;
+		int _mColor2 = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"MultiplyTargetColorLerpAllFramesName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsSetKeysColorAllFramesName
+	{
+		std::wstring _mPath;
+		std::vector<int> _mRzKeys;
+		int _mColor = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SetKeysColorAllFramesName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsCopyKeysColorAllFramesName
+	{
+		std::wstring _mSourceAnimation;
+		std::wstring _mTargetAnimation;
+		std::vector<int> _mKeys;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CopyKeysColorAllFramesName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsSetKeysColorAllFramesRGBName
+	{
+		std::wstring _mPath;
+		std::vector<int> _mRzKeys;
+		int _mRed = 0;
+		int _mGreen = 0;
+		int _mBlue = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SetKeysColorAllFramesRGBName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -533,6 +607,12 @@ namespace ChromaSDK
 		Command_FillRandomColorsBlackAndWhiteAllFramesName,
 		Command_UseIdleAnimation,
 		Command_MultiplyColorLerpAllFramesName,
+		Command_SetKeyColorName,
+		Command_SetChromaCustomFlagName,
+		Command_MultiplyTargetColorLerpAllFramesName,
+		Command_SetKeysColorAllFramesName,
+		Command_CopyKeysColorAllFramesName,
+		Command_SetKeysColorAllFramesRGBName,
 	};
 
 	struct PendingCommand
@@ -578,6 +658,12 @@ namespace ChromaSDK
 		ParamsFillRandomColorsBlackAndWhiteAllFramesName _mFillRandomColorsBlackAndWhiteAllFramesName = { };
 		ParamsUseIdleAnimation _mUseIdleAnimation = { };
 		ParamsMultiplyColorLerpAllFramesName _mMultiplyColorLerpAllFramesName = { };
+		ParamsSetKeyColorName _mSetKeyColorName = { };
+		ParamsSetChromaCustomFlagName _mSetChromaCustomFlagName = { };
+		ParamsMultiplyTargetColorLerpAllFramesName _mMultiplyTargetColorLerpAllFramesName = { };
+		ParamsSetKeysColorAllFramesName _mSetKeysColorAllFramesName = { };
+		ParamsCopyKeysColorAllFramesName _mCopyKeysColorAllFramesName = { };
+		ParamsSetKeysColorAllFramesRGBName _mSetKeysColorAllFramesRGBName = { };
 	};
 
 	class ChromaThread
@@ -628,6 +714,12 @@ namespace ChromaSDK
 		void ImplFillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path);
 		void ImplUseIdleAnimation(int device, bool flag);
 		void ImplMultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
+		void ImplSetKeyColorName(const wchar_t* path, int frameId, int rzkey, int color);
+		void ImplSetChromaCustomFlagName(const wchar_t* path, bool flag);
+		void ImplMultiplyTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
+		void ImplSetKeysColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color);
+		void ImplCopyKeysColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size);
+		void ImplSetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -671,6 +763,12 @@ namespace ChromaSDK
 		void AsyncFillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path);
 		void AsyncUseIdleAnimation(int device, bool flag);
 		void AsyncMultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
+		void AsyncSetKeyColorName(const wchar_t* path, int frameId, int rzkey, int color);
+		void AsyncSetChromaCustomFlagName(const wchar_t* path, bool flag);
+		void AsyncMultiplyTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
+		void AsyncSetKeysColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color);
+		void AsyncCopyKeysColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size);
+		void AsyncSetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
