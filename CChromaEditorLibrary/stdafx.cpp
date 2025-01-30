@@ -8427,20 +8427,15 @@ extern "C"
 					int red = oldColor & 0xFF;
 					int green = (oldColor & 0xFF00) >> 8;
 					int blue = (oldColor & 0xFF0000) >> 16;
-					if (red != 0 ||
-						green != 0 ||
-						blue != 0)
-					{
-						if (red <= minThreshold &&
-							green <= minThreshold &&
-							blue <= minThreshold) {
-							colors[i] = minColor;
-						}
-						else if (red >= maxThreshold ||
-							green >= maxThreshold ||
-							blue >= maxThreshold) {
-							colors[i] = maxColor;
-						}
+					if (red <= minThreshold &&
+						green <= minThreshold &&
+						blue <= minThreshold) {
+						colors[i] = minColor;
+					}
+					else if (red >= maxThreshold ||
+						green >= maxThreshold ||
+						blue >= maxThreshold) {
+						colors[i] = maxColor;
 					}
 				}
 			}
@@ -8465,20 +8460,15 @@ extern "C"
 						int red = oldColor & 0xFF;
 						int green = (oldColor & 0xFF00) >> 8;
 						int blue = (oldColor & 0xFF0000) >> 16;
-						if (red != 0 ||
-							green != 0 ||
-							blue != 0)
-						{
-							if (red <= minThreshold &&
-								green <= minThreshold &&
-								blue <= minThreshold) {
-								row.Colors[j] = minColor;
-							}
-							else if (red >= maxThreshold ||
-								green >= maxThreshold ||
-								blue >= maxThreshold) {
-								row.Colors[j] = maxColor;
-							}
+						if (red <= minThreshold &&
+							green <= minThreshold &&
+							blue <= minThreshold) {
+							row.Colors[j] = minColor;
+						}
+						else if (red >= maxThreshold ||
+							green >= maxThreshold ||
+							blue >= maxThreshold) {
+							row.Colors[j] = maxColor;
 						}
 					}
 				}
@@ -9991,7 +9981,7 @@ extern "C"
 			LogError(L"PluginMultiplyIntensityName: Animation not found! %s\r\n", path);
 			return;
 		}
-		PluginMultiplyIntensity(animationId, frameId, intensity);
+		ChromaThread::Instance()->AsyncMultiplyIntensityName(path, frameId, intensity);
 	}
 
 	EXPORT_API double PluginMultiplyIntensityNameD(const wchar_t* path, double frameId, double intensity)
@@ -10214,13 +10204,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginMultiplyIntensityRGBName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginMultiplyIntensityRGB(animationId, frameId, red, green, blue);
+		ChromaThread::Instance()->AsyncMultiplyIntensityRGBName(path, frameId, red, green, blue);
 	}
 
 	EXPORT_API double PluginMultiplyIntensityRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue)
@@ -10252,13 +10236,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginMultiplyIntensityAllFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginMultiplyIntensityAllFrames(animationId, intensity);
+		ChromaThread::Instance()->AsyncMultiplyIntensityAllFramesName(path, intensity);
 	}
 
 	EXPORT_API double PluginMultiplyIntensityAllFramesNameD(const wchar_t* path, double intensity)

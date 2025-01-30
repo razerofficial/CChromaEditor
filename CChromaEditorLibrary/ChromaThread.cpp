@@ -233,6 +233,39 @@ void ChromaThread::ImplFadeEndFramesName(const wchar_t* path, int fade)
 	PluginFadeEndFrames(animationId, fade);
 }
 
+void ChromaThread::ImplMultiplyIntensityName(const wchar_t* path, int frameId, float intensity)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMultiplyIntensityName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginMultiplyIntensity(animationId, frameId, intensity);
+}
+
+void ChromaThread::ImplMultiplyIntensityAllFramesName(const wchar_t* path, float intensity)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMultiplyIntensityAllFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginMultiplyIntensityAllFrames(animationId, intensity);
+}
+
+void ChromaThread::ImplMultiplyIntensityRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMultiplyIntensityRGBName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginMultiplyIntensityRGB(animationId, frameId, red, green, blue);
+}
+
 void ChromaThread::ProcessAnimations(float deltaTime)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -588,6 +621,54 @@ void ChromaThread::AsyncFadeEndFramesName(const wchar_t* path, int fade)
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncMultiplyIntensityName(const wchar_t* path, int frameId, float intensity)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsMultiplyIntensityName params;
+	params._mPath = path;
+	params._mFrameId = frameId;
+	params._mIntensity = intensity;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MultiplyIntensityName;
+	command._mMultiplyIntensityName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncMultiplyIntensityRGBName(const wchar_t* path, int frameId, int red, int green, int blue)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsMultiplyIntensityRGBName params;
+	params._mPath = path;
+	params._mFrameId = frameId;
+	params._mRed = red;
+	params._mGreen = green;
+	params._mBlue = blue;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MultiplyIntensityRGBName;
+	command._mMultiplyIntensityRGBName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -692,6 +773,28 @@ void ChromaThread::AsyncUseIdleAnimations(bool flag)
 	PendingCommand command;
 	command._mType = PendingCommandType::Command_UseIdleAnimations;
 	command._mUseIdleAnimations = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncMultiplyIntensityAllFramesName(const wchar_t* path, float intensity)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// Add only a new item
+	ParamsMultiplyIntensityAllFramesName params;
+	params._mPath = path;
+	params._mIntensity = intensity;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MultiplyIntensityAllFramesName;
+	command._mMultiplyIntensityAllFramesName = params;
 	AddPendingCommandInOrder(key, command);
 }
 
@@ -896,6 +999,34 @@ void ChromaThread::ProcessPendingCommands()
 				const wchar_t* path = params._mPath.c_str();
 				int fade = params._mFade;
 				ImplFadeEndFramesName(path, fade);
+			}
+			break;
+			case PendingCommandType::Command_MultiplyIntensityName:
+			{
+				const ParamsMultiplyIntensityName& params = pendingCommand._mMultiplyIntensityName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameId = params._mFrameId;
+				float intensity = params._mIntensity;
+				ImplMultiplyIntensityName(path, frameId, intensity);
+			}
+			break;
+			case PendingCommandType::Command_MultiplyIntensityAllFramesName:
+			{
+				const ParamsMultiplyIntensityAllFramesName& params = pendingCommand._mMultiplyIntensityAllFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				float intensity = params._mIntensity;
+				ImplMultiplyIntensityAllFramesName(path, intensity);
+			}
+			break;
+			case PendingCommandType::Command_MultiplyIntensityRGBName:
+			{
+				const ParamsMultiplyIntensityRGBName& params = pendingCommand._mMultiplyIntensityRGBName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameId = params._mFrameId;
+				int red = params._mRed;
+				int green = params._mGreen;
+				int blue = params._mBlue;
+				ImplMultiplyIntensityRGBName(path, frameId, red, green, blue);
 			}
 			break;
 		}
