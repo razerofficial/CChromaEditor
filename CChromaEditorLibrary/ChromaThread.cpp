@@ -266,6 +266,28 @@ void ChromaThread::ImplMultiplyIntensityRGBName(const wchar_t* path, int frameId
 	PluginMultiplyIntensityRGB(animationId, frameId, red, green, blue);
 }
 
+void ChromaThread::ImplMultiplyIntensityColorName(const wchar_t* path, int frameId, int color)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMultiplyIntensityColorName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginMultiplyIntensityColor(animationId, frameId, color);
+}
+
+void ChromaThread::ImplFillThresholdColorsRGBName(const wchar_t* path, int frameId, int threshold, int red, int green, int blue)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplFillThresholdColorsRGBName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginFillThresholdColorsRGB(animationId, frameId, threshold, red, green, blue);
+}
+
 void ChromaThread::ProcessAnimations(float deltaTime)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -669,6 +691,55 @@ void ChromaThread::AsyncMultiplyIntensityRGBName(const wchar_t* path, int frameI
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncMultiplyIntensityColorName(const wchar_t* path, int frameId, int color)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsMultiplyIntensityColorName params;
+	params._mPath = path;
+	params._mFrameId = frameId;
+	params._mColor = color;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MultiplyIntensityColorName;
+	command._mMultiplyIntensityColorName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncFillThresholdColorsRGBName(const wchar_t* path, int frameId, int threshold, int red, int green, int blue)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsFillThresholdColorsRGBName params;
+	params._mPath = path;
+	params._mFrameId = frameId;
+	params._mThreshold = threshold;
+	params._mRed = red;
+	params._mGreen = green;
+	params._mBlue = blue;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_FillThresholdColorsRGBName;
+	command._mFillThresholdColorsRGBName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -1027,6 +1098,27 @@ void ChromaThread::ProcessPendingCommands()
 				int green = params._mGreen;
 				int blue = params._mBlue;
 				ImplMultiplyIntensityRGBName(path, frameId, red, green, blue);
+			}
+			break;
+			case PendingCommandType::Command_MultiplyIntensityColorName:
+			{
+				const ParamsMultiplyIntensityColorName& params = pendingCommand._mMultiplyIntensityColorName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameId = params._mFrameId;
+				int color = params._mColor;
+				ImplMultiplyIntensityColorName(path, frameId, color);
+			}
+			break;
+			case PendingCommandType::Command_FillThresholdColorsRGBName:
+			{
+				const ParamsFillThresholdColorsRGBName& params = pendingCommand._mFillThresholdColorsRGBName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameId = params._mFrameId;
+				int threshold = params._mThreshold;
+				int red = params._mRed;
+				int green = params._mGreen;
+				int blue = params._mBlue;
+				ImplFillThresholdColorsRGBName(path, frameId, threshold, red, green, blue);
 			}
 			break;
 		}

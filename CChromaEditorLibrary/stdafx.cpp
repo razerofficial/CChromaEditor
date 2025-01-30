@@ -8288,13 +8288,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginFillThresholdColorsRGBName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginFillThresholdColorsRGB(animationId, frameId, threshold, red, green, blue);
+		ChromaThread::Instance()->AsyncFillThresholdColorsRGBName(path, frameId, threshold, red, green, blue);
 	}
 
 	EXPORT_API double PluginFillThresholdColorsRGBNameD(const wchar_t* path, double frameId, double threshold, double red, double green, double blue)
@@ -10072,13 +10066,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginMultiplyIntensityColorName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginMultiplyIntensityColor(animationId, frameId, color);
+		ChromaThread::Instance()->AsyncMultiplyIntensityColorName(path, frameId, color);
 	}
 
 	EXPORT_API double PluginMultiplyIntensityColorNameD(const wchar_t* path, double frameId, double color)
