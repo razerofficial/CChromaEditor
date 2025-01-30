@@ -330,6 +330,96 @@ void ChromaThread::ImplFillThresholdColorsAllFramesName(const wchar_t* path, int
 	PluginFillThresholdColorsAllFrames(animationId, threshold, color);
 }
 
+void ChromaThread::ImplAddNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
+{
+	int sourceAnimationId = ImplGetAnimation(sourceAnimation);
+	if (sourceAnimationId < 0)
+	{
+		LogError(L"ImplAddNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+		return;
+	}
+
+	int targetAnimationId = ImplGetAnimation(targetAnimation);
+	if (targetAnimationId < 0)
+	{
+		LogError(L"ImplAddNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+		return;
+	}
+
+	PluginAddNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+}
+
+void ChromaThread::ImplSubtractNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
+{
+	int sourceAnimationId = ImplGetAnimation(sourceAnimation);
+	if (sourceAnimationId < 0)
+	{
+		LogError(L"ImplSubtractNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+		return;
+	}
+
+	int targetAnimationId = ImplGetAnimation(targetAnimation);
+	if (targetAnimationId < 0)
+	{
+		LogError(L"ImplSubtractNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+		return;
+	}
+
+	PluginSubtractNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+}
+
+void ChromaThread::ImplCopyNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
+{
+	int sourceAnimationId = ImplGetAnimation(sourceAnimation);
+	if (sourceAnimationId < 0)
+	{
+		LogError(L"ImplCopyNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
+		return;
+	}
+
+	int targetAnimationId = ImplGetAnimation(targetAnimation);
+	if (targetAnimationId < 0)
+	{
+		LogError(L"ImplCopyNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
+		return;
+	}
+
+	PluginCopyNonZeroTargetAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+}
+
+void ChromaThread::ImplFillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplFillZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginFillZeroColorAllFramesRGB(animationId, red, green, blue);
+}
+
+void ChromaThread::ImplDuplicateFirstFrameName(const wchar_t* path, int frameCount)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplDuplicateFirstFrameName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginDuplicateFirstFrame(animationId, frameCount);
+}
+
+void ChromaThread::ImplOverrideFrameDurationName(const wchar_t* path, float duration)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplOverrideFrameDurationName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginOverrideFrameDuration(animationId, duration);
+}
+
 void ChromaThread::ProcessAnimations(float deltaTime)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -827,6 +917,140 @@ void ChromaThread::AsyncFillThresholdColorsAllFramesName(const wchar_t* path, in
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncAddNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsAddNonZeroAllKeysAllFramesName params;
+	params._mSourceAnimation = sourceAnimation;
+	params._mTargetAnimation = targetAnimation;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_AddNonZeroAllKeysAllFramesName;
+	command._mAddNonZeroAllKeysAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncSubtractNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsSubtractNonZeroAllKeysAllFramesName params;
+	params._mSourceAnimation = sourceAnimation;
+	params._mTargetAnimation = targetAnimation;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_SubtractNonZeroAllKeysAllFramesName;
+	command._mSubtractNonZeroAllKeysAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncCopyNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsCopyNonZeroTargetAllKeysAllFramesName params;
+	params._mSourceAnimation = sourceAnimation;
+	params._mTargetAnimation = targetAnimation;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CopyNonZeroTargetAllKeysAllFramesName;
+	command._mCopyNonZeroTargetAllKeysAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncFillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsFillZeroColorAllFramesRGBName params;
+	params._mPath = path;
+	params._mRed = red;
+	params._mGreen = green;
+	params._mBlue = blue;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_FillZeroColorAllFramesRGBName;
+	command._mFillZeroColorAllFramesRGBName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncDuplicateFirstFrameName(const wchar_t* path, int frameCount)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsDuplicateFirstFrameName params;
+	params._mPath = path;
+	params._mFrameCount = frameCount;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_DuplicateFirstFrameName;
+	command._mDuplicateFirstFrameName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncOverrideFrameDurationName(const wchar_t* path, float duration)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+
+	// use the path as key and save the state
+	ParamsOverrideFrameDurationName params;
+	params._mPath = path;
+	params._mDuration = duration;
+	wstring key = params.GenerateKey();
+
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_OverrideFrameDurationName;
+	command._mOverrideFrameDurationName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -1257,6 +1481,56 @@ void ChromaThread::ProcessPendingCommands()
 				int threshold = params._mThreshold;
 				int color = params._mColor;
 				ImplFillThresholdColorsAllFramesName(path, threshold, color);
+			}
+			break;
+			case PendingCommandType::Command_AddNonZeroAllKeysAllFramesName:
+			{
+				const ParamsAddNonZeroAllKeysAllFramesName& params = pendingCommand._mAddNonZeroAllKeysAllFramesName;
+				const wchar_t* sourceAnimation = params._mSourceAnimation.c_str();
+				const wchar_t* targetAnimation = params._mTargetAnimation.c_str();
+				ImplAddNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
+			}
+			break;
+			case PendingCommandType::Command_SubtractNonZeroAllKeysAllFramesName:
+			{
+				const ParamsSubtractNonZeroAllKeysAllFramesName& params = pendingCommand._mSubtractNonZeroAllKeysAllFramesName;
+				const wchar_t* sourceAnimation = params._mSourceAnimation.c_str();
+				const wchar_t* targetAnimation = params._mTargetAnimation.c_str();
+				ImplSubtractNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
+			}
+			break;
+			case PendingCommandType::Command_CopyNonZeroTargetAllKeysAllFramesName:
+			{
+				const ParamsCopyNonZeroTargetAllKeysAllFramesName& params = pendingCommand._mCopyNonZeroTargetAllKeysAllFramesName;
+				const wchar_t* sourceAnimation = params._mSourceAnimation.c_str();
+				const wchar_t* targetAnimation = params._mTargetAnimation.c_str();
+				ImplCopyNonZeroTargetAllKeysAllFramesName(sourceAnimation, targetAnimation);
+			}
+			break;
+			case PendingCommandType::Command_FillZeroColorAllFramesRGBName:
+			{
+				const ParamsFillZeroColorAllFramesRGBName& params = pendingCommand._mFillZeroColorAllFramesRGBName;
+				const wchar_t* path = params._mPath.c_str();
+				int red = params._mRed;
+				int green = params._mGreen;
+				int blue = params._mBlue;
+				ImplFillZeroColorAllFramesRGBName(path, red, green, blue);
+			}
+			break;
+			case PendingCommandType::Command_DuplicateFirstFrameName:
+			{
+				const ParamsDuplicateFirstFrameName& params = pendingCommand._mDuplicateFirstFrameName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameCount = params._mFrameCount;
+				ImplDuplicateFirstFrameName(path, frameCount);
+			}
+			break;
+			case PendingCommandType::Command_OverrideFrameDurationName:
+			{
+				const ParamsOverrideFrameDurationName& params = pendingCommand._mOverrideFrameDurationName;
+				const wchar_t* path = params._mPath.c_str();
+				float duration = params._mDuration;
+				ImplOverrideFrameDurationName(path, duration);
 			}
 			break;
 		}

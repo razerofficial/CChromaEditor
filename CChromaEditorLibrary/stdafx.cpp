@@ -1721,13 +1721,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginOverrideFrameDurationName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginOverrideFrameDuration(animationId, duration);
+		ChromaThread::Instance()->AsyncOverrideFrameDurationName(path, duration);
 	}
 
 	EXPORT_API double PluginOverrideFrameDurationD(double animationId, double duration)
@@ -5383,21 +5377,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginAddNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginAddNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginAddNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+		ChromaThread::Instance()->AsyncAddNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 	}
 
 	EXPORT_API double PluginAddNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
@@ -5665,21 +5645,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginSubtractNonZeroAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginSubtractNonZeroAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginSubtractNonZeroAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+		ChromaThread::Instance()->AsyncSubtractNonZeroAllKeysAllFramesName(sourceAnimation, targetAnimation);
 	}
 
 	EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
@@ -7419,21 +7385,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginCopyNonZeroTargetAllKeysAllFramesName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginCopyNonZeroTargetAllKeysAllFrames(sourceAnimationId, targetAnimationId);
+		ChromaThread::Instance()->AsyncCopyNonZeroTargetAllKeysAllFramesName(sourceAnimation, targetAnimation);
 	}
 
 	EXPORT_API double PluginCopyNonZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation)
@@ -9165,13 +9117,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginFillZeroColorAllFramesRGBName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginFillZeroColorAllFramesRGB(animationId, red, green, blue);
+		ChromaThread::Instance()->AsyncFillZeroColorAllFramesRGBName(path, red, green, blue);
 	}
 
 	EXPORT_API double PluginFillZeroColorAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue)
@@ -11398,13 +11344,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginDuplicateFirstFrameName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginDuplicateFirstFrame(animationId, frameCount);
+		ChromaThread::Instance()->AsyncDuplicateFirstFrameName(path, frameCount);
 	}
 	EXPORT_API double PluginDuplicateFirstFrameNameD(const wchar_t* path, double frameCount)
 	{

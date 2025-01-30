@@ -278,7 +278,7 @@ namespace ChromaSDK
 		std::wstring _mTargetAnimation;
 
 		const std::wstring GenerateKey() {
-			std::wstring key = L"ParamsCopyNonZeroAllKeysAllFramesName_";
+			std::wstring key = L"CopyNonZeroAllKeysAllFramesName_";
 			key += _mSourceAnimation;
 			key += L"_";
 			key += _mTargetAnimation;
@@ -311,6 +311,83 @@ namespace ChromaSDK
 		}
 	};
 
+	struct ParamsAddNonZeroAllKeysAllFramesName
+	{
+		std::wstring _mSourceAnimation;
+		std::wstring _mTargetAnimation;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"AddNonZeroAllKeysAllFramesName_";
+			key += _mSourceAnimation;
+			key += L"_";
+			key += _mTargetAnimation;
+			return key;
+		}
+	};
+
+	struct ParamsSubtractNonZeroAllKeysAllFramesName
+	{
+		std::wstring _mSourceAnimation;
+		std::wstring _mTargetAnimation;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SubtractNonZeroAllKeysAllFramesName_";
+			key += _mSourceAnimation;
+			key += L"_";
+			key += _mTargetAnimation;
+			return key;
+		}
+	};
+
+	struct ParamsCopyNonZeroTargetAllKeysAllFramesName
+	{
+		std::wstring _mSourceAnimation;
+		std::wstring _mTargetAnimation;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CopyNonZeroTargetAllKeysAllFramesName_";
+			key += _mSourceAnimation;
+			key += L"_";
+			key += _mTargetAnimation;
+			return key;
+		}
+	};
+
+	struct ParamsFillZeroColorAllFramesRGBName
+	{
+		std::wstring _mPath;
+		int _mRed = 0;
+		int _mGreen = 0;
+		int _mBlue = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"FillZeroColorAllFramesRGBName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsDuplicateFirstFrameName
+	{
+		std::wstring _mPath;
+		int _mFrameCount = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"DuplicateFirstFrameName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
+	struct ParamsOverrideFrameDurationName
+	{
+		std::wstring _mPath;
+		float _mDuration = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"OverrideFrameDurationName_";
+			key += _mPath;
+			return key;
+		}
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -337,6 +414,12 @@ namespace ChromaSDK
 		Command_CopyNonZeroAllKeysAllFramesName,
 		Command_MakeBlankFramesName,
 		Command_FillThresholdColorsAllFramesName,
+		Command_AddNonZeroAllKeysAllFramesName,
+		Command_SubtractNonZeroAllKeysAllFramesName,
+		Command_CopyNonZeroTargetAllKeysAllFramesName,
+		Command_FillZeroColorAllFramesRGBName,
+		Command_DuplicateFirstFrameName,
+		Command_OverrideFrameDurationName,
 	};
 
 	struct PendingCommand
@@ -365,6 +448,12 @@ namespace ChromaSDK
 		ParamsCopyNonZeroAllKeysAllFramesName _mCopyNonZeroAllKeysAllFramesName = { };
 		ParamsMakeBlankFramesName _mMakeBlankFramesName = { };
 		ParamsFillThresholdColorsAllFramesName _mFillThresholdColorsAllFramesName = { };
+		ParamsAddNonZeroAllKeysAllFramesName _mAddNonZeroAllKeysAllFramesName = { };
+		ParamsSubtractNonZeroAllKeysAllFramesName _mSubtractNonZeroAllKeysAllFramesName = { };
+		ParamsCopyNonZeroTargetAllKeysAllFramesName _mCopyNonZeroTargetAllKeysAllFramesName = { };
+		ParamsFillZeroColorAllFramesRGBName _mFillZeroColorAllFramesRGBName = { };
+		ParamsDuplicateFirstFrameName _mDuplicateFirstFrameName = { };
+		ParamsOverrideFrameDurationName _mOverrideFrameDurationName = { };
 	};
 
 	class ChromaThread
@@ -398,6 +487,12 @@ namespace ChromaSDK
 		void ImplCopyNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		void ImplMakeBlankFramesName(const wchar_t* path, int frameCount, float duration, int color);
 		void ImplFillThresholdColorsAllFramesName(const wchar_t* path, int threshold, int color);
+		void ImplAddNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
+		void ImplSubtractNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
+		void ImplCopyNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
+		void ImplFillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
+		void ImplDuplicateFirstFrameName(const wchar_t* path, int frameCount);
+		void ImplOverrideFrameDurationName(const wchar_t* path, float duration);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -424,6 +519,12 @@ namespace ChromaSDK
 		void AsyncFillThresholdColorsRGBName(const wchar_t* path, int frameId, int threshold, int red, int green, int blue);
 		void AsyncCopyNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		void AsyncFillThresholdColorsAllFramesName(const wchar_t* path, int threshold, int color);
+		void AsyncAddNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
+		void AsyncSubtractNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
+		void AsyncCopyNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
+		void AsyncFillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
+		void AsyncDuplicateFirstFrameName(const wchar_t* path, int frameCount);
+		void AsyncOverrideFrameDurationName(const wchar_t* path, float duration);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
