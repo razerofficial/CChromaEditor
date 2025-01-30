@@ -1355,11 +1355,3 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const BYTE* data)
 
 	return animation;
 }
-
-void ChromaSDKPlugin::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
-{
-	if (ChromaThread::Instance())
-	{
-		ChromaThread::Instance()->UseIdleAnimation(device, flag);
-	}
-}

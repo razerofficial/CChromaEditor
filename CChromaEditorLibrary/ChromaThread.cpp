@@ -27,6 +27,17 @@ extern map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
 extern bool _gForwardChromaEvents;
 extern map<wstring, int> _gAnimationMapID;
 
+int _mDummyGuid = 0;
+
+namespace ChromaSDK
+{
+	// Function to generate and return a GUID as a wstring
+	std::wstring GenerateGUID() {
+		_mDummyGuid = (_mDummyGuid + 1) % 100000;
+		return std::to_wstring(_mDummyGuid);
+	}
+}
+
 ChromaThread::ChromaThread()
 {
 	_sThread = nullptr;
@@ -484,6 +495,55 @@ void ChromaThread::ImplDuplicateFramesName(const wchar_t* path)
 		return;
 	}
 	PluginDuplicateFrames(animationId);
+}
+
+void ChromaThread::ImplTrimStartFramesName(const wchar_t* path, int numberOfFrames)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplTrimStartFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginTrimStartFrames(animationId, numberOfFrames);
+}
+
+void ChromaThread::ImplTrimEndFramesName(const wchar_t* path, int lastFrameId)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplTrimEndFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginTrimEndFrames(animationId, lastFrameId);
+}
+
+void ChromaThread::ImplFillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplFillRandomColorsBlackAndWhiteAllFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginFillRandomColorsBlackAndWhiteAllFrames(animationId);
+}
+
+void ChromaThread::ImplUseIdleAnimation(int device, bool flag)
+{
+	UseIdleAnimation((EChromaSDKDeviceEnum)device, flag);
+}
+
+void ChromaThread::ImplMultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplMultiplyColorLerpAllFramesName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginMultiplyColorLerpAllFrames(animationId, color1, color2);
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
@@ -1237,6 +1297,101 @@ void ChromaThread::AsyncDuplicateFramesName(const wchar_t* path)
 	AddPendingCommandInOrder(key, command);
 }
 
+void ChromaThread::AsyncTrimStartFramesName(const wchar_t* path, int numberOfFrames)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsTrimStartFramesName params;
+	params._mPath = path;
+	params._mNumberOfFrames = numberOfFrames;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_TrimStartFramesName;
+	command._mTrimStartFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncTrimEndFramesName(const wchar_t* path, int lastFrameId)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsTrimEndFramesName params;
+	params._mPath = path;
+	params._mLastFrameId = lastFrameId;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_TrimEndFramesName;
+	command._mTrimEndFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncFillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsFillRandomColorsBlackAndWhiteAllFramesName params;
+	params._mPath = path;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_FillRandomColorsBlackAndWhiteAllFramesName;
+	command._mFillRandomColorsBlackAndWhiteAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncUseIdleAnimation(int device, bool flag)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsUseIdleAnimation params;
+	params._mDevice = device;
+	params._mFlag = flag;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_UseIdleAnimation;
+	command._mUseIdleAnimation = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncMultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsMultiplyColorLerpAllFramesName params;
+	params._mPath = path;
+	params._mColor1 = color1;
+	params._mColor2 = color2;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_MultiplyColorLerpAllFramesName;
+	command._mMultiplyColorLerpAllFramesName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -1532,12 +1687,12 @@ void ChromaThread::ProcessPendingCommands()
 			{
 				const ParamsUseIdleAnimations& params = pendingCommand._mUseIdleAnimations;
 				bool flag = params._mFlag;
-				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_ChromaLink, flag);
-				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Headset, flag);
-				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keyboard, flag);
-				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keypad, flag);
-				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mouse, flag);
-				ChromaSDKPlugin::GetInstance()->UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mousepad, flag);
+				UseIdleAnimation(EChromaSDKDeviceEnum::DE_ChromaLink, flag);
+				UseIdleAnimation(EChromaSDKDeviceEnum::DE_Headset, flag);
+				UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keyboard, flag);
+				UseIdleAnimation(EChromaSDKDeviceEnum::DE_Keypad, flag);
+				UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mouse, flag);
+				UseIdleAnimation(EChromaSDKDeviceEnum::DE_Mousepad, flag);
 			}
 			break;
 			case PendingCommandType::Command_MakeBlankFramesRGBName:
@@ -1762,6 +1917,46 @@ void ChromaThread::ProcessPendingCommands()
 				const ParamsDuplicateFramesName& params = pendingCommand._mDuplicateFramesName;
 				const wchar_t* path = params._mPath.c_str();
 				ImplDuplicateFramesName(path);
+			}
+			break;
+			case PendingCommandType::Command_TrimStartFramesName:
+			{
+				const ParamsTrimStartFramesName& params = pendingCommand._mTrimStartFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int numberOfFrames = params._mNumberOfFrames;
+				ImplTrimStartFramesName(path, numberOfFrames);
+			}
+			break;
+			case PendingCommandType::Command_TrimEndFramesName:
+			{
+				const ParamsTrimEndFramesName& params = pendingCommand._mTrimEndFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int lastFrameId = params._mLastFrameId;
+				ImplTrimEndFramesName(path, lastFrameId);
+			}
+			break;
+			case PendingCommandType::Command_FillRandomColorsBlackAndWhiteAllFramesName:
+			{
+				const ParamsFillRandomColorsBlackAndWhiteAllFramesName& params = pendingCommand._mFillRandomColorsBlackAndWhiteAllFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				ImplFillRandomColorsBlackAndWhiteAllFramesName(path);
+			}
+			break;
+			case PendingCommandType::Command_UseIdleAnimation:
+			{
+				const ParamsUseIdleAnimation& params = pendingCommand._mUseIdleAnimation;
+				int device = params._mDevice;
+				bool flag = params._mFlag;
+				ImplUseIdleAnimation(device, flag);
+			}
+			break;
+			case PendingCommandType::Command_MultiplyColorLerpAllFramesName:
+			{
+				const ParamsMultiplyColorLerpAllFramesName& params = pendingCommand._mMultiplyColorLerpAllFramesName;
+				const wchar_t* path = params._mPath.c_str();
+				int color1 = params._mColor1;
+				int color2 = params._mColor2;
+				ImplMultiplyColorLerpAllFramesName(path, color1, color2);
 			}
 			break;
 		}

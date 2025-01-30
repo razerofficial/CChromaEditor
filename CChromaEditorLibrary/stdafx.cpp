@@ -9367,13 +9367,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginFillRandomColorsBlackAndWhiteNameAllFrames: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginFillRandomColorsBlackAndWhiteAllFrames(animationId);
+		ChromaThread::Instance()->AsyncFillRandomColorsBlackAndWhiteAllFramesName(path);
 	}
 
 	EXPORT_API double PluginFillRandomColorsBlackAndWhiteAllFramesNameD(const wchar_t* path)
@@ -10404,13 +10398,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginMultiplyColorLerpAllFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginMultiplyColorLerpAllFrames(animationId, color1, color2);
+		ChromaThread::Instance()->AsyncMultiplyColorLerpAllFramesName(path, color1, color2);
 	}
 	EXPORT_API double PluginMultiplyColorLerpAllFramesNameD(const wchar_t* path, double color1, double color2)
 	{
@@ -11824,13 +11812,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginTrimStartFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginTrimStartFrames(animationId, numberOfFrames);
+		ChromaThread::Instance()->AsyncTrimStartFramesName(path, numberOfFrames);
 	}
 	EXPORT_API double PluginTrimStartFramesNameD(const wchar_t* path, double numberOfFrames)
 	{
@@ -11888,13 +11870,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginTrimEndFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginTrimEndFrames(animationId, lastFrameId);
+		ChromaThread::Instance()->AsyncTrimEndFramesName(path, lastFrameId);
 	}
 	EXPORT_API double PluginTrimEndFramesNameD(const wchar_t* path, double lastFrameId)
 	{
@@ -12485,10 +12461,12 @@ extern "C"
 
 	EXPORT_API void PluginUseIdleAnimation(int device, bool flag)
 	{
-		// Chroma thread plays animations
-		SetupChromaThread();
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return;
+		}
 
-		ChromaSDKPlugin::GetInstance()->UseIdleAnimation((EChromaSDKDeviceEnum)device, flag);
+		ChromaThread::Instance()->AsyncUseIdleAnimation(device, flag);
 	}
 
 	EXPORT_API void PluginUseIdleAnimations(bool flag)

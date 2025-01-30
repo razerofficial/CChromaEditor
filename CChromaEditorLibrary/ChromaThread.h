@@ -9,13 +9,15 @@
 
 namespace ChromaSDK
 {
+	std::wstring GenerateGUID();
+
 	struct ParamsGetAnimation
 	{
 		std::wstring _mPath;
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"GetAnimation_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -26,7 +28,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"CloseAnimationName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -38,7 +40,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"PlayChromaAnimationName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -49,7 +51,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"SetEventName_";
-			key += _mName;
+			key += _mName; // Collapse names, no real need for more than 30 FPS for event names
 			return key;
 		}
 	};
@@ -60,7 +62,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"SetIdleAnimationName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -71,7 +73,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"StopChromaAnimationName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -79,7 +81,8 @@ namespace ChromaSDK
 	struct ParamsStopAll
 	{
 		const std::wstring GenerateKey() {
-			std::wstring key = L"StopAll";
+			std::wstring key = L"StopAll_";
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -91,9 +94,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"StopAnimationType_";
-			key += std::to_wstring(_mDeviceType);
-			key += L"_";
-			key += std::to_wstring(_mDevice);
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -103,7 +104,8 @@ namespace ChromaSDK
 		bool _mFlag;
 
 		static const std::wstring GenerateKey() {
-			std::wstring key = L"UseForwardChromaEvents";
+			std::wstring key = L"UseForwardChromaEvents_";
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -113,7 +115,8 @@ namespace ChromaSDK
 		bool _mFlag;
 
 		static const std::wstring GenerateKey() {
-			std::wstring key = L"UseIdleAnimations";
+			std::wstring key = L"UseIdleAnimations_";
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -129,7 +132,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"MakeBlankFramesRGBName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -148,7 +151,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"FillThresholdColorsMinMaxAllFramesRGBName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -162,7 +165,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"MultiplyIntensityAllFramesRGBName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -174,7 +177,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"FadeStartFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -186,7 +189,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"FadeEndFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -199,11 +202,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"FadeEndFramesName_";
-			key += _mPath;
-			key += L"_";
-			key += std::to_wstring(_mFrameId);
-			key += L"_";
-			key += std::to_wstring(_mIntensity);
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -215,9 +214,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"MultiplyIntensityAllFramesName_";
-			key += _mPath;
-			key += L"_";
-			key += std::to_wstring(_mIntensity);
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -232,9 +229,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"MultiplyIntensityRGBName_";
-			key += _mPath;
-			key += L"_";
-			key += std::to_wstring(_mFrameId);
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -247,9 +242,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"MultiplyIntensityColorName_";
-			key += _mPath;
-			key += L"_";
-			key += std::to_wstring(_mFrameId);
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -265,9 +258,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"FillThresholdColorsRGBName_";
-			key += _mPath;
-			key += L"_";
-			key += std::to_wstring(_mFrameId);
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -279,9 +270,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"CopyNonZeroAllKeysAllFramesName_";
-			key += _mSourceAnimation;
-			key += L"_";
-			key += _mTargetAnimation;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -294,7 +283,7 @@ namespace ChromaSDK
 		int _mColor = 0;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"MakeBlankFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -306,7 +295,7 @@ namespace ChromaSDK
 		int _mColor;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"FillThresholdColorsAllFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -318,9 +307,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"AddNonZeroAllKeysAllFramesName_";
-			key += _mSourceAnimation;
-			key += L"_";
-			key += _mTargetAnimation;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -332,9 +319,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"SubtractNonZeroAllKeysAllFramesName_";
-			key += _mSourceAnimation;
-			key += L"_";
-			key += _mTargetAnimation;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -346,9 +331,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"CopyNonZeroTargetAllKeysAllFramesName_";
-			key += _mSourceAnimation;
-			key += L"_";
-			key += _mTargetAnimation;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -361,7 +344,7 @@ namespace ChromaSDK
 		int _mBlue = 0;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"FillZeroColorAllFramesRGBName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -372,7 +355,7 @@ namespace ChromaSDK
 		int _mFrameCount = 0;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"DuplicateFirstFrameName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -383,7 +366,7 @@ namespace ChromaSDK
 		float _mDuration = 0;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"OverrideFrameDurationName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -393,7 +376,7 @@ namespace ChromaSDK
 		std::wstring _mPath;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"ReverseAllFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -403,7 +386,7 @@ namespace ChromaSDK
 		std::wstring _mPath;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"InvertColorsAllFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -413,7 +396,7 @@ namespace ChromaSDK
 		std::wstring _mPath;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"DuplicateMirrorFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -425,9 +408,7 @@ namespace ChromaSDK
 		int _mDelay = 0;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"InsertDelayName_";
-			key += _mPath;
-			key += L"_";
-			key += std::to_wstring(_mFrameId);
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -438,7 +419,7 @@ namespace ChromaSDK
 		int _mN = 0;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"ReduceFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -448,7 +429,63 @@ namespace ChromaSDK
 		std::wstring _mPath;
 		const std::wstring GenerateKey() {
 			std::wstring key = L"DuplicateFramesName_";
-			key += _mPath;
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsTrimStartFramesName
+	{
+		std::wstring _mPath;
+		int _mNumberOfFrames = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"TrimStartFramesName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsTrimEndFramesName
+	{
+		std::wstring _mPath;
+		int _mLastFrameId = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"TrimEndFramesName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsFillRandomColorsBlackAndWhiteAllFramesName
+	{
+		std::wstring _mPath;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"FillRandomColorsBlackAndWhiteAllFramesName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsUseIdleAnimation
+	{
+		int _mDevice;
+		bool _mFlag;
+		static const std::wstring GenerateKey() {
+			std::wstring key = L"UseIdleAnimation";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsMultiplyColorLerpAllFramesName
+	{
+		std::wstring _mPath;
+		int _mColor1 = 0;
+		int _mColor2 = 0;
+		float _mLerp = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"MultiplyColorLerpAllFramesName_";
+			key += GenerateGUID();
 			return key;
 		}
 	};
@@ -491,6 +528,11 @@ namespace ChromaSDK
 		Command_InsertDelayName,
 		Command_ReduceFramesName,
 		Command_DuplicateFramesName,
+		Command_TrimStartFramesName,
+		Command_TrimEndFramesName,
+		Command_FillRandomColorsBlackAndWhiteAllFramesName,
+		Command_UseIdleAnimation,
+		Command_MultiplyColorLerpAllFramesName,
 	};
 
 	struct PendingCommand
@@ -531,6 +573,11 @@ namespace ChromaSDK
 		ParamsInsertDelayName _mInsertDelayName = { };
 		ParamsReduceFramesName _mReduceFramesName = { };
 		ParamsDuplicateFramesName _mDuplicateFramesName = { };
+		ParamsTrimStartFramesName _mTrimStartFramesName = { };
+		ParamsTrimEndFramesName _mTrimEndFramesName = { };
+		ParamsFillRandomColorsBlackAndWhiteAllFramesName _mFillRandomColorsBlackAndWhiteAllFramesName = { };
+		ParamsUseIdleAnimation _mUseIdleAnimation = { };
+		ParamsMultiplyColorLerpAllFramesName _mMultiplyColorLerpAllFramesName = { };
 	};
 
 	class ChromaThread
@@ -576,6 +623,11 @@ namespace ChromaSDK
 		void ImplInsertDelayName(const wchar_t* path, int frameId, int delay);
 		void ImplReduceFramesName(const wchar_t* path, int n);
 		void ImplDuplicateFramesName(const wchar_t* path);
+		void ImplTrimStartFramesName(const wchar_t* path, int numberOfFrames);
+		void ImplTrimEndFramesName(const wchar_t* path, int lastFrameId);
+		void ImplFillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path);
+		void ImplUseIdleAnimation(int device, bool flag);
+		void ImplMultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -614,6 +666,11 @@ namespace ChromaSDK
 		void AsyncInsertDelayName(const wchar_t* path, int frameId, int delay);
 		void AsyncReduceFramesName(const wchar_t* path, int n);
 		void AsyncDuplicateFramesName(const wchar_t* path);
+		void AsyncTrimStartFramesName(const wchar_t* path, int numberOfFrames);
+		void AsyncTrimEndFramesName(const wchar_t* path, int lastFrameId);
+		void AsyncFillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path);
+		void AsyncUseIdleAnimation(int device, bool flag);
+		void AsyncMultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
