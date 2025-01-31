@@ -595,6 +595,36 @@ namespace ChromaSDK
 		Stream::StreamStatusType _mStatus = Stream::StreamStatusType::SERVICE_OFFLINE;
 	};
 
+	struct ParamsCoreStreamSetFocus
+	{
+		std::string _mFocus;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamSetFocus";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamSetFocus
+	{
+		bool _mResult = false;
+	};
+
+	struct ParamsCoreStreamGetFocus
+	{
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamGetFocus";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamGetFocus
+	{
+		bool _mResult = false;
+		std::string _mFocus;
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -646,6 +676,8 @@ namespace ChromaSDK
 		Command_SetKeysColorAllFramesRGBName,
 		Command_CoreStreamGetAuthShortcode,
 		Command_CoreStreamGetStatus,
+		Command_CoreStreamSetFocus,
+		Command_CoreStreamGetFocus,
 	};
 
 	struct PendingCommand
@@ -699,6 +731,8 @@ namespace ChromaSDK
 		ParamsSetKeysColorAllFramesRGBName _mSetKeysColorAllFramesRGBName = { };
 		ParamsCoreStreamGetAuthShortcode _mCoreStreamGetAuthShortcode = { };
 		ParamsCoreStreamGetStatus _mCoreStreamGetStatus = { };
+		ParamsCoreStreamSetFocus _mCoreStreamSetFocus = { };
+		ParamsCoreStreamGetFocus _mCoreStreamGetFocus = { };
 	};
 
 	class ChromaThread
@@ -756,7 +790,9 @@ namespace ChromaSDK
 		void ImplCopyKeysColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size);
 		void ImplSetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 		void ImplCoreStreamGetAuthShortcode(const wchar_t* platform, const wchar_t* title);
-		Stream::StreamStatusType ImplCoreStreamGetStatus();
+		void ImplCoreStreamGetStatus();
+		void ImplCoreStreamSetFocus(const char* focus);
+		void ImplCoreStreamGetFocus();
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -808,6 +844,8 @@ namespace ChromaSDK
 		void AsyncSetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 		void AsyncCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 		Stream::StreamStatusType AsyncCoreStreamGetStatus();
+		bool AsyncCoreStreamSetFocus(const char* focus);
+		bool AsyncCoreStreamGetFocus(char* focus, unsigned char* length);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
@@ -827,5 +865,7 @@ namespace ChromaSDK
 		static RZRESULT _sLastResultSetEventName;
 		static ResultCoreStreamGetAuthShortcode _sLastResultCoreStreamGetAuthShortcode;
 		static ResultCoreStreamGetStatus _sLastResultCoreStreamGetStatus;
+		static ResultCoreStreamSetFocus	_sLastResultCoreStreamSetFocus;
+		static ResultCoreStreamGetFocus _sLastResultCoreStreamGetFocus;
 	};
 }

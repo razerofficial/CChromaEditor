@@ -213,71 +213,141 @@ extern "C"
 		{
 			return RZRESULT_FAILED;
 		}
+
 		return ChromaThread::Instance()->AsyncSetEventName(Name);
 	}
 
 	EXPORT_API bool PluginCoreStreamSetFocus(const char* focus)
 	{
-		return RzChromaStreamPlugin::StreamSetFocus(focus);
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
+		return ChromaThread::Instance()->AsyncCoreStreamSetFocus(focus);
 	}
 	EXPORT_API bool PluginCoreStreamGetFocus(char* focus, unsigned char* length)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			*length = 0;
+			return false;
+		}
+
 		return RzChromaStreamPlugin::StreamGetFocus(focus, length);
 	}
 
 
 	EXPORT_API bool PluginCoreStreamSupportsStreaming()
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
 		return RzChromaStreamPlugin::GetLibraryLoadedState() == RZRESULT_SUCCESS;
 	}
 	EXPORT_API bool PluginCoreStreamBroadcast(const char* streamId, const char* streamKey)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
 		return RzChromaStreamPlugin::StreamBroadcast(streamId, streamKey);
 	}
 
 	EXPORT_API bool PluginCoreStreamBroadcastEnd()
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
 		return RzChromaStreamPlugin::StreamBroadcastEnd();
 	}
 
 	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length,
 		const wchar_t* platform, const wchar_t* title)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			*length = 0;
+			return;
+		}
+
 		ChromaThread::Instance()->AsyncCoreStreamGetAuthShortcode(shortcode, length, platform, title);
 	}
 
 	EXPORT_API void PluginCoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			*length = 0;
+			return;
+		}
+
 		RzChromaStreamPlugin::StreamGetId(shortcode, streamId, length);
 	}
 
 	EXPORT_API void PluginCoreStreamGetKey(const char* shortcode, char* streamKey, unsigned char* length)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			*length = 0;
+			return;
+		}
+
 		RzChromaStreamPlugin::StreamGetKey(shortcode, streamKey, length);
 	}
 
 	EXPORT_API Stream::StreamStatusType PluginCoreStreamGetStatus()
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return Stream::StreamStatusType::SERVICE_OFFLINE;
+		}
+
 		return ChromaThread::Instance()->AsyncCoreStreamGetStatus();
 	}
 
 	EXPORT_API const char* PluginCoreStreamGetStatusString(ChromaSDK::Stream::StreamStatusType status)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return "";
+		}
+
 		return RzChromaStreamPlugin::StreamGetStatusString(status);
 	}
 
 	EXPORT_API bool PluginCoreStreamReleaseShortcode(const char* shortcode)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
 		return RzChromaStreamPlugin::StreamReleaseShortcode(shortcode);
 	}
 
 	EXPORT_API bool PluginCoreStreamWatch(const char* streamId, unsigned long long timestamp)
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
 		return RzChromaStreamPlugin::StreamWatch(streamId, timestamp);
 	}
 
 	EXPORT_API bool PluginCoreStreamWatchEnd()
 	{
+		if (ChromaThread::Instance() == nullptr)
+		{
+			return false;
+		}
+
 		return RzChromaStreamPlugin::StreamWatchEnd();
 	}
 #pragma endregion
@@ -443,6 +513,7 @@ extern "C"
 		{
 			return;
 		}
+
 		ChromaThread::Instance()->AsyncStopAll();
 	}
 
@@ -452,6 +523,7 @@ extern "C"
 		{
 			return;
 		}
+
 		ChromaThread::Instance()->ImplStopAnimationType(deviceType, device);
 
 		FChromaSDKEffectResult result;
@@ -511,6 +583,7 @@ extern "C"
 		{
 			return 0;
 		}
+
 		return ChromaThread::Instance()->GetAnimationCount();
 	}
 
@@ -520,6 +593,7 @@ extern "C"
 		{
 			return -1;
 		}
+
 		return ChromaThread::Instance()->GetAnimationId(index);
 	}
 
@@ -529,6 +603,7 @@ extern "C"
 		{
 			return -1;
 		}
+
 		try
 		{
 			ChromaThread::Instance()->ImplCloseAnimationName(path);
@@ -1970,6 +2045,7 @@ extern "C"
 		{
 			return -1;
 		}
+
 		if (_gAnimationMapID.find(name) != _gAnimationMapID.end())
 		{
 			return _gAnimationMapID[name];
@@ -1988,6 +2064,7 @@ extern "C"
 		{
 			return;
 		}
+
 		ChromaThread::Instance()->AsyncCloseAnimationName(path);
 	}
 
@@ -2059,6 +2136,7 @@ extern "C"
 		{
 			return;
 		}
+
 		ChromaThread::Instance()->AsyncUseForwardChromaEvents(flag);
 	}
 
@@ -2068,6 +2146,7 @@ extern "C"
 		{
 			return;
 		}
+
 		ChromaThread::Instance()->AsyncPlayAnimationName(path, loop);
 	}
 
@@ -2156,6 +2235,7 @@ extern "C"
 		{
 			return;
 		}
+
 		ChromaThread::Instance()->AsyncStopAnimationName(path);
 	}
 
@@ -2171,6 +2251,7 @@ extern "C"
 		{
 			return;
 		}
+
 		ChromaThread::Instance()->AsyncStopAnimationType(deviceType, device);
 	}
 

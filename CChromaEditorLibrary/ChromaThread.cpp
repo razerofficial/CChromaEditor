@@ -24,6 +24,8 @@ std::map<std::wstring, PendingCommand> ChromaThread::_sPendingCommands;
 RZRESULT ChromaThread::_sLastResultSetEventName = RZRESULT_SUCCESS;
 ResultCoreStreamGetAuthShortcode ChromaThread::_sLastResultCoreStreamGetAuthShortcode;
 ResultCoreStreamGetStatus ChromaThread::_sLastResultCoreStreamGetStatus;
+ResultCoreStreamSetFocus ChromaThread::_sLastResultCoreStreamSetFocus;
+ResultCoreStreamGetFocus ChromaThread::_sLastResultCoreStreamGetFocus;
 
 extern map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
 extern map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
@@ -639,10 +641,30 @@ void ChromaThread::ImplCoreStreamGetAuthShortcode(const wchar_t* platform, const
 	}
 }
 
-Stream::StreamStatusType ChromaThread::ImplCoreStreamGetStatus()
+void ChromaThread::ImplCoreStreamGetStatus()
 {
 	_sLastResultCoreStreamGetStatus._mStatus = RzChromaStreamPlugin::StreamGetStatus();
-	return _sLastResultCoreStreamGetStatus._mStatus;
+}
+
+void ChromaThread::ImplCoreStreamSetFocus(const char* focus)
+{
+	_sLastResultCoreStreamSetFocus._mResult = RzChromaStreamPlugin::StreamSetFocus(focus);
+}
+
+void ChromaThread::ImplCoreStreamGetFocus()
+{
+	char focus[48] = { 0 };
+	unsigned char length = 0;
+	bool result = RzChromaStreamPlugin::StreamGetFocus(focus, &length);
+	if (length == 0)
+	{
+		_sLastResultCoreStreamGetFocus._mFocus = "";
+	}
+	else
+	{
+		_sLastResultCoreStreamGetFocus._mFocus = focus;
+	}
+	_sLastResultCoreStreamGetFocus._mResult = result;
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
@@ -1629,6 +1651,12 @@ void ChromaThread::AsyncCoreStreamGetAuthShortcode(char* shortcode, unsigned cha
 {
 	lock_guard<mutex> guard(_sMutex);
 
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		*length = 0;
+		return;
+	}
 	const int sizeShortcode = 6;
 	if (_sLastResultCoreStreamGetAuthShortcode._mShortcode.size() == sizeShortcode)
 	{
@@ -1641,12 +1669,6 @@ void ChromaThread::AsyncCoreStreamGetAuthShortcode(char* shortcode, unsigned cha
 	else
 	{
 		*length = 0;
-	}
-
-	// module shutdown early abort
-	if (!_sWaitForExit)
-	{
-		return;
 	}
 	// use the path as key and save the state
 	ParamsCoreStreamGetAuthShortcode params;
@@ -1663,13 +1685,12 @@ Stream::StreamStatusType ChromaThread::AsyncCoreStreamGetStatus()
 {
 	lock_guard<mutex> guard(_sMutex);
 
-	Stream::StreamStatusType result = _sLastResultCoreStreamGetStatus._mStatus;
-
 	// module shutdown early abort
 	if (!_sWaitForExit)
 	{
-		return result;
+		return Stream::StreamStatusType::SERVICE_OFFLINE;
 	}
+	Stream::StreamStatusType result = _sLastResultCoreStreamGetStatus._mStatus;
 	// use the path as key and save the state
 	ParamsCoreStreamGetStatus params;
 	wstring key = params.GenerateKey();
@@ -1678,6 +1699,62 @@ Stream::StreamStatusType ChromaThread::AsyncCoreStreamGetStatus()
 	command._mCoreStreamGetStatus = params;
 	AddPendingCommandInOrder(key, command);
 
+	return result;
+}
+
+bool ChromaThread::AsyncCoreStreamSetFocus(const char* focus)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return false;
+	}
+	bool result = _sLastResultCoreStreamSetFocus._mResult;
+	// use the path as key and save the state
+	ParamsCoreStreamSetFocus params;
+	params._mFocus = focus;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamSetFocus;
+	command._mCoreStreamSetFocus = params;
+	AddPendingCommandInOrder(key, command);
+	return result;
+}
+
+bool ChromaThread::AsyncCoreStreamGetFocus(char* focus, unsigned char* length)
+{
+	lock_guard<mutex> guard(_sMutex);
+
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		*length = 0;
+		return false;
+	}
+
+	int sizeFocus = _sLastResultCoreStreamGetFocus._mFocus.size();
+	if (sizeFocus > 0)
+	{
+		for (int i = 0; i < sizeFocus; ++i)
+		{
+			focus[i] = _sLastResultCoreStreamGetFocus._mFocus[i];
+		}
+		*length = sizeFocus;
+	}
+	else
+	{
+		*length = 0;
+	}
+	int result = _sLastResultCoreStreamGetFocus._mResult;
+	
+	// use the path as key and save the state
+	ParamsCoreStreamGetFocus params;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamGetFocus;
+	command._mCoreStreamGetFocus = params;
+	AddPendingCommandInOrder(key, command);
 	return result;
 }
 
@@ -2319,6 +2396,19 @@ void ChromaThread::ProcessPendingCommands()
 			{
 				const ParamsCoreStreamGetStatus& params = pendingCommand._mCoreStreamGetStatus;
 				ImplCoreStreamGetStatus();
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamSetFocus:
+			{
+				const ParamsCoreStreamSetFocus& params = pendingCommand._mCoreStreamSetFocus;
+				const char* focus = params._mFocus.c_str();
+				ImplCoreStreamSetFocus(focus);
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamGetFocus:
+			{
+				const ParamsCoreStreamGetFocus& params = pendingCommand._mCoreStreamGetFocus;
+				ImplCoreStreamGetFocus();
 			}
 			break;
 		}
