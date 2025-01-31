@@ -727,6 +727,10 @@ void ChromaThread::ImplCoreStreamWatchEnd()
 void ChromaThread::ImplCoreStreamReleaseShortcode(const char* shortcode)
 {
 	_sLastResultCoreStreamReleaseShortcode._mResult = RzChromaStreamPlugin::StreamReleaseShortcode(shortcode);
+	if (_sLastResultCoreStreamReleaseShortcode._mResult)
+	{
+		_sLastResultCoreStreamGetAuthShortcode._mShortcode = "";
+	}
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
