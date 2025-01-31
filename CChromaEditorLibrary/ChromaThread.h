@@ -625,6 +625,37 @@ namespace ChromaSDK
 		std::string _mFocus;
 	};
 
+	struct ParamsCoreStreamGetId
+	{
+		std::string _mShortcode;
+
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamGetId";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamGetId
+	{
+		std::string _mStreamId;
+	};
+
+	struct ParamsCoreStreamGetKey
+	{
+		std::string _mShortcode;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamGetKey";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamGetKey
+	{
+		std::string _mStreamKey;
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -678,6 +709,8 @@ namespace ChromaSDK
 		Command_CoreStreamGetStatus,
 		Command_CoreStreamSetFocus,
 		Command_CoreStreamGetFocus,
+		Command_CoreStreamGetId,
+		Command_CoreStreamGetKey,
 	};
 
 	struct PendingCommand
@@ -733,6 +766,8 @@ namespace ChromaSDK
 		ParamsCoreStreamGetStatus _mCoreStreamGetStatus = { };
 		ParamsCoreStreamSetFocus _mCoreStreamSetFocus = { };
 		ParamsCoreStreamGetFocus _mCoreStreamGetFocus = { };
+		ParamsCoreStreamGetId _mCoreStreamGetId = { };
+		ParamsCoreStreamGetKey _mCoreStreamGetKey = { };
 	};
 
 	class ChromaThread
@@ -793,6 +828,8 @@ namespace ChromaSDK
 		void ImplCoreStreamGetStatus();
 		void ImplCoreStreamSetFocus(const char* focus);
 		void ImplCoreStreamGetFocus();
+		void ImplCoreStreamGetId(const char* shortcode);
+		void ImplCoreStreamGetKey(const char* shortcode);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -846,6 +883,8 @@ namespace ChromaSDK
 		Stream::StreamStatusType AsyncCoreStreamGetStatus();
 		bool AsyncCoreStreamSetFocus(const char* focus);
 		bool AsyncCoreStreamGetFocus(char* focus, unsigned char* length);
+		void AsyncCoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length);
+		void AsyncCoreStreamGetKey(const char* shortcode, char* streamKey, unsigned char* length);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
@@ -867,5 +906,7 @@ namespace ChromaSDK
 		static ResultCoreStreamGetStatus _sLastResultCoreStreamGetStatus;
 		static ResultCoreStreamSetFocus	_sLastResultCoreStreamSetFocus;
 		static ResultCoreStreamGetFocus _sLastResultCoreStreamGetFocus;
+		static ResultCoreStreamGetId _sLastResultCoreStreamGetId;
+		static ResultCoreStreamGetKey _sLastResultCoreStreamGetKey;
 	};
 }

@@ -26,6 +26,8 @@ ResultCoreStreamGetAuthShortcode ChromaThread::_sLastResultCoreStreamGetAuthShor
 ResultCoreStreamGetStatus ChromaThread::_sLastResultCoreStreamGetStatus;
 ResultCoreStreamSetFocus ChromaThread::_sLastResultCoreStreamSetFocus;
 ResultCoreStreamGetFocus ChromaThread::_sLastResultCoreStreamGetFocus;
+ResultCoreStreamGetId ChromaThread::_sLastResultCoreStreamGetId;
+ResultCoreStreamGetKey ChromaThread::_sLastResultCoreStreamGetKey;
 
 extern map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
 extern map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
@@ -665,6 +667,36 @@ void ChromaThread::ImplCoreStreamGetFocus()
 		_sLastResultCoreStreamGetFocus._mFocus = focus;
 	}
 	_sLastResultCoreStreamGetFocus._mResult = result;
+}
+
+void ChromaThread::ImplCoreStreamGetId(const char* shortcode)
+{
+	char streamId[48] = { 0 };
+	unsigned char length = 0;
+	RzChromaStreamPlugin::StreamGetId(shortcode, streamId, &length);
+	if (length == 0)
+	{
+		_sLastResultCoreStreamGetId._mStreamId = "";
+	}
+	else
+	{
+		_sLastResultCoreStreamGetId._mStreamId = streamId;
+	}
+}
+
+void ChromaThread::ImplCoreStreamGetKey(const char* shortcode)
+{
+	char streamKey[48] = { 0 };
+	unsigned char length = 0;
+	RzChromaStreamPlugin::StreamGetKey(shortcode, streamKey, &length);
+	if (length == 0)
+	{
+		_sLastResultCoreStreamGetKey._mStreamKey = "";
+	}
+	else
+	{
+		_sLastResultCoreStreamGetKey._mStreamKey = streamKey;
+	}
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
@@ -1758,6 +1790,70 @@ bool ChromaThread::AsyncCoreStreamGetFocus(char* focus, unsigned char* length)
 	return result;
 }
 
+void ChromaThread::AsyncCoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		*length = 0;
+		return;
+	}
+	int sizeStreamId = _sLastResultCoreStreamGetId._mStreamId.size();
+	if (sizeStreamId > 0)
+	{
+		for (int i = 0; i < sizeStreamId; ++i)
+		{
+			streamId[i] = _sLastResultCoreStreamGetId._mStreamId[i];
+		}
+		*length = sizeStreamId;
+	}
+	else
+	{
+		*length = 0;
+	}
+	// use the path as key and save the state
+	ParamsCoreStreamGetId params;
+	params._mShortcode = shortcode;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamGetId;
+	command._mCoreStreamGetId = params;
+	AddPendingCommandInOrder(key, command);
+}
+
+void ChromaThread::AsyncCoreStreamGetKey(const char* shortcode, char* streamKey, unsigned char* length)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		*length = 0;
+		return;
+	}
+	int sizeStreamKey = _sLastResultCoreStreamGetKey._mStreamKey.size();
+	if (sizeStreamKey > 0)
+	{
+		for (int i = 0; i < sizeStreamKey; ++i)
+		{
+			streamKey[i] = _sLastResultCoreStreamGetKey._mStreamKey[i];
+		}
+		*length = sizeStreamKey;
+	}
+	else
+	{
+		*length = 0;
+	}
+	// use the path as key and save the state
+	ParamsCoreStreamGetKey params;
+	params._mShortcode = shortcode;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamGetKey;
+	command._mCoreStreamGetKey = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -2409,6 +2505,20 @@ void ChromaThread::ProcessPendingCommands()
 			{
 				const ParamsCoreStreamGetFocus& params = pendingCommand._mCoreStreamGetFocus;
 				ImplCoreStreamGetFocus();
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamGetId:
+			{
+				const ParamsCoreStreamGetId& params = pendingCommand._mCoreStreamGetId;
+				const char* shortcode = params._mShortcode.c_str();
+				ImplCoreStreamGetId(shortcode);
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamGetKey:
+			{
+				const ParamsCoreStreamGetKey& params = pendingCommand._mCoreStreamGetKey;
+				const char* shortcode = params._mShortcode.c_str();
+				ImplCoreStreamGetKey(shortcode);
 			}
 			break;
 		}

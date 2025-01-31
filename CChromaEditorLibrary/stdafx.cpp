@@ -287,7 +287,7 @@ extern "C"
 			return;
 		}
 
-		RzChromaStreamPlugin::StreamGetId(shortcode, streamId, length);
+		ChromaThread::Instance()->AsyncCoreStreamGetId(shortcode, streamId, length);
 	}
 
 	EXPORT_API void PluginCoreStreamGetKey(const char* shortcode, char* streamKey, unsigned char* length)
@@ -298,7 +298,7 @@ extern "C"
 			return;
 		}
 
-		RzChromaStreamPlugin::StreamGetKey(shortcode, streamKey, length);
+		ChromaThread::Instance()->AsyncCoreStreamGetKey(shortcode, streamKey, length);
 	}
 
 	EXPORT_API Stream::StreamStatusType PluginCoreStreamGetStatus()
