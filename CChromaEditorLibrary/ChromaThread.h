@@ -731,6 +731,17 @@ namespace ChromaSDK
 		bool _mResult = false;
 	};
 
+	struct ParamsPreviewFrameName
+	{
+		std::wstring _mPath;
+		int _mFrameIndex = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"PreviewFrameName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -791,6 +802,7 @@ namespace ChromaSDK
 		Command_CoreStreamWatch,
 		Command_CoreStreamWatchEnd,
 		Command_CoreStreamReleaseShortcode,
+		Command_PreviewFrameName,
 	};
 
 	struct PendingCommand
@@ -853,6 +865,7 @@ namespace ChromaSDK
 		ParamsCoreStreamWatch _mCoreStreamWatch = { };
 		ParamsCoreStreamWatchEnd _mCoreStreamWatchEnd = { };
 		ParamsCoreStreamReleaseShortcode _mCoreStreamReleaseShortcode = { };
+		ParamsPreviewFrameName _mPreviewFrameName = { };
 	};
 
 	class ChromaThread
@@ -920,6 +933,7 @@ namespace ChromaSDK
 		void ImplCoreStreamWatch(const char* streamId, unsigned long long timestamp);
 		void ImplCoreStreamWatchEnd();
 		void ImplCoreStreamReleaseShortcode(const char* shortcode);
+		void ImplPreviewFrameName(const wchar_t* path, int frameIndex);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -980,6 +994,7 @@ namespace ChromaSDK
 		bool AsyncCoreStreamWatch(const char* streamId, unsigned long long timestamp);
 		bool AsyncCoreStreamWatchEnd();
 		bool AsyncCoreStreamReleaseShortcode(const char* shortcode);
+		void AsyncPreviewFrameName(const wchar_t* path, int frameIndex);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);

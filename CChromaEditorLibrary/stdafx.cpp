@@ -1726,13 +1726,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginPreviewFrameName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginPreviewFrame(animationId, frameIndex);
+		ChromaThread::Instance()->AsyncPreviewFrameName(path, frameIndex);
 	}
 
 	EXPORT_API double PluginPreviewFrameD(double animationId, double frameIndex)
@@ -2051,6 +2045,7 @@ extern "C"
 			return _gAnimationMapID[name];
 		}
 		ChromaThread::Instance()->AsyncGetAnimation(name);
+		return -1;
 	}
 
 	EXPORT_API double PluginGetAnimationD(const wchar_t* name)

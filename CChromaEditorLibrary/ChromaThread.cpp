@@ -733,6 +733,17 @@ void ChromaThread::ImplCoreStreamReleaseShortcode(const char* shortcode)
 	}
 }
 
+void ChromaThread::ImplPreviewFrameName(const wchar_t* path, int frameIndex)
+{
+	int animationId = ImplGetAnimation(path);
+	if (animationId < 0)
+	{
+		LogError(L"ImplPreviewFrameName: Animation not found! %s\r\n", path);
+		return;
+	}
+	PluginPreviewFrame(animationId, frameIndex);
+}
+
 void ChromaThread::ProcessAnimations(float deltaTime)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -1988,6 +1999,25 @@ bool ChromaThread::AsyncCoreStreamReleaseShortcode(const char* shortcode)
 	return result;
 }
 
+void ChromaThread::AsyncPreviewFrameName(const wchar_t* path, int frameIndex)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return;
+	}
+	// use the path as key and save the state
+	ParamsPreviewFrameName params;
+	params._mPath = path;
+	params._mFrameIndex = frameIndex;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_PreviewFrameName;
+	command._mPreviewFrameName = params;
+	AddPendingCommandInOrder(key, command);
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -2688,6 +2718,14 @@ void ChromaThread::ProcessPendingCommands()
 				const ParamsCoreStreamReleaseShortcode& params = pendingCommand._mCoreStreamReleaseShortcode;
 				const char* shortcode = params._mShortcode.c_str();
 				ImplCoreStreamReleaseShortcode(shortcode);
+			}
+			break;
+			case PendingCommandType::Command_PreviewFrameName:
+			{
+				const ParamsPreviewFrameName& params = pendingCommand._mPreviewFrameName;
+				const wchar_t* path = params._mPath.c_str();
+				int frameIndex = params._mFrameIndex;
+				ImplPreviewFrameName(path, frameIndex);
 			}
 			break;
 		}
