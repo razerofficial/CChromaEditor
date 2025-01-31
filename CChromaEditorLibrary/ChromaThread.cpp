@@ -28,6 +28,11 @@ ResultCoreStreamSetFocus ChromaThread::_sLastResultCoreStreamSetFocus;
 ResultCoreStreamGetFocus ChromaThread::_sLastResultCoreStreamGetFocus;
 ResultCoreStreamGetId ChromaThread::_sLastResultCoreStreamGetId;
 ResultCoreStreamGetKey ChromaThread::_sLastResultCoreStreamGetKey;
+ResultCoreStreamBroadcast ChromaThread::_sLastResultCoreStreamBroadcast;
+ResultCoreStreamBroadcastEnd ChromaThread::_sLastResultCoreStreamBroadcastEnd;
+ResultCoreStreamWatch ChromaThread::_sLastResultCoreStreamWatch;
+ResultCoreStreamWatchEnd ChromaThread::_sLastResultCoreStreamWatchEnd;
+ResultCoreStreamReleaseShortcode ChromaThread::_sLastResultCoreStreamReleaseShortcode;
 
 extern map<EChromaSDKDevice1DEnum, int> _gPlayMap1D;
 extern map<EChromaSDKDevice2DEnum, int> _gPlayMap2D;
@@ -697,6 +702,31 @@ void ChromaThread::ImplCoreStreamGetKey(const char* shortcode)
 	{
 		_sLastResultCoreStreamGetKey._mStreamKey = streamKey;
 	}
+}
+
+void ChromaThread::ImplCoreStreamBroadcast(const char* streamId, const char* streamKey)
+{
+	_sLastResultCoreStreamBroadcast._mResult = RzChromaStreamPlugin::StreamBroadcast(streamId, streamKey);
+}
+
+void ChromaThread::ImplCoreStreamBroadcastEnd()
+{
+	_sLastResultCoreStreamBroadcast._mResult = RzChromaStreamPlugin::StreamBroadcastEnd();
+}
+
+void ChromaThread::ImplCoreStreamWatch(const char* streamId, unsigned long long timestamp)
+{
+	_sLastResultCoreStreamWatch._mResult = RzChromaStreamPlugin::StreamWatch(streamId, timestamp);
+}
+
+void ChromaThread::ImplCoreStreamWatchEnd()
+{
+	_sLastResultCoreStreamWatchEnd._mResult = RzChromaStreamPlugin::StreamWatchEnd();
+}
+
+void ChromaThread::ImplCoreStreamReleaseShortcode(const char* shortcode)
+{
+	_sLastResultCoreStreamReleaseShortcode._mResult = RzChromaStreamPlugin::StreamReleaseShortcode(shortcode);
 }
 
 void ChromaThread::ProcessAnimations(float deltaTime)
@@ -1854,6 +1884,106 @@ void ChromaThread::AsyncCoreStreamGetKey(const char* shortcode, char* streamKey,
 	AddPendingCommandInOrder(key, command);
 }
 
+bool ChromaThread::AsyncCoreStreamBroadcast(const char* streamId, const char* streamKey)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return false;
+	}
+	bool result = _sLastResultCoreStreamBroadcast._mResult;
+	// use the path as key and save the state
+	ParamsCoreStreamBroadcast params;
+	params._mStreamId = streamId;
+	params._mStreamKey = streamKey;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamBroadcast;
+	command._mCoreStreamBroadcast = params;
+	AddPendingCommandInOrder(key, command);
+	return result;
+}
+
+bool ChromaThread::AsyncCoreStreamBroadcastEnd()
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return false;
+	}
+	bool result = _sLastResultCoreStreamBroadcastEnd._mResult;
+	// use the path as key and save the state
+	ParamsCoreStreamBroadcastEnd params;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamBroadcastEnd;
+	command._mCoreStreamBroadcastEnd = params;
+	AddPendingCommandInOrder(key, command);
+	return result;
+}
+
+bool ChromaThread::AsyncCoreStreamWatch(const char* streamId, unsigned long long timestamp)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return false;
+	}
+	bool result = _sLastResultCoreStreamWatch._mResult;
+	// use the path as key and save the state
+	ParamsCoreStreamWatch params;
+	params._mStreamId = streamId;
+	params._mTimestamp = timestamp;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamWatch;
+	command._mCoreStreamWatch = params;
+	AddPendingCommandInOrder(key, command);
+	return result;
+}
+
+bool ChromaThread::AsyncCoreStreamWatchEnd()
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return false;
+	}
+	bool result = _sLastResultCoreStreamWatchEnd._mResult;
+	// use the path as key and save the state
+	ParamsCoreStreamWatchEnd params;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamWatchEnd;
+	command._mCoreStreamWatchEnd = params;
+	AddPendingCommandInOrder(key, command);
+	return result;
+}
+
+bool ChromaThread::AsyncCoreStreamReleaseShortcode(const char* shortcode)
+{
+	lock_guard<mutex> guard(_sMutex);
+	// module shutdown early abort
+	if (!_sWaitForExit)
+	{
+		return false;
+	}
+	bool result = _sLastResultCoreStreamReleaseShortcode._mResult;
+	// use the path as key and save the state
+	ParamsCoreStreamReleaseShortcode params;
+	params._mShortcode = shortcode;
+	wstring key = params.GenerateKey();
+	PendingCommand command;
+	command._mType = PendingCommandType::Command_CoreStreamReleaseShortcode;
+	command._mCoreStreamReleaseShortcode = params;
+	AddPendingCommandInOrder(key, command);
+	return result;
+}
+
 void ChromaThread::AsyncSetIdleAnimationName(const wchar_t* path)
 {
 	lock_guard<mutex> guard(_sMutex);
@@ -2519,6 +2649,41 @@ void ChromaThread::ProcessPendingCommands()
 				const ParamsCoreStreamGetKey& params = pendingCommand._mCoreStreamGetKey;
 				const char* shortcode = params._mShortcode.c_str();
 				ImplCoreStreamGetKey(shortcode);
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamBroadcast:
+			{
+				const ParamsCoreStreamBroadcast& params = pendingCommand._mCoreStreamBroadcast;
+				const char* streamId = params._mStreamId.c_str();
+				const char* streamKey = params._mStreamKey.c_str();
+				ImplCoreStreamBroadcast(streamId, streamKey);
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamBroadcastEnd:
+			{
+				const ParamsCoreStreamBroadcastEnd& params = pendingCommand._mCoreStreamBroadcastEnd;
+				ImplCoreStreamBroadcastEnd();
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamWatch:
+			{
+				const ParamsCoreStreamWatch& params = pendingCommand._mCoreStreamWatch;
+				const char* streamId = params._mStreamId.c_str();
+				unsigned long long timestamp = params._mTimestamp;
+				ImplCoreStreamWatch(streamId, timestamp);
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamWatchEnd:
+			{
+				const ParamsCoreStreamWatchEnd& params = pendingCommand._mCoreStreamWatchEnd;
+				ImplCoreStreamWatchEnd();
+			}
+			break;
+			case PendingCommandType::Command_CoreStreamReleaseShortcode:
+			{
+				const ParamsCoreStreamReleaseShortcode& params = pendingCommand._mCoreStreamReleaseShortcode;
+				const char* shortcode = params._mShortcode.c_str();
+				ImplCoreStreamReleaseShortcode(shortcode);
 			}
 			break;
 		}

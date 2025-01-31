@@ -234,7 +234,7 @@ extern "C"
 			return false;
 		}
 
-		return RzChromaStreamPlugin::StreamGetFocus(focus, length);
+		return ChromaThread::Instance()->AsyncCoreStreamGetFocus(focus, length);
 	}
 
 
@@ -254,7 +254,7 @@ extern "C"
 			return false;
 		}
 
-		return RzChromaStreamPlugin::StreamBroadcast(streamId, streamKey);
+		return ChromaThread::Instance()->AsyncCoreStreamBroadcast(streamId, streamKey);
 	}
 
 	EXPORT_API bool PluginCoreStreamBroadcastEnd()
@@ -264,7 +264,7 @@ extern "C"
 			return false;
 		}
 
-		return RzChromaStreamPlugin::StreamBroadcastEnd();
+		return ChromaThread::Instance()->AsyncCoreStreamBroadcastEnd();
 	}
 
 	EXPORT_API void PluginCoreStreamGetAuthShortcode(char* shortcode, unsigned char* length,
@@ -328,7 +328,7 @@ extern "C"
 			return false;
 		}
 
-		return RzChromaStreamPlugin::StreamReleaseShortcode(shortcode);
+		return ChromaThread::Instance()->AsyncCoreStreamReleaseShortcode(shortcode);
 	}
 
 	EXPORT_API bool PluginCoreStreamWatch(const char* streamId, unsigned long long timestamp)
@@ -338,7 +338,7 @@ extern "C"
 			return false;
 		}
 
-		return RzChromaStreamPlugin::StreamWatch(streamId, timestamp);
+		return ChromaThread::Instance()->AsyncCoreStreamWatch(streamId, timestamp);
 	}
 
 	EXPORT_API bool PluginCoreStreamWatchEnd()
@@ -348,7 +348,7 @@ extern "C"
 			return false;
 		}
 
-		return RzChromaStreamPlugin::StreamWatchEnd();
+		return ChromaThread::Instance()->AsyncCoreStreamWatchEnd();
 	}
 #pragma endregion
 

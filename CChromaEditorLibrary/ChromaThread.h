@@ -656,6 +656,81 @@ namespace ChromaSDK
 		std::string _mStreamKey;
 	};
 
+	struct ParamsCoreStreamBroadcast
+	{
+		std::string _mStreamId;
+		std::string _mStreamKey;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamBroadcast";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamBroadcast
+	{
+		bool _mResult = false;
+	};
+
+	struct ParamsCoreStreamBroadcastEnd
+	{
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamBroadcastEnd";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamBroadcastEnd
+	{
+		bool _mResult = false;
+	};
+
+	struct ParamsCoreStreamWatch
+	{
+		std::string _mStreamId;
+		unsigned long long _mTimestamp = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamWatch";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamWatch
+	{
+		bool _mResult = false;
+	};
+
+	struct ParamsCoreStreamWatchEnd
+	{
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamWatchEnd";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamWatchEnd
+	{
+		bool _mResult = false;
+	};
+
+	struct ParamsCoreStreamReleaseShortcode
+	{
+		std::string _mShortcode;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CoreStreamReleaseShortcode";
+			// definitely rate limit, no need to call more than 1 FPS
+			return key;
+		}
+	};
+
+	struct ResultCoreStreamReleaseShortcode
+	{
+		bool _mResult = false;
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -711,6 +786,11 @@ namespace ChromaSDK
 		Command_CoreStreamGetFocus,
 		Command_CoreStreamGetId,
 		Command_CoreStreamGetKey,
+		Command_CoreStreamBroadcast,
+		Command_CoreStreamBroadcastEnd,
+		Command_CoreStreamWatch,
+		Command_CoreStreamWatchEnd,
+		Command_CoreStreamReleaseShortcode,
 	};
 
 	struct PendingCommand
@@ -768,6 +848,11 @@ namespace ChromaSDK
 		ParamsCoreStreamGetFocus _mCoreStreamGetFocus = { };
 		ParamsCoreStreamGetId _mCoreStreamGetId = { };
 		ParamsCoreStreamGetKey _mCoreStreamGetKey = { };
+		ParamsCoreStreamBroadcast _mCoreStreamBroadcast = { };
+		ParamsCoreStreamBroadcastEnd _mCoreStreamBroadcastEnd = { };
+		ParamsCoreStreamWatch _mCoreStreamWatch = { };
+		ParamsCoreStreamWatchEnd _mCoreStreamWatchEnd = { };
+		ParamsCoreStreamReleaseShortcode _mCoreStreamReleaseShortcode = { };
 	};
 
 	class ChromaThread
@@ -830,6 +915,11 @@ namespace ChromaSDK
 		void ImplCoreStreamGetFocus();
 		void ImplCoreStreamGetId(const char* shortcode);
 		void ImplCoreStreamGetKey(const char* shortcode);
+		void ImplCoreStreamBroadcast(const char* streamId, const char* streamKey);
+		void ImplCoreStreamBroadcastEnd();
+		void ImplCoreStreamWatch(const char* streamId, unsigned long long timestamp);
+		void ImplCoreStreamWatchEnd();
+		void ImplCoreStreamReleaseShortcode(const char* shortcode);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -885,6 +975,11 @@ namespace ChromaSDK
 		bool AsyncCoreStreamGetFocus(char* focus, unsigned char* length);
 		void AsyncCoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length);
 		void AsyncCoreStreamGetKey(const char* shortcode, char* streamKey, unsigned char* length);
+		bool AsyncCoreStreamBroadcast(const char* streamId, const char* streamKey);
+		bool AsyncCoreStreamBroadcastEnd();
+		bool AsyncCoreStreamWatch(const char* streamId, unsigned long long timestamp);
+		bool AsyncCoreStreamWatchEnd();
+		bool AsyncCoreStreamReleaseShortcode(const char* shortcode);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);
@@ -908,5 +1003,10 @@ namespace ChromaSDK
 		static ResultCoreStreamGetFocus _sLastResultCoreStreamGetFocus;
 		static ResultCoreStreamGetId _sLastResultCoreStreamGetId;
 		static ResultCoreStreamGetKey _sLastResultCoreStreamGetKey;
+		static ResultCoreStreamBroadcast _sLastResultCoreStreamBroadcast;
+		static ResultCoreStreamBroadcastEnd _sLastResultCoreStreamBroadcastEnd;
+		static ResultCoreStreamWatch _sLastResultCoreStreamWatch;
+		static ResultCoreStreamWatchEnd _sLastResultCoreStreamWatchEnd;
+		static ResultCoreStreamReleaseShortcode _sLastResultCoreStreamReleaseShortcode;
 	};
 }
