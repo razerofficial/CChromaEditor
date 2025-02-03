@@ -40,7 +40,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"PlayChromaAnimationName_";
-			key += GenerateGUID();
+			key += _mPath; // Collapse names, no real need for more than 30 FPS for animation names
 			return key;
 		}
 	};
@@ -62,7 +62,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"SetIdleAnimationName_";
-			key += GenerateGUID();
+			key += _mPath; // Collapse names, no real need for more than 30 FPS for animation names
 			return key;
 		}
 	};
@@ -73,7 +73,7 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"StopChromaAnimationName_";
-			key += GenerateGUID();
+			key += _mPath; // Collapse names, no real need for more than 30 FPS for animation names
 			return key;
 		}
 	};
@@ -81,8 +81,8 @@ namespace ChromaSDK
 	struct ParamsStopAll
 	{
 		const std::wstring GenerateKey() {
-			std::wstring key = L"StopAll_";
-			key += GenerateGUID();
+			std::wstring key = L"StopAll";
+			// Rate limited use the last command
 			return key;
 		}
 	};
@@ -94,7 +94,9 @@ namespace ChromaSDK
 
 		const std::wstring GenerateKey() {
 			std::wstring key = L"StopAnimationType_";
-			key += GenerateGUID();
+			key += std::to_wstring(_mDeviceType);
+			key += L"_";
+			key += std::to_wstring(_mDevice);
 			return key;
 		}
 	};
@@ -104,8 +106,8 @@ namespace ChromaSDK
 		bool _mFlag;
 
 		static const std::wstring GenerateKey() {
-			std::wstring key = L"UseForwardChromaEvents_";
-			key += GenerateGUID();
+			std::wstring key = L"UseForwardChromaEvents";
+			// Rate limited, use the last command
 			return key;
 		}
 	};
@@ -115,8 +117,8 @@ namespace ChromaSDK
 		bool _mFlag;
 
 		static const std::wstring GenerateKey() {
-			std::wstring key = L"UseIdleAnimations_";
-			key += GenerateGUID();
+			std::wstring key = L"UseIdleAnimations";
+			// Rate limited, use the last command
 			return key;
 		}
 	};
