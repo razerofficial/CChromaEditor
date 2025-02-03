@@ -744,6 +744,67 @@ namespace ChromaSDK
 		}
 	};
 
+	struct ParamsCopyNonZeroAllKeysName
+	{
+		std::wstring _mSourceAnimation;
+		std::wstring _mTargetAnimation;
+		int _mFrameId = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CopyNonZeroAllKeysName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsAddNonZeroAllKeysName
+	{
+		std::wstring _mSourceAnimation;
+		std::wstring _mTargetAnimation;
+		int _mFrameId = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"AddNonZeroAllKeysName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsSubtractNonZeroAllKeysName
+	{
+		std::wstring _mSourceAnimation;
+		std::wstring _mTargetAnimation;
+		int _mFrameId = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SubtractNonZeroAllKeysName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsSetKeyColorAllFramesName
+	{
+		std::wstring _mPath;
+		int _mRzKey = 0;
+		int _mColor = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"SetKeyColorAllFramesName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
+	struct ParamsCopyKeyColorName
+	{
+		std::wstring _mSourceAnimation;
+		std::wstring _mTargetAnimation;
+		int _mFrameId = 0;
+		int _mRzKey = 0;
+		const std::wstring GenerateKey() {
+			std::wstring key = L"CopyKeyColorName_";
+			key += GenerateGUID();
+			return key;
+		}
+	};
+
 	enum class PendingCommandType
 	{
 		Command_Unknown,
@@ -805,6 +866,11 @@ namespace ChromaSDK
 		Command_CoreStreamWatchEnd,
 		Command_CoreStreamReleaseShortcode,
 		Command_PreviewFrameName,
+		Command_CopyNonZeroAllKeysName,
+		Command_AddNonZeroAllKeysName,
+		Command_SubtractNonZeroAllKeysName,
+		Command_SetKeyColorAllFramesName,
+		Command_CopyKeyColorName,
 	};
 
 	struct PendingCommand
@@ -868,6 +934,11 @@ namespace ChromaSDK
 		ParamsCoreStreamWatchEnd _mCoreStreamWatchEnd = { };
 		ParamsCoreStreamReleaseShortcode _mCoreStreamReleaseShortcode = { };
 		ParamsPreviewFrameName _mPreviewFrameName = { };
+		ParamsCopyNonZeroAllKeysName _mCopyNonZeroAllKeysName = { };
+		ParamsAddNonZeroAllKeysName _mAddNonZeroAllKeysName = { };
+		ParamsSubtractNonZeroAllKeysName _mSubtractNonZeroAllKeysName = { };
+		ParamsSetKeyColorAllFramesName _mSetKeyColorAllFramesName = { };
+		ParamsCopyKeyColorName _mCopyKeyColorName = { };
 	};
 
 	class ChromaThread
@@ -936,6 +1007,11 @@ namespace ChromaSDK
 		void ImplCoreStreamWatchEnd();
 		void ImplCoreStreamReleaseShortcode(const char* shortcode);
 		void ImplPreviewFrameName(const wchar_t* path, int frameIndex);
+		void ImplCopyNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
+		void ImplAddNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
+		void ImplSubtractNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
+		void ImplSetKeyColorAllFramesName(const wchar_t* path, int rzkey, int color);
+		void ImplCopyKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey);
 		// async calls
 		void AsyncGetAnimation(const wchar_t* path);
 		void AsyncCloseAnimationName(const wchar_t* path);
@@ -997,6 +1073,11 @@ namespace ChromaSDK
 		bool AsyncCoreStreamWatchEnd();
 		bool AsyncCoreStreamReleaseShortcode(const char* shortcode);
 		void AsyncPreviewFrameName(const wchar_t* path, int frameIndex);
+		void AsyncCopyNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
+		void AsyncAddNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
+		void AsyncSubtractNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
+		void AsyncSetKeyColorAllFramesName(const wchar_t* path, int rzkey, int color);
+		void AsyncCopyKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey);
 	private:
 		ChromaThread();
 		void ProcessAnimations(float deltaTime);

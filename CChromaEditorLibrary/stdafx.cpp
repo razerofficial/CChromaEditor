@@ -2712,13 +2712,7 @@ extern "C"
 			return;
 		}
 
-		int animationId = ChromaThread::Instance()->ImplGetAnimation(path);
-		if (animationId < 0)
-		{
-			LogError(L"PluginSetKeyColorAllFramesName: Animation not found! %s\r\n", path);
-			return;
-		}
-		PluginSetKeyColorAllFrames(animationId, rzkey, color);
+		ChromaThread::Instance()->AsyncSetKeyColorAllFramesName(path, rzkey, color);
 	}
 
 	EXPORT_API double PluginSetKeyColorAllFramesNameD(const wchar_t* path, double rzkey, double color)
@@ -3856,21 +3850,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginCopyKeyColorName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginCopyKeyColorName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginCopyKeyColor(sourceAnimationId, targetAnimationId, frameId, rzkey);
+		ChromaThread::Instance()->AsyncCopyKeyColorName(sourceAnimation, targetAnimation, frameId, rzkey);
 	}
 
 	EXPORT_API double PluginCopyKeyColorNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey)
@@ -4223,21 +4203,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginCopyNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginCopyNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginCopyNonZeroAllKeys(sourceAnimationId, targetAnimationId, frameId);
+		ChromaThread::Instance()->AsyncCopyNonZeroAllKeysName(sourceAnimation, targetAnimation, frameId);
 	}
 
 	EXPORT_API double PluginCopyNonZeroAllKeysNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId)
@@ -5286,21 +5252,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginAddNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginAddNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginAddNonZeroAllKeys(sourceAnimationId, targetAnimationId, frameId);
+		ChromaThread::Instance()->AsyncAddNonZeroAllKeysName(sourceAnimation, targetAnimation, frameId);
 	}
 
 	EXPORT_API void PluginAddNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId)
@@ -5553,21 +5505,7 @@ extern "C"
 			return;
 		}
 
-		int sourceAnimationId = ChromaThread::Instance()->ImplGetAnimation(sourceAnimation);
-		if (sourceAnimationId < 0)
-		{
-			LogError(L"PluginSubtractNonZeroAllKeysName: Source Animation not found! %s\r\n", sourceAnimation);
-			return;
-		}
-
-		int targetAnimationId = ChromaThread::Instance()->ImplGetAnimation(targetAnimation);
-		if (targetAnimationId < 0)
-		{
-			LogError(L"PluginSubtractNonZeroAllKeysName: Target Animation not found! %s\r\n", targetAnimation);
-			return;
-		}
-
-		PluginSubtractNonZeroAllKeys(sourceAnimationId, targetAnimationId, frameId);
+		ChromaThread::Instance()->AsyncSubtractNonZeroAllKeysName(sourceAnimation, targetAnimation, frameId);
 	}
 
 
