@@ -98,7 +98,7 @@ public:
 	static void UnitTestsIsConnected();
 
 	static void UnitTestsSetEventName();
-	
+
 	static void UnitTestsSetEventNamePerformance();
 	
 	static void UnitTestsPlayAnimationNamePerformance();
@@ -122,11 +122,11 @@ public:
 	static void UnitTestsIdleAnimation();
 
 	static void UnitTestsIdleAnimation2();
-
-	static void UnitTestsIdleAnimation3();
 	
-	static void UnitTestsIdleAnimation4();
+	static void UnitTestsIdleAnimation3();
 
+	static void UnitTestsIdleAnimation4();
+	
 	static void UnitTestsIdleAnimation5();
 
 	static void UnitTestsIdleAnimation6();
