@@ -2957,7 +2957,7 @@ void ChromaThread::ProcessPendingCommands()
 				const wchar_t* targetAnimation = params._mTargetAnimation.c_str();
 				int rzkey = params._mRzKey;
 				int frameId = params._mFrameId;
-				ImplCopyKeyColorName(sourceAnimation, targetAnimation, rzkey, frameId);
+				ImplCopyKeyColorName(sourceAnimation, targetAnimation, frameId, rzkey);
 			}
 			break;
 		}
