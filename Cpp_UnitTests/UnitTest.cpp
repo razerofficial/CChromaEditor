@@ -3171,6 +3171,34 @@ void UnitTests::UnitTestsSetKeysColorAllFramesRGB()
 	ChromaAnimationAPI::PlayAnimationName(animToLoad, true);
 }
 
+void UnitTests::UnitTestsEffect44()
+{
+	const wchar_t* baseLayer = L"Animations/Spiral_Keyboard.chroma";
+	const wchar_t* layer2 = L"Animations/Rainbow_Keyboard.chroma";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::CloseAnimationName(layer2);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+	ChromaAnimationAPI::GetAnimation(layer2);
+	int color1 = ChromaAnimationAPI::GetRGB(32, 32, 32);
+	int color2 = ChromaAnimationAPI::GetRGB(64, 64, 64);
+	ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesName(baseLayer, color1, color2);
+	{
+		int keys[] = {
+			(int)Keyboard::RZKEY::RZKEY_W,
+			(int)Keyboard::RZKEY::RZKEY_A,
+			(int)Keyboard::RZKEY::RZKEY_S,
+			(int)Keyboard::RZKEY::RZKEY_D,
+			(int)Keyboard::RZKEY::RZKEY_P,
+			(int)Keyboard::RZKEY::RZKEY_M,
+			(int)Keyboard::RZKEY::RZKEY_F1
+		};
+		ChromaAnimationAPI::CopyKeysColorAllFramesName(layer2, baseLayer, keys, sizeof(keys) / sizeof(keys[0]));
+	};
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::wprintf(L"Start of unit tests...\r\n");
@@ -3237,7 +3265,9 @@ void UnitTests::Run()
 	//UnitTestsStopAnimationTypePerformance();
 	//UnitTestsUseForwardChromaEventsPerformance();
 	//UnitTestsUseIdleAnimationsPerformance();
-	UnitTestsCloseAnimationPerformance();
+	//UnitTestsCloseAnimationPerformance();
+
+	UnitTestsEffect44();
 
 	//UnitTestsUnicode();
 

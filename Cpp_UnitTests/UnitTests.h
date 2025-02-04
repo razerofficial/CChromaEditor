@@ -141,6 +141,8 @@ public:
 
 	static void UnitTestsSetKeysColorAllFramesRGB();
 
+	static void UnitTestsEffect44();
+
 	static void Run();
 
 };
