@@ -115,6 +115,8 @@ public:
 
 	static void UnitTestsUseIdleAnimationsPerformance();
 
+	static void UnitTestsCloseAnimationPerformance();
+
 	static void UnitTestsIdleAnimation();
 
 	static void UnitTestsIdleAnimation2();
@@ -125,6 +127,8 @@ public:
 	
 	static void UnitTestsIdleAnimation5();
 
+	static void UnitTestsIdleAnimation6();
+
 	static void PrintAnimationDuration(const char* path);
 
 	static void UnitTestsFrameDuration();
@@ -134,6 +138,8 @@ public:
 	static void UnitTestsSetStaticColor();
 
 	static void UnitTestsSetKeysColorAllFramesRGB();
+
+	static void UnitTestsEffect44();
 
 	static void Run();
 

@@ -2,6 +2,7 @@
 #include "UnitTests.h"
 #include "ChromaLogger.h"
 #include "HandleInput.h"
+#include "SampleEmbeds.h"
 
 #include <chrono>
 #include <string>
@@ -2432,6 +2433,34 @@ void UnitTests::UnitTestsIdleAnimation5()
 		Sleep(1000);
 	}
 }
+
+void UnitTests::UnitTestsIdleAnimation6()
+{
+	const char* idleAnimationName = "Embedded/Gradient_Keyboard.chroma";
+	const char* playAnimationName = "Embedded/Gradient2_Keyboard.chroma";
+	
+	// open the BYTEs from memory and name it, byte arrays are created with the tools use COPY EMBED for C++
+	int idleAnimationId = ChromaAnimationAPI::OpenAnimationFromMemory(EMBED_Gradient_Keyboard, idleAnimationName);
+	int playAnimationId = ChromaAnimationAPI::OpenAnimationFromMemory(EMBED_Gradient2_Keyboard, playAnimationName);
+
+	ChromaAnimationAPI::SetIdleAnimation(idleAnimationId);
+	ChromaAnimationAPI::UseIdleAnimations(true);
+
+	printf("Idle animations set. Press ENTER to trigger animation which should fall back to idle\r\n");
+	printf("Press ESC to end UnitTestsIdleAnimation6...\r\n");
+
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	HandleInput inputEnter = HandleInput(VK_RETURN);
+	while (!inputEscape.WasReleased(true))
+	{
+		if (inputEnter.WasPressed(true))
+		{
+			ChromaAnimationAPI::PlayAnimation(playAnimationId);
+		}
+		Sleep(1);
+	}
+}
+
 void UnitTests::UnitTestsPauseAnimations()
 {
 	bool loop = true;
@@ -2995,6 +3024,41 @@ void UnitTests::UnitTestsUseIdleAnimationsPerformance()
 	}
 }
 
+void UnitTests::UnitTestsCloseAnimationPerformance()
+{
+	printf("Measure CloseAnimation Performance\r\n");
+
+	string animationName = "Animations/Misc_Keyboard.chroma";
+
+	high_resolution_clock::time_point timer = high_resolution_clock::now();
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	int fps = 0;
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+
+		ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), true);
+		ChromaAnimationAPI::CloseAnimationName(animationName.c_str());
+
+		++fps;
+
+		duration<double, milli> time_span = high_resolution_clock::now() - timer;
+		float deltaTime = (float)(time_span.count() / 1000.0f);
+		if (deltaTime > 1)
+		{
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			timer = high_resolution_clock::now();
+			fps = 0;
+		}
+
+		std::this_thread::yield();
+	}
+}
+
 void UnitTests::UnitTestsFrameDuration()
 {
 	vector<string> deviceCategories =
@@ -3090,6 +3154,34 @@ void UnitTests::UnitTestsSetKeysColorAllFramesRGB()
 	ChromaAnimationAPI::PlayAnimationName(animToLoad, true);
 }
 
+void UnitTests::UnitTestsEffect44()
+{
+	const char* baseLayer = "Animations/Spiral_Keyboard.chroma";
+	const char* layer2 = "Animations/Rainbow_Keyboard.chroma";
+	ChromaAnimationAPI::CloseAnimationName(baseLayer);
+	ChromaAnimationAPI::CloseAnimationName(layer2);
+	ChromaAnimationAPI::GetAnimation(baseLayer);
+	ChromaAnimationAPI::GetAnimation(layer2);
+	int color1 = ChromaAnimationAPI::GetRGB(32, 32, 32);
+	int color2 = ChromaAnimationAPI::GetRGB(64, 64, 64);
+	ChromaAnimationAPI::MultiplyTargetColorLerpAllFramesName(baseLayer, color1, color2);
+	{
+		int keys[] = {
+			(int)Keyboard::RZKEY::RZKEY_W,
+			(int)Keyboard::RZKEY::RZKEY_A,
+			(int)Keyboard::RZKEY::RZKEY_S,
+			(int)Keyboard::RZKEY::RZKEY_D,
+			(int)Keyboard::RZKEY::RZKEY_P,
+			(int)Keyboard::RZKEY::RZKEY_M,
+			(int)Keyboard::RZKEY::RZKEY_F1
+		};
+		ChromaAnimationAPI::CopyKeysColorAllFramesName(layer2, baseLayer, keys, sizeof(keys) / sizeof(keys[0]));
+	};
+	ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
+	ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
+	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+}
+
 void UnitTests::Run()
 {
 	printf("Start of unit tests...\r\n");
@@ -3153,9 +3245,12 @@ void UnitTests::Run()
 	//UnitTestsSetIdleAnimationNamePerformance();
 	//UnitTestsStopAllPerformance();
 	//UnitTestsStopAnimationNamePerformance();
-	UnitTestsStopAnimationTypePerformance();
+	//UnitTestsStopAnimationTypePerformance();
 	//UnitTestsUseForwardChromaEventsPerformance();
 	//UnitTestsUseIdleAnimationsPerformance();
+	//UnitTestsCloseAnimationPerformance();
+
+	UnitTestsEffect44();
 
 
 	//UnitTestsIdleAnimation();
@@ -3163,6 +3258,7 @@ void UnitTests::Run()
 	//UnitTestsIdleAnimation3();
 	//UnitTestsIdleAnimation4();
 	//UnitTestsIdleAnimation5();
+	//UnitTestsIdleAnimation6();
 
 	//UnitTestsFrameDuration();
 	//UnitTestsTotalDuration();

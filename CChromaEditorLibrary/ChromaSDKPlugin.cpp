@@ -996,8 +996,8 @@ FChromaSDKEffectResult ChromaSDKPlugin::CreateEffectKeyboardCustom2D(const vecto
 		}
 
 		result = RzChromaSDK::CreateKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, &pParam, &effectId);
-	}	
-	
+	}
+
 	data.EffectId.Data = effectId;
 	data.Result = result;
 
@@ -1354,12 +1354,4 @@ AnimationBase* ChromaSDKPlugin::OpenAnimationFromMemory(const BYTE* data)
 	//LogDebug("OpenAnimationFromMemory: Loaded %s\r\n", path.c_str());
 
 	return animation;
-}
-
-void ChromaSDKPlugin::UseIdleAnimation(EChromaSDKDeviceEnum device, bool flag)
-{
-	if (ChromaThread::Instance())
-	{
-		ChromaThread::Instance()->UseIdleAnimation(device, flag);
-	}
 }
