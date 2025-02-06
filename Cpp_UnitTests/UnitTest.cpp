@@ -5,6 +5,7 @@
 #include "SampleEmbeds.h"
 
 #include <chrono>
+#include <map>
 #include <string>
 #include <thread>
 #include <tchar.h>
@@ -2671,9 +2672,16 @@ void UnitTests::UnitTestsSetEventNamePerformance()
 {
 	printf("Measure CoreSetEventName Performance\r\n");
 
+	map<int, int> metricsFPS;
+	int numberOfUniqueEvents = 25;
+	high_resolution_clock::time_point uniqueEventsTimer = high_resolution_clock::now();
+
 	high_resolution_clock::time_point timer = high_resolution_clock::now();
 	HandleInput inputEscape = HandleInput(VK_ESCAPE);
 	int fps = 0;
+	int calcFps = 0;
+	const wchar_t* eventBase = L"GenericGameEvent_";
+	int eventIndex = 0;
 	while (true)
 	{
 		if (inputEscape.WasReleased(true))
@@ -2682,19 +2690,39 @@ void UnitTests::UnitTestsSetEventNamePerformance()
 			break;
 		}
 
-		ChromaAnimationAPI::CoreSetEventName(L"GenericGameEvent");
+		wstring eventName = eventBase;
+		eventName += to_wstring(eventIndex);
+		eventIndex = (eventIndex + 1) % numberOfUniqueEvents;
+
+		ChromaAnimationAPI::CoreSetEventName(eventName.c_str());
+
 		++fps;
 
 		duration<double, milli> time_span = high_resolution_clock::now() - timer;
 		float deltaTime = (float)(time_span.count() / 1000.0f);
 		if (deltaTime > 1)
 		{
-			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, fps);
+			calcFps = fps;
+			printf("Elapsed time: %f FPS: %d\r\n", deltaTime, calcFps);
 			timer = high_resolution_clock::now();
 			fps = 0;
 		}
 
 		std::this_thread::yield();
+
+		duration<double, milli> uniqueElapsed = high_resolution_clock::now() - uniqueEventsTimer;
+		if (uniqueElapsed.count() > 3000)
+		{
+			uniqueEventsTimer = high_resolution_clock::now();
+			metricsFPS[numberOfUniqueEvents] = calcFps;
+			for (int i = 25; i <= numberOfUniqueEvents; i += 25)
+			{
+				printf("Unique Events: %d FPS: %d\r\n", i, metricsFPS[i]);
+			}
+			printf("Increasing Unique Events: %d\r\n", numberOfUniqueEvents);
+			numberOfUniqueEvents += 25;
+
+		}
 	}
 }
 
@@ -3241,7 +3269,7 @@ void UnitTests::Run()
 	//UnitTestsSetEventName();
 
 	//UnitTestsPlayAnimationNamePerformance();
-	//UnitTestsSetEventNamePerformance();
+	UnitTestsSetEventNamePerformance();
 	//UnitTestsSetIdleAnimationNamePerformance();
 	//UnitTestsStopAllPerformance();
 	//UnitTestsStopAnimationNamePerformance();
@@ -3250,7 +3278,7 @@ void UnitTests::Run()
 	//UnitTestsUseIdleAnimationsPerformance();
 	//UnitTestsCloseAnimationPerformance();
 
-	UnitTestsEffect44();
+	//UnitTestsEffect44();
 
 
 	//UnitTestsIdleAnimation();

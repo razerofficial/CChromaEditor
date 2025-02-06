@@ -2,6 +2,8 @@
 
 * Note: Visit the [Chroma Animation Guide](https://chroma.razer.com/ChromaGuide/) to find the latest supported plugin for Chroma RGB.
 
+* Note: This is the `ASCII` version of the library. It's highly recommended that you use the [Unicode](https://github.com/razerofficial/CChromaEditor/tree/SUPPORT_UNICODE) version of this library.
+
 # CChromaEditor - C++ Dynamic Library for playing and editing Chroma animations
 
 **Table of Contents**
@@ -211,9 +213,44 @@ The team can provide QA on the game build when integration has completed. Steam 
 
 ### Performance
 
+**Performance Considerations**
+
+`Avoid Blocking the Update/Rendering Thread:`
+
+Calling the Chroma API in the middle of an update or rendering thread can cause noticeable lag if not handled properly.
+ 
+`Two Approaches for Animation References:`
+
+* By ID (Synchronous):
+	* Methods that reference animations by ID are synchronous. These calls can block the thread they run on.
+	* Recommendation: Use a dedicated thread outside the main update/render thread if you plan to call by ID.
+* By Name (Asynchronous):
+	* Methods that reference animations by name have been modified to run in the background and return immediately.
+	* This design avoids any performance impact on the main thread.
+	* Recommendation: It is safe to call these methods directly from the main thread since they won’t block it.
+ 
+`SetEventName Details:`
+
+* `SetEventName` is asynchronous and rate-limited to 30 FPS.
+* Using `SetEventName` to add external Chroma or haptics is generally the best way to maximize performance.
+
+The following chart measures `SetEventName` calls per second with a unique number of events. The high framerate shows the method will have little performance impact with a large number of simultaneous events.
+
+![image_32](images/image_42.png)
+ 
+ `GetAnimation Behavior:`
+
+ * GetAnimation returns the ID of a loaded animation immediately or sends the operation to open the animation in the background if it’s not already loaded.
+ 
+`Preloading Animations:`
+ 
+ * If yor design calls for using PlayChromaAnimationName during update or rendering, preload animations during level loading to avoid runtime lag.
+
 Performance is a key concern when adding Chroma and haptics to event triggers. Calling the API in the middle of an update or rendering thread could cause noticable lag if designed incorrectly. Methods that reference animations by id are synchronous and may block the calling thread. Methods that reference animations by name have been modified to pass the operation to the background and return immediately to avoid any performance impact. `SetEventName` is asynchronous and is rate limited to 30 FPS. `GetAnimation` will return the id of a loaded animation immediately or send the open animation operation to the background. To maximize performance use `SetEventName` to add external Chroma and haptics to the game. Preload animations during the level loading stage when using `PlayChromaAnimationName` if the design calls from the update or rendering thread. Use a dedicated thread outside the update and rendering thread If you plan to reference animations by id.
 
-The following methods have been adapted to work in the background as asynchronous methods.
+`Asynchronous Methods:`
+
+The following methods have been adapted to work in the background (asynchronously) and can be safely called from the main thread without causing performance bottlenecks.
 
 ```
 AddNonZeroAllKeysAllFramesName
