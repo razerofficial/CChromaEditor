@@ -231,6 +231,10 @@ Calling the Chroma API in the middle of an update or rendering thread can cause 
 
 * `SetEventName` is asynchronous and rate-limited to 30 FPS.
 * Using `SetEventName` to add external Chroma or haptics is generally the best way to maximize performance.
+
+The following chart measures `SetEventName` calls per second with a unique number of events. The high framerate shows the method will have little performance impact with a large number of simultaneous events.
+
+![image_32](images/image_42.png)
  
  `GetAnimation Behavior:`
 
