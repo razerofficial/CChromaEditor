@@ -240,7 +240,7 @@ The following chart measures `SetEventName` calls per second with a unique numbe
  
  `GetAnimation Behavior:`
 
- * GetAnimation returns the ID of a loaded animation immediately or sends the operation to open the animation in the background if it�s not already loaded.
+ * GetAnimation returns the ID of a loaded animation immediately or sends the operation to open the animation in the background if it's not already loaded.
  
 `Preloading Animations:`
  
