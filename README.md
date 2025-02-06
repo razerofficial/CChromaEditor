@@ -159,9 +159,11 @@ The SDK integration process involves the following:
 
 6. [Testing](#testing)
 
-7. [Haptic Design](#haptic-design)
+7. [Performance](#performance)
 
-8. [Modding](#modding)
+8. [Haptic Design](#haptic-design)
+
+9. [Modding](#modding)
 
 <a name="chroma-design"></a>
 
