@@ -2124,7 +2124,7 @@ extern "C"
 			animation->Play(loop);
 		}
 	}
-	
+
 	EXPORT_API void PluginUseForwardChromaEvents(bool flag)
 	{
 		if (ChromaThread::Instance() == nullptr)
