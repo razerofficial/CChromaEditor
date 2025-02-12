@@ -236,7 +236,7 @@ Calling the Chroma API in the middle of an update or rendering thread can cause 
 
 The following chart measures `SetEventName` calls per second with a unique number of events. The high framerate shows the method will have little performance impact with a large number of simultaneous events.
 
-![image_32](images/image_42.png)
+![image_42](images/image_42.png)
  
  `GetAnimation Behavior:`
 
