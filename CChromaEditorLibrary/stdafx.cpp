@@ -214,6 +214,11 @@ extern "C"
 			return RZRESULT_FAILED;
 		}
 
+		if (nullptr == Name)
+		{
+			return ChromaThread::Instance()->AsyncSetEventName(L"");
+		}
+
 		return ChromaThread::Instance()->AsyncSetEventName(Name);
 	}
 

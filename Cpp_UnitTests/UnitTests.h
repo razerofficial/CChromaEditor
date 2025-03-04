@@ -141,6 +141,8 @@ public:
 
 	static void UnitTestsEffect44();
 
+	static void UnitTestsSetEventNameBlank();
+
 	static void Run();
 
 };
