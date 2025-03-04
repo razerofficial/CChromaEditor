@@ -2661,7 +2661,7 @@ void UnitTests::UnitTestsIsConnected()
 
 void UnitTests::UnitTestsSetEventName()
 {
-	RZRESULT result = ChromaAnimationAPI::CoreSetEventName(_T("Jump_2s"));
+	RZRESULT result = ChromaAnimationAPI::CoreSetEventName(L"Jump_2s");
 	printf("CoreSetEventName returned=%d\r\n", result);
 
 	const wchar_t* RANDOM_KEYBOARD = L"Animations/Random_Keyboard.chroma";
@@ -3227,6 +3227,30 @@ void UnitTests::UnitTestsEffect44()
 	ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 }
 
+void UnitTests::UnitTestsSetEventNameBlank()
+{
+	RZRESULT result = ChromaAnimationAPI::CoreSetEventName(L"Jump_2s");
+	printf("CoreSetEventName returned=%d\r\n", result);
+
+	printf("Press Esc to end unit tests...\r\n");
+	HandleInput inputEscape = HandleInput(VK_ESCAPE);
+	while (true)
+	{
+		if (inputEscape.WasReleased(true))
+		{
+			printf("Exiting...\r\n");
+			break;
+		}
+		Sleep(100);
+
+		ChromaAnimationAPI::CoreSetEventName(L"");
+
+		Sleep(100);
+
+		ChromaAnimationAPI::CoreSetEventName(L"Effect1");
+	}
+}
+
 void UnitTests::Run()
 {
 	ChromaLogger::wprintf(L"Start of unit tests...\r\n");
@@ -3286,7 +3310,8 @@ void UnitTests::Run()
 	//UnitTestsSetEventName();
 
 	//UnitTestsPlayAnimationNamePerformance();
-	UnitTestsSetEventNamePerformance();
+	//UnitTestsSetEventNamePerformance();
+	UnitTestsSetEventNameBlank();
 	//UnitTestsSetIdleAnimationNamePerformance();
 	//UnitTestsStopAllPerformance();
 	//UnitTestsStopAnimationNamePerformance();
