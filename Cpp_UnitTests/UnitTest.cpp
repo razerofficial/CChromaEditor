@@ -3247,6 +3247,10 @@ void UnitTests::UnitTestsSetEventNameBlank()
 
 		Sleep(100);
 
+		ChromaAnimationAPI::CoreSetEventName(nullptr);
+
+		Sleep(100);
+
 		ChromaAnimationAPI::CoreSetEventName(L"Effect1");
 	}
 }
