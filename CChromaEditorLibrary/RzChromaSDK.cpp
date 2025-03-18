@@ -259,12 +259,16 @@ RZRESULT RzChromaSDK::IsConnected(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo)
 	return _sMethodIsConnected(DeviceInfo);
 }
 
-RZRESULT RzChromaSDK::SetEventName(LPCTSTR Name)
+RZRESULT RzChromaSDK::SetEventName(const wchar_t* Name)
 {
 	RZRESULT state = GetLibraryLoadedState();
 	if (state != RZRESULT_SUCCESS)
 	{
 		return state;
+	}
+	if (nullptr == Name)
+	{
+		return RZRESULT_FAILED;
 	}
 	return _sMethodSetEventName(Name);
 }

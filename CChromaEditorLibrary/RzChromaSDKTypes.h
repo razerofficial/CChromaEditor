@@ -19,12 +19,12 @@
   
      typedef struct APPINFOTYPE
      {
-         TCHAR Title[256];           
-         TCHAR Description[1024];    
+         wchar_t Title[256];           
+         wchar_t Description[1024];
          struct Author
          {
-             TCHAR Name[256];        
-             TCHAR Contact[256];     
+             wchar_t Name[256];
+             wchar_t Contact[256];
          } Author;
          DWORD SupportedDevice;      
          DWORD Category;             

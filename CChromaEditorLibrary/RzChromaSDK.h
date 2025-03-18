@@ -20,7 +20,7 @@ typedef RZRESULT(*CHROMA_SDK_UNREGISTER_EVENT_NOTIFICATION)(void);
 typedef RZRESULT(*CHROMA_SDK_QUERY_DEVICE)(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo);
 typedef RZRESULT(*CHROMA_SDK_IS_ACTIVE)(BOOL& Active);
 typedef RZRESULT(*CHROMA_SDK_IS_CONNECTED)(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
-typedef RZRESULT(*CHROMA_SDK_SET_EVENT_NAME)(LPCTSTR Name);
+typedef RZRESULT(*CHROMA_SDK_SET_EVENT_NAME)(const wchar_t* Name);
 
 #undef CHROMASDK_DECLARE_METHOD
 #define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature _sMethod ## FieldName
@@ -47,7 +47,7 @@ public:
 	static RZRESULT QueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE &DeviceInfo);
 	static RZRESULT IsActive(BOOL& Active);
 	static RZRESULT IsConnected(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
-	static RZRESULT SetEventName(LPCTSTR Name);
+	static RZRESULT SetEventName(const wchar_t* Name);
 
 	// Extra methods
 	static RZRESULT GetLibraryLoadedState(); // call to preload the library

@@ -207,7 +207,7 @@ extern "C"
 	{
 		return RzChromaSDK::IsConnected(DeviceInfo);
 	}
-	EXPORT_API RZRESULT PluginCoreSetEventName(LPCTSTR Name)
+	EXPORT_API RZRESULT PluginCoreSetEventName(const wchar_t* Name)
 	{
 		if (ChromaThread::Instance() == nullptr)
 		{

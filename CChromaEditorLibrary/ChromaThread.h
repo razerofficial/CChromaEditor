@@ -1019,7 +1019,7 @@ namespace ChromaSDK
 		void AsyncGetAnimation(const char* path);
 		void AsyncCloseAnimationName(const char* path);
 		void AsyncPlayAnimationName(const char* path, bool loop);
-		RZRESULT AsyncSetEventName(LPCTSTR Name);
+		RZRESULT AsyncSetEventName(const wchar_t* Name);
 		void AsyncSetIdleAnimationName(const char* path);
 		void AsyncStopAll();
 		void AsyncStopAnimationName(const char* path);

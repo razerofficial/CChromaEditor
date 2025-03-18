@@ -30,10 +30,10 @@ int main()
 
 	APPINFOTYPE appInfo = {};
 
-	_tcscpy_s(appInfo.Title, 256, _T("C++ Chroma Editor - Unit Tests"));
-	_tcscpy_s(appInfo.Description, 1024, _T("Unit Tests for Chroma"));
-	_tcscpy_s(appInfo.Author.Name, 256, _T("Razer"));
-	_tcscpy_s(appInfo.Author.Contact, 256, _T("https://github.com/RazerOfficial/CChromaEditor"));
+	wcscpy_s(appInfo.Title, 256, L"C++ Chroma Editor - Unit Tests");
+	wcscpy_s(appInfo.Description, 1024, L"Unit Tests for Chroma");
+	wcscpy_s(appInfo.Author.Name, 256, L"Razer");
+	wcscpy_s(appInfo.Author.Contact, 256, L"https://wyvrn.com");
 
 	//appInfo.SupportedDevice = 
 	//    0x01 | // Keyboards

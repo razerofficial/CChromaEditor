@@ -2245,7 +2245,7 @@ void ChromaThread::AsyncStopAll()
 	AddPendingCommandInOrder(key, command);
 }
 
-RZRESULT ChromaThread::AsyncSetEventName(LPCTSTR Name)
+RZRESULT ChromaThread::AsyncSetEventName(const wchar_t* Name)
 {
 	lock_guard<mutex> guard(_sMutex);
 

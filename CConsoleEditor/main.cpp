@@ -41,10 +41,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	APPINFOTYPE appInfo = {};
 
-	_tcscpy_s(appInfo.Title, 256, _T("Razer Chroma Editor"));
-	_tcscpy_s(appInfo.Description, 1024, _T("Standalone Editor for Chroma"));
-	_tcscpy_s(appInfo.Author.Name, 256, _T("Razer"));
-	_tcscpy_s(appInfo.Author.Contact, 256, _T("https://developer.razer.com/chroma"));
+	wcscpy_s(appInfo.Title, 256, L"Razer Chroma Editor");
+	wcscpy_s(appInfo.Description, 1024, L"Standalone Editor for Chroma");
+	wcscpy_s(appInfo.Author.Name, 256, L"Razer");
+	wcscpy_s(appInfo.Author.Contact, 256, L"https://wyvrn.com");
 
 	//appInfo.SupportedDevice = 
 	//    0x01 | // Keyboards
