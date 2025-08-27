@@ -1,8 +1,6 @@
-# Latest
+# This Repository Has Moved
 
-* Note: Visit the [Chroma Animation Guide](https://chroma.razer.com/ChromaGuide/) to find the latest supported plugin for Chroma RGB.
-
-* Note: This is the `ASCII` version of the library. It's highly recommended that you use the [Unicode](https://github.com/razerofficial/CChromaEditor/tree/SUPPORT_UNICODE) version of this library.
+* Note: This plugin is deprecated. For the latest plugins go to the `WYVRN` documentation at [doc.wyvrn.com](https://doc.wyvrn.com/).
 
 # CChromaEditor - C++ Dynamic Library for playing and editing Chroma animations
 
@@ -10917,5 +10915,6 @@ ChromaAnimationAPI::UsePreloadingName(
 <hr/>
 
 *(End of automation)*
+
 
 <br/><br/>
